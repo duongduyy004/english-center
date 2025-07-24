@@ -1,0 +1,15 @@
+services:
+  eng-center-db:
+    image: postgres:17.5-alpine
+    container_name: eng-center-db
+    restart: none
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_DB: eng-center
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: 123456
+    volumes:
+      - eng-center:/var/lib/postgresql/data
+volumes:
+  eng-center:
