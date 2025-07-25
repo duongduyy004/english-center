@@ -1,6 +1,6 @@
 import { plainToInstance, Transform, Type } from "class-transformer";
 import { IsNumber, IsOptional, IsString, ValidateNested } from "class-validator";
-import { User } from "@/users/user.domain";
+import { User } from "@/modules/users/user.domain";
 
 export class FilterUserDto {
     @IsString()

@@ -1,9 +1,9 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
-import { UsersService } from '@/users/users.service';
-import { CreateUserDto } from '@/users/dto/create-user.dto';
-import { UpdateUserDto } from '@/users/dto/update-user.dto';
+import { UsersService } from '@/modules/users/users.service';
+import { CreateUserDto } from '@/modules/users/dto/create-user.dto';
+import { UpdateUserDto } from '@/modules/users/dto/update-user.dto';
 import { ResponseMessage } from '@/decorator/customize.decorator';
-import { QueryUserDto } from '@/users/dto/query-user.dto';
+import { QueryUserDto } from '@/modules/users/dto/query-user.dto';
 
 @Controller('users')
 export class UsersController {

@@ -2,11 +2,11 @@ import { BadRequestException, Injectable, NotFoundException } from '@nestjs/comm
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import bcrypt from "bcrypt";
-import { User } from '@/users/user.domain';
-import { UserRepository } from '@/users/user.repository';
+import { User } from '@/modules/users/user.domain';
+import { UserRepository } from '@/modules/users/user.repository';
 import { I18nService } from 'nestjs-i18n';
 import { I18nTranslations } from '@/generated/i18n.generated';
-import { FilterUserDto, SortUserDto } from '@/users/dto/query-user.dto';
+import { FilterUserDto, SortUserDto } from '@/modules/users/dto/query-user.dto';
 import { IPaginationOptions } from '@/utils/types/pagination-options';
 import { PaginationResponseDto } from '@/utils/types/pagination-response.dto';
 

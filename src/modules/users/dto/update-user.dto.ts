@@ -1,8 +1,5 @@
-import { PartialType } from '@nestjs/mapped-types';
-import { CreateUserDto } from './create-user.dto';
 import { IsDate, IsEmail, IsEnum, IsOptional, IsString, Matches } from 'class-validator';
 import { i18nValidationMessage } from 'nestjs-i18n';
-import { PASSWORD_REGEX } from '@/utils/constants';
 import { I18nTranslations } from '@/generated/i18n.generated';
 import { Transform } from 'class-transformer';
 

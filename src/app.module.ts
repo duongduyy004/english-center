@@ -4,19 +4,19 @@ import { AppController } from '@/app.controller';
 import { AppService } from '@/app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TypeOrmConfigService } from '@/database/typeorm-config.service';
-import { UsersModule } from '@/users/users.module';
+import { UsersModule } from '@/modules/users/users.module';
 import databaseConfig from '@/config/configs/database.config';
 import appConfig from '@/config/configs/app.config';
 import jwtConfig from '@/config/configs/jwt.config';
 import { AcceptLanguageResolver, HeaderResolver, I18nModule, QueryResolver } from 'nestjs-i18n';
-import path from 'path';
+import * as path from 'path';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { TransformInterceptor } from '@/core/transform.interceptor';
-import { StudentsModule } from '@/students/students.module';
-import { ParentsModule } from '@/parents/parents.module';
-import { TeachersModule } from '@/teachers/teachers.module';
-import { ClassesModule } from '@/classes/classes.module';
-import { PaymentsModule } from '@/payments/payments.module';
+import { StudentsModule } from '@/modules/students/students.module';
+import { ParentsModule } from '@/modules/parents/parents.module';
+import { TeachersModule } from '@/modules/teachers/teachers.module';
+import { ClassesModule } from '@/modules/classes/classes.module';
+import { PaymentsModule } from '@/modules/payments/payments.module';
 
 @Module({
   imports: [
@@ -28,10 +28,10 @@ import { PaymentsModule } from '@/payments/payments.module';
     I18nModule.forRoot({
       fallbackLanguage: 'en',
       loaderOptions: {
-        path: path.join(__dirname, '/i18n/'),
+        path: path.join(process.cwd(), 'src', 'i18n'), // Use process.cwd() instead
         watch: true,
       },
-      typesOutputPath: path.join(__dirname, '../src/generated/i18n.generated.ts'),
+      typesOutputPath: path.join(process.cwd(), 'src', 'generated', 'i18n.generated.ts'),
       resolvers: [
         { use: QueryResolver, options: ['lang'] },
         { use: HeaderResolver, options: ['x-lang'] },

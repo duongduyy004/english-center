@@ -1,7 +1,7 @@
 import { FindOptionsWhere, ILike, Repository } from "typeorm";
-import { UserEntity } from "@/users/entities/user.entity";
+import { UserEntity } from "@/modules/users/entities/user.entity";
 import { Injectable } from "@nestjs/common";
-import { User } from "@/users/user.domain";
+import { User } from "@/modules/users/user.domain";
 import { InjectRepository } from "@nestjs/typeorm";
 import { UserMapper } from "./user.mapper";
 import { NullableType } from "@/utils/types/nullable.type";
