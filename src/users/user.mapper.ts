@@ -1,0 +1,40 @@
+import { UserEntity } from "@/users/entities/user.entity";
+import { User } from "@/users/user.domain";
+
+export class UserMapper {
+    static toDomain(raw: UserEntity): User {
+        const domainEntity = new User();
+        domainEntity.id = raw.id;
+        domainEntity.name = raw.name;
+        domainEntity.email = raw.email;
+        domainEntity.password = raw.password;
+        domainEntity.gender = raw.gender;
+        domainEntity.dayOfBirth = raw.dayOfBirth;
+        domainEntity.address = raw.address;
+        domainEntity.phone = raw.phone;
+        domainEntity.avatar = raw.avatar;
+        domainEntity.created_at = raw.created_at;
+        domainEntity.updated_at = raw.updated_at;
+        domainEntity.deletedAt = raw.deletedAt;
+        return domainEntity;
+    }
+
+    static toPersistence(domainEntity: User): UserEntity {
+        const persistenceEntity = new UserEntity();
+        if (domainEntity.id && typeof domainEntity.id === 'number') {
+            persistenceEntity.id = domainEntity.id;
+        }
+        persistenceEntity.name = domainEntity.name;
+        persistenceEntity.email = domainEntity.email;
+        persistenceEntity.password = domainEntity.password;
+        persistenceEntity.gender = domainEntity.gender;
+        persistenceEntity.dayOfBirth = domainEntity.dayOfBirth;
+        persistenceEntity.address = domainEntity.address;
+        persistenceEntity.phone = domainEntity.phone;
+        persistenceEntity.avatar = domainEntity.avatar;
+        persistenceEntity.created_at = domainEntity.created_at;
+        persistenceEntity.updated_at = domainEntity.updated_at;
+        persistenceEntity.deletedAt = domainEntity.deletedAt;
+        return persistenceEntity;
+    }
+}

@@ -1,0 +1,9 @@
+{
+    "NOT_EMPTY": "{property} không được để trống",
+    "INVALID_EMAIL": "email không hợp lệ",
+    "PASSWORD": "{property} phải chứa ít nhất 1 kí tự hoặc 1 số",
+    "MIN_LENGTH": "{property} phải chứa ít nhất {constraints.0} kí tự hoặc số",
+    "MAX_LENGTH": "{property} phải nhỏ hơn {constraints.0} kí tự hoặc số",
+    "MIN_VALUE": "{property} phải lớn hơn {constraints.0}",
+    "MAX_VALUE": "{property} phải nhỏ hơn {constraints.0}"
+}

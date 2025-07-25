@@ -1,1 +1,1 @@
-export const passwordRegex = new RegExp('^(?=.*[A-Za-z])(?=.*\d).{8,}$')
+export const PASSWORD_REGEX = new RegExp('^(?=.*[A-Za-z])(?=.*\d).{8,}$')

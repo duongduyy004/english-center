@@ -1,0 +1,13 @@
+{
+    "SUCCESS": {
+        "CREATE_A_USER": "Tạo người dùng thành công",
+        "GET_A_USER": "Lấy thông tin người dùng thành công",
+        "GET_USER_PAGINATION": "Lấy người dùng với phân trang",
+        "UPDATE_A_USER": "Cập nhật người dùng thành công",
+        "DELETE_A_USER": "Xóa người dùng thành công"
+    },
+    "FAIL": {
+        "NOT_FOUND": "Không tìm thấy người dùng",
+        "EMAIL_EXIST": "Email đã tồn tại"
+    }
+}
