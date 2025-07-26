@@ -1,14 +1,11 @@
 import { StudentEnity } from "@/modules/students/entities/student.entity";
-import { Column, Entity, ManyToOne, PrimaryColumn } from "typeorm";
-import { ClassEntity } from "./class.entity";
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { ClassEntity } from "@/modules/classes/entities/class.entity";
 
-@Entity()
+@Entity('class_student')
 export class ClassStudentEntity {
-    @PrimaryColumn()
-    student_id: string
-
-    @PrimaryColumn()
-    class_id: string
+    @PrimaryGeneratedColumn()
+    id: number
 
     @Column()
     discount_percent: number
@@ -17,5 +14,5 @@ export class ClassStudentEntity {
     public student: StudentEnity
 
     @ManyToOne(() => ClassEntity, (aclass) => aclass.class_student)
-    public aclass: ClassEntity
+    public class: ClassEntity
 }

@@ -1,7 +1,7 @@
 import { UserEntity } from "@/modules/users/entities/user.entity";
-import { ChildEntity, Column } from "typeorm";
+import { Entity, Column } from "typeorm";
 
-@ChildEntity()
+@Entity('teacher')
 export class TeacherEntity extends UserEntity {
     @Column()
     isActive: boolean
@@ -9,12 +9,12 @@ export class TeacherEntity extends UserEntity {
     @Column()
     description: string
 
-    @Column({ array: true })
+    @Column("text", { array: true })
     qualifications: string[]
 
-    @Column({ array: true })
+    @Column("text", { array: true })
     specializations: string[]
 
     @Column()
-    salary_per_lesson: number
+    salaryPerLesson: number
 }

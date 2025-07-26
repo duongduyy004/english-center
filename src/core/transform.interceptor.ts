@@ -33,7 +33,7 @@ export class TransformInterceptor<T> implements NestInterceptor<T, Response<T>> 
             .pipe(
                 map((data) => ({
                     statusCode: context.switchToHttp().getResponse().statusCode,
-                    message: this.i18nService.t(message_key as keyof I18nTranslations) || '',
+                    message: message_key ? this.i18nService.t(message_key as keyof I18nTranslations) : '',
                     data
                 })),
             );

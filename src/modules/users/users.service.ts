@@ -1,7 +1,6 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import bcrypt from "bcrypt";
 import { User } from '@/modules/users/user.domain';
 import { UserRepository } from '@/modules/users/user.repository';
 import { I18nService } from 'nestjs-i18n';
@@ -17,11 +16,6 @@ export class UsersService {
     private readonly i18nService: I18nService<I18nTranslations>
   ) { }
 
-  private hashPassword(password: string) {
-    const saltRounds = 10;
-    const salt = bcrypt.genSaltSync(saltRounds);
-    return bcrypt.hashSync(password, salt);
-  }
 
   async create(createUserDto: CreateUserDto): Promise<User> {
     let { name, email, password, gender, dayOfBirth, address, phone } = createUserDto
@@ -29,10 +23,6 @@ export class UsersService {
     const isEmailExist = await this.userRepository.findByEmail(email)
 
     if (isEmailExist) throw new BadRequestException(this.i18nService.t('user.FAIL.EMAIL_EXIST'))
-
-    if (password) {
-      password = this.hashPassword(password) || undefined
-    }
 
     return this.userRepository.create({
       name,
@@ -53,7 +43,7 @@ export class UsersService {
     filterOptions?: FilterUserDto | null;
     sortOptions?: SortUserDto[] | null;
     paginationOptions: IPaginationOptions;
-  }): Promise<PaginationResponseDto> {
+  }): Promise<PaginationResponseDto<User>> {
     return this.userRepository.findManyWithPagination({ filterOptions, sortOptions, paginationOptions })
   }
 
@@ -67,12 +57,14 @@ export class UsersService {
 
   async update(id: User['id'], updateUserDto: UpdateUserDto) {
     let { name, email, gender, dayOfBirth, address, phone } = updateUserDto
-    if (updateUserDto && updateUserDto.email) {
-      const user = await this.userRepository.findByEmail(updateUserDto.email)
-      if (user)
-        throw new BadRequestException(this.i18nService.t('user.FAIL.EMAIL_EXIST'))
+    const user = await this.userRepository.findById(id)
+    if (!user) {
+      throw new BadRequestException(this.i18nService.t('user.FAIL.NOT_FOUND'));
     }
-
+    if (updateUserDto && updateUserDto?.email) {
+      const user = await this.userRepository.findByEmail(updateUserDto?.email);
+      if (user) throw new BadRequestException(this.i18nService.t('user.FAIL.EMAIL_EXIST'))
+    }
     return this.userRepository.update(id, {
       name,
       email,

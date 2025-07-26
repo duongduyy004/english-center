@@ -20,9 +20,9 @@ export class User {
 
     avatar?: string;
 
-    created_at: Date;
+    createdAt: Date;
 
-    updated_at: Date;
+    updatedAt: Date;
 
-    deletedAt?: Date;
+    deletedAt: Date;
 }

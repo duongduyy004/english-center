@@ -1,11 +1,15 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { ClassesService } from './classes.service';
 import { CreateClassDto } from './dto/create-class.dto';
 import { UpdateClassDto } from './dto/update-class.dto';
+import { ResponseMessage } from '@/decorator/customize.decorator';
+import { QueryDto } from '@/utils/types/query.dto';
+import { FilterClassDto, SortClassDto } from './dto/query-class.dto';
+import { Class } from './class.domain';
 
 @Controller('classes')
 export class ClassesController {
-  constructor(private readonly classesService: ClassesService) {}
+  constructor(private readonly classesService: ClassesService) { }
 
   @Post()
   create(@Body() createClassDto: CreateClassDto) {
@@ -13,8 +17,17 @@ export class ClassesController {
   }
 
   @Get()
-  findAll() {
-    return this.classesService.findAll();
+  findAll(@Query() query: QueryDto<FilterClassDto, SortClassDto>) {
+    const page = query?.page;
+    const limit = query?.limit;
+    return this.classesService.findAll({
+      filterOptions: query.filters,
+      sortOptions: query.sort,
+      paginationOptions: {
+        page,
+        limit
+      }
+    });
   }
 
   @Get(':id')
@@ -23,12 +36,7 @@ export class ClassesController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateClassDto: UpdateClassDto) {
+  update(@Param('id') id: Class['id'], @Body() updateClassDto: UpdateClassDto) {
     return this.classesService.update(+id, updateClassDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.classesService.remove(+id);
   }
 }

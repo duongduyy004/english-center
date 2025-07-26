@@ -1,6 +1,8 @@
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn, TableInheritance } from "typeorm";
+import { Exclude } from "class-transformer";
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn, BeforeInsert, BeforeUpdate } from "typeorm";
+import * as bcrypt from "bcrypt";
 
-@Entity()
+@Entity('user')
 export class UserEntity {
     @PrimaryGeneratedColumn()
     id: number;
@@ -12,6 +14,7 @@ export class UserEntity {
     email: string;
 
     @Column({ nullable: true })
+    @Exclude({ toPlainOnly: true })
     password?: string;
 
     @Column()
@@ -30,11 +33,21 @@ export class UserEntity {
     avatar: string;
 
     @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(0)" })
-    created_at: Date;
+    createdAt: Date;
 
     @UpdateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(0)", onUpdate: "CURRENT_TIMESTAMP(0)" })
-    updated_at: Date;
+    updatedAt: Date;
 
     @DeleteDateColumn()
     deletedAt?: Date;
+
+    @BeforeInsert()
+    @BeforeUpdate()
+    async hashPassword() {
+        if (this.password) {
+            const saltRounds = 10;
+            const salt = bcrypt.genSaltSync(saltRounds);
+            this.password = await bcrypt.hash(this.password, salt);
+        }
+    }
 }

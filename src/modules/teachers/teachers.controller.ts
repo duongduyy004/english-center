@@ -5,7 +5,7 @@ import { UpdateTeacherDto } from './dto/update-teacher.dto';
 
 @Controller('teachers')
 export class TeachersController {
-  constructor(private readonly teachersService: TeachersService) {}
+  constructor(private readonly teachersService: TeachersService) { }
 
   @Post()
   create(@Body() createTeacherDto: CreateTeacherDto) {
@@ -28,7 +28,7 @@ export class TeachersController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.teachersService.remove(+id);
+  delete(@Param('id') id: string) {
+    return this.teachersService.delete(+id);
   }
 }

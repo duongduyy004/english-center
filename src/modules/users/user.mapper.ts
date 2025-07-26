@@ -13,8 +13,8 @@ export class UserMapper {
         domainEntity.address = raw.address;
         domainEntity.phone = raw.phone;
         domainEntity.avatar = raw.avatar;
-        domainEntity.created_at = raw.created_at;
-        domainEntity.updated_at = raw.updated_at;
+        domainEntity.createdAt = raw.createdAt;
+        domainEntity.updatedAt = raw.updatedAt;
         domainEntity.deletedAt = raw.deletedAt;
         return domainEntity;
     }
@@ -32,8 +32,8 @@ export class UserMapper {
         persistenceEntity.address = domainEntity.address;
         persistenceEntity.phone = domainEntity.phone;
         persistenceEntity.avatar = domainEntity.avatar;
-        persistenceEntity.created_at = domainEntity.created_at;
-        persistenceEntity.updated_at = domainEntity.updated_at;
+        persistenceEntity.createdAt = domainEntity.createdAt;
+        persistenceEntity.updatedAt = domainEntity.updatedAt;
         persistenceEntity.deletedAt = domainEntity.deletedAt;
         return persistenceEntity;
     }

@@ -3,7 +3,8 @@ import { UsersService } from '@/modules/users/users.service';
 import { CreateUserDto } from '@/modules/users/dto/create-user.dto';
 import { UpdateUserDto } from '@/modules/users/dto/update-user.dto';
 import { ResponseMessage } from '@/decorator/customize.decorator';
-import { QueryUserDto } from '@/modules/users/dto/query-user.dto';
+import { FilterUserDto, SortUserDto } from '@/modules/users/dto/query-user.dto';
+import { QueryDto } from '@/utils/types/query.dto';
 
 @Controller('users')
 export class UsersController {
@@ -19,10 +20,9 @@ export class UsersController {
 
   @ResponseMessage('user.SUCCESS.GET_USER_PAGINATION')
   @Get()
-  async findAll(@Query() query: QueryUserDto) {
+  async findAll(@Query() query: QueryDto<FilterUserDto, SortUserDto>) {
     const page = query?.page;
     const limit = query?.limit;
-    console.log('check filter', query)
     return this.usersService.findAll({
       filterOptions: query.filters,
       sortOptions: query.sort,
@@ -47,7 +47,7 @@ export class UsersController {
 
   @ResponseMessage('user.SUCCESS.DELETE_A_USER')
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  delete(@Param('id') id: string) {
     return this.usersService.delete(+id);
   }
 }

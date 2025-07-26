@@ -5,8 +5,9 @@ import { IsDate, IsEmail, IsEnum, IsNotEmpty, IsString, Matches } from "class-va
 import { i18nValidationMessage } from "nestjs-i18n";
 
 export class CreateUserDto {
-    @IsString()
+
     @IsNotEmpty({ message: i18nValidationMessage<I18nTranslations>('validation.NOT_EMPTY') })
+    @IsString()
     name: string;
 
     @IsEmail({}, { message: i18nValidationMessage<I18nTranslations>('validation.INVALID_EMAIL') })

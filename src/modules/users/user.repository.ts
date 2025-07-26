@@ -14,7 +14,7 @@ export class UserRepository {
     constructor(
         @InjectRepository(UserEntity) private userRepository: Repository<UserEntity>
     ) { }
-    async create(data: Omit<User, 'id' | 'created_at' | 'updated_at' | 'deleted_at'>): Promise<User> {
+    async create(data: Omit<User, 'id' | 'createdAt' | 'updatedAt' | 'deletedAt'>): Promise<User> {
         const persistenceModel = UserMapper.toPersistence(data as User)
         const newEntity = await this.userRepository.save(
             this.userRepository.create(persistenceModel)
@@ -41,7 +41,7 @@ export class UserRepository {
 
     async findManyWithPagination({ filterOptions, sortOptions, paginationOptions, }:
         { filterOptions?: FilterUserDto | null; sortOptions?: SortUserDto[] | null; paginationOptions: IPaginationOptions; })
-        : Promise<PaginationResponseDto> {
+        : Promise<PaginationResponseDto<User>> {
         const where: FindOptionsWhere<UserEntity> = {};
         if (filterOptions?.name) {
             where.name = ILike(`%${filterOptions.name}%`);
@@ -73,7 +73,7 @@ export class UserRepository {
         }
     }
 
-    async update(id: User['id'], payload: Omit<User, 'id' | 'password' | 'created_at' | 'updated_at' | 'deleted_at'>): Promise<User> {
+    async update(id: User['id'], payload: Omit<User, 'id' | 'password' | 'createdAt' | 'updatedAt' | 'deletedAt'>): Promise<User> {
         const entity = await this.userRepository.findOne({
             where: { id: Number(id) },
         });

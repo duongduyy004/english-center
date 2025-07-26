@@ -1,9 +1,9 @@
 import { ClassStudentEntity } from "@/modules/classes/entities/class-student.entity";
 import { ParentEntity } from "@/modules/parents/entities/parent.entity";
 import { UserEntity } from "@/modules/users/entities/user.entity";
-import { ChildEntity, Column, ManyToOne, JoinColumn, OneToMany } from "typeorm";
+import { Entity, Column, ManyToOne, JoinColumn, OneToMany } from "typeorm";
 
-@ChildEntity()
+@Entity('student')
 export class StudentEnity extends UserEntity {
 
     @ManyToOne(() => ParentEntity, parent => parent.students, { nullable: true })

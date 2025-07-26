@@ -5,7 +5,7 @@ import { UpdatePaymentDto } from './dto/update-payment.dto';
 
 @Controller('payments')
 export class PaymentsController {
-  constructor(private readonly paymentsService: PaymentsService) {}
+  constructor(private readonly paymentsService: PaymentsService) { }
 
   @Post()
   create(@Body() createPaymentDto: CreatePaymentDto) {
@@ -28,7 +28,7 @@ export class PaymentsController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.paymentsService.remove(+id);
+  delete(@Param('id') id: string) {
+    return this.paymentsService.delete(+id);
   }
 }

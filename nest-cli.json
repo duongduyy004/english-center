@@ -4,12 +4,12 @@
   "sourceRoot": "src",
   "compilerOptions": {
     "deleteOutDir": true,
+    "watchAssets": true,
     "assets": [
       {
         "include": "i18n/**/*",
         "watchAssets": true
       }
-    ],
-    "builder": "swc"
+    ]
   }
 }

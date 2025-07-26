@@ -1,26 +1,55 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateStudentDto } from './dto/create-student.dto';
 import { UpdateStudentDto } from './dto/update-student.dto';
+import { FilterStudentDto, SortStudentDto, StudentRepository } from './student.repository';
+import { IPaginationOptions } from '@/utils/types/pagination-options';
+import { PaginationResponseDto } from '@/utils/types/pagination-response.dto';
+import { Student } from './student.domain';
+import { UserRepository } from '../users/user.repository';
+import { I18nService } from 'nestjs-i18n';
+import { I18nTranslations } from '@/generated/i18n.generated';
 
 @Injectable()
 export class StudentsService {
-  create(createStudentDto: CreateStudentDto) {
-    return 'This action adds a new student';
+  constructor(
+    private studentRepository: StudentRepository,
+    private userRepository: UserRepository,
+    private i18nSerivce: I18nService<I18nTranslations>
+  ) { }
+  async create(createStudentDto: CreateStudentDto) {
+    const user = await this.userRepository.findByEmail(createStudentDto.email)
+    if (user) throw new BadRequestException(this.i18nSerivce.t('student.FAIL.EMAIL_EXIST'))
+    return this.studentRepository.create(createStudentDto);
   }
 
-  findAll() {
-    return `This action returns all students`;
+  findAll({
+    filterOptions,
+    sortOptions,
+    paginationOptions,
+  }: {
+    filterOptions?: FilterStudentDto | null;
+    sortOptions?: SortStudentDto[] | null;
+    paginationOptions: IPaginationOptions;
+  }): Promise<PaginationResponseDto<Student>> {
+    return this.studentRepository.findManyWithPagination({ filterOptions, sortOptions, paginationOptions })
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} student`;
+  findOne(id: Student['id']) {
+    const student = this.studentRepository.findById(id)
+
+    if (!student) throw new NotFoundException(this.i18nSerivce.t('student.FAIL.NOT_FOUND'))
+    return student
   }
 
-  update(id: number, updateStudentDto: UpdateStudentDto) {
-    return `This action updates a #${id} student`;
+  async update(id: Student['id'], updateStudentDto: UpdateStudentDto) {
+    if (updateStudentDto && updateStudentDto.email) {
+      const user = await this.userRepository.findByEmail(updateStudentDto.email)
+      if (user) throw new BadRequestException(this.i18nSerivce.t('student.FAIL.EMAIL_EXIST'))
+    }
+    return this.studentRepository.update(id, updateStudentDto);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} student`;
+  delete(id: Student['id']) {
+    return this.studentRepository.delete(id);
   }
 }

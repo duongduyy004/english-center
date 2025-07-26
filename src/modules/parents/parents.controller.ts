@@ -5,7 +5,7 @@ import { UpdateParentDto } from './dto/update-parent.dto';
 
 @Controller('parents')
 export class ParentsController {
-  constructor(private readonly parentsService: ParentsService) {}
+  constructor(private readonly parentsService: ParentsService) { }
 
   @Post()
   create(@Body() createParentDto: CreateParentDto) {
@@ -28,7 +28,7 @@ export class ParentsController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.parentsService.remove(+id);
+  delete(@Param('id') id: string) {
+    return this.parentsService.delete(+id);
   }
 }

@@ -1,7 +1,29 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { ClassStudentEntity } from "./class-student.entity";
 
-@Entity()
+class TimeSlots {
+    @Column()
+    start_time: string
+
+    @Column()
+    end_time: string
+}
+
+class Schedule {
+    @Column()
+    start_date: Date
+
+    @Column()
+    end_date: Date
+
+    @Column({ type: 'text', array: true, enum: ['0', '1', '2', '3', '4', '5', '6'] })
+    days_of_week: string[]
+
+    @Column(() => TimeSlots)
+    time_slots: TimeSlots
+}
+
+@Entity('class')
 export class ClassEntity {
     @PrimaryGeneratedColumn()
     id: number
@@ -22,7 +44,7 @@ export class ClassEntity {
     description: string
 
     @Column()
-    fee_per_lesson: number
+    feePerLesson: number
 
     @Column({ enum: ['active', 'upcoming', 'closed'] })
     status: string
@@ -33,31 +55,19 @@ export class ClassEntity {
     @Column()
     room: string
 
-    @Column()
+    @Column(() => Schedule)
     schedule: Schedule
 
-    @OneToMany(() => ClassStudentEntity, class_student => class_student.aclass)
+    @OneToMany(() => ClassStudentEntity, class_student => class_student.class)
     class_student: ClassStudentEntity[]
+
+    @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(0)" })
+    createdAt: Date;
+
+    @UpdateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(0)", onUpdate: "CURRENT_TIMESTAMP(0)" })
+    updatedAt: Date;
+
+    @DeleteDateColumn()
+    deletedAt?: Date;
 }
 
-class Schedule {
-    @Column()
-    start_date: Date
-
-    @Column()
-    end_date: Date
-
-    @Column({ array: true, enum: ['0', '1', '2', '3', '4', '5', '6'] })
-    days_of_week: string[]
-
-    @Column()
-    time_slots: TimeSlots
-}
-
-class TimeSlots {
-    @Column()
-    start_time: string
-
-    @Column()
-    end_time: string
-}

@@ -1,11 +1,9 @@
-import { User } from "@/modules/users/user.domain";
-
-export interface PaginationResponseDto {
+export interface PaginationResponseDto<T> {
     meta: {
         page: number,
         limit: number,
         totalPages: number,
         totalItems: number
     }
-    result: User[];
+    result: T[];
 }

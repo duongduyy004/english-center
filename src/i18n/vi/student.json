@@ -1,0 +1,13 @@
+{
+    "SUCCESS": {
+        "CREATE_A_STUDENT": "Tạo học sinh thành công",
+        "GET_A_STUDENT": "Lấy thông tin học sinh thành công",
+        "GET_STUDENT_PAGINATION": "Lấy học sinh với phân trang",
+        "UPDATE_A_STUDENT": "Cập nhật học sinh thành công",
+        "DELETE_A_STUDENT": "Xóa học sinh thành công"
+    },
+    "FAIL": {
+        "NOT_FOUND": "Không tìm thấy học sinh",
+        "EMAIL_EXIST": "Email đã tồn tại"
+    }
+}

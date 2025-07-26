@@ -20,7 +20,7 @@ export class TeachersService {
     return `This action updates a #${id} teacher`;
   }
 
-  remove(id: number) {
+  delete(id: number) {
     return `This action removes a #${id} teacher`;
   }
 }

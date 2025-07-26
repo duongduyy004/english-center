@@ -5,6 +5,19 @@
 import { Path } from "nestjs-i18n";
 /* prettier-ignore */
 export type I18nTranslations = {
+    "student": {
+        "SUCCESS": {
+            "CREATE_A_STUDENT": string;
+            "GET_A_STUDENT": string;
+            "GET_STUDENT_PAGINATION": string;
+            "UPDATE_A_STUDENT": string;
+            "DELETE_A_STUDENT": string;
+        };
+        "FAIL": {
+            "NOT_FOUND": string;
+            "EMAIL_EXIST": string;
+        };
+    };
     "user": {
         "SUCCESS": {
             "CREATE_A_USER": string;

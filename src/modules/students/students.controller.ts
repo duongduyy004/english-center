@@ -1,20 +1,33 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { StudentsService } from './students.service';
 import { CreateStudentDto } from './dto/create-student.dto';
 import { UpdateStudentDto } from './dto/update-student.dto';
+import { ResponseMessage } from '@/decorator/customize.decorator';
+import { QueryDto } from '@/utils/types/query.dto';
+import { FilterStudentDto, SortStudentDto } from './student.repository';
 
 @Controller('students')
 export class StudentsController {
-  constructor(private readonly studentsService: StudentsService) {}
+  constructor(private readonly studentsService: StudentsService) { }
 
   @Post()
+  @ResponseMessage('student.SUCCESS.CREATE_A_STUDENT')
   create(@Body() createStudentDto: CreateStudentDto) {
     return this.studentsService.create(createStudentDto);
   }
 
   @Get()
-  findAll() {
-    return this.studentsService.findAll();
+  findAll(@Query() query: QueryDto<FilterStudentDto, SortStudentDto>) {
+    const page = query?.page;
+    const limit = query?.limit;
+    return this.studentsService.findAll({
+      filterOptions: query.filters,
+      sortOptions: query.sort,
+      paginationOptions: {
+        page,
+        limit
+      }
+    });
   }
 
   @Get(':id')
@@ -28,7 +41,7 @@ export class StudentsController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.studentsService.remove(+id);
+  delete(@Param('id') id: string) {
+    return this.studentsService.delete(+id);
   }
 }

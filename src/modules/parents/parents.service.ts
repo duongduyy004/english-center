@@ -20,7 +20,7 @@ export class ParentsService {
     return `This action updates a #${id} parent`;
   }
 
-  remove(id: number) {
+  delete(id: number) {
     return `This action removes a #${id} parent`;
   }
 }

@@ -1,0 +1,13 @@
+{
+    "SUCCESS": {
+        "CREATE_A_STUDENT": "Create a student success",
+        "GET_A_STUDENT": "Get a student success",
+        "GET_STUDENT_PAGINATION": "Fetch student with pagination",
+        "UPDATE_A_STUDENT": "Update a student success",
+        "DELETE_A_STUDENT": "Delete a student success"
+    },
+    "FAIL": {
+        "NOT_FOUND": "Student not found",
+        "EMAIL_EXIST": "Email already exist"
+    }
+}
