@@ -1,5 +1,5 @@
 import { FindOptionsWhere, ILike, Repository } from "typeorm";
-import { StudentEnity } from "./entities/student.entity";
+import { StudentEntity } from "./entities/student.entity";
 import { Injectable } from "@nestjs/common";
 import { Student } from "./student.domain";
 import { InjectRepository } from "@nestjs/typeorm";
@@ -22,7 +22,7 @@ export interface SortStudentDto {
 @Injectable()
 export class StudentRepository {
     constructor(
-        @InjectRepository(StudentEnity) private studentRepository: Repository<StudentEnity>
+        @InjectRepository(StudentEntity) private studentRepository: Repository<StudentEntity>
     ) { }
 
     async create(data: Omit<Student, 'id' | 'createdAt' | 'updatedAt' | 'deletedAt'>): Promise<Student> {
@@ -61,7 +61,7 @@ export class StudentRepository {
         sortOptions?: SortStudentDto[] | null;
         paginationOptions: IPaginationOptions;
     }): Promise<PaginationResponseDto<Student>> {
-        const where: FindOptionsWhere<StudentEnity> = {};
+        const where: FindOptionsWhere<StudentEntity> = {};
 
         if (filterOptions?.name) {
             where.name = ILike(`%${filterOptions.name}%`);

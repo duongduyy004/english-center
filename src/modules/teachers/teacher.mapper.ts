@@ -1,9 +1,11 @@
-import { UserEntity } from "@/modules/users/entities/user.entity";
-import { User } from "@/modules/users/user.domain";
+import { Injectable } from '@nestjs/common';
+import { TeacherEntity } from "./entities/teacher.entity";
+import { Teacher } from "./teacher.domain";
 
-export class UserMapper {
-    static toDomain(raw: UserEntity): User {
-        const domainEntity = new User();
+@Injectable()
+export class TeacherMapper {
+    static toDomain(raw: TeacherEntity): Teacher {
+        const domainEntity = new Teacher();
         domainEntity.id = raw.id;
         domainEntity.name = raw.name;
         domainEntity.email = raw.email;
@@ -13,14 +15,19 @@ export class UserMapper {
         domainEntity.address = raw.address;
         domainEntity.phone = raw.phone;
         domainEntity.avatar = raw.avatar;
+        domainEntity.qualifications = raw.qualifications;
+        domainEntity.specializations = raw.specializations;
+        domainEntity.description = raw.description;
+        domainEntity.isActive = raw.isActive;
         domainEntity.createdAt = raw.createdAt;
         domainEntity.updatedAt = raw.updatedAt;
         domainEntity.deletedAt = raw.deletedAt;
+
         return domainEntity;
     }
 
-    static toPersistence(domainEntity: User): UserEntity {
-        const persistenceEntity = new UserEntity();
+    static toPersistence(domainEntity: Teacher): TeacherEntity {
+        const persistenceEntity = new TeacherEntity();
         if (domainEntity.id && typeof domainEntity.id === 'number') {
             persistenceEntity.id = domainEntity.id;
         }
@@ -32,9 +39,14 @@ export class UserMapper {
         persistenceEntity.address = domainEntity.address;
         persistenceEntity.phone = domainEntity.phone;
         persistenceEntity.avatar = domainEntity.avatar;
+        persistenceEntity.qualifications = domainEntity.qualifications;
+        persistenceEntity.specializations = domainEntity.specializations;
+        persistenceEntity.description = domainEntity.description;
+        persistenceEntity.isActive = domainEntity.isActive;
         persistenceEntity.createdAt = domainEntity.createdAt;
         persistenceEntity.updatedAt = domainEntity.updatedAt;
         persistenceEntity.deletedAt = domainEntity.deletedAt;
+
         return persistenceEntity;
     }
 }

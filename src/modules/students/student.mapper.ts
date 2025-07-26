@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { StudentEnity } from "./entities/student.entity";
+import { StudentEntity } from "./entities/student.entity";
 import { Student } from "./student.domain";
 
 @Injectable()
 export class StudentMapper {
-    static toDomain(raw: StudentEnity): Student {
+    static toDomain(raw: StudentEntity): Student {
         const domainEntity = new Student();
         domainEntity.id = raw.id;
         domainEntity.name = raw.name;
@@ -22,8 +22,8 @@ export class StudentMapper {
         return domainEntity;
     }
 
-    static toPersistence(domainEntity: Student): StudentEnity {
-        const persistenceEntity = new StudentEnity();
+    static toPersistence(domainEntity: Student): StudentEntity {
+        const persistenceEntity = new StudentEntity();
         if (domainEntity.id && typeof domainEntity.id === 'number') {
             persistenceEntity.id = domainEntity.id;
         }

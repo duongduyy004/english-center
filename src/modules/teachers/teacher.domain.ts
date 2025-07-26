@@ -1,6 +1,6 @@
-import { CreateUserDto } from "@/modules/users/dto/create-user.dto";
+import { User } from "@/modules/users/user.domain";
 
-export class CreateTeacherDto extends CreateUserDto {
+export class Teacher extends User {
     isActive: boolean;
 
     description: string
