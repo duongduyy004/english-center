@@ -1,5 +1,7 @@
 import { ClassEntity } from "./entities/class.entity";
 import { Class } from "./class.domain";
+import { TeacherMapper } from "@/modules/teachers/teacher.mapper";
+import { TeacherEntity } from "@/modules/teachers/entities/teacher.entity";
 
 export class ClassMapper {
     static toDomain(raw: ClassEntity): Class {
@@ -15,7 +17,27 @@ export class ClassMapper {
         domainEntity.max_student = raw.max_student;
         domainEntity.room = raw.room;
         domainEntity.schedule = raw.schedule;
-        domainEntity.class_student = raw.class_student;
+        if (raw.students) {
+            domainEntity.students = raw.students.map(item => ({
+                discountPercent: item?.discount_percent,
+                student: {
+                    id: item.student.id,
+                    name: item.student.name,
+                    email: item.student.email,
+                    gender: item.student.gender,
+                    phone: item.student.phone
+                }
+            }
+            ))
+        }
+        if (raw.teacher) {
+            domainEntity.teacher = {
+                id: raw.teacher.id,
+                name: raw.teacher.name,
+                email: raw.teacher.email,
+                phone: raw.teacher.phone
+            }
+        }
         return domainEntity;
     }
 
@@ -34,7 +56,6 @@ export class ClassMapper {
         persistenceEntity.max_student = domainEntity.max_student;
         persistenceEntity.room = domainEntity.room;
         persistenceEntity.schedule = domainEntity.schedule;
-        persistenceEntity.class_student = domainEntity.class_student;
         return persistenceEntity;
     }
 }

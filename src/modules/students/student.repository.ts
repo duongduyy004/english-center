@@ -1,4 +1,4 @@
-import { FindOptionsWhere, ILike, Repository } from "typeorm";
+import { FindOptionsWhere, ILike, In, Repository } from "typeorm";
 import { StudentEntity } from "./entities/student.entity";
 import { Injectable } from "@nestjs/common";
 import { Student } from "./student.domain";
@@ -25,7 +25,7 @@ export class StudentRepository {
         @InjectRepository(StudentEntity) private studentRepository: Repository<StudentEntity>
     ) { }
 
-    async create(data: Omit<Student, 'id' | 'createdAt' | 'updatedAt' | 'deletedAt'>): Promise<Student> {
+    async create(data: Omit<Student, 'id' | 'createdAt' | 'updatedAt' | 'deletedAt' | 'classes'>): Promise<Student> {
         const persistenceModel = StudentMapper.toPersistence(data as Student)
         const newEntity = await this.studentRepository.save(
             this.studentRepository.create(persistenceModel)
@@ -38,7 +38,7 @@ export class StudentRepository {
 
         const entity = await this.studentRepository.findOne({
             where: { email },
-            relations: ['parent', 'class_student', 'class_student.class']
+            relations: ['parent', 'classes', 'classes.class']
         });
 
         return entity ? StudentMapper.toDomain(entity) : null;
@@ -47,9 +47,18 @@ export class StudentRepository {
     async findById(id: Student['id']): Promise<NullableType<Student>> {
         const entity = await this.studentRepository.findOne({
             where: { id: Number(id) },
-            relations: ['parent', 'class_student', 'class_student.class']
+            relations: ['parent', 'classes.class']
         })
         return entity ? StudentMapper.toDomain(entity) : null
+    }
+
+
+    async findStudents(ids: Student['id'][]) {
+        const entities = await this.studentRepository.find({
+            where: { id: In([...ids]) },
+            relations: ['classes.class']
+        })
+        return entities ? entities.map(item => StudentMapper.toDomain(item)) : null
     }
 
     async findManyWithPagination({
@@ -75,7 +84,7 @@ export class StudentRepository {
             skip: (paginationOptions.page - 1) * paginationOptions.limit,
             take: paginationOptions.limit,
             where: where,
-            relations: ['parent', 'class_student', 'class_student.class'],
+            relations: ['parent', 'classes.class'],
             order: sortOptions?.reduce(
                 (accumulator, sort) => ({
                     ...accumulator,
@@ -99,10 +108,10 @@ export class StudentRepository {
         }
     }
 
-    async update(id: Student['id'], payload: Partial<Omit<Student, 'id' | 'password' | 'createdAt' | 'updatedAt' | 'deletedAt'>>): Promise<Student> {
+    async update(id: Student['id'], payload: Partial<Omit<Student, 'id' | 'password' | 'createdAt' | 'updatedAt' | 'deletedAt' | 'classes'>>): Promise<Student> {
         const entity = await this.studentRepository.findOne({
             where: { id: Number(id) },
-            relations: ['parent', 'class_student', 'class_student.class']
+            relations: ['parent', 'classes', 'classes.class']
         });
 
         if (!entity) {
@@ -125,21 +134,4 @@ export class StudentRepository {
         await this.studentRepository.softDelete(id);
     }
 
-    async findByParentId(parentId: number): Promise<Student[]> {
-        const entities = await this.studentRepository.find({
-            where: { parent: { id: parentId } },
-            relations: ['parent', 'class_student', 'class_student.class']
-        });
-
-        return entities.map(entity => StudentMapper.toDomain(entity));
-    }
-
-    async findByClassId(classId: number): Promise<Student[]> {
-        const entities = await this.studentRepository.find({
-            where: { class_student: { class: { id: classId } } },
-            relations: ['parent', 'class_student', 'class_student.class']
-        });
-
-        return entities.map(entity => StudentMapper.toDomain(entity));
-    }
 }

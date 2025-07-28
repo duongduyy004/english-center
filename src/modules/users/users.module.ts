@@ -16,6 +16,6 @@ import { TeacherEntity } from '@/modules/teachers/entities/teacher.entity';
     ])
   ],
   providers: [UsersService],
-  exports: [UsersModule, UsersService]
+  exports: [UsersService]
 })
 export class UsersModule { }

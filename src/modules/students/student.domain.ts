@@ -6,5 +6,8 @@ export class Student extends User {
 
     parent?: Parent
 
-    classes?: Class[]
+    classes?: {
+        discountPercent: number,
+        class: Partial<Class>
+    }[]
 }

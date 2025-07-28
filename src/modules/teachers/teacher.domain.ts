@@ -1,4 +1,5 @@
 import { User } from "@/modules/users/user.domain";
+import { Class } from "@/modules/classes/class.domain";
 
 export class Teacher extends User {
     isActive: boolean;
@@ -10,4 +11,6 @@ export class Teacher extends User {
     specializations: string[]
 
     salaryPerLesson: number
+
+    classes: Class[]
 }

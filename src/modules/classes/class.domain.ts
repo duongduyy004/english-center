@@ -1,3 +1,6 @@
+import { Teacher } from "@/modules/teachers/teacher.domain";
+import { Student } from "../students/student.domain";
+
 export class Schedule {
     start_date: Date;
     end_date: Date;
@@ -22,7 +25,11 @@ export class Class {
     max_student: number;
     room: string;
     schedule: Schedule;
-    class_student?: any[];
+    students?: {
+        discountPercent: number,
+        student: Partial<Student>
+    }[];
+    teacher: Partial<Teacher>
     createdAt?: Date;
     updatedAt?: Date;
     deletedAt?: Date;

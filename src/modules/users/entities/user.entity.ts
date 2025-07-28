@@ -30,7 +30,7 @@ export class UserEntity {
     phone: string;
 
     @Column({ nullable: true })
-    avatar: string;
+    avatar?: string;
 
     @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(0)" })
     createdAt: Date;

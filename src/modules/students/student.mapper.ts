@@ -15,6 +15,16 @@ export class StudentMapper {
         domainEntity.address = raw.address;
         domainEntity.phone = raw.phone;
         domainEntity.avatar = raw.avatar;
+        if (raw.classes) {
+            domainEntity.classes = raw.classes.map(item => ({
+                discountPercent: item.discount_percent,
+                class: {
+                    id: item.class.id,
+                    name: item.class.name,
+                    schedule: item.class.schedule
+                }
+            }))
+        }
         domainEntity.createdAt = raw.createdAt;
         domainEntity.updatedAt = raw.updatedAt;
         domainEntity.deletedAt = raw.deletedAt;

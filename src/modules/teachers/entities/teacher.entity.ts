@@ -1,9 +1,10 @@
+import { ClassEntity } from "@/modules/classes/entities/class.entity";
 import { UserEntity } from "@/modules/users/entities/user.entity";
-import { Entity, Column } from "typeorm";
+import { Entity, Column, OneToMany } from "typeorm";
 
 @Entity('teacher')
 export class TeacherEntity extends UserEntity {
-    @Column()
+    @Column({ default: true })
     isActive: boolean
 
     @Column()
@@ -17,4 +18,7 @@ export class TeacherEntity extends UserEntity {
 
     @Column()
     salaryPerLesson: number
+
+    @OneToMany(() => ClassEntity, (aclass) => aclass.teacher)
+    classes: ClassEntity[]
 }

@@ -13,11 +13,11 @@ import { UsersService } from '../users/users.service';
 export class StudentsService {
   constructor(
     private studentRepository: StudentRepository,
-    private userService: UsersService,
+    private usersService: UsersService,
     private i18nSerivce: I18nService<I18nTranslations>
   ) { }
   async create(createStudentDto: CreateStudentDto) {
-    this.userService.isEmailExist(createStudentDto?.email)
+    await this.usersService.isEmailExist(createStudentDto?.email)
     return this.studentRepository.create(createStudentDto);
   }
 
@@ -35,18 +35,23 @@ export class StudentsService {
 
   async findOne(id: Student['id']) {
     const student = await this.studentRepository.findById(id)
-    if (!student) throw new NotFoundException(this.i18nSerivce.t('student.FAIL.NOT_FOUND'))
+    if (!student) throw new NotFoundException(this.i18nSerivce.t('user.FAIL.NOT_FOUND'))
     return student
   }
 
   async update(id: Student['id'], updateStudentDto: UpdateStudentDto) {
     if (updateStudentDto && updateStudentDto.email) {
-      this.userService.isEmailExist(updateStudentDto?.email)
+      this.usersService.isEmailExist(updateStudentDto?.email)
     }
     return this.studentRepository.update(id, updateStudentDto);
   }
 
-  delete(id: Student['id']) {
+  async delete(id: Student['id']) {
+    await this.findOne(id)
     return this.studentRepository.delete(id);
+  }
+
+  async findStudents(ids: Student['id'][]) {
+    return await this.studentRepository.findStudents(ids)
   }
 }

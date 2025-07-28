@@ -10,6 +10,6 @@ export class StudentEntity extends UserEntity {
     @JoinColumn()
     parent: ParentEntity;
 
-    @OneToMany(() => ClassStudentEntity, class_student => class_student.student)
-    class_student: ClassStudentEntity[]
+    @OneToMany(() => ClassStudentEntity, classes => classes.student)
+    classes: ClassStudentEntity[]
 }

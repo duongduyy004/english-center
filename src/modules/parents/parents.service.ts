@@ -13,12 +13,12 @@ import { Parent } from './parent.domain';
 export class ParentsService {
   constructor(
     private parentRepository: ParentRepository,
-    private userService: UsersService,
+    private usersService: UsersService,
     private i18nSerivce: I18nService<I18nTranslations>
   ) { }
 
   async create(createParentDto: CreateParentDto) {
-    const res = await this.userService.isEmailExist(createParentDto?.email)
+    const res = await this.usersService.isEmailExist(createParentDto?.email)
     return this.parentRepository.create(createParentDto);
   }
 
@@ -42,7 +42,7 @@ export class ParentsService {
 
   async update(id: Parent['id'], updateParentDto: UpdateParentDto) {
     if (updateParentDto && updateParentDto.email) {
-      await this.userService.isEmailExist(updateParentDto.email)
+      await this.usersService.isEmailExist(updateParentDto.email)
     }
     return this.parentRepository.update(id, updateParentDto);
   }

@@ -1,7 +1,10 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { TeachersService } from './teachers.service';
 import { CreateTeacherDto } from './dto/create-teacher.dto';
 import { UpdateTeacherDto } from './dto/update-teacher.dto';
+import { FilterTeacherDto, SortTeacherDto } from './teacher.repository';
+import { QueryDto } from '@/utils/types/query.dto';
+import { Teacher } from './teacher.domain';
 
 @Controller('teachers')
 export class TeachersController {
@@ -13,22 +16,31 @@ export class TeachersController {
   }
 
   @Get()
-  findAll() {
-    return this.teachersService.findAll();
+  findAll(@Query() query: QueryDto<FilterTeacherDto, SortTeacherDto>) {
+    const page = query?.page;
+    const limit = query?.limit;
+    return this.teachersService.findAll({
+      filterOptions: query.filters,
+      sortOptions: query.sort,
+      paginationOptions: {
+        page,
+        limit
+      }
+    });
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id') id: Teacher['id']) {
     return this.teachersService.findOne(+id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateTeacherDto: UpdateTeacherDto) {
+  update(@Param('id') id: Teacher['id'], @Body() updateTeacherDto: UpdateTeacherDto) {
     return this.teachersService.update(+id, updateTeacherDto);
   }
 
   @Delete(':id')
-  delete(@Param('id') id: string) {
+  delete(@Param('id') id: Teacher['id']) {
     return this.teachersService.delete(+id);
   }
 }

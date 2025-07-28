@@ -25,7 +25,7 @@ export class TeacherRepository {
         @InjectRepository(TeacherEntity) private teacherRepository: Repository<TeacherEntity>
     ) { }
 
-    async create(data: Omit<Teacher, 'id' | 'createdAt' | 'updatedAt' | 'deletedAt'>): Promise<Teacher> {
+    async create(data: Omit<Teacher, 'id' | 'createdAt' | 'updatedAt' | 'deletedAt' | 'classes'>): Promise<Teacher> {
         const persistenceModel = TeacherMapper.toPersistence(data as Teacher)
         const newEntity = await this.teacherRepository.save(
             this.teacherRepository.create(persistenceModel)
@@ -73,6 +73,7 @@ export class TeacherRepository {
             skip: (paginationOptions.page - 1) * paginationOptions.limit,
             take: paginationOptions.limit,
             where: where,
+            relations: ['classes'],
             order: sortOptions?.reduce(
                 (accumulator, sort) => ({
                     ...accumulator,
@@ -100,10 +101,6 @@ export class TeacherRepository {
         const entity = await this.teacherRepository.findOne({
             where: { id: Number(id) },
         });
-
-        if (!entity) {
-            throw new Error('Teacher not found');
-        }
 
         const updatedEntity = await this.teacherRepository.save(
             this.teacherRepository.create(
