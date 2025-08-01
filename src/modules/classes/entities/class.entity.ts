@@ -1,6 +1,7 @@
 import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { ClassStudentEntity } from "./class-student.entity";
 import { TeacherEntity } from "@/modules/teachers/entities/teacher.entity";
+import { SessionEntity } from "@/modules/sessions/entities/session.entity";
 
 class TimeSlots {
     @Column()
@@ -59,13 +60,6 @@ export class ClassEntity {
     @Column(() => Schedule)
     schedule: Schedule
 
-    @OneToMany(() => ClassStudentEntity, students => students.class)
-    students: ClassStudentEntity[]
-
-    @ManyToOne(() => TeacherEntity, teacher => teacher.classes, { cascade: true })
-    @JoinColumn({ name: 'teacher' })
-    teacher: TeacherEntity
-
     @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(0)" })
     createdAt: Date;
 
@@ -74,5 +68,15 @@ export class ClassEntity {
 
     @DeleteDateColumn()
     deletedAt?: Date;
+
+    @OneToMany(() => ClassStudentEntity, students => students.class)
+    students: ClassStudentEntity[]
+
+    @ManyToOne(() => TeacherEntity, teacher => teacher.classes, { cascade: true })
+    @JoinColumn({ name: 'teacher' })
+    teacher: TeacherEntity
+
+    @OneToMany(() => SessionEntity, session => session.class)
+    session: SessionEntity
 }
 

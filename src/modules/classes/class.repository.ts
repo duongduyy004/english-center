@@ -51,7 +51,7 @@ export class ClassRepository {
         await this.classRepository.update(id, data);
         const updatedEntity = await this.classRepository.findOne({
             where: { id },
-            relations: ['students', 'teacher']
+            relations: ['students.student', 'teacher']
         });
         return ClassMapper.toDomain(updatedEntity);
     }

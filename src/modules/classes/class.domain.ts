@@ -29,7 +29,7 @@ export class Class {
         discountPercent: number,
         student: Partial<Student>
     }[];
-    teacher: Partial<Teacher>
+    teacher?: Partial<Teacher>
     createdAt?: Date;
     updatedAt?: Date;
     deletedAt?: Date;

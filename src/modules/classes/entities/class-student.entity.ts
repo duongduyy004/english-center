@@ -2,7 +2,6 @@ import { StudentEntity } from "@/modules/students/entities/student.entity";
 import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinTable, ManyToOne, PrimaryColumn, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { ClassEntity } from "@/modules/classes/entities/class.entity";
 import { Exclude } from "class-transformer";
-import { PartialType } from "@nestjs/mapped-types";
 
 @Entity('class_student')
 export class ClassStudentEntity {

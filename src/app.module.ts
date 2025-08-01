@@ -17,6 +17,7 @@ import { ParentsModule } from '@/modules/parents/parents.module';
 import { TeachersModule } from '@/modules/teachers/teachers.module';
 import { ClassesModule } from '@/modules/classes/classes.module';
 import { PaymentsModule } from '@/modules/payments/payments.module';
+import { SessionsModule } from '@/modules/sessions/sessions.module';
 
 @Module({
   imports: [
@@ -28,7 +29,7 @@ import { PaymentsModule } from '@/modules/payments/payments.module';
     I18nModule.forRoot({
       fallbackLanguage: 'en',
       loaderOptions: {
-        path: path.join(process.cwd(), 'src', 'i18n'), // Use process.cwd() instead
+        path: path.join(process.cwd(), 'src', 'i18n'),
         watch: true,
       },
       typesOutputPath: path.join(process.cwd(), 'src', 'generated', 'i18n.generated.ts'),
@@ -46,7 +47,8 @@ import { PaymentsModule } from '@/modules/payments/payments.module';
     ParentsModule,
     TeachersModule,
     ClassesModule,
-    PaymentsModule
+    PaymentsModule,
+    SessionsModule
   ],
   controllers: [AppController],
   providers: [AppService,

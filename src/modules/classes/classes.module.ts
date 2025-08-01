@@ -15,6 +15,7 @@ import { ClassStudentEntity } from './entities/class-student.entity';
     StudentsModule
   ],
   controllers: [ClassesController],
-  providers: [ClassesService, ClassRepository]
+  providers: [ClassesService, ClassRepository],
+  exports: [ClassesService]
 })
 export class ClassesModule { }

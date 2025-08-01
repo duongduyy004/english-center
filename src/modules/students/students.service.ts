@@ -7,7 +7,7 @@ import { PaginationResponseDto } from '@/utils/types/pagination-response.dto';
 import { Student } from './student.domain';
 import { I18nService } from 'nestjs-i18n';
 import { I18nTranslations } from '@/generated/i18n.generated';
-import { UsersService } from '../users/users.service';
+import { UsersService } from '@/modules/users/users.service';
 
 @Injectable()
 export class StudentsService {

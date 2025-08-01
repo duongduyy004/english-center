@@ -17,15 +17,15 @@ export class ClassMapper {
         domainEntity.max_student = raw.max_student;
         domainEntity.room = raw.room;
         domainEntity.schedule = raw.schedule;
-        if (raw.students) {
+        if (raw.students.length > 0) {
             domainEntity.students = raw.students.map(item => ({
                 discountPercent: item?.discount_percent,
                 student: {
-                    id: item.student.id,
-                    name: item.student.name,
-                    email: item.student.email,
-                    gender: item.student.gender,
-                    phone: item.student.phone
+                    id: item?.student?.id,
+                    name: item?.student?.name,
+                    email: item?.student?.email,
+                    gender: item?.student?.gender,
+                    phone: item?.student?.phone
                 }
             }
             ))
