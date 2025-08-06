@@ -12,6 +12,8 @@ import { UpdateAttendanceSessionDto } from "./dto/update-attendance-session.dto"
 import { Student } from "@/modules/students/student.domain";
 import { StudentsService } from "@/modules/students/students.service";
 import { PaymentsService } from "../payments/payments.service";
+import { IPaginationOptions } from "@/utils/types/pagination-options";
+import { PaginationResponseDto } from "@/utils/types/pagination-response.dto";
 
 export class SessionRepository {
     constructor(
@@ -78,12 +80,25 @@ export class SessionRepository {
         return SessionMapper.toDomain(sessionEntity)
     }
 
-    async getAttendances(sessionId: Session['id']) {
-        const entity = await this.sessionRepository.findOne({
-            where: { id: sessionId },
-            relations: ['class', 'attendances.student']
+    async getAttendancesByClassId(classId: Class['id'], paginationOptions: IPaginationOptions): Promise<PaginationResponseDto<Session>> {
+        const [entities, total] = await this.sessionRepository.findAndCount({
+            where: { classId },
+            relations: ['class', 'attendances.student'],
+            skip: (paginationOptions.page - 1) * paginationOptions.limit,
+            take: paginationOptions.limit
         })
-        return SessionMapper.toDomain(entity)
+
+        const totalItems = total;
+        const totalPages = Math.ceil(totalItems / paginationOptions.limit)
+        return {
+            meta: {
+                limit: paginationOptions.limit,
+                page: paginationOptions.page,
+                totalPages,
+                totalItems
+            },
+            result: entities ? entities.map(item => SessionMapper.toDomain(item)) : null
+        }
     }
 
     async updateAttendanceSession(sessionId: Session['id'], payload: UpdateAttendanceSessionDto[]) {
@@ -99,7 +114,7 @@ export class SessionRepository {
 
         const entity = await this.sessionRepository.findOne({
             where: { id: sessionId },
-            relations: ['class', 'attendances.student']
+            relations: ['class.students', 'attendances.student']
         })
 
         for (const item of entity.attendances) {
@@ -110,7 +125,7 @@ export class SessionRepository {
             }
         }
 
-        this.paymentsService.autoUpdatePaymentRecord(SessionMapper.toDomain(entity))
+        this.paymentsService.autoUpdatePaymentRecord(entity)
         return updateRes
     }
 
@@ -208,5 +223,6 @@ export class SessionRepository {
             totalRecord: studentAttendance.length
         }
     }
+
 }
 

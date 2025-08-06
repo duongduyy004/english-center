@@ -17,7 +17,12 @@ export class ParentMapper {
         domainEntity.phone = raw.phone;
         domainEntity.avatar = raw.avatar;
         if (raw.students) {
-            domainEntity.students = raw.students.map(student => StudentMapper.toDomain(student))
+            domainEntity.students = raw.students.map(item => ({
+                id: item.id,
+                name: item.name,
+                email: item.email,
+                phone: item.phone
+            }))
         }
         domainEntity.createdAt = raw.createdAt;
         domainEntity.updatedAt = raw.updatedAt;
@@ -26,10 +31,6 @@ export class ParentMapper {
     }
 
     static toPersistence(domainEntity: Parent): ParentEntity {
-        let students: StudentEntity[] | undefined | null = undefined
-        if (domainEntity.students) {
-            students = domainEntity.students.map(student => StudentMapper.toPersistence(student))
-        }
         const persistenceEntity = new ParentEntity();
         if (domainEntity.id && typeof domainEntity.id === 'number') {
             persistenceEntity.id = domainEntity.id;
@@ -42,7 +43,6 @@ export class ParentMapper {
         persistenceEntity.address = domainEntity.address;
         persistenceEntity.phone = domainEntity.phone;
         persistenceEntity.avatar = domainEntity.avatar;
-        persistenceEntity.students = students
         persistenceEntity.createdAt = domainEntity.createdAt;
         persistenceEntity.updatedAt = domainEntity.updatedAt;
         persistenceEntity.deletedAt = domainEntity.deletedAt;

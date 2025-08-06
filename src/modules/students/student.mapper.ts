@@ -21,13 +21,20 @@ export class StudentMapper {
                 class: {
                     id: item.class.id,
                     name: item.class.name,
+                    grade: item.class.grade,
+                    section: item.class.section,
                     schedule: item.class.schedule
                 }
             }))
         }
-        domainEntity.createdAt = raw.createdAt;
-        domainEntity.updatedAt = raw.updatedAt;
-        domainEntity.deletedAt = raw.deletedAt;
+        if (raw.parent) {
+            domainEntity.parent = {
+                id: raw.parent.id,
+                name: raw.parent.name,
+                email: raw.parent.email,
+                phone: raw.parent.phone
+            }
+        }
 
         return domainEntity;
     }
@@ -45,9 +52,6 @@ export class StudentMapper {
         persistenceEntity.address = domainEntity.address;
         persistenceEntity.phone = domainEntity.phone;
         persistenceEntity.avatar = domainEntity.avatar;
-        persistenceEntity.createdAt = domainEntity.createdAt;
-        persistenceEntity.updatedAt = domainEntity.updatedAt;
-        persistenceEntity.deletedAt = domainEntity.deletedAt;
 
         return persistenceEntity;
     }

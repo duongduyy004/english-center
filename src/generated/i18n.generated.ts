@@ -5,6 +5,27 @@
 import { Path } from "nestjs-i18n";
 /* prettier-ignore */
 export type I18nTranslations = {
+    "class": {
+        "SUCCESS": {
+            "CREATE_A_CLASS": string;
+            "GET_A_CLASS": string;
+            "GET_CLASS_PAGINATION": string;
+            "UPDATE_A_CLASS": string;
+            "DELETE_A_CLASS": string;
+            "ASSIGN_TEACHER": string;
+            "UNASSIGN_TEACHER": string;
+            "ADD_STUDENTS": string;
+            "REMOVE_STUDENTS": string;
+            "GET_AVAILABLE_STUDENTS": string;
+        };
+        "FAIL": {
+            "NOT_FOUND": string;
+            "TEACHER_ALREADY_ASSIGNED": string;
+            "TEACHER_NOT_ASSIGNED": string;
+            "STUDENT_ALREADY_IN_CLASS": string;
+            "SCHEDULE_CONFLICT": string;
+        };
+    };
     "student": {
         "SUCCESS": {
             "CREATE_A_STUDENT": string;

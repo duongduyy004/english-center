@@ -1,7 +1,22 @@
-import { BeforeInsert, BeforeUpdate, Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
-import { PaymentHistoryEntity } from "./payment-history.entity";
+import { BeforeInsert, BeforeUpdate, Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { StudentEntity } from "@/modules/students/entities/student.entity";
 import { ClassEntity } from "@/modules/classes/entities/class.entity";
+import { Student } from "@/modules/students/student.domain";
+
+
+export class Histories {
+    @Column()
+    method: string;
+
+    @Column()
+    amount: number;
+
+    @Column()
+    note: string;
+
+    @Column({ default: () => "CURRENT_TIMESTAMP(0)" })
+    date?: Date
+}
 
 @Entity('payments')
 export class PaymentEntity {
@@ -20,11 +35,20 @@ export class PaymentEntity {
     @Column({ default: 0 })
     paidAmount: number
 
-    @Column()
-    studentId: number;
+    @Column({ default: 0 })
+    totalAmount: number
+
+    @Column({ default: 0 })
+    discountPercent: number
+
+    @Column({ enum: ['pending', 'partial', 'paid'], default: 'pending' })
+    status: string
 
     @Column()
-    classId: number
+    studentId: Student['id'];
+
+    @Column()
+    classId: Student['id'];
 
     @ManyToOne(() => StudentEntity, student => student.payments)
     @JoinColumn({ name: 'studentId' })
@@ -34,18 +58,22 @@ export class PaymentEntity {
     @JoinColumn({ name: 'classId' })
     class: ClassEntity
 
-    @OneToMany(() => PaymentHistoryEntity, (histories) => histories.payment, { cascade: true })
-    histories: PaymentHistoryEntity[]
+    @Column('jsonb', { nullable: true })
+    histories: Histories[]
 
-    @BeforeInsert()
+
     @BeforeUpdate()
-    async updatePaidAmount() {
+    @BeforeInsert()
+    updateAmount() {
         if (this.histories) {
-            let paidAmount = 0
-            for (const history of this.histories) {
-                paidAmount += history.amount
-            }
-            this.paidAmount = paidAmount
+            this.paidAmount = this.histories.reduce((sum, history) => sum + +history.amount, 0);
         }
+    }
+
+    @BeforeUpdate()
+    updateStatus() {
+        if (this.paidAmount === 0) this.status = 'pending';
+        else if (this.paidAmount < this.totalAmount) this.status = 'partial';
+        else if (this.paidAmount >= this.totalAmount) this.status = 'paid';
     }
 }

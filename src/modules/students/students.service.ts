@@ -1,13 +1,14 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateStudentDto } from './dto/create-student.dto';
 import { UpdateStudentDto } from './dto/update-student.dto';
-import { FilterStudentDto, SortStudentDto, StudentRepository } from './student.repository';
+import { StudentRepository } from './student.repository';
 import { IPaginationOptions } from '@/utils/types/pagination-options';
 import { PaginationResponseDto } from '@/utils/types/pagination-response.dto';
 import { Student } from './student.domain';
 import { I18nService } from 'nestjs-i18n';
 import { I18nTranslations } from '@/generated/i18n.generated';
 import { UsersService } from '@/modules/users/users.service';
+import { FilterStudentDto, SortStudentDto } from './dto/query-student.dto';
 
 @Injectable()
 export class StudentsService {
@@ -53,5 +54,9 @@ export class StudentsService {
 
   async findStudents(ids: Student['id'][]) {
     return await this.studentRepository.findStudents(ids)
+  }
+
+  async getSchedule(id: Student['id']) {
+    return this.studentRepository.getSchedule(id)
   }
 }

@@ -4,6 +4,8 @@ import { Class } from '../classes/class.domain';
 import { Session } from './session.domain';
 import { UpdateAttendanceSessionDto } from './dto/update-attendance-session.dto';
 import { Student } from '../students/student.domain';
+import { PaginationResponseDto } from '@/utils/types/pagination-response.dto';
+import { IPaginationOptions } from '@/utils/types/pagination-options';
 
 @Injectable()
 export class SessionsService {
@@ -23,7 +25,7 @@ export class SessionsService {
     return this.sessionRepository.getStudentAttendance(studentId)
   }
 
-  getAttendances(sessionId: Session['id']) {
-    return this.sessionRepository.getAttendances(sessionId)
+  getAttendancesByClassId(classId: Class['id'], paginationOptions: IPaginationOptions): Promise<PaginationResponseDto<Session>> {
+    return this.sessionRepository.getAttendancesByClassId(classId, paginationOptions)
   }
 }

@@ -8,13 +8,13 @@ import { NullableType } from "@/utils/types/nullable.type";
 import { IPaginationOptions } from "@/utils/types/pagination-options";
 import { PaginationResponseDto } from "@/utils/types/pagination-response.dto";
 
-export interface FilterTeacherDto {
+export class FilterTeacherDto {
     name?: string;
     email?: string;
     status?: string;
 }
 
-export interface SortTeacherDto {
+export class SortTeacherDto {
     orderBy: keyof Teacher;
     order: 'ASC' | 'DESC';
 }
@@ -116,6 +116,15 @@ export class TeacherRepository {
 
     async delete(id: Teacher['id']): Promise<void> {
         await this.teacherRepository.softDelete(id);
+    }
+
+    async getSchedule(id: Teacher['id']) {
+        const entity = await this.teacherRepository.findOne({
+            where: { id },
+            relations: ['classes']
+        })
+
+        return TeacherMapper.toDomain(entity).classes
     }
 
 }

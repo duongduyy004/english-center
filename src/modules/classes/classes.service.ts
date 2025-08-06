@@ -9,18 +9,20 @@ import { Class, Schedule } from './class.domain';
 import { Teacher } from '@/modules/teachers/teacher.domain';
 import { TeachersService } from '@/modules/teachers/teachers.service';
 import { StudentsService } from '@/modules/students/students.service';
-import { FilterStudentDto, SortStudentDto } from '../students/student.repository';
 import { AddStudentsDto } from './dto/add-students.dto';
 import * as dayjs from 'dayjs';
 import * as customParseFormat from 'dayjs/plugin/customParseFormat';
-import { Student } from '../students/student.domain';
+import { Student } from '@/modules/students/student.domain';
+import { FilterStudentDto, SortStudentDto } from '@/modules/students/dto/query-student.dto';
+import { I18nService } from 'nestjs-i18n';
 
 @Injectable()
 export class ClassesService {
   constructor(
     private classRepository: ClassRepository,
     private teachersService: TeachersService,
-    private studentsService: StudentsService
+    private studentsService: StudentsService,
+    private i18nService: I18nService
   ) { }
   create(createClassDto: CreateClassDto) {
     return this.classRepository.create(createClassDto);
@@ -51,7 +53,9 @@ export class ClassesService {
     const teacher = await this.teachersService.findOne(teacherId)
     const result = await this.classRepository.assignTeacherToClass(id, teacher)
     if (!result) {
-      throw new BadRequestException('This teacher was assgined to this class')
+      throw new BadRequestException(
+        this.i18nService.t('class.FAIL.TEACHER_ALREADY_ASSIGNED')
+      )
     }
     return result
   }
@@ -60,7 +64,9 @@ export class ClassesService {
     const teacher = await this.teachersService.findOne(teacherId)
     const result = await this.classRepository.unassignTeacherToClass(id, teacher)
     if (!result) {
-      throw new BadRequestException('This teacher was not assgined to this class')
+      throw new BadRequestException(
+        this.i18nService.t('class.FAIL.TEACHER_NOT_ASSIGNED')
+      )
     }
     return result
   }
@@ -89,7 +95,9 @@ export class ClassesService {
       //check each class of a student
       for (const eachClass of student.classes) {
         if (eachClass.class.id === aclass.id)
-          throw new BadRequestException('Student was added to this class');
+          throw new BadRequestException(
+            this.i18nService.t('class.FAIL.STUDENT_ALREADY_IN_CLASS')
+          );
 
         //check date overlap. If no conflict, break
         if (!this.isDateOverlap(eachClass.class.schedule, aclass.schedule)) break;
@@ -101,7 +109,15 @@ export class ClassesService {
         if (!this.isTimeSlotOverlap(eachClass.class.schedule, aclass.schedule)) break;
 
         //if conflict found, return error
-        throw new BadRequestException(`Student ${student.name} has class ${eachClass.class.name} conflict schedule with class ${aclass.name}`)
+        throw new BadRequestException(
+          this.i18nService.t('class.FAIL.SCHEDULE_CONFLICT', {
+            args: {
+              studentName: student.name,
+              conflictClassName: eachClass.class.name,
+              className: aclass.name
+            }
+          })
+        )
       }
     }
 

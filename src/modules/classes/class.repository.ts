@@ -11,7 +11,6 @@ import { PaginationResponseDto } from "@/utils/types/pagination-response.dto";
 import { Teacher } from "@/modules/teachers/teacher.domain";
 import { TeacherMapper } from "../teachers/teacher.mapper";
 import { Student } from "../students/student.domain";
-import { StudentMapper } from "../students/student.mapper";
 import { AddStudentsDto } from "./dto/add-students.dto";
 import { ClassStudentEntity } from "./entities/class-student.entity";
 

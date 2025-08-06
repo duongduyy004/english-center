@@ -1,7 +1,9 @@
 import { plainToInstance, Transform, Type } from "class-transformer";
 import { IsNumber, IsOptional, ValidateNested } from "class-validator";
+import queryString from "query-string";
 
-export class QueryDto<Filter, Sort> {
+
+export class QueryDto<Filter = any, Sort = any> {
     @Transform(({ value }) => (value ? Number(value) : 1))
     @IsNumber()
     @IsOptional()
@@ -13,10 +15,10 @@ export class QueryDto<Filter, Sort> {
     limit?: number;
 
     @IsOptional()
-    @Transform(({ value }) =>
-        value ? JSON.parse(value) : undefined,
-    )
-    @ValidateNested()
+    @Transform(({ value }) => {
+        return value ? JSON.parse(value) : undefined
+    })
+    @ValidateNested({ each: true })
     @Type(() => Object)
     filters?: Filter | null;
 

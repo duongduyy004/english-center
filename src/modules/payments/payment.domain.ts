@@ -12,6 +12,10 @@ export class Payment {
 
     paidAmount: number
 
+    totalAmount: number;
+
+    discountAmount: number;
+
     status: string
 
     student: Partial<Student>
@@ -23,7 +27,6 @@ export class Payment {
     }
 
     histories: {
-        id: string | number,
         method: string,
         amount: number,
         note: string,

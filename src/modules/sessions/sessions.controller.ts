@@ -1,6 +1,7 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { SessionsService } from './sessions.service';
 import { UpdateAttendanceSessionDto } from './dto/update-attendance-session.dto';
+import { QueryDto } from '@/utils/types/query.dto';
 
 @Controller('sessions')
 export class SessionsController {
@@ -17,9 +18,14 @@ export class SessionsController {
     return this.sessionsService.getStudentAttendance(studentId)
   }
 
-  @Get('all/:sessionId')
-  getAttendances(@Param('sessionId') sessionId: number) {
-    return this.sessionsService.getAttendances(sessionId)
+  @Get('all/:classId')
+  getAttendancesByClassId(
+    @Param('classId') classId: number,
+    @Query() query: QueryDto
+  ) {
+    const limit = query.limit;
+    const page = query.page;
+    return this.sessionsService.getAttendancesByClassId(classId, { limit, page })
   }
 
   @Patch('/:sessionId')

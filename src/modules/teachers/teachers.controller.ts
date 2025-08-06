@@ -29,6 +29,11 @@ export class TeachersController {
     });
   }
 
+  @Get('/schedule/:id')
+  getSchedule(@Param('id') id: string) {
+    return this.teachersService.getSchedule(id);
+  }
+
   @Get(':id')
   findOne(@Param('id') id: Teacher['id']) {
     return this.teachersService.findOne(+id);

@@ -52,4 +52,8 @@ export class TeachersService {
     await this.findOne(id)
     return this.teacherRepository.delete(id);
   }
+
+  getSchedule(id: Teacher['id']) {
+    return this.teacherRepository.getSchedule(id)
+  }
 }

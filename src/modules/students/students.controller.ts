@@ -4,7 +4,7 @@ import { CreateStudentDto } from './dto/create-student.dto';
 import { UpdateStudentDto } from './dto/update-student.dto';
 import { ResponseMessage } from '@/decorator/customize.decorator';
 import { QueryDto } from '@/utils/types/query.dto';
-import { FilterStudentDto, SortStudentDto } from './student.repository';
+import { FilterStudentDto, SortStudentDto } from './dto/query-student.dto';
 
 @Controller('students')
 export class StudentsController {
@@ -28,6 +28,11 @@ export class StudentsController {
         limit
       }
     });
+  }
+
+  @Get('/schedule/:id')
+  getSchedule(@Param('id') id: string) {
+    return this.studentsService.getSchedule(id)
   }
 
   @Get(':id')

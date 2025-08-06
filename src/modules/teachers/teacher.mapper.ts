@@ -23,20 +23,19 @@ export class TeacherMapper {
         domainEntity.salaryPerLesson = raw.salaryPerLesson;
         domainEntity.isActive = raw.isActive;
         if (raw.classes) {
-            domainEntity.classes = raw.classes.map(aclass => ClassMapper.toDomain(aclass))
+            domainEntity.classes = raw.classes.map(item => ({
+                id: item.id,
+                name: item.name,
+                grade: item.grade,
+                section: item.section,
+                schedule: item.schedule
+            }))
         }
-        domainEntity.createdAt = raw.createdAt;
-        domainEntity.updatedAt = raw.updatedAt;
-        domainEntity.deletedAt = raw.deletedAt;
 
         return domainEntity;
     }
 
     static toPersistence(domainEntity: Teacher): TeacherEntity {
-        let classes: ClassEntity[] | undefined | null = undefined
-        if (domainEntity.classes) {
-            classes = domainEntity.classes.map(aclass => ClassMapper.toPersistence(aclass))
-        }
         const persistenceEntity = new TeacherEntity();
         if (domainEntity.id && typeof domainEntity.id === 'number') {
             persistenceEntity.id = domainEntity.id;
@@ -54,10 +53,6 @@ export class TeacherMapper {
         persistenceEntity.description = domainEntity.description;
         persistenceEntity.isActive = domainEntity.isActive;
         persistenceEntity.salaryPerLesson = domainEntity.salaryPerLesson;
-        persistenceEntity.classes = classes
-        persistenceEntity.createdAt = domainEntity.createdAt;
-        persistenceEntity.updatedAt = domainEntity.updatedAt;
-        persistenceEntity.deletedAt = domainEntity.deletedAt;
 
         return persistenceEntity;
     }

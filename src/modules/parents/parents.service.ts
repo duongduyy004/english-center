@@ -8,13 +8,16 @@ import { UsersService } from '@/modules/users/users.service';
 import { IPaginationOptions } from '@/utils/types/pagination-options';
 import { PaginationResponseDto } from '@/utils/types/pagination-response.dto';
 import { Parent } from './parent.domain';
+import { Student } from '@/modules/students/student.domain';
+import { StudentsService } from '@/modules/students/students.service';
 
 @Injectable()
 export class ParentsService {
   constructor(
     private parentRepository: ParentRepository,
     private usersService: UsersService,
-    private i18nSerivce: I18nService<I18nTranslations>
+    private i18nSerivce: I18nService<I18nTranslations>,
+    private studentService: StudentsService
   ) { }
 
   async create(createParentDto: CreateParentDto) {
@@ -49,5 +52,20 @@ export class ParentsService {
 
   delete(id: Parent['id']) {
     return this.parentRepository.delete(id);
+  }
+
+  async addChild(studentId: Student['id'], parentId: Parent['id']) {
+    const student = await this.studentService.findOne(studentId)
+    if (student.parent) {
+      return student
+    }
+
+    const result = await this.parentRepository.addChild(student, parentId);
+    if (!result) throw new BadRequestException('Child already exist')
+    return result
+  }
+
+  async removeChild(studentId: Student['id'], parentId: Parent['id']) {
+    return this.parentRepository.removeChild(studentId, parentId)
   }
 }

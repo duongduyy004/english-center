@@ -12,5 +12,5 @@ export class Teacher extends User {
 
     salaryPerLesson: number
 
-    classes: Class[]
+    classes: Partial<Class>[]
 }

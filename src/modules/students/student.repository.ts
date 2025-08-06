@@ -7,17 +7,7 @@ import { StudentMapper } from "./student.mapper";
 import { NullableType } from "@/utils/types/nullable.type";
 import { IPaginationOptions } from "@/utils/types/pagination-options";
 import { PaginationResponseDto } from "@/utils/types/pagination-response.dto";
-
-export interface FilterStudentDto {
-    name?: string;
-    email?: string;
-    status?: string;
-}
-
-export interface SortStudentDto {
-    orderBy: keyof Student;
-    order: 'ASC' | 'DESC';
-}
+import { FilterStudentDto, SortStudentDto } from "./dto/query-student.dto";
 
 @Injectable()
 export class StudentRepository {
@@ -132,6 +122,14 @@ export class StudentRepository {
 
     async delete(id: Student['id']): Promise<void> {
         await this.studentRepository.softDelete(id);
+    }
+
+    async getSchedule(id: Student['id']) {
+        const entity = await this.studentRepository.findOne({
+            where: { id },
+            relations: ['classes.class']
+        })
+        return StudentMapper.toDomain(entity).classes
     }
 
 }

@@ -4,7 +4,7 @@ import { Class } from "@/modules/classes/class.domain";
 
 export class Student extends User {
 
-    parent?: Parent
+    parent?: Partial<Parent>
 
     classes?: {
         discountPercent: number,

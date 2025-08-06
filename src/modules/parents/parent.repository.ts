@@ -7,15 +7,17 @@ import { PaginationResponseDto } from "@/utils/types/pagination-response.dto";
 import { ParentEntity } from "./entities/parent.entity";
 import { Parent } from "./parent.domain";
 import { ParentMapper } from "./parent.mapper";
-import { StudentEntity } from "../students/entities/student.entity";
+import { StudentEntity } from "@/modules/students/entities/student.entity";
+import { Student } from "@/modules/students/student.domain";
+import { StudentMapper } from "../students/student.mapper";
 
-export interface FilterParentDto {
+export class FilterParentDto {
     name?: string;
     email?: string;
     status?: string;
 }
 
-export interface SortParentDto {
+export class SortParentDto {
     orderBy: keyof Parent;
     order: 'ASC' | 'DESC';
 }
@@ -23,13 +25,13 @@ export interface SortParentDto {
 @Injectable()
 export class ParentRepository {
     constructor(
-        @InjectRepository(ParentEntity) private studentRepository: Repository<ParentEntity>
+        @InjectRepository(ParentEntity) private parentRepository: Repository<ParentEntity>
     ) { }
 
     async create(data: Omit<Parent, 'id' | 'createdAt' | 'updatedAt' | 'deletedAt' | 'students'>): Promise<Parent> {
         const persistenceModel = ParentMapper.toPersistence(data as Parent)
-        const newEntity = await this.studentRepository.save(
-            this.studentRepository.create(persistenceModel)
+        const newEntity = await this.parentRepository.save(
+            this.parentRepository.create(persistenceModel)
         )
         return ParentMapper.toDomain(newEntity)
     }
@@ -37,7 +39,7 @@ export class ParentRepository {
     async findByEmail(email: Parent['email']): Promise<NullableType<Parent>> {
         if (!email) return null;
 
-        const entity = await this.studentRepository.findOne({
+        const entity = await this.parentRepository.findOne({
             where: { email }
         });
 
@@ -45,7 +47,7 @@ export class ParentRepository {
     }
 
     async findById(id: Parent['id']): Promise<NullableType<Parent>> {
-        const entity = await this.studentRepository.findOne({
+        const entity = await this.parentRepository.findOne({
             where: { id: Number(id) },
             relations: ['students']
         })
@@ -71,7 +73,7 @@ export class ParentRepository {
             where.email = ILike(`%${filterOptions.email}%`);
         }
 
-        const [entities, total] = await this.studentRepository.findAndCount({
+        const [entities, total] = await this.parentRepository.findAndCount({
             skip: (paginationOptions.page - 1) * paginationOptions.limit,
             take: paginationOptions.limit,
             where: where,
@@ -100,7 +102,7 @@ export class ParentRepository {
     }
 
     async update(id: Parent['id'], payload: Partial<Omit<Parent, 'id' | 'password' | 'createdAt' | 'updatedAt' | 'deletedAt'>>): Promise<Parent> {
-        const entity = await this.studentRepository.findOne({
+        const entity = await this.parentRepository.findOne({
             where: { id: Number(id) },
             relations: ['students']
         });
@@ -109,8 +111,8 @@ export class ParentRepository {
             throw new Error('Parent not found');
         }
 
-        const updatedEntity = await this.studentRepository.save(
-            this.studentRepository.create(
+        const updatedEntity = await this.parentRepository.save(
+            this.parentRepository.create(
                 ParentMapper.toPersistence({
                     ...ParentMapper.toDomain(entity),
                     ...payload,
@@ -122,6 +124,35 @@ export class ParentRepository {
     }
 
     async delete(id: Parent['id']): Promise<void> {
-        await this.studentRepository.softDelete(id);
+        await this.parentRepository.softDelete(id);
+    }
+
+    async addChild(student: Student, parentId: Parent['id']) {
+        const parentEntity = await this.parentRepository.findOne({
+            where: { id: parentId },
+            relations: ['students']
+        })
+
+        for (const studentExist of parentEntity.students) {
+            if (studentExist.id === student.id) {
+                return null
+            }
+        }
+
+        parentEntity.students.push(StudentMapper.toPersistence(student))
+        await this.parentRepository.save(parentEntity)
+
+        return parentEntity;
+    }
+
+    async removeChild(studentId: Student['id'], parentId: Parent['id']) {
+        const parentEntity = await this.parentRepository.findOne({
+            where: { id: parentId },
+            relations: ['students']
+        })
+
+        parentEntity.students = parentEntity.students.filter(item => item.id.toString() !== studentId.toString())
+        await this.parentRepository.save(parentEntity)
+        return parentEntity
     }
 }
