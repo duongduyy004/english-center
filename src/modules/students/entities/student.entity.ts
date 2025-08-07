@@ -1,8 +1,8 @@
-import { ClassStudentEntity } from "@/modules/classes/entities/class-student.entity";
-import { ParentEntity } from "@/modules/parents/entities/parent.entity";
-import { PaymentEntity } from "@/modules/payments/entities/payment.entity";
-import { AttendanceSessionEntity } from "@/modules/sessions/entities/attendance-session.entity";
-import { UserEntity } from "@/modules/users/entities/user.entity";
+import { ClassStudentEntity } from "modules/classes/entities/class-student.entity";
+import { ParentEntity } from "modules/parents/entities/parent.entity";
+import { PaymentEntity } from "modules/payments/entities/payment.entity";
+import { AttendanceSessionEntity } from "modules/sessions/entities/attendance-session.entity";
+import { UserEntity } from "modules/users/entities/user.entity";
 import { Entity, Column, ManyToOne, JoinColumn, OneToMany } from "typeorm";
 
 @Entity('student')

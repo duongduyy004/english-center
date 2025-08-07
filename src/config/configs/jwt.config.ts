@@ -3,7 +3,7 @@ import {
     IsString,
     IsOptional
 } from 'class-validator';
-import validateConfig from '@/utils/validate-config';
+import validateConfig from 'utils/validate-config';
 import { JwtConfig } from '@/config/types/jwt-config.type';
 
 class EnvironmentVariablesValidator {

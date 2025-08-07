@@ -4,12 +4,12 @@ import { UpdateParentDto } from './dto/update-parent.dto';
 import { FilterParentDto, ParentRepository, SortParentDto } from './parent.repository';
 import { I18nService } from 'nestjs-i18n';
 import { I18nTranslations } from '@/generated/i18n.generated';
-import { UsersService } from '@/modules/users/users.service';
-import { IPaginationOptions } from '@/utils/types/pagination-options';
-import { PaginationResponseDto } from '@/utils/types/pagination-response.dto';
+import { UsersService } from 'modules/users/users.service';
+import { IPaginationOptions } from 'utils/types/pagination-options';
+import { PaginationResponseDto } from 'utils/types/pagination-response.dto';
 import { Parent } from './parent.domain';
-import { Student } from '@/modules/students/student.domain';
-import { StudentsService } from '@/modules/students/students.service';
+import { Student } from 'modules/students/student.domain';
+import { StudentsService } from 'modules/students/students.service';
 
 @Injectable()
 export class ParentsService {

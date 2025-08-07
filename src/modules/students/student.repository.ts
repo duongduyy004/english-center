@@ -4,9 +4,9 @@ import { Injectable } from "@nestjs/common";
 import { Student } from "./student.domain";
 import { InjectRepository } from "@nestjs/typeorm";
 import { StudentMapper } from "./student.mapper";
-import { NullableType } from "@/utils/types/nullable.type";
-import { IPaginationOptions } from "@/utils/types/pagination-options";
-import { PaginationResponseDto } from "@/utils/types/pagination-response.dto";
+import { NullableType } from "utils/types/nullable.type";
+import { IPaginationOptions } from "utils/types/pagination-options";
+import { PaginationResponseDto } from "utils/types/pagination-response.dto";
 import { FilterStudentDto, SortStudentDto } from "./dto/query-student.dto";
 
 @Injectable()

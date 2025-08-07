@@ -27,6 +27,9 @@
       "utils/*": [
         "src/utils/*"
       ],
+      "modules/*": [
+        "src/modules/*"
+      ],
       "i18n/*": [
         "src/i18n/*"
       ]

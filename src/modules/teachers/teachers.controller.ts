@@ -3,7 +3,7 @@ import { TeachersService } from './teachers.service';
 import { CreateTeacherDto } from './dto/create-teacher.dto';
 import { UpdateTeacherDto } from './dto/update-teacher.dto';
 import { FilterTeacherDto, SortTeacherDto } from './teacher.repository';
-import { QueryDto } from '@/utils/types/query.dto';
+import { QueryDto } from 'utils/types/query.dto';
 import { Teacher } from './teacher.domain';
 
 @Controller('teachers')

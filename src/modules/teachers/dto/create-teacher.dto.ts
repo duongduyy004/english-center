@@ -1,4 +1,4 @@
-import { CreateUserDto } from "@/modules/users/dto/create-user.dto";
+import { CreateUserDto } from "modules/users/dto/create-user.dto";
 
 export class CreateTeacherDto extends CreateUserDto {
     isActive: boolean;

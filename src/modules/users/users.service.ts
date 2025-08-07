@@ -2,10 +2,10 @@ import { BadRequestException, Injectable, NotFoundException } from '@nestjs/comm
 import { I18nService } from 'nestjs-i18n';
 import { I18nTranslations } from '@/generated/i18n.generated';
 import { InjectRepository } from '@nestjs/typeorm';
-import { UserEntity } from '@/modules/users/entities/user.entity';
-import { ParentEntity } from '@/modules/parents/entities/parent.entity';
-import { StudentEntity } from '@/modules/students/entities/student.entity';
-import { TeacherEntity } from '@/modules/teachers/entities/teacher.entity';
+import { UserEntity } from 'modules/users/entities/user.entity';
+import { ParentEntity } from 'modules/parents/entities/parent.entity';
+import { StudentEntity } from 'modules/students/entities/student.entity';
+import { TeacherEntity } from 'modules/teachers/entities/teacher.entity';
 import { Repository } from 'typeorm';
 
 @Injectable()

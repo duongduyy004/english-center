@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { SessionsService } from './sessions.service';
 import { UpdateAttendanceSessionDto } from './dto/update-attendance-session.dto';
-import { QueryDto } from '@/utils/types/query.dto';
+import { QueryDto } from 'utils/types/query.dto';
 
 @Controller('sessions')
 export class SessionsController {

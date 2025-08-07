@@ -4,10 +4,10 @@ import { SessionsController } from './sessions.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { SessionEntity } from './entities/session.entity';
 import { AttendanceSessionEntity } from './entities/attendance-session.entity';
-import { ClassesModule } from '@/modules/classes/classes.module';
+import { ClassesModule } from 'modules/classes/classes.module';
 import { SessionRepository } from './session.repository';
-import { StudentsModule } from '@/modules/students/students.module';
-import { PaymentsModule } from '@/modules/payments/payments.module';
+import { StudentsModule } from 'modules/students/students.module';
+import { PaymentsModule } from 'modules/payments/payments.module';
 
 @Module({
   imports: [

@@ -4,8 +4,8 @@ import { ClassesController } from './classes.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ClassEntity } from './entities/class.entity';
 import { ClassRepository } from './class.repository';
-import { TeachersModule } from '@/modules/teachers/teachers.module';
-import { StudentsModule } from '@/modules/students/students.module';
+import { TeachersModule } from 'modules/teachers/teachers.module';
+import { StudentsModule } from 'modules/students/students.module';
 import { ClassStudentEntity } from './entities/class-student.entity';
 
 @Module({

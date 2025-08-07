@@ -1,7 +1,7 @@
 import { ClassEntity } from "./entities/class.entity";
 import { Class } from "./class.domain";
-import { TeacherMapper } from "@/modules/teachers/teacher.mapper";
-import { TeacherEntity } from "@/modules/teachers/entities/teacher.entity";
+import { TeacherMapper } from "modules/teachers/teacher.mapper";
+import { TeacherEntity } from "modules/teachers/entities/teacher.entity";
 
 export class ClassMapper {
     static toDomain(raw: ClassEntity): Class {

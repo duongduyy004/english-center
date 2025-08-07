@@ -3,17 +3,17 @@ import { CreateClassDto } from './dto/create-class.dto';
 import { UpdateClassDto } from './dto/update-class.dto';
 import { ClassRepository } from './class.repository';
 import { FilterClassDto, SortClassDto } from './dto/query-class.dto';
-import { IPaginationOptions } from '@/utils/types/pagination-options';
-import { PaginationResponseDto } from '@/utils/types/pagination-response.dto';
+import { IPaginationOptions } from 'utils/types/pagination-options';
+import { PaginationResponseDto } from 'utils/types/pagination-response.dto';
 import { Class, Schedule } from './class.domain';
-import { Teacher } from '@/modules/teachers/teacher.domain';
-import { TeachersService } from '@/modules/teachers/teachers.service';
-import { StudentsService } from '@/modules/students/students.service';
+import { Teacher } from 'modules/teachers/teacher.domain';
+import { TeachersService } from 'modules/teachers/teachers.service';
+import { StudentsService } from 'modules/students/students.service';
 import { AddStudentsDto } from './dto/add-students.dto';
 import * as dayjs from 'dayjs';
 import * as customParseFormat from 'dayjs/plugin/customParseFormat';
-import { Student } from '@/modules/students/student.domain';
-import { FilterStudentDto, SortStudentDto } from '@/modules/students/dto/query-student.dto';
+import { Student } from 'modules/students/student.domain';
+import { FilterStudentDto, SortStudentDto } from 'modules/students/dto/query-student.dto';
 import { I18nService } from 'nestjs-i18n';
 
 @Injectable()

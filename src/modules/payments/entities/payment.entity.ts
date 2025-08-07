@@ -1,20 +1,16 @@
 import { BeforeInsert, BeforeUpdate, Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
-import { StudentEntity } from "@/modules/students/entities/student.entity";
-import { ClassEntity } from "@/modules/classes/entities/class.entity";
-import { Student } from "@/modules/students/student.domain";
+import { StudentEntity } from "modules/students/entities/student.entity";
+import { ClassEntity } from "modules/classes/entities/class.entity";
+import { Student } from "modules/students/student.domain";
 
 
 export class Histories {
-    @Column()
     method: string;
 
-    @Column()
     amount: number;
 
-    @Column()
     note: string;
 
-    @Column({ default: () => "CURRENT_TIMESTAMP(0)" })
     date?: Date
 }
 
@@ -58,7 +54,7 @@ export class PaymentEntity {
     @JoinColumn({ name: 'classId' })
     class: ClassEntity
 
-    @Column('jsonb', { nullable: true })
+    @Column('jsonb', { nullable: true, default: [] })
     histories: Histories[]
 
 

@@ -3,7 +3,7 @@ import { StudentsService } from './students.service';
 import { CreateStudentDto } from './dto/create-student.dto';
 import { UpdateStudentDto } from './dto/update-student.dto';
 import { ResponseMessage } from '@/decorator/customize.decorator';
-import { QueryDto } from '@/utils/types/query.dto';
+import { QueryDto } from 'utils/types/query.dto';
 import { FilterStudentDto, SortStudentDto } from './dto/query-student.dto';
 
 @Controller('students')

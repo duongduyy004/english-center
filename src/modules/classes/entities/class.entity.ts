@@ -1,7 +1,7 @@
 import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { ClassStudentEntity } from "./class-student.entity";
-import { TeacherEntity } from "@/modules/teachers/entities/teacher.entity";
-import { SessionEntity } from "@/modules/sessions/entities/session.entity";
+import { TeacherEntity } from "modules/teachers/entities/teacher.entity";
+import { SessionEntity } from "modules/sessions/entities/session.entity";
 
 class TimeSlots {
     @Column()

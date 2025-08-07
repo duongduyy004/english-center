@@ -2,18 +2,18 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { AttendanceSessionEntity } from "./entities/attendance-session.entity";
 import { Between, In, Repository } from "typeorm";
 import { SessionEntity } from "./entities/session.entity";
-import { Class } from "@/modules/classes/class.domain";
-import { ClassesService } from "@/modules/classes/classes.service";
+import { Class } from "modules/classes/class.domain";
+import { ClassesService } from "modules/classes/classes.service";
 import * as dayjs from "dayjs";
 import { BadRequestException } from "@nestjs/common";
 import { SessionMapper } from "./session.mapper";
 import { Session } from "./session.domain";
 import { UpdateAttendanceSessionDto } from "./dto/update-attendance-session.dto";
-import { Student } from "@/modules/students/student.domain";
-import { StudentsService } from "@/modules/students/students.service";
+import { Student } from "modules/students/student.domain";
+import { StudentsService } from "modules/students/students.service";
 import { PaymentsService } from "../payments/payments.service";
-import { IPaginationOptions } from "@/utils/types/pagination-options";
-import { PaginationResponseDto } from "@/utils/types/pagination-response.dto";
+import { IPaginationOptions } from "utils/types/pagination-options";
+import { PaginationResponseDto } from "utils/types/pagination-response.dto";
 
 export class SessionRepository {
     constructor(
@@ -120,7 +120,8 @@ export class SessionRepository {
         for (const item of entity.attendances) {
             for (const payloadItem of payload) {
                 if (item.student.id.toString() === payloadItem.studentId.toString()) {
-                    item.isModified = payloadItem.isModified
+                    item.isModified = payloadItem.isModified;
+
                 }
             }
         }
@@ -224,5 +225,11 @@ export class SessionRepository {
         }
     }
 
+
+    async getSessions(classId: Class['id']) {
+        return await this.sessionRepository.count({
+            where: { classId }
+        })
+    }
 }
 

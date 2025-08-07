@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestj
 import { ParentsService } from './parents.service';
 import { CreateParentDto } from './dto/create-parent.dto';
 import { UpdateParentDto } from './dto/update-parent.dto';
-import { QueryDto } from '@/utils/types/query.dto';
+import { QueryDto } from 'utils/types/query.dto';
 import { FilterParentDto, SortParentDto } from './parent.repository';
 import { Parent } from './parent.domain';
 import { addChildDto } from './dto/add-child.dto';

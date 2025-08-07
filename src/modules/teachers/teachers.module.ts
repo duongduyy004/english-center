@@ -4,7 +4,7 @@ import { TeachersController } from './teachers.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TeacherEntity } from './entities/teacher.entity';
 import { TeacherRepository } from './teacher.repository';
-import { UsersModule } from '@/modules/users/users.module';
+import { UsersModule } from 'modules/users/users.module';
 
 @Module({
   imports: [

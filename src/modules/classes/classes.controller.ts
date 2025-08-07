@@ -3,13 +3,13 @@ import { ClassesService } from './classes.service';
 import { CreateClassDto } from './dto/create-class.dto';
 import { UpdateClassDto } from './dto/update-class.dto';
 import { ResponseMessage } from '@/decorator/customize.decorator';
-import { QueryDto } from '@/utils/types/query.dto';
+import { QueryDto } from 'utils/types/query.dto';
 import { FilterClassDto, SortClassDto } from './dto/query-class.dto';
 import { Class } from './class.domain';
 import { Teacher } from '../teachers/teacher.domain';
 import { AddStudentsDto } from './dto/add-students.dto';
 import { Student } from '../students/student.domain';
-import { FilterStudentDto, SortStudentDto } from '@/modules/students/dto/query-student.dto';
+import { FilterStudentDto, SortStudentDto } from 'modules/students/dto/query-student.dto';
 
 @Controller('classes')
 export class ClassesController {

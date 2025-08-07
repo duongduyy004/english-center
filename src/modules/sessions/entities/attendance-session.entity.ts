@@ -1,4 +1,4 @@
-import { StudentEntity } from "@/modules/students/entities/student.entity";
+import { StudentEntity } from "modules/students/entities/student.entity";
 import { Column, Entity, ManyToOne, PrimaryColumn } from "typeorm";
 import { SessionEntity } from "./session.entity";
 

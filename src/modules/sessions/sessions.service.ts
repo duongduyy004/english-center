@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { SessionRepository } from './session.repository';
-import { Class } from '../classes/class.domain';
+import { Class } from 'modules/classes/class.domain';
 import { Session } from './session.domain';
 import { UpdateAttendanceSessionDto } from './dto/update-attendance-session.dto';
-import { Student } from '../students/student.domain';
-import { PaginationResponseDto } from '@/utils/types/pagination-response.dto';
-import { IPaginationOptions } from '@/utils/types/pagination-options';
+import { Student } from 'modules/students/student.domain';
+import { PaginationResponseDto } from 'utils/types/pagination-response.dto';
+import { IPaginationOptions } from 'utils/types/pagination-options';
 
 @Injectable()
 export class SessionsService {
@@ -27,5 +27,9 @@ export class SessionsService {
 
   getAttendancesByClassId(classId: Class['id'], paginationOptions: IPaginationOptions): Promise<PaginationResponseDto<Session>> {
     return this.sessionRepository.getAttendancesByClassId(classId, paginationOptions)
+  }
+
+  getSessions(classId: Class['id']) {
+    return this.sessionRepository.getSessions(classId)
   }
 }

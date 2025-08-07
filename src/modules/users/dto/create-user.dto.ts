@@ -1,5 +1,5 @@
 import { I18nTranslations } from "@/generated/i18n.generated";
-import { PASSWORD_REGEX } from "@/utils/constants";
+import { PASSWORD_REGEX } from "utils/constants";
 import { Transform } from "class-transformer";
 import { IsDate, IsEmail, IsEnum, IsNotEmpty, IsString, Matches } from "class-validator";
 import { i18nValidationMessage } from "nestjs-i18n";

@@ -1,5 +1,5 @@
-import { Class } from "@/modules/classes/class.domain";
-import { Student } from "@/modules/students/student.domain";
+import { Class } from "modules/classes/class.domain";
+import { Student } from "modules/students/student.domain";
 
 export class Payment {
     id: string | number;

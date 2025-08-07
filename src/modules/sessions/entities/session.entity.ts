@@ -1,7 +1,7 @@
-import { ClassEntity } from "@/modules/classes/entities/class.entity";
+import { ClassEntity } from "modules/classes/entities/class.entity";
 import { Column, Entity, JoinTable, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { AttendanceSessionEntity } from "./attendance-session.entity";
-import { Class } from "@/modules/classes/class.domain";
+import { Class } from "modules/classes/class.domain";
 
 @Entity('sessions')
 export class SessionEntity {

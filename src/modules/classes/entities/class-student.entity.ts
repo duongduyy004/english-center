@@ -1,6 +1,6 @@
-import { StudentEntity } from "@/modules/students/entities/student.entity";
+import { StudentEntity } from "modules/students/entities/student.entity";
 import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinTable, ManyToOne, PrimaryColumn, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
-import { ClassEntity } from "@/modules/classes/entities/class.entity";
+import { ClassEntity } from "modules/classes/entities/class.entity";
 import { Exclude } from "class-transformer";
 
 @Entity('class_student')

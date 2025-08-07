@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { TeacherEntity } from "./entities/teacher.entity";
 import { Teacher } from "./teacher.domain";
-import { ClassMapper } from '@/modules/classes/class.mapper';
+import { ClassMapper } from 'modules/classes/class.mapper';
 import { ClassEntity } from '../classes/entities/class.entity';
 
 @Injectable()

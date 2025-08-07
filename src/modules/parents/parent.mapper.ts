@@ -1,5 +1,5 @@
-import { ParentEntity } from "@/modules/Parents/entities/Parent.entity";
-import { Parent } from "@/modules/parents/Parent.domain";
+import { ParentEntity } from "modules/Parents/entities/Parent.entity";
+import { Parent } from "modules/parents/Parent.domain";
 import { StudentMapper } from "../students/student.mapper";
 import { Student } from "../students/student.domain";
 import { StudentEntity } from "../students/entities/student.entity";

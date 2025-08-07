@@ -1,4 +1,4 @@
-import { Teacher } from "@/modules/teachers/teacher.domain";
+import { Teacher } from "modules/teachers/teacher.domain";
 import { Student } from "../students/student.domain";
 
 export class Schedule {

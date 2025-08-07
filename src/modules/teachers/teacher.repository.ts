@@ -4,9 +4,11 @@ import { Injectable } from "@nestjs/common";
 import { Teacher } from "./teacher.domain";
 import { InjectRepository } from "@nestjs/typeorm";
 import { TeacherMapper } from "./teacher.mapper";
-import { NullableType } from "@/utils/types/nullable.type";
-import { IPaginationOptions } from "@/utils/types/pagination-options";
-import { PaginationResponseDto } from "@/utils/types/pagination-response.dto";
+import { NullableType } from "utils/types/nullable.type";
+import { IPaginationOptions } from "utils/types/pagination-options";
+import { PaginationResponseDto } from "utils/types/pagination-response.dto";
+import { FilterPaymentDto, SortPaymentDto } from "modules//payments/dto/query-payment.dto";
+import { Class } from "../classes/class.domain";
 
 export class FilterTeacherDto {
     name?: string;
@@ -126,5 +128,4 @@ export class TeacherRepository {
 
         return TeacherMapper.toDomain(entity).classes
     }
-
 }

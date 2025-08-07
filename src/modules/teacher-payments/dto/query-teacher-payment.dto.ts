@@ -1,11 +1,9 @@
 import { Class } from "modules/classes/class.domain";
 import { Payment } from "modules/payments/payment.domain";
-import { Student } from "modules/students/student.domain";
+import { Teacher } from "modules/teachers/teacher.domain";
 
-export class FilterPaymentDto {
-    studentId: Student['id'];
-
-    classId: Class['id'];
+export class FilterTeacherPaymentDto {
+    teacherId: Teacher['id'];
 
     month: number;
 
@@ -18,7 +16,7 @@ export class FilterPaymentDto {
     endMonth: number;
 }
 
-export class SortPaymentDto {
+export class SortTeacherPaymentDto {
     orderBy: keyof Payment;
     order: 'ASC' | 'DESC'
 }

@@ -4,14 +4,14 @@ import { PaymentEntity } from "./entities/payment.entity";
 import { Between, FindOptionsWhere, Repository } from "typeorm";
 import * as dayjs from "dayjs";
 import { FilterPaymentDto, SortPaymentDto } from "./dto/query-payment.dto";
-import { IPaginationOptions } from "@/utils/types/pagination-options";
-import { PaginationResponseDto } from "@/utils/types/pagination-response.dto";
+import { IPaginationOptions } from "utils/types/pagination-options";
+import { PaginationResponseDto } from "utils/types/pagination-response.dto";
 import { Payment } from "./payment.domain";
 import { PaymentMapper } from "./payment.mapper";
 import { PayStudentDto } from "./dto/pay-student.dto";
 import { I18nService } from "nestjs-i18n";
 import { I18nTranslations } from "@/generated/i18n.generated";
-import { SessionEntity } from "@/modules//sessions/entities/session.entity";
+import { SessionEntity } from "modules//sessions/entities/session.entity";
 
 @Injectable()
 export class PaymentRepository {
@@ -113,31 +113,18 @@ export class PaymentRepository {
 
     async payStudent(paymentId: Payment['id'], payStudentDto: PayStudentDto) {
         const entity = await this.paymentsRepository.findOne({
-            where: { id: paymentId },
-            relations: ['class']
+            where: { id: paymentId }
         })
         if (entity.totalLessons === 0) throw new BadRequestException('No lessons');
         if (entity.status === 'paid') throw new BadRequestException('Fully paid');
         if (entity.paidAmount + +payStudentDto.amount > entity.totalAmount) throw new BadRequestException('Exceeds remaning balance')
-        if (entity) {
+        if (Array.isArray(entity.histories)) {
             entity.histories.push({
                 amount: payStudentDto.amount,
                 method: payStudentDto.method,
                 note: payStudentDto.note,
+                date: new Date()
             })
-
-            const paidAmount = entity.histories.reduce((sum, history) => sum + +history.amount, 0);
-            const totalAmount = entity.class.feePerLesson * entity.totalLessons;
-
-            let status = 'pending';
-            if (paidAmount === 0) status = 'pending';
-            else if (paidAmount < totalAmount) status = 'partial';
-            else if (paidAmount >= totalAmount) status = 'paid';
-
-            entity.paidAmount = paidAmount;
-            entity.totalAmount = totalAmount;
-            entity.status = status;
-
             await this.paymentsRepository.save(entity)
         }
         return PaymentMapper.toDomain(entity)

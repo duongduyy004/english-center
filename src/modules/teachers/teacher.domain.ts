@@ -1,5 +1,5 @@
-import { User } from "@/modules/users/user.domain";
-import { Class } from "@/modules/classes/class.domain";
+import { User } from "modules/users/user.domain";
+import { Class } from "modules/classes/class.domain";
 
 export class Teacher extends User {
     isActive: boolean;

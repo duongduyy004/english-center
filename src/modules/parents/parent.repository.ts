@@ -1,14 +1,14 @@
 import { FindOptionsWhere, ILike, Repository } from "typeorm";
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { NullableType } from "@/utils/types/nullable.type";
-import { IPaginationOptions } from "@/utils/types/pagination-options";
-import { PaginationResponseDto } from "@/utils/types/pagination-response.dto";
+import { NullableType } from "utils/types/nullable.type";
+import { IPaginationOptions } from "utils/types/pagination-options";
+import { PaginationResponseDto } from "utils/types/pagination-response.dto";
 import { ParentEntity } from "./entities/parent.entity";
 import { Parent } from "./parent.domain";
 import { ParentMapper } from "./parent.mapper";
-import { StudentEntity } from "@/modules/students/entities/student.entity";
-import { Student } from "@/modules/students/student.domain";
+import { StudentEntity } from "modules/students/entities/student.entity";
+import { Student } from "modules/students/student.domain";
 import { StudentMapper } from "../students/student.mapper";
 
 export class FilterParentDto {
