@@ -17,6 +17,12 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
             database: this.configService.get('database.dbName', { infer: true }),
             entities: [__dirname + '/../**/*.entity{.js,.ts}'],
             synchronize: true,
+            ssl: this.configService.get('database.sslMode', { infer: true }) ? {
+                rejectUnauthorized: false
+            } : false,
+            extra: {
+                channel_binding: this.configService.get('database.channelBinding', { infer: true }) || 'require'
+            },
         } as TypeOrmModuleOptions;
     }
 }

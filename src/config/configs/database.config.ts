@@ -37,6 +37,14 @@ class EnvironmentVariablesValidator {
     @IsOptional()
     @IsString()
     DATABASE_HOST: string;
+
+    @IsOptional()
+    @IsString()
+    DATABASE_SSL_MODE: string;
+
+    @IsOptional()
+    @IsString()
+    DATABASE_CHANNEL_BINDING: string;
 }
 
 export default registerAs<DatabaseConfig>('database', () => {
@@ -50,6 +58,8 @@ export default registerAs<DatabaseConfig>('database', () => {
         dbName: process.env.DATABASE_NAME,
         username: process.env.DATABASE_USERNAME || '',
         type: process.env.DATABASE_TYPE || '',
-        host: process.env.DATABASE_HOST
+        host: process.env.DATABASE_HOST,
+        sslMode: process.env.DATABASE_SSL_MODE,
+        channelBinding: process.env.DATABASE_CHANNEL_BINDING
     };
 });

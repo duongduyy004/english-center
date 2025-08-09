@@ -5,4 +5,6 @@ export type DatabaseConfig = {
     username?: string;
     password?: string;
     dbName?: string;
+    sslMode?: string;
+    channelBinding?: string;
 };
