@@ -1,6 +1,6 @@
 import { FindOptionsWhere, ILike, In, Repository } from "typeorm";
 import { StudentEntity } from "./entities/student.entity";
-import { Injectable } from "@nestjs/common";
+import { HttpStatus, Injectable, UnprocessableEntityException } from "@nestjs/common";
 import { Student } from "./student.domain";
 import { InjectRepository } from "@nestjs/typeorm";
 import { StudentMapper } from "./student.mapper";
@@ -8,6 +8,7 @@ import { NullableType } from "utils/types/nullable.type";
 import { IPaginationOptions } from "utils/types/pagination-options";
 import { PaginationResponseDto } from "utils/types/pagination-response.dto";
 import { FilterStudentDto, SortStudentDto } from "./dto/query-student.dto";
+import { RoleEnum } from "modules/roles/roles.enum";
 
 @Injectable()
 export class StudentRepository {
@@ -16,7 +17,7 @@ export class StudentRepository {
     ) { }
 
     async create(data: Omit<Student, 'id' | 'createdAt' | 'updatedAt' | 'deletedAt' | 'classes'>): Promise<Student> {
-        const persistenceModel = StudentMapper.toPersistence(data as Student)
+        const persistenceModel = StudentMapper.toPersistence({ ...data, role: { id: RoleEnum.student } } as Student)
         const newEntity = await this.studentRepository.save(
             this.studentRepository.create(persistenceModel)
         )

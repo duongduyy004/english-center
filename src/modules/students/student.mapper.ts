@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { StudentEntity } from "./entities/student.entity";
 import { Student } from "./student.domain";
+import { RoleEnum } from 'modules/roles/roles.enum';
 
 @Injectable()
 export class StudentMapper {
@@ -15,6 +16,10 @@ export class StudentMapper {
         domainEntity.address = raw.address;
         domainEntity.phone = raw.phone;
         domainEntity.avatar = raw.avatar;
+        domainEntity.role = {
+            id: raw.role.id,
+            name: RoleEnum[raw.role.id]
+        }
         if (raw.classes) {
             domainEntity.classes = raw.classes.map(item => ({
                 discountPercent: item.discount_percent,
@@ -52,6 +57,10 @@ export class StudentMapper {
         persistenceEntity.address = domainEntity.address;
         persistenceEntity.phone = domainEntity.phone;
         persistenceEntity.avatar = domainEntity.avatar;
+        persistenceEntity.role = {
+            id: domainEntity.role.id,
+            name: domainEntity.role.name
+        }
 
         return persistenceEntity;
     }

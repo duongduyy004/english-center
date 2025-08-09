@@ -9,8 +9,7 @@ import databaseConfig from '@/config/configs/database.config';
 import appConfig from '@/config/configs/app.config';
 import jwtConfig from '@/config/configs/jwt.config';
 import { AcceptLanguageResolver, HeaderResolver, I18nModule, QueryResolver } from 'nestjs-i18n';
-import * as path from 'path';
-import { APP_INTERCEPTOR } from '@nestjs/core';
+import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { TransformInterceptor } from '@/core/transform.interceptor';
 import { StudentsModule } from 'modules/students/students.module';
 import { ParentsModule } from 'modules/parents/parents.module';
@@ -19,6 +18,11 @@ import { ClassesModule } from 'modules/classes/classes.module';
 import { PaymentsModule } from 'modules/payments/payments.module';
 import { SessionsModule } from 'modules/sessions/sessions.module';
 import { TeacherPaymentsModule } from 'modules/teacher-payments/teacher-payments.module';
+import { AuthModule } from 'modules/auth/auth.module';
+import * as path from 'path';
+import { JwtAuthGuard } from './modules/auth/guard/jwt-auth.guard';
+import { CaslModule } from './modules/casl/casl.module';
+import { PoliciesGuard } from './modules/auth/guard/policies.guard';
 
 @Module({
   imports: [
@@ -50,15 +54,24 @@ import { TeacherPaymentsModule } from 'modules/teacher-payments/teacher-payments
     ClassesModule,
     PaymentsModule,
     SessionsModule,
-    TeacherPaymentsModule
+    TeacherPaymentsModule,
+    AuthModule,
+    CaslModule
   ],
   controllers: [AppController],
   providers: [AppService,
     {
       provide: APP_INTERCEPTOR,
       useClass: TransformInterceptor
+    },
+    {
+      provide: APP_GUARD,
+      useClass: JwtAuthGuard
+    },
+    {
+      provide: APP_GUARD,
+      useClass: PoliciesGuard
     }
-
   ],
 })
 export class AppModule { }

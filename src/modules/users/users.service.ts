@@ -7,6 +7,11 @@ import { ParentEntity } from 'modules/parents/entities/parent.entity';
 import { StudentEntity } from 'modules/students/entities/student.entity';
 import { TeacherEntity } from 'modules/teachers/entities/teacher.entity';
 import { Repository } from 'typeorm';
+import * as bcrypt from 'bcrypt';
+import { CreateUserDto } from './dto/create-user.dto';
+import { RoleEnum } from 'modules/roles/roles.enum';
+import { UserMapper } from './user.mapper';
+import { User } from './user.domain';
 
 @Injectable()
 export class UsersService {
@@ -48,5 +53,54 @@ export class UsersService {
     }
 
     return false;
+  }
+
+  async findByEmail(email: string) {
+    const userExists = await this.userRepository.findOne({
+      where: { email }
+    })
+    if (userExists) return userExists
+
+    const parentExists = await this.parentRepository.findOne({
+      where: { email }
+    });
+    if (parentExists) return parentExists;
+
+    const studentExists = await this.studentRepository.findOne({
+      where: { email }
+    });
+    if (studentExists) return studentExists;
+
+    const teacherExists = await this.teacherRepository.findOne({
+      where: { email }
+    });
+    if (teacherExists) return teacherExists;
+  }
+
+  isValidPassword(password: string, hash: string) {
+    return bcrypt.compareSync(password, hash);
+  }
+
+  async createAdmin(createUserDto: CreateUserDto) {
+    await this.isEmailExist(createUserDto.email);
+    const newEntity = await this.userRepository.save(
+      this.userRepository.create({ ...createUserDto, role: { id: RoleEnum.admin } } as UserEntity), { transaction: true }
+    )
+    return UserMapper.toDomain(newEntity)
+  }
+
+  async updateUserToken(user: User, refreshToken: string) {
+    if (user.role.id === RoleEnum.admin) {
+      await this.userRepository.update({ id: user.id }, { refreshToken })
+    }
+    if (user.role.id === RoleEnum.teacher) {
+      await this.teacherRepository.update({ id: user.id }, { refreshToken })
+    }
+    if (user.role.id === RoleEnum.parent) {
+      await this.parentRepository.update({ id: user.id }, { refreshToken })
+    }
+    if (user.role.id === RoleEnum.student) {
+      await this.studentRepository.update({ id: user.id }, { refreshToken })
+    }
   }
 }

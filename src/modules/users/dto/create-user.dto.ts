@@ -3,6 +3,8 @@ import { PASSWORD_REGEX } from "utils/constants";
 import { Transform } from "class-transformer";
 import { IsDate, IsEmail, IsEnum, IsNotEmpty, IsString, Matches } from "class-validator";
 import { i18nValidationMessage } from "nestjs-i18n";
+import { RoleDto } from "@/modules/roles/dto/role.dto";
+import { Role } from "@/modules/roles/role.domain";
 
 export class CreateUserDto {
 
@@ -62,4 +64,6 @@ export class CreateUserDto {
     @IsNotEmpty({ message: i18nValidationMessage<I18nTranslations>('validation.NOT_EMPTY') })
     @IsString()
     phone: string;
+
+    role: Role;
 }

@@ -7,9 +7,9 @@ import { PaginationResponseDto } from "utils/types/pagination-response.dto";
 import { ParentEntity } from "./entities/parent.entity";
 import { Parent } from "./parent.domain";
 import { ParentMapper } from "./parent.mapper";
-import { StudentEntity } from "modules/students/entities/student.entity";
 import { Student } from "modules/students/student.domain";
-import { StudentMapper } from "../students/student.mapper";
+import { StudentMapper } from "modules/students/student.mapper";
+import { RoleEnum } from "modules/roles/roles.enum";
 
 export class FilterParentDto {
     name?: string;
@@ -29,7 +29,7 @@ export class ParentRepository {
     ) { }
 
     async create(data: Omit<Parent, 'id' | 'createdAt' | 'updatedAt' | 'deletedAt' | 'students'>): Promise<Parent> {
-        const persistenceModel = ParentMapper.toPersistence(data as Parent)
+        const persistenceModel = ParentMapper.toPersistence({ ...data, role: { id: RoleEnum.parent } } as Parent)
         const newEntity = await this.parentRepository.save(
             this.parentRepository.create(persistenceModel)
         )

@@ -1,4 +1,5 @@
 import { Exclude } from "class-transformer";
+import { Role } from "modules/roles/role.domain";
 
 export class User {
     id: number | string;
@@ -19,6 +20,8 @@ export class User {
     phone: string;
 
     avatar?: string;
+
+    role: Role;
 
     createdAt: Date;
 

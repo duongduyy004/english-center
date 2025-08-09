@@ -1,6 +1,7 @@
 import { Exclude } from "class-transformer";
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn, BeforeInsert, BeforeUpdate } from "typeorm";
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn, BeforeInsert, BeforeUpdate, OneToMany, ManyToOne } from "typeorm";
 import * as bcrypt from "bcrypt";
+import { RoleEntity } from "@/modules/roles/entities/role.entity";
 
 @Entity('user')
 export class UserEntity {
@@ -31,6 +32,12 @@ export class UserEntity {
 
     @Column({ nullable: true })
     avatar?: string;
+
+    @ManyToOne(() => RoleEntity, { eager: true })
+    role: RoleEntity;
+
+    @Column({ nullable: true })
+    refreshToken: string;
 
     @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(0)" })
     createdAt: Date;

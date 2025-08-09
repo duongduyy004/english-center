@@ -5,6 +5,10 @@
 import { Path } from "nestjs-i18n";
 /* prettier-ignore */
 export type I18nTranslations = {
+    "auth": {
+        "UNAUTHORIZED": string;
+        "INCORRECT": string;
+    };
     "class": {
         "SUCCESS": {
             "CREATE_A_CLASS": string;

@@ -1,8 +1,6 @@
 import { ParentEntity } from "modules/Parents/entities/Parent.entity";
 import { Parent } from "modules/parents/Parent.domain";
-import { StudentMapper } from "../students/student.mapper";
-import { Student } from "../students/student.domain";
-import { StudentEntity } from "../students/entities/student.entity";
+import { RoleEnum } from "modules/roles/roles.enum";
 
 export class ParentMapper {
     static toDomain(raw: ParentEntity): Parent {
@@ -16,6 +14,10 @@ export class ParentMapper {
         domainEntity.address = raw.address;
         domainEntity.phone = raw.phone;
         domainEntity.avatar = raw.avatar;
+        domainEntity.role = {
+            id: raw.role.id,
+            name: RoleEnum[raw.role.id]
+        }
         if (raw.students) {
             domainEntity.students = raw.students.map(item => ({
                 id: item.id,

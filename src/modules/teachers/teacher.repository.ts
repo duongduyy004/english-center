@@ -7,8 +7,7 @@ import { TeacherMapper } from "./teacher.mapper";
 import { NullableType } from "utils/types/nullable.type";
 import { IPaginationOptions } from "utils/types/pagination-options";
 import { PaginationResponseDto } from "utils/types/pagination-response.dto";
-import { FilterPaymentDto, SortPaymentDto } from "modules//payments/dto/query-payment.dto";
-import { Class } from "../classes/class.domain";
+import { RoleEnum } from "../roles/roles.enum";
 
 export class FilterTeacherDto {
     name?: string;
@@ -28,7 +27,7 @@ export class TeacherRepository {
     ) { }
 
     async create(data: Omit<Teacher, 'id' | 'createdAt' | 'updatedAt' | 'deletedAt' | 'classes'>): Promise<Teacher> {
-        const persistenceModel = TeacherMapper.toPersistence(data as Teacher)
+        const persistenceModel = TeacherMapper.toPersistence({ ...data, role: { id: RoleEnum.teacher } } as Teacher)
         const newEntity = await this.teacherRepository.save(
             this.teacherRepository.create(persistenceModel)
         )

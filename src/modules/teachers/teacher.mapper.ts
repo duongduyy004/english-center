@@ -1,8 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { TeacherEntity } from "./entities/teacher.entity";
 import { Teacher } from "./teacher.domain";
-import { ClassMapper } from 'modules/classes/class.mapper';
-import { ClassEntity } from '../classes/entities/class.entity';
+import { RoleEnum } from 'modules/roles/roles.enum';
 
 @Injectable()
 export class TeacherMapper {
@@ -22,6 +21,10 @@ export class TeacherMapper {
         domainEntity.description = raw.description;
         domainEntity.salaryPerLesson = raw.salaryPerLesson;
         domainEntity.isActive = raw.isActive;
+        domainEntity.role = {
+            id: raw.role.id,
+            name: RoleEnum[raw.role.id]
+        }
         if (raw.classes) {
             domainEntity.classes = raw.classes.map(item => ({
                 id: item.id,

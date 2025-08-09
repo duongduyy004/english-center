@@ -13,8 +13,7 @@ export class TeacherPaymentRepository {
     ) { }
 
     async autoUpdateTeacherPaymentRecord(session: SessionEntity) {
-
-        await this.sessionsService.getSessions(session.classId)
+        const totalLessons = await this.sessionsService.getSessions(session.classId)
     }
 
     async getAllPayments({ filterOptions, sortOptions, paginationOptions }
