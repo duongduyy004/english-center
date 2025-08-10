@@ -11,5 +11,18 @@ services:
       POSTGRES_PASSWORD: 123456
     volumes:
       - eng-center:/var/lib/postgresql/data
+
+  eng-center:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: app
+    image: duongduyy/eng-center-app:lastest
+    environment:
+      - DATABASE_HOST=eng-center-db
+    expose:
+      - 8080
+    ports:
+      - 8080:8080
 volumes:
   eng-center:

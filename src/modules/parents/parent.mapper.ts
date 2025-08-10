@@ -1,5 +1,5 @@
-import { ParentEntity } from "modules/Parents/entities/Parent.entity";
-import { Parent } from "modules/parents/Parent.domain";
+import { ParentEntity } from "./entities/parent.entity";
+import { Parent } from "./parent.domain";
 import { RoleEnum } from "modules/roles/roles.enum";
 
 export class ParentMapper {
