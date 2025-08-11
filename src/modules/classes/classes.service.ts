@@ -15,6 +15,7 @@ import * as customParseFormat from 'dayjs/plugin/customParseFormat';
 import { Student } from 'modules/students/student.domain';
 import { FilterStudentDto, SortStudentDto } from 'modules/students/dto/query-student.dto';
 import { I18nService } from 'nestjs-i18n';
+import { I18nTranslations } from '@/generated/i18n.generated';
 
 @Injectable()
 export class ClassesService {
@@ -22,7 +23,7 @@ export class ClassesService {
     private classRepository: ClassRepository,
     private teachersService: TeachersService,
     private studentsService: StudentsService,
-    private i18nService: I18nService
+    private i18nService: I18nService<I18nTranslations>
   ) { }
   create(createClassDto: CreateClassDto) {
     return this.classRepository.create(createClassDto);
@@ -40,8 +41,10 @@ export class ClassesService {
     return this.classRepository.findManyWithPagination({ filterOptions, sortOptions, paginationOptions })
   }
 
-  findOne(id: Class['id']) {
-    return this.classRepository.findById(id);
+  async findOne(id: Class['id']) {
+    const result = await this.classRepository.findById(id);
+    if (!result) throw new BadRequestException(this.i18nService.t('class.FAIL.NOT_FOUND'))
+    return result
   }
 
   update(id: Class['id'], updateClassDto: UpdateClassDto) {

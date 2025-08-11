@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { AppController } from '@/app.controller';
 import { AppService } from '@/app.service';
@@ -23,6 +23,10 @@ import * as path from 'path';
 import { JwtAuthGuard } from './modules/auth/guard/jwt-auth.guard';
 import { CaslModule } from './modules/casl/casl.module';
 import { PoliciesGuard } from './modules/auth/guard/policies.guard';
+import { LoggerModule } from 'nestjs-pino';
+import { WinstonModule } from 'nest-winston';
+import { winstonConfig } from '@/logger/logger.config';
+import { HttpLoggerInterceptor } from './core/logger.interceptor';
 
 @Module({
   imports: [
@@ -47,6 +51,7 @@ import { PoliciesGuard } from './modules/auth/guard/policies.guard';
     TypeOrmModule.forRootAsync({
       useClass: TypeOrmConfigService
     }),
+    WinstonModule.forRoot(winstonConfig),
     UsersModule,
     StudentsModule,
     ParentsModule,
@@ -71,7 +76,12 @@ import { PoliciesGuard } from './modules/auth/guard/policies.guard';
     {
       provide: APP_GUARD,
       useClass: PoliciesGuard
+    },
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: HttpLoggerInterceptor
     }
   ],
 })
+
 export class AppModule { }

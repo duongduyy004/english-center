@@ -5,7 +5,9 @@ import { AllConfigType } from './config/config.type';
 import { I18nValidationExceptionFilter, I18nValidationPipe } from 'nestjs-i18n';
 import { ClassSerializerInterceptor } from '@nestjs/common';
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {
+    bufferLogs: true
+  });
   const configService = app.get(ConfigService<AllConfigType>);
   app.useGlobalPipes(new I18nValidationPipe({
     stopAtFirstError: true,

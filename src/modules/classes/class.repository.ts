@@ -13,14 +13,15 @@ import { TeacherMapper } from "../teachers/teacher.mapper";
 import { Student } from "../students/student.domain";
 import { AddStudentsDto } from "./dto/add-students.dto";
 import { ClassStudentEntity } from "./entities/class-student.entity";
-
-
+import { I18nService } from "nestjs-i18n";
+import { I18nTranslations } from "@/generated/i18n.generated";
 
 @Injectable()
 export class ClassRepository {
     constructor(
         @InjectRepository(ClassEntity) private classRepository: Repository<ClassEntity>,
-        @InjectRepository(ClassStudentEntity) private classStudentRepository: Repository<ClassStudentEntity>
+        @InjectRepository(ClassStudentEntity) private classStudentRepository: Repository<ClassStudentEntity>,
+        private i18nService: I18nService<I18nTranslations>
     ) { }
 
     async create(data: Omit<Class, 'id' | 'createdAt' | 'updatedAt' | 'deletedAt' | 'teacher'>): Promise<Class> {
