@@ -10,20 +10,26 @@ export class HttpLoggerInterceptor implements NestInterceptor {
         const start = Date.now()
         const req = context.switchToHttp().getRequest()
         const res = context.switchToHttp().getResponse()
-        const { name, email } = req?.user
+        let name = undefined;
+        let email = undefined
+        if (req?.user) {
+            name = req?.user?.name;
+            email = req?.user?.email;
+        }
         const statusCode = res.statusCode
         const { method, originalUrl } = req;
+        const userInfor = name && email ? `${name}:${email}` : 'Guest User';
 
         return next.handle().pipe(
             tap(() => {
                 const duration = Date.now() - start
                 this.logger.log(
-                    `${name}:${email} ${method} ${originalUrl} ${statusCode} - ${duration}ms`
+                    `${userInfor} ${method} ${originalUrl} ${statusCode} - ${duration}ms`
                 );
             }),
             catchError((error) => {
                 const duration = Date.now() - start;
-                this.logger.error(`${name}:${email} ${method} ${originalUrl} ${statusCode} - ${duration}ms - Error: ${error.message || 'Unknown error'}`)
+                this.logger.error(`${userInfor} ${method} ${originalUrl} ${statusCode} - ${duration}ms - Error: ${error.message || 'Unknown error'}`)
                 return throwError(() => error)
             })
         )
