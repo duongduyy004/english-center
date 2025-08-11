@@ -23,11 +23,10 @@ import * as path from 'path';
 import { JwtAuthGuard } from './modules/auth/guard/jwt-auth.guard';
 import { CaslModule } from './modules/casl/casl.module';
 import { PoliciesGuard } from './modules/auth/guard/policies.guard';
-import { LoggerModule } from 'nestjs-pino';
 import { WinstonModule } from 'nest-winston';
 import { winstonConfig } from '@/logger/logger.config';
 import { HttpLoggerInterceptor } from './core/logger.interceptor';
-import { MenuModule } from 'modules/menu/menu.module';
+import { MenuModule } from '@/modules/menus/menu.module';
 
 @Module({
   imports: [
