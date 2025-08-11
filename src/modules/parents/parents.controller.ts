@@ -42,16 +42,16 @@ export class ParentsController {
 
   @Get(':id')
   findOne(@Param('id') id: Parent['id']) {
-    return this.parentsService.findOne(+id);
+    return this.parentsService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateParentDto: UpdateParentDto) {
-    return this.parentsService.update(+id, updateParentDto);
+  update(@Param('id') id: Parent['id'], @Body() updateParentDto: UpdateParentDto) {
+    return this.parentsService.update(id, updateParentDto);
   }
 
   @Delete(':id')
-  delete(@Param('id') id: string) {
-    return this.parentsService.delete(+id);
+  delete(@Param('id') id: Parent['id']) {
+    return this.parentsService.delete(id);
   }
 }

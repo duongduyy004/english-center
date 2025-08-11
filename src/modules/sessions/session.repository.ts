@@ -35,7 +35,7 @@ export class SessionRepository {
         await this.sessionRepository.save(sessionEntity)
 
         const attendances: AttendanceSessionEntity[] = studentIds.map(item => ({
-            studentId: parseInt(item),
+            studentId: item,
             sessionId: sessionEntity.id,
             status: 'absent'
         }))

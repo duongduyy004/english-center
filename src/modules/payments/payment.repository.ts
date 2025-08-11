@@ -47,8 +47,8 @@ export class PaymentRepository {
                     totalLessons,
                     totalAmount,
                     discountPercent,
-                    studentId: parseInt(student.student.id.toString()),
-                    classId: parseInt(classId.toString())
+                    studentId: student.studentId.toString(),
+                    classId: classId.toString()
                 })
             })
             return await this.paymentsRepository.save(paymentRecords)

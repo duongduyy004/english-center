@@ -1,8 +1,7 @@
-import { Class } from "modules/classes/class.domain";
 import { Student } from "modules/students/student.domain";
 
 export class Payment {
-    id: string | number;
+    id: string;
 
     month: number;
 
@@ -21,7 +20,7 @@ export class Payment {
     student: Partial<Student>
 
     class: {
-        id: number,
+        id: string,
         name: string,
         lessons?: number
     }

@@ -5,6 +5,7 @@ import { UpdateStudentDto } from './dto/update-student.dto';
 import { ResponseMessage } from '@/decorator/customize.decorator';
 import { QueryDto } from 'utils/types/query.dto';
 import { FilterStudentDto, SortStudentDto } from './dto/query-student.dto';
+import { Student } from './student.domain';
 
 @Controller('students')
 export class StudentsController {
@@ -31,22 +32,22 @@ export class StudentsController {
   }
 
   @Get('/schedule/:id')
-  getSchedule(@Param('id') id: string) {
+  getSchedule(@Param('id') id: Student['id']) {
     return this.studentsService.getSchedule(id)
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.studentsService.findOne(+id);
+  findOne(@Param('id') id: Student['id']) {
+    return this.studentsService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateStudentDto: UpdateStudentDto) {
-    return this.studentsService.update(+id, updateStudentDto);
+  update(@Param('id') id: Student['id'], @Body() updateStudentDto: UpdateStudentDto) {
+    return this.studentsService.update(id, updateStudentDto);
   }
 
   @Delete(':id')
-  delete(@Param('id') id: string) {
-    return this.studentsService.delete(+id);
+  delete(@Param('id') id: Student['id']) {
+    return this.studentsService.delete(id);
   }
 }

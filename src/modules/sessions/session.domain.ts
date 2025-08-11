@@ -3,7 +3,7 @@ import { Student } from "modules/students/student.domain";
 import { Exclude } from "class-transformer";
 
 export class Session {
-    id: number;
+    id: string;
 
     date: Date
 

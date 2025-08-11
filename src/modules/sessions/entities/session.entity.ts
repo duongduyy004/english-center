@@ -5,8 +5,8 @@ import { Class } from "modules/classes/class.domain";
 
 @Entity('sessions')
 export class SessionEntity {
-    @PrimaryGeneratedColumn()
-    id: number;
+    @PrimaryGeneratedColumn('uuid')
+    id: string;
 
     @Column()
     classId: Class['id']

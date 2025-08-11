@@ -27,6 +27,7 @@ import { LoggerModule } from 'nestjs-pino';
 import { WinstonModule } from 'nest-winston';
 import { winstonConfig } from '@/logger/logger.config';
 import { HttpLoggerInterceptor } from './core/logger.interceptor';
+import { MenuModule } from 'modules/menu/menu.module';
 
 @Module({
   imports: [
@@ -61,7 +62,8 @@ import { HttpLoggerInterceptor } from './core/logger.interceptor';
     SessionsModule,
     TeacherPaymentsModule,
     AuthModule,
-    CaslModule
+    CaslModule,
+    MenuModule
   ],
   controllers: [AppController],
   providers: [AppService,

@@ -30,22 +30,22 @@ export class TeachersController {
   }
 
   @Get('/schedule/:id')
-  getSchedule(@Param('id') id: string) {
+  getSchedule(@Param('id') id: Teacher['id']) {
     return this.teachersService.getSchedule(id);
   }
 
   @Get(':id')
   findOne(@Param('id') id: Teacher['id']) {
-    return this.teachersService.findOne(+id);
+    return this.teachersService.findOne(id);
   }
 
   @Patch(':id')
   update(@Param('id') id: Teacher['id'], @Body() updateTeacherDto: UpdateTeacherDto) {
-    return this.teachersService.update(+id, updateTeacherDto);
+    return this.teachersService.update(id, updateTeacherDto);
   }
 
   @Delete(':id')
   delete(@Param('id') id: Teacher['id']) {
-    return this.teachersService.delete(+id);
+    return this.teachersService.delete(id);
   }
 }

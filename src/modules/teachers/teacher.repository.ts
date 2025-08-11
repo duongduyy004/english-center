@@ -46,7 +46,7 @@ export class TeacherRepository {
 
     async findById(id: Teacher['id']): Promise<NullableType<Teacher>> {
         const entity = await this.teacherRepository.findOne({
-            where: { id: Number(id) },
+            where: { id },
         })
         return entity ? TeacherMapper.toDomain(entity) : null
     }
@@ -100,7 +100,7 @@ export class TeacherRepository {
 
     async update(id: Teacher['id'], payload: Partial<Omit<Teacher, 'id' | 'password' | 'createdAt' | 'updatedAt' | 'deletedAt'>>): Promise<Teacher> {
         const entity = await this.teacherRepository.findOne({
-            where: { id: Number(id) },
+            where: { id },
         });
 
         const updatedEntity = await this.teacherRepository.save(

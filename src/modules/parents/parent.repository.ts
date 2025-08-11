@@ -48,7 +48,7 @@ export class ParentRepository {
 
     async findById(id: Parent['id']): Promise<NullableType<Parent>> {
         const entity = await this.parentRepository.findOne({
-            where: { id: Number(id) },
+            where: { id },
             relations: ['students']
         })
         return entity ? ParentMapper.toDomain(entity) : null
@@ -103,7 +103,7 @@ export class ParentRepository {
 
     async update(id: Parent['id'], payload: Partial<Omit<Parent, 'id' | 'password' | 'createdAt' | 'updatedAt' | 'deletedAt'>>): Promise<Parent> {
         const entity = await this.parentRepository.findOne({
-            where: { id: Number(id) },
+            where: { id },
             relations: ['students']
         });
 

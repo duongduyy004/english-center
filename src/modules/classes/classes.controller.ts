@@ -98,13 +98,13 @@ export class ClassesController {
   @ResponseMessage('class.SUCCESS.GET_A_CLASS')
   @CheckPolicies((ability: AppAbility) => ability.can(Actions.Read, ClassEntity))
   findOne(@Param('id') id: string) {
-    return this.classesService.findOne(+id);
+    return this.classesService.findOne(id);
   }
 
   @Patch(':id')
   @ResponseMessage('class.SUCCESS.UPDATE_A_CLASS')
   @CheckPolicies((ability: AppAbility) => ability.can(Actions.Update, ClassEntity))
   update(@Param('id') id: Class['id'], @Body() updateClassDto: UpdateClassDto) {
-    return this.classesService.update(+id, updateClassDto);
+    return this.classesService.update(id, updateClassDto);
   }
 }

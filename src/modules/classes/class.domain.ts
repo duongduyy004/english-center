@@ -14,7 +14,7 @@ export class TimeSlots {
 }
 
 export class Class {
-    id: number;
+    id: string;
     name: string;
     grade: number;
     section: number;

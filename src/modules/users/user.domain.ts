@@ -2,7 +2,7 @@ import { Exclude } from "class-transformer";
 import { Role } from "modules/roles/role.domain";
 
 export class User {
-    id: number | string;
+    id: string;
 
     name: string;
 

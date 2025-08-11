@@ -27,8 +27,8 @@ class Schedule {
 
 @Entity('class')
 export class ClassEntity {
-    @PrimaryGeneratedColumn()
-    id: number
+    @PrimaryGeneratedColumn('uuid')
+    id: string
 
     @Column()
     name: string

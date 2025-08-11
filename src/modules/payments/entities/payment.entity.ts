@@ -16,8 +16,8 @@ export class Histories {
 
 @Entity('payments')
 export class PaymentEntity {
-    @PrimaryGeneratedColumn()
-    id: string | number;
+    @PrimaryGeneratedColumn('uuid')
+    id: string;
 
     @Column()
     month: number;

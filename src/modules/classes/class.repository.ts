@@ -39,7 +39,7 @@ export class ClassRepository {
         return entities.map(entity => ClassMapper.toDomain(entity));
     }
 
-    async findById(id: number): Promise<NullableType<Class>> {
+    async findById(id: Class['id']): Promise<NullableType<Class>> {
         const entity = await this.classRepository.findOne({
             where: { id },
             relations: ['students.student', 'teacher']
@@ -47,7 +47,7 @@ export class ClassRepository {
         return entity ? ClassMapper.toDomain(entity) : null;
     }
 
-    async update(id: number, data: Partial<Omit<Class, 'id' | 'createdAt' | 'updatedAt' | 'teacher' | 'students'>>): Promise<Class> {
+    async update(id: Class['id'], data: Partial<Omit<Class, 'id' | 'createdAt' | 'updatedAt' | 'teacher' | 'students'>>): Promise<Class> {
         await this.classRepository.update(id, data);
         const updatedEntity = await this.classRepository.findOne({
             where: { id },

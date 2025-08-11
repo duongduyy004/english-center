@@ -19,8 +19,8 @@ export class ClassLessons {
 
 @Entity('teacher_payments')
 export class TeacherPaymentEntity {
-    @PrimaryGeneratedColumn()
-    id: string | number;
+    @PrimaryGeneratedColumn('uuid')
+    id: string;
 
     @Column()
     month: number;
