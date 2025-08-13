@@ -30,6 +30,9 @@ export type I18nTranslations = {
             "SCHEDULE_CONFLICT": string;
         };
     };
+    "common": {
+        "NOT_FOUND": string;
+    };
     "student": {
         "SUCCESS": {
             "CREATE_A_STUDENT": string;
@@ -64,6 +67,7 @@ export type I18nTranslations = {
         "MAX_LENGTH": string;
         "MIN_VALUE": string;
         "MAX_VALUE": string;
+        "INVALID_ENUM_VALUE": string;
     };
 };
 /* prettier-ignore */

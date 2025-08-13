@@ -27,6 +27,7 @@ import { WinstonModule } from 'nest-winston';
 import { winstonConfig } from '@/logger/logger.config';
 import { HttpLoggerInterceptor } from './core/logger.interceptor';
 import { MenuModule } from '@/modules/menus/menu.module';
+import { TransactionsModule } from './modules/transactions/transactions.module';
 
 @Module({
   imports: [
@@ -62,7 +63,8 @@ import { MenuModule } from '@/modules/menus/menu.module';
     TeacherPaymentsModule,
     AuthModule,
     CaslModule,
-    MenuModule
+    MenuModule,
+    TransactionsModule
   ],
   controllers: [AppController],
   providers: [AppService,
