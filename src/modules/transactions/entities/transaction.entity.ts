@@ -1,4 +1,4 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, DeleteDateColumn, Entity, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity('transaction')
 export class TransactionEntity {
@@ -12,8 +12,11 @@ export class TransactionEntity {
     amount: number;
 
     @Column()
-    description: number;
+    description: string;
 
-    @Column()
+    @Column({ default: () => 'CURRENT_DATE' })
     transaction_at: Date;
+
+    @DeleteDateColumn()
+    deleteAt: Date;
 }

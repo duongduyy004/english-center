@@ -5,5 +5,6 @@
     "MIN_LENGTH": "{property} needs to be at least {constraints.0} characters or digits",
     "MAX_LENGTH": "{property} needs to be less than {constraints.0} characters or digits",
     "MIN_VALUE": "{property} must be greater than {constraints.0}",
-    "MAX_VALUE": "{property} must be less than {constraints.0}"
+    "MAX_VALUE": "{property} must be less than {constraints.0}",
+    "INVALID_ENUM_VALUE": "{property} must be one of the following values: {values}"
 }

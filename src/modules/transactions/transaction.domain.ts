@@ -5,7 +5,7 @@ export class Transaction {
 
     amount: number;
 
-    description: number;
+    description: string;
 
     transaction_at: Date;
 }

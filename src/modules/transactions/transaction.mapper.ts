@@ -9,6 +9,17 @@ export class TransactionMapper {
         domainEntity.description = raw.description;
         domainEntity.type = raw.type;
         domainEntity.transaction_at = raw.transaction_at;
+
         return domainEntity;
+    }
+
+    static toPersistence(domainEntity: Transaction): TransactionEntity {
+        const persistenceEntity = new TransactionEntity();
+        persistenceEntity.id = domainEntity.id;
+        persistenceEntity.amount = domainEntity.amount;
+        persistenceEntity.description = domainEntity.description;
+        persistenceEntity.type = domainEntity.type;
+        persistenceEntity.transaction_at = domainEntity.transaction_at;
+        return persistenceEntity;
     }
 }
