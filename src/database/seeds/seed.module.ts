@@ -11,6 +11,7 @@ import { ClassSeedModule } from './class/class-seed.module';
 import { StudentSeedModule } from './student/student-seed.module';
 import { TeacherSeedModule } from './teacher/teacher-seed.module';
 import { ParentSeedModule } from './parent/parent-seed.module';
+import { MenuSeedModule } from './menu/menu-seed.module';
 
 @Module({
     imports: [
@@ -20,6 +21,7 @@ import { ParentSeedModule } from './parent/parent-seed.module';
         StudentSeedModule,
         TeacherSeedModule,
         ParentSeedModule,
+        MenuSeedModule,
         ConfigModule.forRoot({
             isGlobal: true,
             load: [databaseConfig, appConfig],
