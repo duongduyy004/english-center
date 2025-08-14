@@ -24,7 +24,7 @@ export class AdminUserSeedService {
         }
 
         const existingAdmin = await this.userRepository.findOne({
-            where: { email: 'admin@example.com' }
+            where: { email: 'admin@gmail.com' }
         });
 
         if (!existingAdmin) {
