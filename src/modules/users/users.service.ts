@@ -12,6 +12,9 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { RoleEnum } from 'modules/roles/roles.enum';
 import { UserMapper } from './user.mapper';
 import { User } from './user.domain';
+import { Parent } from '../parents/parent.domain';
+import { Teacher } from '../teachers/teacher.domain';
+import { Student } from '../students/student.domain';
 
 @Injectable()
 export class UsersService {
@@ -89,7 +92,7 @@ export class UsersService {
     return UserMapper.toDomain(newEntity)
   }
 
-  async updateUserToken(user: User, refreshToken: string) {
+  async updateUserToken(user: any, refreshToken: string) {
     if (user.role.id === RoleEnum.admin) {
       await this.userRepository.update({ id: user.id }, { refreshToken })
     }
@@ -101,6 +104,21 @@ export class UsersService {
     }
     if (user.role.id === RoleEnum.student) {
       await this.studentRepository.update({ id: user.id }, { refreshToken })
+    }
+  }
+
+  async findUserByToken(role: any, refreshToken: string) {
+    if (role.id === RoleEnum.admin) {
+      return await this.userRepository.findOne({ where: { refreshToken } })
+    }
+    if (role.id === RoleEnum.teacher) {
+      return await this.teacherRepository.findOne({ where: { refreshToken } })
+    }
+    if (role.id === RoleEnum.parent) {
+      return await this.parentRepository.findOne({ where: { refreshToken } })
+    }
+    if (role.id === RoleEnum.student) {
+      return await this.studentRepository.findOne({ where: { refreshToken } })
     }
   }
 }

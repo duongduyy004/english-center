@@ -1,10 +1,8 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Req, Res, UseGuards, SerializeOptions, BadRequestException } from '@nestjs/common';
+import { Controller, Get, Post, Req, Res, UseGuards, BadRequestException } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { Response } from 'express';
+import { Request, Response } from 'express';
 import { CheckPolicies, Public } from '@/decorator/customize.decorator';
 import { LocalAuthGuard } from './guard/local-auth.guard';
-import { AppAbility } from '../casl/casl-ability.factory/casl-ability.factory';
-import { Actions } from '@/utils/constants';
 import { I18nService } from 'nestjs-i18n';
 import { I18nTranslations } from '@/generated/i18n.generated';
 import { RoleEnum } from '../roles/roles.enum';
@@ -35,5 +33,12 @@ export class AuthController {
       throw new BadRequestException(this.i18nService.t('auth.INCORRECT'))
     }
     return this.authService.login(req.user, response)
+  }
+
+
+  @Get('refresh')
+  getRefreshToken(@Req() req: Request, @Res({ passthrough: true }) response: Response) {
+    const { refresh_token } = req.cookies
+    return this.authService.processNewToken(refresh_token, response)
   }
 }
