@@ -9,6 +9,12 @@ export class TeacherEntity extends UserEntity {
     @Column({ default: true })
     isActive: boolean
 
+    @Column({ nullable: true })
+    introduction: string;
+
+    @Column({ nullable: true })
+    workExperience: string;
+
     @Column()
     description: string
 
