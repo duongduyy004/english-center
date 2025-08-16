@@ -1,4 +1,4 @@
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, Tree, TreeChildren, TreeParent, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, PrimaryGeneratedColumn, Tree, TreeChildren, TreeParent, UpdateDateColumn } from "typeorm";
 
 @Entity('menus')
 @Tree('closure-table')
@@ -11,6 +11,9 @@ export class MenuEntity {
 
     @Column()
     title: string;
+
+    @Column({ nullable: true })
+    order: number;
 
     @TreeChildren({ cascade: true })
     children: MenuEntity[];

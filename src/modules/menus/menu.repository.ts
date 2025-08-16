@@ -35,6 +35,7 @@ export class MenusRepository {
         const entity = await this.menuRepository.findOne({ where: { id } });
         if (updateMenuDto.title) entity.title = updateMenuDto.title;
         if (updateMenuDto.url) entity.url = updateMenuDto.url;
+        if (updateMenuDto.order) entity.order = updateMenuDto.order;
         if (updateMenuDto.parentId) entity.parent = await this.menuRepository.findOne({ where: { id: updateMenuDto.parentId } });
 
         return await this.menuRepository.save(entity);
