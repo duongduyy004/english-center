@@ -7,7 +7,11 @@ export class TransactionMapper {
         domainEntity.id = raw.id;
         domainEntity.amount = raw.amount;
         domainEntity.description = raw.description;
-        domainEntity.type = raw.type;
+        domainEntity.category = {
+            id: raw.category.id,
+            name: raw.category.name,
+            type: raw.category.type
+        };
         domainEntity.transaction_at = raw.transaction_at;
 
         return domainEntity;
@@ -18,7 +22,7 @@ export class TransactionMapper {
         persistenceEntity.id = domainEntity.id;
         persistenceEntity.amount = domainEntity.amount;
         persistenceEntity.description = domainEntity.description;
-        persistenceEntity.type = domainEntity.type;
+        persistenceEntity.category = domainEntity.category
         persistenceEntity.transaction_at = domainEntity.transaction_at;
         return persistenceEntity;
     }

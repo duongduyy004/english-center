@@ -1,6 +1,6 @@
 import { InjectRepository } from "@nestjs/typeorm";
 import { TransactionEntity } from "./entities/transaction.entity";
-import { Between, FindOptionsWhere, Repository } from "typeorm";
+import { Between, FindOptionsWhere, In, Repository } from "typeorm";
 import { CreateTransactionDto } from "./dto/create-transaction.dto";
 import { TransactionMapper } from "./transaction.mapper";
 import { IPaginationOptions } from "@/utils/types/pagination-options";
@@ -8,10 +8,13 @@ import { FilterTransactionDto, SortTransactionDto } from "./dto/query-transactio
 import { PaginationResponseDto } from "@/utils/types/pagination-response.dto";
 import { Transaction } from "./transaction.domain";
 import { UpdateTransactionDto } from "./dto/update-transaction.dto";
+import { TransactionCategoryEntity } from "./entities/transaction-category.entity";
+import { CreateCategoryDto } from "./dto/create-category.dto";
 
 export class TransactionRepository {
     constructor(
-        @InjectRepository(TransactionEntity) private transactionRepository: Repository<TransactionEntity>
+        @InjectRepository(TransactionEntity) private transactionRepository: Repository<TransactionEntity>,
+        @InjectRepository(TransactionCategoryEntity) private transactionCategoryRepository: Repository<TransactionCategoryEntity>
     ) { }
 
     async create(createTransactionDto: CreateTransactionDto) {
@@ -32,7 +35,13 @@ export class TransactionRepository {
         paginationOptions: IPaginationOptions;
     }): Promise<PaginationResponseDto<Transaction>> {
         const where: FindOptionsWhere<TransactionEntity> = {};
-        if (filterOptions?.type) where.type = filterOptions.type;
+        if (filterOptions?.type) {
+            const categories = await this.transactionCategoryRepository.find({
+                where: { type: filterOptions.type }
+            })
+
+            where.category = In(categories)
+        }
         if (filterOptions?.startDate && filterOptions?.endDate) {
             where.transaction_at = Between(filterOptions.startDate, filterOptions.endDate)
         }
@@ -75,7 +84,6 @@ export class TransactionRepository {
         const entity = await this.transactionRepository.findOne({ where: { id } })
         if (updateTransactionDto?.amount) entity.amount = updateTransactionDto.amount;
         if (updateTransactionDto?.description) entity.description = updateTransactionDto.description;
-        if (updateTransactionDto?.type) entity.type = updateTransactionDto.type;
 
         await this.transactionRepository.save(entity);
 
@@ -84,5 +92,17 @@ export class TransactionRepository {
 
     async delete(id: Transaction['id']) {
         return this.transactionRepository.softDelete({ id });
+    }
+
+    async createCategory(createCategoryDto: CreateCategoryDto) {
+        const entity = await this.transactionCategoryRepository.save(
+            this.transactionCategoryRepository.create(createCategoryDto)
+        )
+
+        return entity
+    }
+
+    async getAllCategories() {
+        return this.transactionCategoryRepository.find();
     }
 }
