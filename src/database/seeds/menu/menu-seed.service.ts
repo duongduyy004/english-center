@@ -16,28 +16,32 @@ export class MenuSeedService {
         await this.menuRepository.save(
             this.menuRepository.create({
                 title: 'Trang chủ',
-                url: '/'
+                url: '/',
+                order: 0
             })
         )
 
         await this.menuRepository.save(
             this.menuRepository.create({
                 title: 'Về chúng tôi',
-                url: '/about-us'
+                url: '/about-us',
+                order: 0
             })
         )
 
         await this.menuRepository.save(
             this.menuRepository.create({
                 title: 'Giáo viên',
-                url: '/teacher'
+                url: '/teacher',
+                order: 0
             })
         )
 
         await this.menuRepository.save(
             this.menuRepository.create({
                 title: 'Đánh giá',
-                url: '/rating'
+                url: '/rating',
+                order: 0
             })
         )
     }
