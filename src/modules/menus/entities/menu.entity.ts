@@ -7,7 +7,7 @@ export class MenuEntity {
     id: string;
 
     @Column({ nullable: true })
-    url: string;
+    slug: string;
 
     @Column()
     title: string;

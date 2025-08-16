@@ -16,7 +16,7 @@ export class MenuSeedService {
         await this.menuRepository.save(
             this.menuRepository.create({
                 title: 'Trang chủ',
-                url: '/',
+                slug: '',
                 order: 0
             })
         )
@@ -24,7 +24,7 @@ export class MenuSeedService {
         await this.menuRepository.save(
             this.menuRepository.create({
                 title: 'Về chúng tôi',
-                url: '/about-us',
+                slug: 'about-us',
                 order: 0
             })
         )
@@ -32,7 +32,7 @@ export class MenuSeedService {
         await this.menuRepository.save(
             this.menuRepository.create({
                 title: 'Giáo viên',
-                url: '/teacher',
+                slug: 'teacher',
                 order: 0
             })
         )
@@ -40,7 +40,7 @@ export class MenuSeedService {
         await this.menuRepository.save(
             this.menuRepository.create({
                 title: 'Đánh giá',
-                url: '/rating',
+                slug: 'rating',
                 order: 0
             })
         )
