@@ -1,6 +1,6 @@
 export class CreateMenuDto {
     title: string;
-    url: string;
+    slug: string;
     order: number;
     parentId: string;
 }

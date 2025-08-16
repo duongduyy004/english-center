@@ -1,6 +1,6 @@
 export class Menu {
     id: string;
-    url: string;
+    slug: string;
     title: string;
     order: number;
     children: Menu[];

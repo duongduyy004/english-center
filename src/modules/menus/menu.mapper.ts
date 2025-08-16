@@ -9,7 +9,7 @@ export class MenuMapper {
 
         const domain = new Menu();
         domain.id = entity.id;
-        domain.url = entity.url;
+        domain.slug = entity.slug;
         domain.title = entity.title;
         domain.order = entity.order;
 
@@ -35,7 +35,7 @@ export class MenuMapper {
 
         const entity = new MenuEntity();
         entity.id = domain.id;
-        entity.url = domain.url;
+        entity.slug = domain.slug;
         entity.title = domain.title;
         entity.order = domain.order;
 

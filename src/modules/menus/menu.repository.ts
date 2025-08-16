@@ -18,7 +18,7 @@ export class MenusRepository {
     async create(createMenuDto: CreateMenuDto) {
         const menuEntity = new MenuEntity();
         menuEntity.title = createMenuDto.title;
-        menuEntity.url = createMenuDto.url;
+        menuEntity.slug = createMenuDto.slug;
 
         if (createMenuDto.parentId) {
             menuEntity.parent = await this.menuRepository.findOne({ where: { id: createMenuDto.parentId } })
@@ -34,7 +34,7 @@ export class MenusRepository {
     async updateMenu(id: Menu['id'], updateMenuDto: UpdateMenuDto) {
         const entity = await this.menuRepository.findOne({ where: { id } });
         if (updateMenuDto.title) entity.title = updateMenuDto.title;
-        if (updateMenuDto.url) entity.url = updateMenuDto.url;
+        if (updateMenuDto.slug) entity.slug = updateMenuDto.slug;
         if (updateMenuDto.order) entity.order = updateMenuDto.order;
         if (updateMenuDto.parentId) entity.parent = await this.menuRepository.findOne({ where: { id: updateMenuDto.parentId } });
 
