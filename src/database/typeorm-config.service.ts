@@ -1,4 +1,5 @@
 import { AllConfigType } from "@/config/config.type";
+import { AuditSubscriber } from "@/subscribers/entity.subscriber";
 import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { TypeOrmModuleOptions, TypeOrmOptionsFactory } from "@nestjs/typeorm";
@@ -15,6 +16,7 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
             password: this.configService.get('database.password', { infer: true }),
             database: this.configService.get('database.dbName', { infer: true }),
             entities: [__dirname + '/../**/*.entity{.js,.ts}'],
+            subscribers: [AuditSubscriber],
             synchronize: true,
             ssl: this.configService.get('database.sslMode', { infer: true }) ? {
                 rejectUnauthorized: false

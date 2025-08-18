@@ -48,12 +48,13 @@ export class ClassRepository {
     }
 
     async update(id: Class['id'], data: Partial<Omit<Class, 'id' | 'createdAt' | 'updatedAt' | 'teacher' | 'students'>>): Promise<Class> {
-        await this.classRepository.update(id, data);
-        const updatedEntity = await this.classRepository.findOne({
+        const entity = await this.classRepository.findOne({
             where: { id },
             relations: ['students.student', 'teacher']
         });
-        return ClassMapper.toDomain(updatedEntity);
+
+        await this.classRepository.save({ ...entity, ...data })
+        return ClassMapper.toDomain(entity);
     }
 
     async findManyWithPagination({

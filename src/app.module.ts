@@ -28,6 +28,8 @@ import { winstonConfig } from '@/logger/logger.config';
 import { HttpLoggerInterceptor } from './core/logger.interceptor';
 import { MenuModule } from '@/modules/menus/menu.module';
 import { TransactionsModule } from './modules/transactions/transactions.module';
+import { AuditLogModule } from './modules/audit-log/audit-log.module';
+import { ClsModule } from 'nestjs-cls';
 
 @Module({
   imports: [
@@ -53,6 +55,10 @@ import { TransactionsModule } from './modules/transactions/transactions.module';
       useClass: TypeOrmConfigService
     }),
     WinstonModule.forRoot(winstonConfig),
+    ClsModule.forRoot({
+      global: true,
+      middleware: { mount: true }
+    }),
     UsersModule,
     StudentsModule,
     ParentsModule,
@@ -64,7 +70,8 @@ import { TransactionsModule } from './modules/transactions/transactions.module';
     AuthModule,
     CaslModule,
     MenuModule,
-    TransactionsModule
+    TransactionsModule,
+    AuditLogModule
   ],
   controllers: [AppController],
   providers: [AppService,
