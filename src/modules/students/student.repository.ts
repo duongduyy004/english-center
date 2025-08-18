@@ -109,16 +109,9 @@ export class StudentRepository {
             throw new Error('Student not found');
         }
 
-        const updatedEntity = await this.studentRepository.save(
-            this.studentRepository.create(
-                StudentMapper.toPersistence({
-                    ...StudentMapper.toDomain(entity),
-                    ...payload,
-                } as Student),
-            ),
-        );
+        await this.studentRepository.save({ ...entity, ...payload, role: { id: entity.role.id } })
 
-        return StudentMapper.toDomain(updatedEntity);
+        return StudentMapper.toDomain(entity);
     }
 
     async delete(id: Student['id']): Promise<void> {

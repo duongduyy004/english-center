@@ -104,23 +104,15 @@ export class ParentRepository {
     async update(id: Parent['id'], payload: Partial<Omit<Parent, 'id' | 'password' | 'createdAt' | 'updatedAt' | 'deletedAt'>>): Promise<Parent> {
         const entity = await this.parentRepository.findOne({
             where: { id },
-            relations: ['students']
+            relations: ['students', 'role']
         });
 
         if (!entity) {
             throw new Error('Parent not found');
         }
 
-        const updatedEntity = await this.parentRepository.save(
-            this.parentRepository.create(
-                ParentMapper.toPersistence({
-                    ...ParentMapper.toDomain(entity),
-                    ...payload,
-                } as Parent),
-            ),
-        );
-
-        return ParentMapper.toDomain(updatedEntity);
+        await this.parentRepository.save({ ...entity, ...payload, role: { id: entity.role.id } })
+        return ParentMapper.toDomain(entity);
     }
 
     async delete(id: Parent['id']): Promise<void> {
