@@ -69,7 +69,7 @@ export class ClassEntity {
     @DeleteDateColumn()
     deletedAt?: Date;
 
-    @OneToMany(() => ClassStudentEntity, students => students.class)
+    @OneToMany(() => ClassStudentEntity, students => students.class, { cascade: true })
     students: ClassStudentEntity[]
 
     @ManyToOne(() => TeacherEntity, teacher => teacher.classes, { cascade: true })

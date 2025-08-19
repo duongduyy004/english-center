@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { AuditLogChangeEntity } from "./audit-log-change.entity";
 
 @Entity()
@@ -21,7 +21,7 @@ export class AuditLogEntity {
     @Column()
     entity: string;
 
-    @Column()
+    @Column({ nullable: true })
     entityId: string;
 
     @Column()
@@ -29,6 +29,9 @@ export class AuditLogEntity {
 
     @Column()
     method: string;
+
+    @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(0)" })
+    createdAt: Date;
 
     @OneToMany(() => AuditLogChangeEntity, changes => changes.auditLog, { cascade: true })
     changes: AuditLogChangeEntity[]

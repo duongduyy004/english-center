@@ -12,7 +12,7 @@ export class AuditLogChangeEntity {
     @Column({ nullable: true })
     oldValue: string;
 
-    @Column({ nullable: false })
+    @Column({ nullable: true })
     newValue: string;
 
     @ManyToOne(() => AuditLogEntity, auditLog => auditLog.changes)

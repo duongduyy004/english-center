@@ -20,7 +20,7 @@ export class ClassStudentEntity {
     @JoinTable({ name: 'studentId' })
     student?: StudentEntity
 
-    @ManyToOne(() => ClassEntity, (aclass) => aclass.students)
+    @ManyToOne(() => ClassEntity, (aclass) => aclass.students, { onDelete: 'CASCADE' })
     @JoinTable({ name: 'studentId' })
     class?: ClassEntity
 
