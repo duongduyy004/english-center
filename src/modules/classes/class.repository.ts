@@ -15,6 +15,7 @@ import { AddStudentsDto } from "./dto/add-students.dto";
 import { ClassStudentEntity } from "./entities/class-student.entity";
 import { I18nService } from "nestjs-i18n";
 import { I18nTranslations } from "@/generated/i18n.generated";
+import { isArray } from "lodash";
 
 @Injectable()
 export class ClassRepository {
@@ -153,17 +154,17 @@ export class ClassRepository {
     }
 
     async addStudentsToClass(id: Class['id'], students: AddStudentsDto[]): Promise<void> {
-        const student_classes: ClassStudentEntity[] = []
+        const student_classes: ClassStudentEntity[] = [];
 
         for (const student of students) {
-            const studentItem = new ClassStudentEntity()
-            studentItem.classId = id
-            studentItem.discount_percent = student.discountPercent
-            studentItem.studentId = student.studentId
-            student_classes.push(studentItem)
+            student_classes.push(this.classStudentRepository.create({
+                classId: id,
+                studentId: student.studentId,
+                discount_percent: student.discountPercent
+            }))
         }
 
-        await this.classStudentRepository.insert(student_classes);
+        await this.classStudentRepository.save(student_classes);
         return;
     }
 
