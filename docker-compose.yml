@@ -11,7 +11,17 @@ services:
       POSTGRES_PASSWORD: 123456
     volumes:
       - eng-center:/var/lib/postgresql/data
-
+  mongo-db:
+    image: bitnami/mongodb:latest
+    container_name: mongodb
+    restart: none
+    ports: 
+      - '27017:27017'
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: 123456
+    volumes:
+      - eng-center:/var/lib/mongdb/data
   eng-center:
     build:
       context: .
