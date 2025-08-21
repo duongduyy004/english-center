@@ -27,24 +27,16 @@ export class HttpLoggerInterceptor implements NestInterceptor {
         const { method, originalUrl } = req;
         const userInfor = name && email ? `${name}:${email}` : 'Guest User';
 
+        ClsServiceManager.getClsService().set('user', req.user);
+        ClsServiceManager.getClsService().set('method', req.method);
+        ClsServiceManager.getClsService().set('path', req.originalUrl);
+
         return next.handle().pipe(
             tap(() => {
                 const duration = Date.now() - start
                 this.logger.log(
                     `${userInfor} ${method} ${originalUrl} ${statusCode} - ${duration}ms`
                 );
-                const auditData = ClsServiceManager.getClsService().get<{ originalEntity: any, changes: { fieldName: string, oldValue: string, newValue: string }[], entityName: string }>('auditData');
-
-                if (auditData) {
-                    this.auditLogService.track({
-                        user: req.user as User,
-                        entity: auditData.entityName,
-                        entityId: auditData.originalEntity.id,
-                        method: req.method,
-                        path: req.originalUrl,
-                        changes: auditData.changes
-                    })
-                }
             }),
             catchError((error) => {
                 const duration = Date.now() - start;

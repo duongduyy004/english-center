@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestj
 import { ClassesService } from './classes.service';
 import { CreateClassDto } from './dto/create-class.dto';
 import { UpdateClassDto } from './dto/update-class.dto';
-import { CheckPolicies, ResponseMessage } from '@/decorator/customize.decorator';
+import { CheckPolicies, ResponseMessage, User } from '@/decorator/customize.decorator';
 import { QueryDto } from 'utils/types/query.dto';
 import { FilterClassDto, SortClassDto } from './dto/query-class.dto';
 import { Class } from './class.domain';
@@ -83,8 +83,8 @@ export class ClassesController {
   @Patch('add-students/:id')
   @ResponseMessage('class.SUCCESS.ADD_STUDENTS')
   @CheckPolicies((ability: AppAbility) => ability.can(Actions.Update, ClassEntity))
-  addStudentsToClass(@Param('id') id: Class['id'], @Body() students: AddStudentsDto[]) {
-    return this.classesService.addStudentsToClass(id, students)
+  addStudentsToClass(@Param('id') id: Class['id'], @Body() students: AddStudentsDto[], @User() user: any) {
+    return this.classesService.addStudentsToClass(id, students, user)
   }
 
   @Patch('remove-students/:id')

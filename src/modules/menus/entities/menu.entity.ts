@@ -21,10 +21,10 @@ export class MenuEntity {
     @TreeParent({ onDelete: 'RESTRICT' })
     parent: MenuEntity;
 
-    @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(0)" })
+    @CreateDateColumn({ type: "timestamp" })
     createdAt: Date;
 
-    @UpdateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(0)", onUpdate: "CURRENT_TIMESTAMP(0)" })
+    @UpdateDateColumn({ type: "timestamp" })
     updatedAt: Date;
 
     @DeleteDateColumn()

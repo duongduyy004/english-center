@@ -51,7 +51,7 @@ export class ClassRepository {
     async update(id: Class['id'], data: Partial<Omit<Class, 'id' | 'createdAt' | 'updatedAt' | 'teacher' | 'students'>>): Promise<Class> {
         const entity = await this.classRepository.findOne({
             where: { id },
-            relations: ['students.student', 'teacher']
+            relations: ['students.student']
         });
 
         await this.classRepository.save({ ...entity, ...data })
@@ -153,18 +153,20 @@ export class ClassRepository {
         return null
     }
 
-    async addStudentsToClass(id: Class['id'], students: AddStudentsDto[]): Promise<void> {
-        const student_classes: ClassStudentEntity[] = [];
-
+    async addStudentsToClass(id: Class['id'], students: AddStudentsDto[]) {
+        const entity = await this.classRepository.findOne({
+            where: { id },
+            relations: ['students']
+        })
+        const studentsArray: ClassStudentEntity[] = []
         for (const student of students) {
-            student_classes.push(this.classStudentRepository.create({
+            studentsArray.push(this.classStudentRepository.create({
                 classId: id,
                 studentId: student.studentId,
                 discount_percent: student.discountPercent
             }))
         }
-
-        await this.classStudentRepository.save(student_classes);
+        await this.classStudentRepository.insert(studentsArray);
         return;
     }
 

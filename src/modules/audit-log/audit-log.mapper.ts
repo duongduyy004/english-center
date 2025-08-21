@@ -7,7 +7,7 @@ export class AuditLogMapper {
         const domainEntity = new AuditLog();
 
         domainEntity.id = raw.id;
-        domainEntity.entity = raw.entity;
+        domainEntity.entityName = raw.entityName;
         domainEntity.entityId = raw.entityId;
         domainEntity.path = raw.path;
         domainEntity.method = raw.method;
@@ -16,13 +16,6 @@ export class AuditLogMapper {
             email: raw.userEmail,
             name: raw.userName,
             role: RoleEnum[raw.userRole]
-        }
-        if (raw.changes) {
-            domainEntity.changes = raw.changes.map(item => ({
-                fieldName: item.fieldName,
-                oldValue: item.oldValue,
-                newValue: item.newValue
-            }))
         }
 
         return domainEntity;

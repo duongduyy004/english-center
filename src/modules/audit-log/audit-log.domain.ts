@@ -10,7 +10,7 @@ export class AuditLog {
         role: Role
     }
 
-    entity: string;
+    entityName: string;
 
     entityId: string;
 
@@ -18,9 +18,11 @@ export class AuditLog {
 
     method: string;
 
-    changes: {
-        fieldName: string,
-        oldValue: string,
-        newValue: string
-    }[]
+    changedFields: string[];
+
+    oldValue: any
+
+    newValue: any
+
+    createdAt: Date;
 }

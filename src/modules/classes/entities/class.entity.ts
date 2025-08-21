@@ -60,10 +60,10 @@ export class ClassEntity {
     @Column(() => Schedule)
     schedule: Schedule
 
-    @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(0)" })
+    @CreateDateColumn({ type: "timestamp" })
     createdAt: Date;
 
-    @UpdateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(0)", onUpdate: "CURRENT_TIMESTAMP(0)" })
+    @UpdateDateColumn({ type: "timestamp" })
     updatedAt: Date;
 
     @DeleteDateColumn()

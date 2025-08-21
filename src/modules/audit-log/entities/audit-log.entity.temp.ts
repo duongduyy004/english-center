@@ -1,10 +1,6 @@
 import { Column, CreateDateColumn, Entity, JoinColumn, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
-interface AuditValue {
-    [key: string]: any
-}
-
-@Entity('audit')
+@Entity()
 export class AuditLogEntity {
     @PrimaryGeneratedColumn('uuid')
     id: string;
@@ -22,7 +18,7 @@ export class AuditLogEntity {
     userRole: string;
 
     @Column()
-    entityName: string;
+    entity: string;
 
     @Column({ nullable: true })
     entityId: string;
@@ -33,17 +29,6 @@ export class AuditLogEntity {
     @Column()
     method: string;
 
-    @Column("text", { array: true })
-    changedFields: string[];
-
-    @Column({ type: 'jsonb' })
-    oldValue: AuditValue
-
-    @Column({ type: 'jsonb' })
-    newValue: AuditValue
-
-    @CreateDateColumn({ type: "timestamp" })
+    @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(0)" })
     createdAt: Date;
-
-
 }

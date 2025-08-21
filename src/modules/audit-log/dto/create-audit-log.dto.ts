@@ -1,14 +1,17 @@
 import { User } from "@/modules/users/user.domain";
 
 export class CreateAuditLogDto {
-    user: User;
-    entity: string;
+    user: {
+        id: string,
+        name: String,
+        email: string,
+        role: string
+    };
+    entityName: string;
     entityId: string;
     path: string;
     method: string;
-    changes: {
-        fieldName: string,
-        oldValue: string,
-        newValue: string
-    }[]
+    changedFields: string[];
+    oldValue: any;
+    newValue: any;
 }

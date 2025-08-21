@@ -7,12 +7,14 @@ import { ClassRepository } from './class.repository';
 import { TeachersModule } from 'modules/teachers/teachers.module';
 import { StudentsModule } from 'modules/students/students.module';
 import { ClassStudentEntity } from './entities/class-student.entity';
+import { AuditLogModule } from '../audit-log/audit-log.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([ClassEntity, ClassStudentEntity]),
     TeachersModule,
-    StudentsModule
+    StudentsModule,
+    AuditLogModule
   ],
   controllers: [ClassesController],
   providers: [ClassesService, ClassRepository],
