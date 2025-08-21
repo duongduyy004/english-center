@@ -1,6 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model, FilterQuery } from 'mongoose';
 import { CreateAuditLogDto } from './dto/create-audit-log.dto';
 import { FilterAuditLogDto, SortAuditLogDto } from './dto/query-audit-log.dto';
 import { IPaginationOptions } from '@/utils/types/pagination-options';
