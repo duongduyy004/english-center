@@ -17,6 +17,9 @@ export class AuditLogMapper {
             name: raw.userName,
             role: RoleEnum[raw.userRole]
         }
+        if (raw.changedFields) domainEntity.changedFields = raw.changedFields;
+        if (raw.newValue) domainEntity.newValue = raw.newValue;
+        if (raw.oldValue) domainEntity.oldValue = raw.oldValue;
 
         return domainEntity;
     }

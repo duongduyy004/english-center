@@ -44,6 +44,4 @@ export class AuditLogEntity {
 
     @CreateDateColumn({ type: "timestamp" })
     createdAt: Date;
-
-
 }
