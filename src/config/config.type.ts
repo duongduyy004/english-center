@@ -1,9 +1,11 @@
-import { DatabaseConfig } from "@/config/types/database-config.type"
-import { AppConfig } from "@/config/types/app-config.type"
-import { JwtConfig } from "@/config/types/jwt-config.type"
+import { DatabaseConfig } from "./types/database-config.type"
+import { AppConfig } from "./types/app-config.type"
+import { JwtConfig } from "./types/jwt-config.type"
+import { RedisConfig } from "./types/redis-config.type"
 
 export type AllConfigType = {
     app: AppConfig
     database: DatabaseConfig,
-    jwt: JwtConfig
+    jwt: JwtConfig,
+    redis: RedisConfig
 }

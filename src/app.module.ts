@@ -8,6 +8,7 @@ import { UsersModule } from 'modules/users/users.module';
 import databaseConfig from '@/config/configs/database.config';
 import appConfig from '@/config/configs/app.config';
 import jwtConfig from '@/config/configs/jwt.config';
+import redisConfig from '@/config/configs/redis.config';
 import { AcceptLanguageResolver, HeaderResolver, I18nModule, QueryResolver } from 'nestjs-i18n';
 import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { TransformInterceptor } from '@/core/transform.interceptor';
@@ -30,12 +31,14 @@ import { MenuModule } from '@/modules/menus/menu.module';
 import { TransactionsModule } from './modules/transactions/transactions.module';
 import { AuditLogModule } from './modules/audit-log/audit-log.module';
 import { ClsModule } from 'nestjs-cls';
+import { BullModule } from '@nestjs/bullmq';
+import { RedisConfigService } from './database/redis-config.service';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [databaseConfig, appConfig, jwtConfig],
+      load: [databaseConfig, appConfig, jwtConfig, redisConfig],
       envFilePath: ['.env']
     }),
     I18nModule.forRoot({
@@ -58,6 +61,9 @@ import { ClsModule } from 'nestjs-cls';
     ClsModule.forRoot({
       global: true,
       middleware: { mount: true }
+    }),
+    BullModule.forRootAsync({
+      useClass: RedisConfigService
     }),
     UsersModule,
     StudentsModule,
