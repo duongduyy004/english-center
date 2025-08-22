@@ -30,6 +30,20 @@ export type I18nTranslations = {
             "SCHEDULE_CONFLICT": string;
         };
     };
+    "registration": {
+        "SUCCESS": {
+            "CREATE_A_REGISTRATION": string;
+            "UPDATE_A_REGISTRATION": string;
+            "DELETE_A_REGISTRATION": string;
+            "GET_A_REGISTRATION": string;
+            "GET_ALL_REGISTRATIONS": string;
+        };
+        "FAIL": {
+            "NOT_FOUND": string;
+            "CAN_NOT_DELETE": string;
+            "ALREADY_PROCESSED": string;
+        };
+    };
     "student": {
         "SUCCESS": {
             "CREATE_A_STUDENT": string;

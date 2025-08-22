@@ -7,11 +7,12 @@ import {
   Param,
   Delete,
   Query,
+  Res,
 } from '@nestjs/common';
 import { RegistrationsService } from './registrations.service';
 import { CreateRegistrationDto } from './dto/create-registration.dto';
 import { UpdateRegistrationDto } from './dto/update-registration.dto';
-import { Public } from '@/decorator/customize.decorator';
+import { Public, ResponseMessage } from '@/decorator/customize.decorator';
 import { QueryDto } from '@/utils/types/query.dto';
 import { Filter } from 'typeorm';
 import {
@@ -23,13 +24,14 @@ import {
 export class RegistrationsController {
   constructor(private readonly registrationsService: RegistrationsService) {}
 
-  @Public()
   @Post()
+  @ResponseMessage('registration.SUCCESS.CREATE_A_REGISTRATION')
   create(@Body() createRegistrationDto: CreateRegistrationDto) {
     return this.registrationsService.create(createRegistrationDto);
   }
 
   @Get()
+  @ResponseMessage('registration.SUCCESS.GET_ALL_REGISTRATIONS')
   findAll(
     @Query() query: QueryDto<FilterRegistrationDto, SortRegistrationDto>,
   ) {
@@ -46,11 +48,13 @@ export class RegistrationsController {
   }
 
   @Get(':id')
+  @ResponseMessage('registration.SUCCESS.GET_A_REGISTRATION')
   findOne(@Param('id') id: string) {
     return this.registrationsService.findOne(id);
   }
 
   @Patch(':id')
+  @ResponseMessage('registration.SUCCESS.UPDATE_A_REGISTRATION')
   update(
     @Param('id') id: string,
     @Body() updateRegistrationDto: UpdateRegistrationDto,
@@ -59,6 +63,7 @@ export class RegistrationsController {
   }
 
   @Delete(':id')
+  @ResponseMessage('registration.SUCCESS.DELETE_A_REGISTRATION')
   remove(@Param('id') id: string) {
     return this.registrationsService.remove(id);
   }

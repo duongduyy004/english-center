@@ -1,0 +1,14 @@
+{
+  "SUCCESS": {
+    "CREATE_A_REGISTRATION": "Tạo đăng ký thành công",
+    "UPDATE_A_REGISTRATION": "Cập nhật đăng ký thành công",
+    "DELETE_A_REGISTRATION": "Xóa đăng ký thành công",
+    "GET_A_REGISTRATION": "Lấy đăng ký thành công",
+    "GET_ALL_REGISTRATIONS": "Lấy danh sách đăng ký thành công"
+  },
+  "FAIL": {
+    "NOT_FOUND": "Không tìm thấy đăng ký",
+    "CAN_NOT_DELETE": "Không thể xóa đăng ký",
+    "ALREADY_PROCESSED": "Đăng ký đã được xử lý"
+  }
+}

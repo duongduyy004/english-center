@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateRegistrationDto } from './dto/create-registration.dto';
 import { PaginationResponseDto } from '@/utils/types/pagination-response.dto';
 import { IPaginationOptions } from '@/utils/types/pagination-options';
@@ -9,6 +9,8 @@ import { FindOptionsWhere, ILike, Repository } from 'typeorm';
 import { RegistrationMapper } from './registration.mapper';
 import { ClassEntity } from '../classes/entities/class.entity';
 import { NullableType } from '@/utils/types/nullable.type';
+import { I18nService } from 'nestjs-i18n';
+import { I18nTranslations } from '@/generated/i18n.generated';
 @Injectable()
 export class RegistrationRepository {
   constructor(
@@ -16,6 +18,7 @@ export class RegistrationRepository {
     private registrationRepository: Repository<RegistrationEntity>,
     @InjectRepository(ClassEntity)
     private classRepository: Repository<ClassEntity>,
+    private i18nService: I18nService<I18nTranslations>,
   ) {}
   async create(
     data: Omit<Registration, 'id' | 'createdAt' | 'updatedAt' | 'deletedAt'>,
@@ -24,10 +27,6 @@ export class RegistrationRepository {
     const classEntity = await this.classRepository.findOne({
       where: { id: data.class?.id },
     });
-
-    if (!classEntity) {
-      throw new Error('Class not found');
-    }
 
     // Tạo domain với full class info
     const domainWithClass: Registration = {
@@ -130,6 +129,11 @@ export class RegistrationRepository {
       relations: ['class'],
     });
 
+    if (data.processed === true && existingEntity.processed === true) {
+      throw new BadRequestException(
+        this.i18nService.t('registration.FAIL.ALREADY_PROCESSED'),
+      );
+    }
     // Convert domain data to persistence format if needed
     const updateData = {
       ...existingEntity,
