@@ -82,17 +82,21 @@ export class TransactionRepository {
 
     async findById(id: Transaction['id']) {
         const entity = await this.transactionRepository.findOne({
-            where: { id }
+            where: { id },
+            relations: ['category']
         })
 
         return entity ? TransactionMapper.toDomain(entity) : null
     }
 
     async update(id: Transaction['id'], updateTransactionDto: UpdateTransactionDto) {
-        const entity = await this.transactionRepository.findOne({ where: { id } })
+        const entity = await this.transactionRepository.findOne({ where: { id }, relations: ['category'] })
         if (updateTransactionDto?.amount) entity.amount = updateTransactionDto.amount;
         if (updateTransactionDto?.description) entity.description = updateTransactionDto.description;
-
+        if (updateTransactionDto?.categoryId) {
+            const category = await this.transactionCategoryRepository.findOne({ where: { id: updateTransactionDto.categoryId } })
+            entity.category = category;
+        }
         await this.transactionRepository.save(entity);
 
         return TransactionMapper.toDomain(entity)
@@ -102,15 +106,4 @@ export class TransactionRepository {
         return this.transactionRepository.softRemove({ id });
     }
 
-    async createCategory(createCategoryDto: CreateCategoryDto) {
-        const entity = await this.transactionCategoryRepository.save(
-            this.transactionCategoryRepository.create(createCategoryDto)
-        )
-
-        return entity
-    }
-
-    async getAllCategories() {
-        return this.transactionCategoryRepository.find();
-    }
 }
