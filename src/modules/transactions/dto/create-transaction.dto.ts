@@ -19,7 +19,7 @@ export class CreateTransactionDto {
 
     @IsString()
     @IsNotEmpty({ message: i18nValidationMessage<I18nTranslations>('validation.NOT_EMPTY') })
-    category_id: string
+    categoryId: number
 
     @IsString()
     @IsNotEmpty({ message: i18nValidationMessage<I18nTranslations>('validation.NOT_EMPTY') })

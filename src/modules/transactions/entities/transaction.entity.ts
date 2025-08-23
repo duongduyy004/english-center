@@ -18,7 +18,7 @@ export class TransactionEntity {
     transaction_at: Date;
 
     @OneToOne(() => TransactionCategoryEntity)
-    @JoinColumn({ name: 'category_id' })
+    @JoinColumn({ name: 'categoryId' })
     category: TransactionCategoryEntity;
 
     @DeleteDateColumn()

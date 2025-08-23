@@ -18,11 +18,18 @@ export class TransactionRepository {
     ) { }
 
     async create(createTransactionDto: CreateTransactionDto) {
+        const category = await this.transactionCategoryRepository.findOne({
+            where: { id: createTransactionDto.categoryId }
+        })
         const entity = await this.transactionRepository.save(
-            this.transactionRepository.create(createTransactionDto)
+            this.transactionRepository.create({
+                amount: createTransactionDto.amount,
+                description: createTransactionDto.description,
+                category: category
+            })
         )
 
-        return TransactionMapper.toDomain(entity);
+        return entity;
     }
 
     async getAllTransactions({
@@ -49,6 +56,7 @@ export class TransactionRepository {
             where,
             skip: (paginationOptions.page - 1) * paginationOptions.limit,
             take: paginationOptions.limit,
+            relations: { category: true },
             order: sortOptions?.reduce(
                 (accumulator, sort) => ({
                     ...accumulator,
@@ -68,7 +76,7 @@ export class TransactionRepository {
                 totalPages,
                 totalItems
             },
-            result: entities.map((item) => TransactionMapper.toDomain(item))
+            result: entities ? entities.map((item) => TransactionMapper.toDomain(item)) : null
         }
     }
 
@@ -91,7 +99,7 @@ export class TransactionRepository {
     }
 
     async delete(id: Transaction['id']) {
-        return this.transactionRepository.softDelete({ id });
+        return this.transactionRepository.softRemove({ id });
     }
 
     async createCategory(createCategoryDto: CreateCategoryDto) {

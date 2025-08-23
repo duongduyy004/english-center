@@ -34,7 +34,7 @@ export class TransactionsCategoryService {
     }
 
     async remove(id: number): Promise<void> {
-        const result = await this.categoryRepo.softDelete(id);
-        if (!result.affected) throw new NotFoundException("Category not found");
+        const result = await this.categoryRepo.softRemove({ id });
+        if (!result.id) throw new NotFoundException("Category not found");
     }
 }
