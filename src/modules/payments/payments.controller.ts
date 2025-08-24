@@ -22,6 +22,19 @@ export class PaymentsController {
     })
   }
 
+  @Get('students/:studentId')
+  getPaymentBytStudentId(@Param('studentId') studentId: string, @Query() query: QueryDto<FilterPaymentDto, SortPaymentDto>) {
+    const limit = query.limit;
+    const page = query.page;
+    return this.paymentsService.getAllPayments({
+      filterOptions: { ...query.filters, studentId },
+      sortOptions: query.sort,
+      paginationOptions: {
+        limit, page
+      }
+    })
+  }
+
   @Patch('pay-student/:paymentId')
   payStudent(
     @Param('paymentId') paymentId: Payment['id'],

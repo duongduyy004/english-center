@@ -75,15 +75,15 @@ export class PaymentRepository {
         : Promise<PaginationResponseDto<Payment>> {
         const where: FindOptionsWhere<PaymentEntity> = {};
 
-        if (filterOptions?.studentIds) where.studentId = In(filterOptions.studentIds)
+        if (filterOptions?.studentId) where.studentId = filterOptions.studentId;
 
-        if (filterOptions?.classId) where.classId = filterOptions.classId
+        if (filterOptions?.classId) where.classId = filterOptions.classId;
 
-        if (filterOptions?.status) where.status = filterOptions.status
+        if (filterOptions?.status) where.status = filterOptions.status;
 
-        if (filterOptions?.month) where.month = filterOptions.month
+        if (filterOptions?.month) where.month = filterOptions.month;
 
-        if (filterOptions?.year) where.year = filterOptions.year
+        if (filterOptions?.year) where.year = filterOptions.year;
 
         if (filterOptions?.startMonth && filterOptions?.endMonth) {
             where.month = Between(filterOptions.startMonth, filterOptions.endMonth);
