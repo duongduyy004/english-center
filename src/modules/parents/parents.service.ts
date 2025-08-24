@@ -57,7 +57,7 @@ export class ParentsService {
   async addChild(studentId: Student['id'], parentId: Parent['id']) {
     const student = await this.studentService.findOne(studentId)
     if (student.parent) {
-      return student
+      return 'This student has parents'
     }
 
     const result = await this.parentRepository.addChild(student, parentId);

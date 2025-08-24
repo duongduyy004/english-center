@@ -116,7 +116,7 @@ export class ParentRepository {
     }
 
     async delete(id: Parent['id']): Promise<void> {
-        await this.parentRepository.softDelete(id);
+        await this.parentRepository.softRemove({ id });
     }
 
     async addChild(student: Student, parentId: Parent['id']) {

@@ -46,7 +46,7 @@ export class StudentMapper {
 
     static toPersistence(domainEntity: Student): StudentEntity {
         const persistenceEntity = new StudentEntity();
-        if (domainEntity.id && typeof domainEntity.id === 'number') {
+        if (domainEntity.id && typeof domainEntity.id === 'string') {
             persistenceEntity.id = domainEntity.id;
         }
         persistenceEntity.name = domainEntity.name;
