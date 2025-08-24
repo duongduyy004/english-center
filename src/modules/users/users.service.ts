@@ -81,7 +81,7 @@ export class UsersService {
   }
 
   isValidPassword(password: string, hash: string) {
-    return bcrypt.compareSync(password, hash);
+    return bcrypt.compare(password, hash);
   }
 
   async createAdmin(createUserDto: CreateUserDto) {
