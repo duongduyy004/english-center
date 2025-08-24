@@ -3,7 +3,7 @@ import { Payment } from "modules/payments/payment.domain";
 import { Student } from "modules/students/student.domain";
 
 export class FilterPaymentDto {
-    studentId: Student['id'];
+    studentIds: Student['id'][];
 
     classId: Class['id'];
 

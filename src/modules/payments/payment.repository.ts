@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { PaymentEntity } from "./entities/payment.entity";
-import { Between, FindOptionsWhere, Repository } from "typeorm";
+import { Between, FindOptionsWhere, In, Repository } from "typeorm";
 import * as dayjs from "dayjs";
 import { FilterPaymentDto, SortPaymentDto } from "./dto/query-payment.dto";
 import { IPaginationOptions } from "utils/types/pagination-options";
@@ -75,7 +75,7 @@ export class PaymentRepository {
         : Promise<PaginationResponseDto<Payment>> {
         const where: FindOptionsWhere<PaymentEntity> = {};
 
-        if (filterOptions?.studentId) where.studentId = filterOptions.studentId
+        if (filterOptions?.studentIds) where.studentId = In(filterOptions.studentIds)
 
         if (filterOptions?.classId) where.classId = filterOptions.classId
 
