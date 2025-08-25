@@ -1,7 +1,5 @@
 import { Column, DeleteDateColumn, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { TransactionCategoryEntity } from "./transaction-category.entity";
-import { addAbortSignal } from "stream";
-
 
 @Entity('transaction')
 export class TransactionEntity {

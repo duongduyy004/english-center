@@ -37,6 +37,11 @@ export class HttpLoggerInterceptor implements NestInterceptor {
                 this.logger.log(
                     `${userInfor} ${method} ${originalUrl} ${statusCode} - ${duration}ms`
                 );
+
+                const log = ClsServiceManager.getClsService().get('log')
+                if (log && log.changedFields) {
+                    this.auditLogService.track(log)
+                }
             }),
             catchError((error) => {
                 const duration = Date.now() - start;

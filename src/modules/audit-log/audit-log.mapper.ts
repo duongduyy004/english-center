@@ -11,6 +11,8 @@ export class AuditLogMapper {
         domainEntity.entityId = raw.entityId;
         domainEntity.path = raw.path;
         domainEntity.method = raw.method;
+        domainEntity.description = raw.description;
+        domainEntity.action = raw.action;
         domainEntity.user = {
             id: raw.userId,
             email: raw.userEmail,
@@ -22,5 +24,24 @@ export class AuditLogMapper {
         if (raw.oldValue) domainEntity.oldValue = raw.oldValue;
 
         return domainEntity;
+    }
+
+    static toPersistence(domainEntity: AuditLog): AuditLogEntity {
+        const persistenceEntity = new AuditLogEntity();
+
+        persistenceEntity.userId = domainEntity.user.id;
+        persistenceEntity.userEmail = domainEntity.user.email;
+        persistenceEntity.userName = domainEntity.user.name;
+        persistenceEntity.userRole = domainEntity.user.role.name;
+        persistenceEntity.changedFields = domainEntity.changedFields;
+        persistenceEntity.newValue = domainEntity.newValue;
+        persistenceEntity.oldValue = domainEntity.oldValue;
+        persistenceEntity.method = domainEntity.method;
+        persistenceEntity.path = domainEntity.path;
+        persistenceEntity.entityName = domainEntity.entityName;
+        persistenceEntity.entityId = domainEntity.entityId;
+        persistenceEntity.description = domainEntity.description;
+        persistenceEntity.action = domainEntity.action;
+        return persistenceEntity;
     }
 }

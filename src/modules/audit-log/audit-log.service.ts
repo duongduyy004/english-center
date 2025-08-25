@@ -3,6 +3,7 @@ import { CreateAuditLogDto } from './dto/create-audit-log.dto';
 import { FilterAuditLogDto, SortAuditLogDto } from './dto/query-audit-log.dto';
 import { IPaginationOptions } from '@/utils/types/pagination-options';
 import { AuditLogRepository } from './audit-log.repository';
+import { AuditLog } from './audit-log.domain';
 
 @Injectable()
 export class AuditLogService {
@@ -20,5 +21,9 @@ export class AuditLogService {
 
   create(createAuditLogDto: CreateAuditLogDto) {
     return this.auditLogRepository.create(createAuditLogDto)
+  }
+
+  pushLog(log: CreateAuditLogDto) {
+    return this.auditLogRepository.pushLog(log)
   }
 }

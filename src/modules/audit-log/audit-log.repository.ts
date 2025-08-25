@@ -8,17 +8,34 @@ import { PaginationResponseDto } from "@/utils/types/pagination-response.dto";
 import { AuditLog } from "./audit-log.domain";
 import { AuditLogMapper } from "./audit-log.mapper";
 import { Injectable } from "@nestjs/common";
+import { InjectQueue } from "@nestjs/bullmq";
+import { Queue } from "bullmq";
 
 @Injectable()
 export class AuditLogRepository {
     constructor(
         @InjectRepository(AuditLogEntity) private auditLogRepository: Repository<AuditLogEntity>,
+        @InjectQueue('audit-log') private auditLogQueue: Queue,
     ) { }
 
-    async track(createAuditLogDto: CreateAuditLogDto) {
-        await this.auditLogRepository.save(
-            this.auditLogRepository.create(createAuditLogDto)
-        )
+    async track(data: CreateAuditLogDto) {
+        const description = data.description ? data.description : this.generateDescription(data);
+        const log = this.auditLogRepository.create({
+            userId: data.user.id,
+            userEmail: data.user.email,
+            userName: data.user.name,
+            userRole: data.user.role,
+            entityName: data.entityName,
+            entityId: data.entityId,
+            changedFields: data.changedFields,
+            method: data.method,
+            path: data.path,
+            newValue: data.newValue,
+            oldValue: data.oldValue,
+            description: description,
+            action: data.action
+        })
+        await this.auditLogRepository.save(log, { listeners: false })
     }
 
     create(createAuditLogDto: CreateAuditLogDto) {
@@ -61,5 +78,32 @@ export class AuditLogRepository {
             result: entities ? entities.map(item => AuditLogMapper.toDomain(item)) : null
         }
 
+    }
+
+    async pushLog(log: CreateAuditLogDto) {
+        await this.auditLogQueue.add('createLog', log)
+    }
+
+    private generateDescription(data: CreateAuditLogDto) {
+        let returnData = {}
+        for (const field of data.changedFields) {
+            const vnField = field;
+            returnData = {
+                ...returnData,
+                [vnField]: {
+                    newValue: data.newValue[field],
+                    oldValue: data.oldValue[field]
+                }
+            }
+        }
+        if (data.action === 'CREATE') {
+            return `${data.action} ${data.entityName} bởi ${data.user.name} - ${data.user.email}:\n${Object.keys(returnData).map(item => `${item} : ${returnData[item].newValue}`)}`
+        }
+        else if (data.action === 'UPDATE') {
+            return ` ${data.action} ${data.entityName} bởi ${data.user.name} - ${data.user.email}:\n${Object.keys(returnData).map(item => `${item} : ${returnData[item].oldValue} -> ${returnData[item].newValue}`)}`
+        } else if (data.action === 'DELETE') {
+            return `${data.action} ${data.entityName} bởi ${data.user.name} - ${data.user.email}:\n${Object.keys(returnData).map(item => `${item} : ${returnData[item].oldValue}`)}`
+        }
+        return '';
     }
 }

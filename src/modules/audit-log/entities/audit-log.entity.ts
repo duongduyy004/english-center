@@ -4,7 +4,7 @@ interface AuditValue {
     [key: string]: any
 }
 
-@Entity('audit')
+@Entity('audit_log')
 export class AuditLogEntity {
     @PrimaryGeneratedColumn('uuid')
     id: string;
@@ -31,7 +31,13 @@ export class AuditLogEntity {
     path: string;
 
     @Column()
+    description: string;
+
+    @Column()
     method: string;
+
+    @Column()
+    action: string;
 
     @Column("text", { array: true })
     changedFields: string[];

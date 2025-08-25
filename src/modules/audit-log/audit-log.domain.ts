@@ -14,9 +14,13 @@ export class AuditLog {
 
     entityId: string;
 
+    description: string
+
     path: string;
 
     method: string;
+
+    action: string;
 
     changedFields: string[];
 
