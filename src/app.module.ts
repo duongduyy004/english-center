@@ -9,8 +9,7 @@ import databaseConfig from '@/config/configs/database.config';
 import appConfig from '@/config/configs/app.config';
 import jwtConfig from '@/config/configs/jwt.config';
 import redisConfig from '@/config/configs/redis.config';
-import awsConfig from '@/config/configs/aws.config';
-import minioConfig from '@/config/configs/minio.config';
+import cloudinaryConfig from '@/config/configs/cloudinary.config';
 import { AcceptLanguageResolver, HeaderResolver, I18nModule, QueryResolver } from 'nestjs-i18n';
 import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { TransformInterceptor } from '@/core/transform.interceptor';
@@ -42,7 +41,7 @@ import { FilesModule } from './modules/files/files.module';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [databaseConfig, appConfig, jwtConfig, redisConfig, awsConfig, minioConfig],
+      load: [databaseConfig, appConfig, jwtConfig, redisConfig, cloudinaryConfig],
       envFilePath: ['.env']
     }),
     I18nModule.forRoot({
