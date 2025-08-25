@@ -29,7 +29,7 @@ export class SessionsService {
     return this.sessionRepository.getAttendancesByClassId(classId, paginationOptions)
   }
 
-  getSessions(classId: Class['id']) {
-    return this.sessionRepository.getSessions(classId)
+  getTotalSessions(classId: Class['id']) {
+    return this.sessionRepository.getTotalSessions(classId)
   }
 }

@@ -5,6 +5,7 @@ import { FilterTeacherPaymentDto, SortTeacherPaymentDto } from "./dto/query-teac
 import { IPaginationOptions } from "utils/types/pagination-options";
 import { SessionEntity } from "modules/sessions/entities/session.entity";
 import { SessionsService } from "modules/sessions/sessions.service";
+import * as dayjs from 'dayjs'
 
 export class TeacherPaymentRepository {
     constructor(
@@ -13,7 +14,20 @@ export class TeacherPaymentRepository {
     ) { }
 
     async autoUpdateTeacherPaymentRecord(session: SessionEntity) {
-        const totalLessons = await this.sessionsService.getSessions(session.classId)
+        const totalLessons = await this.sessionsService.getTotalSessions(session.classId);
+        const month = dayjs(session.date).month() + 1;
+        const year = dayjs(session.date).year();
+        const entity = await this.teacherPaymentRepository.findOne({
+            where: {
+                teacherId: session?.class?.teacher?.id,
+                month, year
+            }
+        })
+
+        // if entity exsits, update teacher payment
+        if (entity) {
+
+        }
     }
 
     async getAllPayments({ filterOptions, sortOptions, paginationOptions }
