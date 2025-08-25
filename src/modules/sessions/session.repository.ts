@@ -14,6 +14,14 @@ import { StudentsService } from "modules/students/students.service";
 import { PaymentsService } from "../payments/payments.service";
 import { IPaginationOptions } from "utils/types/pagination-options";
 import { PaginationResponseDto } from "utils/types/pagination-response.dto";
+import { AuditLogService } from "../audit-log/audit-log.service";
+import { ClsService } from "nestjs-cls";
+
+const ATTENDANCE_STATUS = Object.freeze({
+    absent: 'vắng',
+    present: 'có mặt',
+    late: 'muộn'
+})
 
 export class SessionRepository {
     constructor(
@@ -21,7 +29,9 @@ export class SessionRepository {
         @InjectRepository(SessionEntity) private sessionRepository: Repository<SessionEntity>,
         private classesService: ClassesService,
         private studentsService: StudentsService,
-        private paymentsService: PaymentsService
+        private paymentsService: PaymentsService,
+        private auditLogService: AuditLogService,
+        private clsService: ClsService
     ) { }
 
     async create(id: Class['id']) {
@@ -30,9 +40,9 @@ export class SessionRepository {
 
         const sessionEntity = this.sessionRepository.create({
             date: dayjs().toDate(),
-            classId: classEntity.id
+            classId: id
         })
-        await this.sessionRepository.save(sessionEntity)
+        await this.sessionRepository.save(sessionEntity, { listeners: false })
 
         const attendances: AttendanceSessionEntity[] = studentIds.map(item => ({
             studentId: item,
@@ -40,7 +50,7 @@ export class SessionRepository {
             status: 'absent'
         }))
 
-        await this.attendanceSessionRepository.insert(attendances)
+        await this.attendanceSessionRepository.save(attendances, { listeners: false })
         const session = await this.sessionRepository.findOne({
             where: { id: sessionEntity.id },
             relations: ['attendances.student', 'class']
@@ -102,9 +112,17 @@ export class SessionRepository {
     }
 
     async updateAttendanceSession(sessionId: Session['id'], payload: UpdateAttendanceSessionDto[]) {
+        // Store old values before update for audit logging
+        const oldAttendances = await this.attendanceSessionRepository.find({
+            where: {
+                sessionId,
+                studentId: In(payload.map(item => item.studentId))
+            },
+            relations: ['student']
+        });
 
-        const studentIds = payload.map(item => parseInt(item.studentId))
-        const cases = payload.map(item => `WHEN ${parseInt(item.studentId)} THEN '${item.status}'`).join(' ')
+        const studentIds = payload.map(item => item.studentId)
+        const cases = payload.map(item => `WHEN '${item.studentId}' THEN '${item.status}'`).join(' ')
 
         const updateRes = await this.attendanceSessionRepository.createQueryBuilder().update()
             .set({ status: () => `CASE studentId ${cases} ELSE status END` })
@@ -121,13 +139,100 @@ export class SessionRepository {
             for (const payloadItem of payload) {
                 if (item.student.id.toString() === payloadItem.studentId.toString()) {
                     item.isModified = payloadItem.isModified;
-
                 }
             }
         }
 
+        // Audit logging after update
+        await this.auditAttendanceChanges(sessionId, oldAttendances, entity.attendances, payload);
+
         this.paymentsService.autoUpdatePaymentRecord(entity)
         return updateRes
+    }
+
+    private async auditAttendanceChanges(
+        sessionId: Session['id'],
+        oldAttendances: AttendanceSessionEntity[],
+        newAttendances: AttendanceSessionEntity[],
+        payload: UpdateAttendanceSessionDto[]
+    ) {
+        try {
+            // Get current user from CLS context for audit logging
+            const currentUser = this.clsService.get('user');
+            const method = this.clsService.get('method') || 'PUT';
+            const path = this.clsService.get('path') || '/sessions/attendance';
+
+            if (!currentUser) return; // Skip audit if no user context
+
+            const changedStudents = [];
+
+            // Check each student for status changes
+            for (const oldAttendance of oldAttendances) {
+                const newAttendance = newAttendances.find(na => na.studentId === oldAttendance.studentId);
+
+                if (newAttendance && oldAttendance.status !== newAttendance.status) {
+                    changedStudents.push({
+                        studentId: oldAttendance.studentId,
+                        studentName: oldAttendance.student?.name || newAttendance.student?.name || 'Unknown',
+                        studentEmail: oldAttendance.student.email || 'Unknown',
+                        oldStatus: oldAttendance.status,
+                        newStatus: newAttendance.status
+                    });
+                }
+            }
+            // Log bulk update summary if there were changes
+            if (changedStudents.length > 0) {
+                // Get session and class information for description
+                const session = await this.sessionRepository.findOne({
+                    where: { id: sessionId },
+                    relations: ['class']
+                });
+
+                const className = session?.class?.name || 'Unknown Class';
+                const currentDate = new Date().toLocaleDateString('vi-VN', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric'
+                });
+
+                // Generate Vietnamese description in the requested format
+                const studentChanges = changedStudents.map(student =>
+                    `${student.studentName} - ${student.studentEmail}: ${ATTENDANCE_STATUS[student.oldStatus]} -> ${ATTENDANCE_STATUS[student.newStatus]}`
+                ).join('\n');
+
+                const description = `${currentUser.name} - ${currentUser.email} cập nhật danh sách điểm danh lớp ${className} - ${currentDate}:\n${studentChanges}`;
+
+                await this.auditLogService.track({
+                    user: {
+                        id: currentUser.id,
+                        name: currentUser.name,
+                        email: currentUser.email,
+                        role: currentUser.role?.name || 'user'
+                    },
+                    entityName: 'SessionEntity',
+                    entityId: sessionId,
+                    path: path,
+                    method: method,
+                    action: 'UPDATE_ATTENDANCE',
+                    changedFields: ['status'],
+                    oldValue: changedStudents.map(item => ({
+                        status: item.oldStatus,
+                        studentName: item.studentName,
+                        studentEmail: item.studentEmail
+                    })),
+                    newValue: changedStudents.map(item => ({
+                        status: item.newStatus,
+                        studentName: item.studentName,
+                        studentEmail: item.studentEmail
+                    })),
+                    description: description
+                });
+            }
+
+        } catch (error) {
+            console.error('Error in audit logging for attendance changes:', error);
+            // Don't throw error - audit logging failure shouldn't break the main operation
+        }
     }
 
     async getStudentAttendance(studentId: Student['id']) {
