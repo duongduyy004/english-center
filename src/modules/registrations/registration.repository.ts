@@ -16,7 +16,7 @@ export class RegistrationRepository {
     private registrationRepository: Repository<RegistrationEntity>,
     @InjectRepository(ClassEntity)
     private classRepository: Repository<ClassEntity>,
-  ) {}
+  ) { }
   async create(
     data: Omit<Registration, 'id' | 'createdAt' | 'updatedAt' | 'deletedAt'>,
   ): Promise<Registration> {

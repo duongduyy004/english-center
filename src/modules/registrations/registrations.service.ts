@@ -8,7 +8,7 @@ import { Registration } from './registration.domain';
 
 @Injectable()
 export class RegistrationsService {
-  constructor(private registrationRepository: RegistrationRepository) {}
+  constructor(private registrationRepository: RegistrationRepository) { }
   async create(data: CreateRegistrationDto) {
     return this.registrationRepository.create(data);
   }
