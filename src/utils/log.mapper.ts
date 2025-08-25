@@ -64,9 +64,6 @@ export const logMapper = Object.freeze({
   title: 'Tiêu đề',
   slug: 'Đường dẫn',
   order: 'Thứ tự',
-  //menus closure
-  id_ancestor: 'ID cha',
-  id_descendant: 'ID con',
   //audit_log
   userId: 'ID người dùng',
   userName: 'Tên người dùng',
