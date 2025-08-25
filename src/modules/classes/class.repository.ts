@@ -15,7 +15,6 @@ import { AddStudentsDto } from "./dto/add-students.dto";
 import { ClassStudentEntity } from "./entities/class-student.entity";
 import { I18nService } from "nestjs-i18n";
 import { I18nTranslations } from "@/generated/i18n.generated";
-import { isArray } from "lodash";
 
 @Injectable()
 export class ClassRepository {
@@ -50,8 +49,7 @@ export class ClassRepository {
 
     async update(id: Class['id'], data: Partial<Omit<Class, 'id' | 'createdAt' | 'updatedAt' | 'teacher' | 'students'>>): Promise<Class> {
         const entity = await this.classRepository.findOne({
-            where: { id },
-            relations: ['students.student']
+            where: { id }
         });
 
         await this.classRepository.save({ ...entity, ...data })

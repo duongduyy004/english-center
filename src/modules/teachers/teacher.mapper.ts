@@ -42,7 +42,7 @@ export class TeacherMapper {
 
     static toPersistence(domainEntity: Teacher): TeacherEntity {
         const persistenceEntity = new TeacherEntity();
-        if (domainEntity.id && typeof domainEntity.id === 'number') {
+        if (domainEntity.id && typeof domainEntity.id === 'string') {
             persistenceEntity.id = domainEntity.id;
         }
         persistenceEntity.name = domainEntity.name;
