@@ -109,7 +109,7 @@ export class TeacherRepository {
     }
 
     async delete(id: Teacher['id']): Promise<void> {
-        await this.teacherRepository.softDelete(id);
+        await this.teacherRepository.softRemove({ id });
     }
 
     async getSchedule(id: Teacher['id']) {

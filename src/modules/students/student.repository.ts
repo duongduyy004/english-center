@@ -115,7 +115,7 @@ export class StudentRepository {
     }
 
     async delete(id: Student['id']): Promise<void> {
-        await this.studentRepository.softDelete(id);
+        await this.studentRepository.softRemove({ id });
     }
 
     async getSchedule(id: Student['id']) {
