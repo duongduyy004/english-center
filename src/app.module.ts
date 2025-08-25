@@ -33,6 +33,7 @@ import { AuditLogModule } from './modules/audit-log/audit-log.module';
 import { ClsModule } from 'nestjs-cls';
 import { BullModule } from '@nestjs/bullmq';
 import { RedisConfigService } from './database/redis-config.service';
+import { RegistrationsModule } from './modules/registrations/registrations.module';
 
 @Module({
   imports: [
@@ -77,7 +78,8 @@ import { RedisConfigService } from './database/redis-config.service';
     CaslModule,
     MenuModule,
     TransactionsModule,
-    AuditLogModule
+    AuditLogModule,
+    RegistrationsModule
   ],
   controllers: [AppController],
   providers: [AppService,
