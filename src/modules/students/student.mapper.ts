@@ -28,7 +28,8 @@ export class StudentMapper {
                     name: item.class.name,
                     grade: item.class.grade,
                     section: item.class.section,
-                    schedule: item.class.schedule
+                    room: item.class.room,
+                    schedule: item.class.schedule,
                 }
             }))
         }

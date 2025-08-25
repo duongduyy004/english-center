@@ -33,7 +33,8 @@ export class TeacherMapper {
                 name: item.name,
                 grade: item.grade,
                 section: item.section,
-                schedule: item.schedule
+                room: item.room,
+                schedule: item.schedule,
             }))
         }
 
