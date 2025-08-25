@@ -22,6 +22,8 @@
     "seed": "ts-node -r tsconfig-paths/register ./src/database/seeds/run-seed.ts"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.873.0",
+    "@aws-sdk/s3-request-presigner": "^3.873.0",
     "@casl/ability": "6.7.3",
     "@nestjs/bullmq": "^11.0.3",
     "@nestjs/common": "11.1.5",
@@ -39,6 +41,7 @@
     "cookie-parser": "^1.4.7",
     "dayjs": "1.11.13",
     "lodash": "^4.17.21",
+    "minio": "^8.0.5",
     "nest-winston": "^1.10.2",
     "nestjs-cls": "^6.0.1",
     "nestjs-i18n": "10.5.1",
