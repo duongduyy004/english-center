@@ -11,7 +11,7 @@ export class PaymentMapper {
         domainEntity.totalLessons = raw.totalLessons;
         domainEntity.paidAmount = raw.paidAmount;
         domainEntity.totalAmount = raw.totalAmount;
-        domainEntity.discountAmount = raw.totalAmount * raw.discountPercent;
+        domainEntity.discountAmount = raw.totalAmount * raw.discountPercent / 100;
         domainEntity.status = raw.status;
         if (raw.student) {
             domainEntity.student = {
