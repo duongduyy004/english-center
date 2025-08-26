@@ -1,5 +1,6 @@
 export class UpdateAttendanceSessionDto {
     status: string;
-    studentId: string
-    isModified: boolean
+    studentId: string;
+    isModified: boolean;
+    note: string;
 }

@@ -122,10 +122,14 @@ export class SessionRepository {
         });
 
         const studentIds = payload.map(item => item.studentId)
-        const cases = payload.map(item => `WHEN '${item.studentId}' THEN '${item.status}'`).join(' ')
+        const statusCases = payload.map(item => `WHEN '${item.studentId}' THEN '${item.status}'`).join(' ')
+        const noteCases = payload.map(item => `WHEN '${item.studentId}' THEN '${item.note || ''}'`).join(' ')
 
         const updateRes = await this.attendanceSessionRepository.createQueryBuilder().update()
-            .set({ status: () => `CASE studentId ${cases} ELSE status END` })
+            .set({
+                status: () => `CASE studentId ${statusCases} ELSE status END`,
+                note: () => `CASE studentId ${noteCases} ELSE note END`
+            })
             .where('studentId IN (:...studentIds)', { studentIds })
             .andWhere('sessionId = :sessionId', { sessionId })
             .execute()
@@ -176,7 +180,8 @@ export class SessionRepository {
                         studentName: oldAttendance.student?.name || newAttendance.student?.name || 'Unknown',
                         studentEmail: oldAttendance.student.email || 'Unknown',
                         oldStatus: oldAttendance.status,
-                        newStatus: newAttendance.status
+                        newStatus: newAttendance.status,
+                        note: newAttendance.note
                     });
                 }
             }
@@ -197,7 +202,7 @@ export class SessionRepository {
 
                 // Generate Vietnamese description in the requested format
                 const studentChanges = changedStudents.map(student =>
-                    `${student.studentName} - ${student.studentEmail}: ${ATTENDANCE_STATUS[student.oldStatus]} -> ${ATTENDANCE_STATUS[student.newStatus]}`
+                    `${student.studentName} - ${student.studentEmail}: ${ATTENDANCE_STATUS[student.oldStatus]} -> ${ATTENDANCE_STATUS[student.newStatus]} với ghi chú: ${student.note}`
                 ).join('\n');
 
                 const description = `${currentUser.name} - ${currentUser.email} cập nhật danh sách điểm danh lớp ${className} - ${currentDate}:\n${studentChanges}`;
