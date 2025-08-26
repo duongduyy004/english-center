@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException, OnModuleInit } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { AllConfigType } from '@/config/config.type';
-import { v2 as cloudinary } from 'cloudinary';
+import { v2 as cloudinary, UploadStream } from 'cloudinary';
 @Injectable()
 export class FilesService implements OnModuleInit {
   constructor(private configService: ConfigService<AllConfigType>) { }
@@ -30,10 +30,17 @@ export class FilesService implements OnModuleInit {
           return resolve(uploadResult);
         }).end(file.buffer);
       });
-      return uploadResult;
+      return {
+        url: uploadResult['secure_url'],
+        public_id: uploadResult['public_id']
+      };
     } catch (error) {
       console.error(error);
     }
+  }
+
+  async deleteFile(public_id: string) {
+    return await cloudinary.uploader.destroy(public_id);
   }
 
 }
