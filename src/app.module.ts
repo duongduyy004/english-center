@@ -36,6 +36,7 @@ import { BullModule } from '@nestjs/bullmq';
 import { RedisConfigService } from './database/redis-config.service';
 import { RegistrationsModule } from './modules/registrations/registrations.module';
 import { FilesModule } from './modules/files/files.module';
+import { AdvertisementsModule } from './modules/advertisements/advertisements.module';
 
 @Module({
   imports: [
@@ -82,7 +83,8 @@ import { FilesModule } from './modules/files/files.module';
     TransactionsModule,
     AuditLogModule,
     RegistrationsModule,
-    FilesModule
+    FilesModule,
+    AdvertisementsModule
   ],
   controllers: [AppController],
   providers: [AppService,
