@@ -205,7 +205,7 @@ export class SessionRepository {
                     `${student.studentName} - ${student.studentEmail}: ${ATTENDANCE_STATUS[student.oldStatus]} -> ${ATTENDANCE_STATUS[student.newStatus]} với ghi chú: ${student.note}`
                 ).join('\n');
 
-                const description = `${currentUser.name} - ${currentUser.email} cập nhật danh sách điểm danh lớp ${className} - ${currentDate}:\n${studentChanges}`;
+                const description = `${currentUser.name} - ${currentUser.email} cập nhật danh sách điểm danh lớp ${className}:${session.class.year} - ${currentDate}:\n${studentChanges}`;
 
                 await this.auditLogService.track({
                     user: {

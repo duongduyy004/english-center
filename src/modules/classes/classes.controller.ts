@@ -83,8 +83,8 @@ export class ClassesController {
   @Patch('add-students/:id')
   @ResponseMessage('class.SUCCESS.ADD_STUDENTS')
   @CheckPolicies((ability: AppAbility) => ability.can(Actions.Update, ClassEntity))
-  addStudentsToClass(@Param('id') id: Class['id'], @Body() students: AddStudentsDto[], @User() user: any) {
-    return this.classesService.addStudentsToClass(id, students, user)
+  addStudentsToClass(@Param('id') id: Class['id'], @Body() students: AddStudentsDto[]) {
+    return this.classesService.addStudentsToClass(id, students)
   }
 
   @Patch('remove-students/:id')

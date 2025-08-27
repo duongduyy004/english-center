@@ -29,7 +29,7 @@ export class TransactionRepository {
             })
         )
 
-        return entity;
+        return TransactionMapper.toDomain(entity);
     }
 
     async getAllTransactions({
@@ -50,7 +50,7 @@ export class TransactionRepository {
             where.category = In(categories)
         }
         if (filterOptions?.startDate && filterOptions?.endDate) {
-            where.transaction_at = Between(filterOptions.startDate, filterOptions.endDate)
+            where.transactionAt = Between(filterOptions.startDate, filterOptions.endDate)
         }
         const [entities, total] = await this.transactionRepository.findAndCount({
             where,

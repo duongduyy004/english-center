@@ -42,10 +42,10 @@ export class AuditLogEntity {
     @Column("text", { array: true })
     changedFields: string[];
 
-    @Column({ type: 'jsonb' })
+    @Column({ type: 'jsonb', nullable: true })
     oldValue: AuditValue
 
-    @Column({ type: 'jsonb' })
+    @Column({ type: 'jsonb', nullable: true })
     newValue: AuditValue
 
     @CreateDateColumn({ type: "timestamp" })

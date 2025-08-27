@@ -10,6 +10,7 @@ import { AuditLogMapper } from "./audit-log.mapper";
 import { Injectable } from "@nestjs/common";
 import { InjectQueue } from "@nestjs/bullmq";
 import { Queue } from "bullmq";
+import { VN_ACTION, VN_ENTITY, VN_FIELD } from "@/utils/log.mapper";
 
 @Injectable()
 export class AuditLogRepository {
@@ -87,7 +88,7 @@ export class AuditLogRepository {
     private generateDescription(data: CreateAuditLogDto) {
         let returnData = {}
         for (const field of data.changedFields) {
-            const vnField = field;
+            const vnField = VN_FIELD[field];
             returnData = {
                 ...returnData,
                 [vnField]: {
@@ -97,12 +98,12 @@ export class AuditLogRepository {
             }
         }
         if (data.action === 'CREATE') {
-            return `${data.action} ${data.entityName} bởi ${data.user.name} - ${data.user.email}:\n${Object.keys(returnData).map(item => `${item} : ${returnData[item].newValue}`)}`
+            return `${VN_ACTION[data.action]} ${VN_ENTITY[data.entityName]} bởi ${data.user.name} - ${data.user.email}:\n${Object.keys(returnData).map(item => `${item} : ${returnData[item].newValue}`)}`
         }
         else if (data.action === 'UPDATE') {
-            return ` ${data.action} ${data.entityName} bởi ${data.user.name} - ${data.user.email}:\n${Object.keys(returnData).map(item => `${item} : ${returnData[item].oldValue} -> ${returnData[item].newValue}`)}`
+            return `${VN_ACTION[data.action]} ${VN_ENTITY[data.entityName]} bởi ${data.user.name} - ${data.user.email}:\n${Object.keys(returnData).map(item => `${item} : ${returnData[item].oldValue} -> ${returnData[item].newValue}`)}`
         } else if (data.action === 'DELETE') {
-            return `${data.action} ${data.entityName} bởi ${data.user.name} - ${data.user.email}:\n${Object.keys(returnData).map(item => `${item} : ${returnData[item].oldValue}`)}`
+            return `${VN_ACTION[data.action]} ${VN_ENTITY[data.entityName]} bởi ${data.user.name} - ${data.user.email}:\n${Object.keys(returnData).map(item => `${item} : ${returnData[item].oldValue}`)}`
         }
         return '';
     }

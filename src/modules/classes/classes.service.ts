@@ -16,8 +16,6 @@ import { Student } from 'modules/students/student.domain';
 import { FilterStudentDto, SortStudentDto } from 'modules/students/dto/query-student.dto';
 import { I18nService } from 'nestjs-i18n';
 import { I18nTranslations } from '@/generated/i18n.generated';
-import { AuditLogService } from '../audit-log/audit-log.service';
-import { ClsServiceManager } from 'nestjs-cls';
 
 @Injectable()
 export class ClassesService {
@@ -26,7 +24,6 @@ export class ClassesService {
     private teachersService: TeachersService,
     private studentsService: StudentsService,
     private i18nService: I18nService<I18nTranslations>,
-    private auditLogService: AuditLogService
   ) { }
   create(createClassDto: CreateClassDto) {
     return this.classRepository.create(createClassDto);
@@ -90,7 +87,7 @@ export class ClassesService {
     }
   }
 
-  async addStudentsToClass(id: Class['id'], students: AddStudentsDto[], user: any) {
+  async addStudentsToClass(id: Class['id'], students: AddStudentsDto[]) {
     const aclass = await this.classRepository.findById(id);
     const studentIds = students.map(item => item.studentId)
     const studenstList = await this.studentsService.findStudents(studentIds)
@@ -126,17 +123,6 @@ export class ClassesService {
         )
       }
     }
-
-    const method = ClsServiceManager.getClsService().get('method');
-    const path = ClsServiceManager.getClsService().get('path');
-    // this.auditLogService.track({
-    //   user: user,
-    //   entityName: 'ClassEntity',
-    //   entityId: id,
-    //   method,
-    //   path,
-
-    // })
     return await this.classRepository.addStudentsToClass(id, students)
   }
 

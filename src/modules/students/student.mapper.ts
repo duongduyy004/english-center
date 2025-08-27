@@ -22,7 +22,7 @@ export class StudentMapper {
         }
         if (raw.classes) {
             domainEntity.classes = raw.classes.map(item => ({
-                discountPercent: item.discount_percent,
+                discountPercent: item.discountPercent,
                 class: {
                     id: item.class.id,
                     name: item.class.name,

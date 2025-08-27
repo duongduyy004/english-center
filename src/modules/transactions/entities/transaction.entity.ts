@@ -13,12 +13,12 @@ export class TransactionEntity {
     description: string;
 
     @Column({ default: () => 'CURRENT_DATE' })
-    transaction_at: Date;
+    transactionAt: Date;
 
     @ManyToOne(() => TransactionCategoryEntity)
     @JoinColumn({ name: 'categoryId' })
     category: TransactionCategoryEntity;
 
     @DeleteDateColumn()
-    deleteAt: Date;
+    deletedAt: Date;
 }

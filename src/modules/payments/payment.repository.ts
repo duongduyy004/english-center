@@ -37,7 +37,7 @@ export class PaymentRepository {
                 if (student.status === 'present' || student.status === 'late') totalLessons++;
                 session.class.students.map(item => {
                     if (item.studentId === student.student.id) {
-                        discountPercent = item.discount_percent;
+                        discountPercent = item.discountPercent;
                         totalAmount = totalLessons * session.class.feePerLesson
                     }
                 })
