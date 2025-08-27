@@ -7,11 +7,8 @@ import { TeacherPaymentRepository } from './teacher-payments.repository';
 import { SessionsModule } from 'modules/sessions/sessions.module';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([TeacherPaymentEntity]),
-    SessionsModule
-  ],
+  imports: [TypeOrmModule.forFeature([TeacherPaymentEntity]), SessionsModule],
   controllers: [TeacherPaymentsController],
-  providers: [TeacherPaymentsService, TeacherPaymentRepository]
+  providers: [TeacherPaymentsService, TeacherPaymentRepository],
 })
-export class TeacherPaymentsModule { }
+export class TeacherPaymentsModule {}
