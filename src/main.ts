@@ -29,7 +29,11 @@ async function bootstrap() {
   app.useGlobalInterceptors(
     new ClassSerializerInterceptor(app.get(Reflector))
   )
-
+  app.enableCors({
+    origin: configService.get('app.frontendDomain', { infer: true }),
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    credentials: true,
+  });
   //config versioning
   app.enableVersioning({
     type: VersioningType.URI,
