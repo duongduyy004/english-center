@@ -39,7 +39,8 @@ export class TeacherSeedService {
                     qualifications: item.qualifications,
                     specializations: item.specialization,
                     description: item.description
-                })
+                }),
+                { listeners: false }
             )
         }
     }

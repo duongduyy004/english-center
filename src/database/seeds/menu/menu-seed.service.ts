@@ -18,7 +18,8 @@ export class MenuSeedService {
                 title: 'Trang chủ',
                 slug: '',
                 order: 0
-            })
+            }),
+            { listeners: false }
         )
 
         await this.menuRepository.save(
@@ -26,7 +27,8 @@ export class MenuSeedService {
                 title: 'Về chúng tôi',
                 slug: 'about-us',
                 order: 0
-            })
+            }),
+            { listeners: false }
         )
 
         await this.menuRepository.save(
@@ -34,7 +36,8 @@ export class MenuSeedService {
                 title: 'Giáo viên',
                 slug: 'teacher',
                 order: 0
-            })
+            }),
+            { listeners: false }
         )
 
         await this.menuRepository.save(
@@ -42,7 +45,8 @@ export class MenuSeedService {
                 title: 'Đánh giá',
                 slug: 'rating',
                 order: 0
-            })
+            }),
+            { listeners: false }
         )
     }
 }

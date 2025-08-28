@@ -24,6 +24,7 @@ export class RoleSeedService {
                     id: RoleEnum.admin,
                     name: 'Admin',
                 }),
+                { listeners: false }
             );
         }
 
@@ -39,6 +40,7 @@ export class RoleSeedService {
                     id: RoleEnum.teacher,
                     name: 'Teacher',
                 }),
+                { listeners: false }
             );
         }
         const countParent = await this.repository.count({
@@ -53,6 +55,7 @@ export class RoleSeedService {
                     id: RoleEnum.parent,
                     name: 'Parent',
                 }),
+                { listeners: false }
             );
         }
 
@@ -68,6 +71,7 @@ export class RoleSeedService {
                     id: RoleEnum.student,
                     name: 'Student',
                 }),
+                { listeners: false }
             );
         }
     }

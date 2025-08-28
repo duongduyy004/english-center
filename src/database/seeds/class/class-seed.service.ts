@@ -35,7 +35,7 @@ export class ClassSeedService {
                     max_student: item.maxStudents,
                     description: item.description,
                     room: item.room,
-                })
+                }), { listeners: false }
             )
         }
     }
