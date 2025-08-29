@@ -16,6 +16,9 @@ export class ClassStudentEntity {
     @Column()
     discountPercent: number
 
+    @Column({ default: true })
+    isActive: boolean;
+
     @ManyToOne(() => StudentEntity, (student) => student.classes)
     @JoinTable({ name: 'studentId' })
     student?: StudentEntity

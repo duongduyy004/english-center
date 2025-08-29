@@ -144,7 +144,15 @@ export class SessionRepository {
       relations: ['student']
     });
 
-    const studentIds = payload.map(item => item.studentId)
+    const entity = await this.sessionRepository.findOne({
+      where: { id: sessionId },
+      relations: ['class.students', 'attendances.student']
+    })
+
+    const classInfo = await this.classesService.findOne(entity.classId)
+    const studentIds = classInfo.students.map(item => {
+      if (item.isActivce) return item.student.id;
+    });
     const statusCases = payload.map(item => `WHEN '${item.studentId}' THEN '${item.status}'`).join(' ')
     const noteCases = payload.map(item => `WHEN '${item.studentId}' THEN '${item.note || ''}'`).join(' ')
 
@@ -155,12 +163,8 @@ export class SessionRepository {
       })
       .where('studentId IN (:...studentIds)', { studentIds })
       .andWhere('sessionId = :sessionId', { sessionId })
+      .callListeners(false)
       .execute()
-
-    const entity = await this.sessionRepository.findOne({
-      where: { id: sessionId },
-      relations: ['class.students', 'attendances.student']
-    })
 
     for (const item of entity.attendances) {
       for (const payloadItem of payload) {
@@ -174,7 +178,7 @@ export class SessionRepository {
     await this.auditAttendanceChanges(sessionId, oldAttendances, entity.attendances, payload);
 
     this.paymentsService.autoUpdatePaymentRecord(entity)
-    this.teacherPaymentsService.autoUpdatePayment(entity);
+    // this.teacherPaymentsService.autoUpdatePayment(entity);
     return updateRes
   }
 

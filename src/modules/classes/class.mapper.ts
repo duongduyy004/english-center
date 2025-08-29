@@ -26,7 +26,8 @@ export class ClassMapper {
                     email: item?.student?.email,
                     gender: item?.student?.gender,
                     phone: item?.student?.phone
-                }
+                },
+                isActivce: item.isActive
             }
             ))
         }

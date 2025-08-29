@@ -27,7 +27,8 @@ export class Class {
     schedule: Schedule;
     students?: {
         discountPercent: number,
-        student: Partial<Student>
+        student: Partial<Student>,
+        isActivce: boolean
     }[];
     teacher?: Partial<Teacher>
     createdAt?: Date;

@@ -5,7 +5,9 @@ import { Exclude } from "class-transformer";
 export class Session {
     id: string;
 
-    date: Date
+    date: Date;
+
+    isActive: boolean;
 
     @Exclude({ toPlainOnly: true })
     classId?: number;
