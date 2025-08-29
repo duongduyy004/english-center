@@ -359,7 +359,6 @@ export class SessionRepository {
     }
   }
 
-
   async getClassSessionsInMonth(
     classId: Class['id'],
     month: number,
@@ -372,6 +371,33 @@ export class SessionRepository {
     return await this.sessionRepository.count({
       where: {
         classId,
+        date: Between(startDate, endDate),
+      },
+    });
+  }
+
+  async getTeacherSessionsInMonth(
+    teacherId: string,
+    month: number,
+    year: number,
+  ) {
+    // Get all classes taught by this teacher
+    const teacherClasses = await this.classesService.findClassesByTeacherId(
+      teacherId,
+    );
+    const classIds = teacherClasses.map((cls) => cls.id);
+
+    if (classIds.length === 0) {
+      return 0;
+    }
+
+    // Create date range for the month
+    const startDate = new Date(year, month - 1, 1);
+    const endDate = new Date(year, month, 0, 23, 59, 59, 999);
+
+    return await this.sessionRepository.count({
+      where: {
+        classId: In(classIds),
         date: Between(startDate, endDate),
       },
     });
