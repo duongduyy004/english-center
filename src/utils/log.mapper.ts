@@ -30,8 +30,8 @@ export const VN_FIELD = Object.freeze({
   scheduleStart_date: 'ngày bắt đầu',
   scheduleEnd_date: 'ngày kết thúc',
   scheduleDays_of_week: 'ngày trong tuần',
-  scheduleTimeSlotsStart_time: 'thời gian bắt đầu',
-  scheduleTimeSlotsEnd_time: 'thời gian kết thúc',
+  scheduleTime_slotsStart_time: 'thời gian bắt đầu',
+  scheduleTime_slotsEnd_time: 'thời gian kết thúc',
   teacher: 'giáo viên',
   // registration
   processed: 'tình trạng xử lý',
