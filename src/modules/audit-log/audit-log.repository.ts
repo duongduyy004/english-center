@@ -11,6 +11,7 @@ import { Injectable } from "@nestjs/common";
 import { InjectQueue } from "@nestjs/bullmq";
 import { Queue } from "bullmq";
 import { VN_ACTION, VN_ENTITY, VN_FIELD } from "@/utils/log.mapper";
+import { capitalize } from "lodash";
 
 @Injectable()
 export class AuditLogRepository {
@@ -102,22 +103,22 @@ export class AuditLogRepository {
         const userName = `<strong>${data.user.name}</strong>`;
         const userEmail = `<em>${data.user.email}</em>`;
         const entityName = `<strong>${VN_ENTITY[data.entityName]}</strong>`;
-        const action = `<strong>${VN_ACTION[data.action]}</strong>`;
+        const action = `<strong>${capitalize(VN_ACTION[data.action])}</strong>`;
 
         if (data.action === 'CREATE') {
             const changeList = Object.keys(returnData).map(item =>
-                `<li><strong>${item}</strong>: <span style="color: green;">${returnData[item].newValue}</span></li>`
+                `<li><strong>${capitalize(item)}</strong>: <span style="color: green;">${returnData[item].newValue}</span></li>`
             ).join('');
             return `${action} ${entityName} bởi ${userName} - ${userEmail}:<ul style="margin: 8px 0; padding-left: 20px;">${changeList}</ul>`;
         }
         else if (data.action === 'UPDATE') {
             const changeList = Object.keys(returnData).map(item =>
-                `<li><strong>${item}</strong>: <span style="color: #666;">${returnData[item].oldValue}</span> → <span style="color: blue;">${returnData[item].newValue}</span></li>`
+                `<li><strong>${capitalize(item)}</strong>: <span style="color: #666;">${returnData[item].oldValue}</span> → <span style="color: blue;">${returnData[item].newValue}</span></li>`
             ).join('');
             return `${action} ${entityName} bởi ${userName} - ${userEmail}:<ul style="margin: 8px 0; padding-left: 20px;">${changeList}</ul>`;
         } else if (data.action === 'DELETE') {
             const changeList = Object.keys(returnData).map(item =>
-                `<li><strong>${item}</strong>: <span style="color: red; text-decoration: line-through;">${returnData[item].oldValue}</span></li>`
+                `<li><strong>${capitalize(item)}</strong>: <span style="color: red; text-decoration: line-through;">${returnData[item].oldValue}</span></li>`
             ).join('');
             return `${action} ${entityName} bởi ${userName} - ${userEmail}:<ul style="margin: 8px 0; padding-left: 20px;">${changeList}</ul>`;
         }

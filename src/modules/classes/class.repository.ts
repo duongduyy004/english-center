@@ -207,8 +207,10 @@ export class ClassRepository {
         if (!currentUser) return; // Skip audit if no user context
         const classInfo = await this.findById(classId);
 
-        const addedStudentsDescription = addedStudents.map(item => `${item.studentName} - ${item.studentName} - giảm giá ${item.discountPercent}%`).join('\n')
-        const description = `${currentUser.name} - ${currentUser.email} thêm học sinh vào lớp ${classInfo.name} - ${classInfo.year}:${addedStudentsDescription}`
+        const addedStudentsDescription = addedStudents.map(item =>
+            `<li><strong>${item.studentName}</strong> - <em>${item.studentEmail}</em> <span style="color: green;">(giảm giá ${item.discountPercent}%)</span></li>`
+        ).join('');
+        const description = `<strong>Thêm học sinh</strong> vào <strong>lớp ${classInfo.name} - ${classInfo.year}</strong> bởi <strong>${currentUser.name}</strong> - <em>${currentUser.email}</em>:<ul style="margin: 8px 0; padding-left: 20px;">${addedStudentsDescription}</ul>`;
 
         await this.auditLogService.track({
             user: {
@@ -242,8 +244,10 @@ export class ClassRepository {
         if (!currentUser) return; // Skip audit if no user context
         const classInfo = await this.findById(classId);
 
-        const deletedStudentDescription = studentsList.map(item => `${item.email} - ${item.name}`).join('\n')
-        const description = `${currentUser.name} - ${currentUser.email} xóa học sinh khỏi lớp ${classInfo.name} - ${classInfo.year}:${deletedStudentDescription}`;
+        const deletedStudentDescription = studentsList.map(item =>
+            `<li><strong>${item.name}</strong> - <em>${item.email}</em></li>`
+        ).join('');
+        const description = `<strong>Xóa học sinh</strong> khỏi <strong>lớp ${classInfo.name} - ${classInfo.year}</strong> bởi <strong>${currentUser.name}</strong> - <em>${currentUser.email}</em>:<ul style="margin: 8px 0; padding-left: 20px;">${deletedStudentDescription}</ul>`;
 
 
         await this.auditLogService.track({

@@ -200,12 +200,12 @@ export class SessionRepository {
                     year: 'numeric'
                 });
 
-                // Generate Vietnamese description in the requested format
+                // Generate HTML description in the same format as audit log
                 const studentChanges = changedStudents.map(student =>
-                    `${student.studentName} - ${student.studentEmail}: ${ATTENDANCE_STATUS[student.oldStatus]} -> ${ATTENDANCE_STATUS[student.newStatus]} với ghi chú: ${student.note}`
-                ).join('\n');
+                    `<li><strong>${student.studentName}</strong> - <em>${student.studentEmail}</em>: <span style="color: #666;">${ATTENDANCE_STATUS[student.oldStatus]}</span> → <span style="color: blue;">${ATTENDANCE_STATUS[student.newStatus]}</span>${student.note ? ` <small>(ghi chú: ${student.note})</small>` : ''}</li>`
+                ).join('');
 
-                const description = `${currentUser.name} - ${currentUser.email} cập nhật danh sách điểm danh lớp ${className}:${session.class.year} - ${currentDate}:\n${studentChanges}`;
+                const description = `<strong>Cập nhật</strong> <strong>điểm danh lớp ${className}:${session.class.year}</strong> bởi <strong>${currentUser.name}</strong> - <em>${currentUser.email}</em> - ${currentDate}:<ul style="margin: 8px 0; padding-left: 20px;">${studentChanges}</ul>`;
 
                 await this.auditLogService.track({
                     user: {
