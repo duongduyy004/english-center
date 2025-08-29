@@ -89,7 +89,7 @@ export class AuditLogRepository {
         let returnData = {}
         for (const field of data.changedFields) {
             const vnField = VN_FIELD[field];
-            if (vnField) return;
+            if (!vnField) return;
             returnData = {
                 ...returnData,
                 [vnField]: {
