@@ -271,4 +271,12 @@ export class ClassRepository {
             description: description
         })
     }
+
+    async findClassesByTeacherId(teacherId: Teacher['id']): Promise<Class[]> {
+        const entities = await this.classRepository.find({
+            where: { teacher: { id: teacherId } },
+            relations: ['students.student', 'teacher'],
+        });
+        return entities.map((entity) => ClassMapper.toDomain(entity));
+    }
 }

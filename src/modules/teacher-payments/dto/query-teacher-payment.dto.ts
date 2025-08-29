@@ -1,22 +1,45 @@
-import { Class } from "modules/classes/class.domain";
-import { Payment } from "modules/payments/payment.domain";
-import { Teacher } from "modules/teachers/teacher.domain";
+import {
+  IsEnum,
+  IsNumber,
+  IsOptional,
+  IsString,
+  Max,
+  Min,
+} from 'class-validator';
+import { Class } from 'modules/classes/class.domain';
+import { Payment } from 'modules/payments/payment.domain';
+import { Teacher } from 'modules/teachers/teacher.domain';
 
 export class FilterTeacherPaymentDto {
-    teacherId: Teacher['id'];
+  @IsOptional()
+  teacherId: Teacher['id'];
 
-    month: number;
+  @IsNumber()
+  @Min(1)
+  @Max(12)
+  month: number;
 
-    year: number;
+  @IsNumber()
+  @Min(2020)
+  year: number;
 
-    status: string;
+  @IsString()
+  status: string;
 
-    startMonth: number;
+  @IsNumber()
+  @Min(1)
+  @Max(12)
+  startMonth: number;
 
-    endMonth: number;
+  @IsNumber()
+  @Min(1)
+  @Max(12)
+  endMonth: number;
 }
 
 export class SortTeacherPaymentDto {
-    orderBy: keyof Payment;
-    order: 'ASC' | 'DESC'
+  @IsString()
+  orderBy: keyof Payment;
+  @IsEnum(['ASC', 'DESC'])
+  order: 'ASC' | 'DESC';
 }

@@ -60,6 +60,22 @@ export type I18nTranslations = {
             "EMAIL_EXIST": string;
         };
     };
+    "teacherPayment": {
+        "SUCCESS": {
+            "AUTO_TEACHER_PAYMENT": string;
+            "MANUAL_TEACHER_PAYMENT": string;
+            "UPDATE_TEACHER_PAYMENT": string;
+            "DELETE_TEACHER_PAYMENT": string;
+            "GET_ALL_TEACHER_PAYMENTS": string;
+        };
+        "FAIL": {
+            "AUTO_TEACHER_PAYMENT": string;
+            "MANUAL_TEACHER_PAYMENT": string;
+            "UPDATE_TEACHER_PAYMENT": string;
+            "DELETE_TEACHER_PAYMENT": string;
+            "CLASS_TEACHER_NOT_FOUND": string;
+        };
+    };
     "user": {
         "SUCCESS": {
             "CREATE_A_USER": string;
