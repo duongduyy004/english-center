@@ -8,16 +8,18 @@ import { ClassesModule } from 'modules/classes/classes.module';
 import { SessionRepository } from './session.repository';
 import { StudentsModule } from 'modules/students/students.module';
 import { PaymentsModule } from 'modules/payments/payments.module';
+import { TeacherPaymentsModule } from 'modules/teacher-payments/teacher-payments.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([SessionEntity, AttendanceSessionEntity]),
     ClassesModule,
     StudentsModule,
-    PaymentsModule
+    PaymentsModule,
+    TeacherPaymentsModule,
   ],
   controllers: [SessionsController],
   providers: [SessionsService, SessionRepository],
-  exports: [SessionsService]
+  exports: [SessionsService],
 })
-export class SessionsModule { }
+export class SessionsModule {}

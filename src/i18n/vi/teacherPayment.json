@@ -1,0 +1,16 @@
+{
+  "SUCCESS": {
+    "AUTO_TEACHER_PAYMENT": "Tự động cập nhật thanh toán cho giáo viên thành công",
+    "MANUAL_TEACHER_PAYMENT": "Cập nhật thanh toán cho giáo viên thủ công thành công",
+    "UPDATE_TEACHER_PAYMENT": "Cập nhật thanh toán cho giáo viên thành công",
+    "DELETE_TEACHER_PAYMENT": "Xóa thanh toán cho giáo viên thành công",
+    "GET_ALL_TEACHER_PAYMENTS": "Lấy danh sách thanh toán cho giáo viên thành công"
+  },
+  "FAIL": {
+    "AUTO_TEACHER_PAYMENT": "Không thể xử lý thanh toán tự động cho giáo viên",
+    "MANUAL_TEACHER_PAYMENT": "Không thể xử lý thanh toán thủ công cho giáo viên",
+    "UPDATE_TEACHER_PAYMENT": "Không thể cập nhật thanh toán cho giáo viên",
+    "DELETE_TEACHER_PAYMENT": "Không thể xóa thanh toán cho giáo viên",
+    "CLASS_TEACHER_NOT_FOUND": "Không tìm thấy lớp học hoặc giáo viên"
+  }
+}

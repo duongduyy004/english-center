@@ -9,27 +9,49 @@ import { IPaginationOptions } from 'utils/types/pagination-options';
 
 @Injectable()
 export class SessionsService {
-  constructor(
-    private sessionRepository: SessionRepository
-  ) { }
+  constructor(private sessionRepository: SessionRepository) {}
 
   getTodaySession(classId: Class['id']) {
-    return this.sessionRepository.getTodaySession(classId)
+    return this.sessionRepository.getTodaySession(classId);
   }
 
-  updateAttendanceSession(sessionId: Session['id'], updateAttendanceSessionDto: UpdateAttendanceSessionDto[]) {
-    return this.sessionRepository.updateAttendanceSession(sessionId, updateAttendanceSessionDto)
+  updateAttendanceSession(
+    sessionId: Session['id'],
+    updateAttendanceSessionDto: UpdateAttendanceSessionDto[],
+  ) {
+    return this.sessionRepository.updateAttendanceSession(
+      sessionId,
+      updateAttendanceSessionDto,
+    );
   }
 
   getStudentAttendance(studentId: Student['id']) {
-    return this.sessionRepository.getStudentAttendance(studentId)
+    return this.sessionRepository.getStudentAttendance(studentId);
   }
 
-  getAttendancesByClassId(classId: Class['id'], paginationOptions: IPaginationOptions): Promise<PaginationResponseDto<Session>> {
-    return this.sessionRepository.getAttendancesByClassId(classId, paginationOptions)
+  getAttendancesByClassId(
+    classId: Class['id'],
+    paginationOptions: IPaginationOptions,
+  ): Promise<PaginationResponseDto<Session>> {
+    return this.sessionRepository.getAttendancesByClassId(
+      classId,
+      paginationOptions,
+    );
   }
 
   getSessions(classId: Class['id']) {
-    return this.sessionRepository.getSessions(classId)
+    return this.sessionRepository.getSessions(classId);
+  }
+
+  getTeacherSessionsInMonth(teacherId: string, month: number, year: number) {
+    return this.sessionRepository.getTeacherSessionsInMonth(
+      teacherId,
+      month,
+      year,
+    );
+  }
+
+  getClassSessionsInMonth(classId: Class['id'], month: number, year: number) {
+    return this.sessionRepository.getClassSessionsInMonth(classId, month, year);
   }
 }

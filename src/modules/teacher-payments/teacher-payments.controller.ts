@@ -17,6 +17,8 @@ import {
 
 import { CreateTeacherPaymentDto } from './dto/create-teacher-payment.dto';
 import { UpdateTeacherPaymentDto } from './dto/update-teacher-payment.dto';
+import { SessionEntity } from 'modules/sessions/entities/session.entity';
+import { ResponseMessage } from '@/decorator/customize.decorator';
 
 @Controller('teacher-payments')
 export class TeacherPaymentsController {
@@ -24,7 +26,8 @@ export class TeacherPaymentsController {
     private readonly teacherPaymentsService: TeacherPaymentsService,
   ) {}
 
-  @Get('all')
+  @Get()
+  @ResponseMessage('teacherPayment.SUCCESS.GET_ALL_TEACHER_PAYMENTS')
   getAllPayments(
     @Query() query: QueryDto<FilterTeacherPaymentDto, SortTeacherPaymentDto>,
   ) {
@@ -41,11 +44,13 @@ export class TeacherPaymentsController {
   }
 
   @Post()
+  @ResponseMessage('teacherPayment.SUCCESS.MANUAL_TEACHER_PAYMENT')
   createPayment(@Body() createPaymentDto: CreateTeacherPaymentDto) {
     return this.teacherPaymentsService.createPayment(createPaymentDto);
   }
 
   @Patch(':id')
+  @ResponseMessage('teacherPayment.SUCCESS.UPDATE_TEACHER_PAYMENT')
   updatePayment(
     @Param('id') id: string,
     @Body() updateDto: UpdateTeacherPaymentDto,
@@ -54,7 +59,15 @@ export class TeacherPaymentsController {
   }
 
   @Delete(':id')
+  @ResponseMessage('teacherPayment.SUCCESS.DELETE_TEACHER_PAYMENT')
   deletePayment(@Param('id') id: string) {
     return this.teacherPaymentsService.deletePayment(id);
+  }
+
+  // testing route only
+  @Post('auto-update')
+  @ResponseMessage('teacherPayment.SUCCESS.AUTO_TEACHER_PAYMENT')
+  autoUpdatePayment(@Body() session: SessionEntity) {
+    return this.teacherPaymentsService.autoUpdatePayment(session);
   }
 }
