@@ -89,6 +89,7 @@ export class AuditLogRepository {
         let returnData = {}
         for (const field of data.changedFields) {
             const vnField = VN_FIELD[field];
+            if (vnField) return;
             returnData = {
                 ...returnData,
                 [vnField]: {
@@ -97,13 +98,28 @@ export class AuditLogRepository {
                 }
             }
         }
+
+        const userName = `<strong>${data.user.name}</strong>`;
+        const userEmail = `<em>${data.user.email}</em>`;
+        const entityName = `<strong>${VN_ENTITY[data.entityName]}</strong>`;
+        const action = `<strong>${VN_ACTION[data.action]}</strong>`;
+
         if (data.action === 'CREATE') {
-            return `${VN_ACTION[data.action]} ${VN_ENTITY[data.entityName]} bởi ${data.user.name} - ${data.user.email}:\n${Object.keys(returnData).map(item => `${item} : ${returnData[item].newValue}`)}`
+            const changeList = Object.keys(returnData).map(item =>
+                `<li><strong>${item}</strong>: <span style="color: green;">${returnData[item].newValue}</span></li>`
+            ).join('');
+            return `${action} ${entityName} bởi ${userName} - ${userEmail}:<ul style="margin: 8px 0; padding-left: 20px;">${changeList}</ul>`;
         }
         else if (data.action === 'UPDATE') {
-            return `${VN_ACTION[data.action]} ${VN_ENTITY[data.entityName]} bởi ${data.user.name} - ${data.user.email}:\n${Object.keys(returnData).map(item => `${item} : ${returnData[item].oldValue} -> ${returnData[item].newValue}`)}`
+            const changeList = Object.keys(returnData).map(item =>
+                `<li><strong>${item}</strong>: <span style="color: #666;">${returnData[item].oldValue}</span> → <span style="color: blue;">${returnData[item].newValue}</span></li>`
+            ).join('');
+            return `${action} ${entityName} bởi ${userName} - ${userEmail}:<ul style="margin: 8px 0; padding-left: 20px;">${changeList}</ul>`;
         } else if (data.action === 'DELETE') {
-            return `${VN_ACTION[data.action]} ${VN_ENTITY[data.entityName]} bởi ${data.user.name} - ${data.user.email}:\n${Object.keys(returnData).map(item => `${item} : ${returnData[item].oldValue}`)}`
+            const changeList = Object.keys(returnData).map(item =>
+                `<li><strong>${item}</strong>: <span style="color: red; text-decoration: line-through;">${returnData[item].oldValue}</span></li>`
+            ).join('');
+            return `${action} ${entityName} bởi ${userName} - ${userEmail}:<ul style="margin: 8px 0; padding-left: 20px;">${changeList}</ul>`;
         }
         return '';
     }
