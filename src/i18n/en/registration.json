@@ -1,0 +1,14 @@
+{
+  "SUCCESS": {
+    "CREATE_A_REGISTRATION": "Registration created successfully",
+    "UPDATE_A_REGISTRATION": "Registration updated successfully",
+    "DELETE_A_REGISTRATION": "Registration deleted successfully",
+    "GET_A_REGISTRATION": "Get registration successfully",
+    "GET_ALL_REGISTRATIONS": "Get registration list successfully"
+  },
+  "FAIL": {
+    "NOT_FOUND": "Registration not found",
+    "CAN_NOT_DELETE": "Cannot delete registration",
+    "ALREADY_PROCESSED": "Registration already processed"
+  }
+}

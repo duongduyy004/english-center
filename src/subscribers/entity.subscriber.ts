@@ -1,7 +1,7 @@
 import { DataSource, EntitySubscriberInterface, EventSubscriber, InsertEvent, SoftRemoveEvent, UpdateEvent } from 'typeorm';
 import { Injectable } from '@nestjs/common';
 import { ClsServiceManager } from 'nestjs-cls';
-import _, { isArray, isEqual } from 'lodash';
+import _, { capitalize, isArray, isEqual } from 'lodash';
 import { AuditLog } from '@/modules/audit-log/audit-log.domain';
 
 @EventSubscriber()
@@ -121,6 +121,7 @@ export class AuditSubscriber implements EntitySubscriberInterface {
                 'dayOfBirth', 'isEmailVerified', 'address', 'phone', 'avatar', 'schedule', 'gender',
                 'description', 'qualifications', 'specializations', 'introduction', 'workExperience'
             ]
+            newEntity = this.convertNestedObject(newEntity)
             for (const key in newEntity) {
                 if (skipFields.includes(key) || newEntity[key] === undefined || null) continue;
                 changes[key] = {
@@ -134,7 +135,10 @@ export class AuditSubscriber implements EntitySubscriberInterface {
         // if trigger soft remove
         if (oldEntity && !newEntity) {
             const skipFields = ['createdAt', 'updatedAt', 'deletedAt', 'refreshToken', 'password', 'id', 'role',
-                'dayOfBirth', 'isEmailVerified', 'address', 'phone', 'avatar']
+                'dayOfBirth', 'isEmailVerified', 'address', 'phone', 'avatar', 'schedule', 'gender',
+                'description', 'qualifications', 'specializations', 'introduction', 'workExperience'
+            ]
+            oldEntity = this.convertNestedObject(oldEntity);
             for (const key in oldEntity) {
                 if (skipFields.includes(key) || oldEntity[key] === undefined || null) continue;
                 changes[key] = {
@@ -170,7 +174,7 @@ export class AuditSubscriber implements EntitySubscriberInterface {
     private convertNestedObject(object: Object, parentKey = '', result = {}) {
         for (const key in object) {
             if (object.hasOwnProperty(key)) {
-                const newKey = parentKey ? `${parentKey}.${key}` : key;
+                const newKey = parentKey ? `${parentKey}${capitalize(key)}` : key;
                 if (typeof object[key] === 'object' && object[key] !== null && !Array.isArray(object[key])) {
                     this.convertNestedObject(object[key], newKey, result);
                 } else {

@@ -14,15 +14,21 @@ export class SessionsService {
   ) { }
 
   getTodaySession(classId: Class['id']) {
-    return this.sessionRepository.getTodaySession(classId)
+    return this.sessionRepository.getTodaySession(classId);
   }
 
-  updateAttendanceSession(sessionId: Session['id'], updateAttendanceSessionDto: UpdateAttendanceSessionDto[]) {
-    return this.sessionRepository.updateAttendanceSession(sessionId, updateAttendanceSessionDto)
+  updateAttendanceSession(
+    sessionId: Session['id'],
+    updateAttendanceSessionDto: UpdateAttendanceSessionDto[],
+  ) {
+    return this.sessionRepository.updateAttendanceSession(
+      sessionId,
+      updateAttendanceSessionDto,
+    );
   }
 
   getStudentAttendance(studentId: Student['id']) {
-    return this.sessionRepository.getStudentAttendance(studentId)
+    return this.sessionRepository.getStudentAttendance(studentId);
   }
 
   getAttendancesByClassId(classId: Class['id'], paginationOptions: IPaginationOptions): Promise<PaginationResponseDto<Session>> {
@@ -30,6 +36,18 @@ export class SessionsService {
   }
 
   getTotalSessions(classId: Class['id']) {
-    return this.sessionRepository.getTotalSessions(classId)
+    return this.sessionRepository.getTotalSessions(classId);
+  }
+
+  getTeacherSessionsInMonth(teacherId: string, month: number, year: number) {
+    return this.sessionRepository.getTeacherSessionsInMonth(
+      teacherId,
+      month,
+      year,
+    );
+  }
+
+  getClassSessionsInMonth(classId: Class['id'], month: number, year: number) {
+    return this.sessionRepository.getClassSessionsInMonth(classId, month, year);
   }
 }

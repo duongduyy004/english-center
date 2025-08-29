@@ -9,6 +9,7 @@ import databaseConfig from '@/config/configs/database.config';
 import appConfig from '@/config/configs/app.config';
 import jwtConfig from '@/config/configs/jwt.config';
 import redisConfig from '@/config/configs/redis.config';
+import cloudinaryConfig from '@/config/configs/cloudinary.config';
 import { AcceptLanguageResolver, HeaderResolver, I18nModule, QueryResolver } from 'nestjs-i18n';
 import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { TransformInterceptor } from '@/core/transform.interceptor';
@@ -34,12 +35,14 @@ import { ClsModule } from 'nestjs-cls';
 import { BullModule } from '@nestjs/bullmq';
 import { RedisConfigService } from './database/redis-config.service';
 import { RegistrationsModule } from './modules/registrations/registrations.module';
+import { FilesModule } from './modules/files/files.module';
+import { AdvertisementsModule } from './modules/advertisements/advertisements.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [databaseConfig, appConfig, jwtConfig, redisConfig],
+      load: [databaseConfig, appConfig, jwtConfig, redisConfig, cloudinaryConfig],
       envFilePath: ['.env']
     }),
     I18nModule.forRoot({
@@ -79,7 +82,9 @@ import { RegistrationsModule } from './modules/registrations/registrations.modul
     MenuModule,
     TransactionsModule,
     AuditLogModule,
-    RegistrationsModule
+    RegistrationsModule,
+    FilesModule,
+    AdvertisementsModule
   ],
   controllers: [AppController],
   providers: [AppService,

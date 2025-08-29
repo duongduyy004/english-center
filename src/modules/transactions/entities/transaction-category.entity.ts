@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, DeleteDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity('transaction_category')
 export class TransactionCategoryEntity {
@@ -11,4 +11,6 @@ export class TransactionCategoryEntity {
     @Column()
     name: string;
 
+    @DeleteDateColumn()
+    deletedAt?: Date;
 }

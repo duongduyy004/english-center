@@ -9,6 +9,7 @@ import { SessionRepository } from './session.repository';
 import { StudentsModule } from 'modules/students/students.module';
 import { PaymentsModule } from 'modules/payments/payments.module';
 import { AuditLogModule } from '../audit-log/audit-log.module';
+import { TeacherPaymentsModule } from 'modules/teacher-payments/teacher-payments.module';
 
 @Module({
   imports: [
@@ -16,10 +17,11 @@ import { AuditLogModule } from '../audit-log/audit-log.module';
     ClassesModule,
     StudentsModule,
     PaymentsModule,
-    AuditLogModule
+    AuditLogModule,
+    TeacherPaymentsModule,
   ],
   controllers: [SessionsController],
   providers: [SessionsService, SessionRepository],
-  exports: [SessionsService]
+  exports: [SessionsService],
 })
 export class SessionsModule { }

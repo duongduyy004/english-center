@@ -5,7 +5,7 @@ export class Transaction {
 
     description: string;
 
-    transaction_at: Date;
+    transactionAt: Date;
 
     category: {
         id: number

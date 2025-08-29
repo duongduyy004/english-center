@@ -14,7 +14,7 @@ export class ClassStudentEntity {
     classId: string | number;
 
     @Column()
-    discount_percent: number
+    discountPercent: number
 
     @ManyToOne(() => StudentEntity, (student) => student.classes)
     @JoinTable({ name: 'studentId' })

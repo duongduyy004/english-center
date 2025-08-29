@@ -21,7 +21,7 @@ import {
 
 @Controller('registrations')
 export class RegistrationsController {
-  constructor(private readonly registrationsService: RegistrationsService) {}
+  constructor(private readonly registrationsService: RegistrationsService) { }
 
   @Public()
   @Post()

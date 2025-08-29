@@ -33,6 +33,20 @@ export type I18nTranslations = {
     "common": {
         "NOT_FOUND": string;
     };
+    "registration": {
+        "SUCCESS": {
+            "CREATE_A_REGISTRATION": string;
+            "UPDATE_A_REGISTRATION": string;
+            "DELETE_A_REGISTRATION": string;
+            "GET_A_REGISTRATION": string;
+            "GET_ALL_REGISTRATIONS": string;
+        };
+        "FAIL": {
+            "NOT_FOUND": string;
+            "CAN_NOT_DELETE": string;
+            "ALREADY_PROCESSED": string;
+        };
+    };
     "student": {
         "SUCCESS": {
             "CREATE_A_STUDENT": string;
@@ -44,6 +58,22 @@ export type I18nTranslations = {
         "FAIL": {
             "NOT_FOUND": string;
             "EMAIL_EXIST": string;
+        };
+    };
+    "teacherPayment": {
+        "SUCCESS": {
+            "AUTO_TEACHER_PAYMENT": string;
+            "MANUAL_TEACHER_PAYMENT": string;
+            "UPDATE_TEACHER_PAYMENT": string;
+            "DELETE_TEACHER_PAYMENT": string;
+            "GET_ALL_TEACHER_PAYMENTS": string;
+        };
+        "FAIL": {
+            "AUTO_TEACHER_PAYMENT": string;
+            "MANUAL_TEACHER_PAYMENT": string;
+            "UPDATE_TEACHER_PAYMENT": string;
+            "DELETE_TEACHER_PAYMENT": string;
+            "CLASS_TEACHER_NOT_FOUND": string;
         };
     };
     "user": {
