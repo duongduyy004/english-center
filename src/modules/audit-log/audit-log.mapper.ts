@@ -22,6 +22,7 @@ export class AuditLogMapper {
         if (raw.changedFields) domainEntity.changedFields = raw.changedFields;
         if (raw.newValue) domainEntity.newValue = raw.newValue;
         if (raw.oldValue) domainEntity.oldValue = raw.oldValue;
+        domainEntity.createdAt = raw.createdAt;
 
         return domainEntity;
     }
