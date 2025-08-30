@@ -1,0 +1,14 @@
+{
+  "SUCCESS": {
+    "GET_ADMIN_DASHBOARD": "Lấy dữ liệu trang tổng quan admin thành công",
+    "GET_TEACHER_DASHBOARD": "Lấy dữ liệu trang tổng quan giáo viên thành công",
+    "GET_STUDENT_DASHBOARD": "Lấy dữ liệu trang tổng quan học sinh thành công",
+    "GET_PARENT_DASHBOARD": "Lấy dữ liệu trang tổng quan phụ huynh thành công"
+  },
+  "FAIL": {
+    "CAN_NOT_FETCH_ADMIN_DASHBOARD": "Không thể lấy dữ liệu trang tổng quan admin",
+    "CAN_NOT_FETCH_TEACHER_DASHBOARD": "Không thể lấy dữ liệu trang tổng quan giáo viên",
+    "CAN_NOT_FETCH_STUDENT_DASHBOARD": "Không thể lấy dữ liệu trang tổng quan học sinh",
+    "CAN_NOT_FETCH_PARENT_DASHBOARD": "Không thể lấy dữ liệu trang tổng quan phụ huynh"
+  }
+}

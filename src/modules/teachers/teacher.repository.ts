@@ -1,123 +1,142 @@
-import { FindOptionsWhere, ILike, Repository } from "typeorm";
-import { TeacherEntity } from "./entities/teacher.entity";
-import { Injectable } from "@nestjs/common";
-import { Teacher } from "./teacher.domain";
-import { InjectRepository } from "@nestjs/typeorm";
-import { TeacherMapper } from "./teacher.mapper";
-import { NullableType } from "utils/types/nullable.type";
-import { IPaginationOptions } from "utils/types/pagination-options";
-import { PaginationResponseDto } from "utils/types/pagination-response.dto";
-import { RoleEnum } from "../roles/roles.enum";
+import { FindOptionsWhere, ILike, Repository } from 'typeorm';
+import { TeacherEntity } from './entities/teacher.entity';
+import { Injectable } from '@nestjs/common';
+import { Teacher } from './teacher.domain';
+import { InjectRepository } from '@nestjs/typeorm';
+import { TeacherMapper } from './teacher.mapper';
+import { NullableType } from 'utils/types/nullable.type';
+import { IPaginationOptions } from 'utils/types/pagination-options';
+import { PaginationResponseDto } from 'utils/types/pagination-response.dto';
+import { RoleEnum } from '../roles/roles.enum';
 
 export class FilterTeacherDto {
-    name?: string;
-    email?: string;
-    status?: string;
+  name?: string;
+  email?: string;
+  status?: string;
 }
 
 export class SortTeacherDto {
-    orderBy: keyof Teacher;
-    order: 'ASC' | 'DESC';
+  orderBy: keyof Teacher;
+  order: 'ASC' | 'DESC';
 }
 
 @Injectable()
 export class TeacherRepository {
-    constructor(
-        @InjectRepository(TeacherEntity) private teacherRepository: Repository<TeacherEntity>
-    ) { }
+  constructor(
+    @InjectRepository(TeacherEntity)
+    private teacherRepository: Repository<TeacherEntity>,
+  ) {}
 
-    async create(data: Omit<Teacher, 'id' | 'createdAt' | 'updatedAt' | 'deletedAt' | 'classes'>): Promise<Teacher> {
-        const persistenceModel = TeacherMapper.toPersistence({ ...data, role: { id: RoleEnum.teacher } } as Teacher)
-        const newEntity = await this.teacherRepository.save(
-            this.teacherRepository.create(persistenceModel)
-        )
-        return TeacherMapper.toDomain(newEntity)
+  async create(
+    data: Omit<
+      Teacher,
+      'id' | 'createdAt' | 'updatedAt' | 'deletedAt' | 'classes'
+    >,
+  ): Promise<Teacher> {
+    const persistenceModel = TeacherMapper.toPersistence({
+      ...data,
+      role: { id: RoleEnum.teacher },
+    } as Teacher);
+    const newEntity = await this.teacherRepository.save(
+      this.teacherRepository.create(persistenceModel),
+    );
+    return TeacherMapper.toDomain(newEntity);
+  }
+
+  async findByEmail(email: Teacher['email']): Promise<NullableType<Teacher>> {
+    if (!email) return null;
+
+    const entity = await this.teacherRepository.findOne({
+      where: { email },
+    });
+
+    return entity ? TeacherMapper.toDomain(entity) : null;
+  }
+
+  async findById(id: Teacher['id']): Promise<NullableType<Teacher>> {
+    const entity = await this.teacherRepository.findOne({
+      where: { id },
+      relations: ['classes'],
+    });
+    return entity ? TeacherMapper.toDomain(entity) : null;
+  }
+
+  async findManyWithPagination({
+    filterOptions,
+    sortOptions,
+    paginationOptions,
+  }: {
+    filterOptions?: FilterTeacherDto | null;
+    sortOptions?: SortTeacherDto[] | null;
+    paginationOptions: IPaginationOptions;
+  }): Promise<PaginationResponseDto<Teacher>> {
+    const where: FindOptionsWhere<TeacherEntity> = {};
+
+    if (filterOptions?.name) {
+      where.name = ILike(`%${filterOptions.name}%`);
     }
 
-    async findByEmail(email: Teacher['email']): Promise<NullableType<Teacher>> {
-        if (!email) return null;
-
-        const entity = await this.teacherRepository.findOne({
-            where: { email },
-        });
-
-        return entity ? TeacherMapper.toDomain(entity) : null;
+    if (filterOptions?.email) {
+      where.email = ILike(`%${filterOptions.email}%`);
     }
 
-    async findById(id: Teacher['id']): Promise<NullableType<Teacher>> {
-        const entity = await this.teacherRepository.findOne({
-            where: { id },
-        })
-        return entity ? TeacherMapper.toDomain(entity) : null
-    }
+    const [entities, total] = await this.teacherRepository.findAndCount({
+      skip: (paginationOptions.page - 1) * paginationOptions.limit,
+      take: paginationOptions.limit,
+      where: where,
+      relations: ['classes'],
+      order: sortOptions?.reduce(
+        (accumulator, sort) => ({
+          ...accumulator,
+          [sort.orderBy]: sort.order,
+        }),
+        {},
+      ),
+    });
 
-    async findManyWithPagination({
-        filterOptions,
-        sortOptions,
-        paginationOptions,
-    }: {
-        filterOptions?: FilterTeacherDto | null;
-        sortOptions?: SortTeacherDto[] | null;
-        paginationOptions: IPaginationOptions;
-    }): Promise<PaginationResponseDto<Teacher>> {
-        const where: FindOptionsWhere<TeacherEntity> = {};
+    const totalItems = total;
+    const totalPages = Math.ceil(totalItems / paginationOptions.limit);
 
-        if (filterOptions?.name) {
-            where.name = ILike(`%${filterOptions.name}%`);
-        }
+    return {
+      meta: {
+        page: paginationOptions.page,
+        limit: paginationOptions.limit,
+        totalPages,
+        totalItems,
+      },
+      result: entities.map((teacher) => TeacherMapper.toDomain(teacher)),
+    };
+  }
 
-        if (filterOptions?.email) {
-            where.email = ILike(`%${filterOptions.email}%`);
-        }
+  async update(
+    id: Teacher['id'],
+    payload: Partial<
+      Omit<Teacher, 'id' | 'password' | 'createdAt' | 'updatedAt' | 'deletedAt'>
+    >,
+  ): Promise<Teacher> {
+    const entity = await this.teacherRepository.findOne({
+      where: { id },
+    });
 
-        const [entities, total] = await this.teacherRepository.findAndCount({
-            skip: (paginationOptions.page - 1) * paginationOptions.limit,
-            take: paginationOptions.limit,
-            where: where,
-            relations: ['classes'],
-            order: sortOptions?.reduce(
-                (accumulator, sort) => ({
-                    ...accumulator,
-                    [sort.orderBy]: sort.order,
-                }),
-                {},
-            ),
-        });
+    await this.teacherRepository.save({
+      ...entity,
+      ...payload,
+      role: { id: entity.role.id },
+    });
 
-        const totalItems = total;
-        const totalPages = Math.ceil(totalItems / paginationOptions.limit)
+    return TeacherMapper.toDomain(entity);
+  }
 
-        return {
-            meta: {
-                page: paginationOptions.page,
-                limit: paginationOptions.limit,
-                totalPages,
-                totalItems
-            },
-            result: entities.map((teacher) => TeacherMapper.toDomain(teacher))
-        }
-    }
+  async delete(id: Teacher['id']): Promise<void> {
+    await this.teacherRepository.softRemove({ id });
+  }
 
-    async update(id: Teacher['id'], payload: Partial<Omit<Teacher, 'id' | 'password' | 'createdAt' | 'updatedAt' | 'deletedAt'>>): Promise<Teacher> {
-        const entity = await this.teacherRepository.findOne({
-            where: { id },
-        });
+  async getSchedule(id: Teacher['id']) {
+    const entity = await this.teacherRepository.findOne({
+      where: { id },
+      relations: ['classes'],
+    });
 
-        await this.teacherRepository.save({ ...entity, ...payload, role: { id: entity.role.id } })
-
-        return TeacherMapper.toDomain(entity);
-    }
-
-    async delete(id: Teacher['id']): Promise<void> {
-        await this.teacherRepository.softRemove({ id });
-    }
-
-    async getSchedule(id: Teacher['id']) {
-        const entity = await this.teacherRepository.findOne({
-            where: { id },
-            relations: ['classes']
-        })
-
-        return TeacherMapper.toDomain(entity).classes
-    }
+    return TeacherMapper.toDomain(entity).classes;
+  }
 }

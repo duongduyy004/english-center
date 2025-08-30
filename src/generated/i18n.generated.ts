@@ -33,6 +33,20 @@ export type I18nTranslations = {
     "common": {
         "NOT_FOUND": string;
     };
+    "dashboard": {
+        "SUCCESS": {
+            "GET_ADMIN_DASHBOARD": string;
+            "GET_TEACHER_DASHBOARD": string;
+            "GET_STUDENT_DASHBOARD": string;
+            "GET_PARENT_DASHBOARD": string;
+        };
+        "FAIL": {
+            "CAN_NOT_FETCH_ADMIN_DASHBOARD": string;
+            "CAN_NOT_FETCH_TEACHER_DASHBOARD": string;
+            "CAN_NOT_FETCH_STUDENT_DASHBOARD": string;
+            "CAN_NOT_FETCH_PARENT_DASHBOARD": string;
+        };
+    };
     "registration": {
         "SUCCESS": {
             "CREATE_A_REGISTRATION": string;

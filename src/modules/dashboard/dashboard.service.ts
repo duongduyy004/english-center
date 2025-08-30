@@ -4,23 +4,20 @@ import { DashboardRepository } from './dashboard.repository';
 @Injectable()
 export class DashboardService {
   constructor(private readonly dashboardRepository: DashboardRepository) {}
+
   getAdminDashboard() {
-    // Logic for admin dashboard
     return this.dashboardRepository.getAdminDashboard();
   }
 
-  getTeacherDashboard() {
-    // Logic for teacher dashboard
-    return this.dashboardRepository.getTeacherDashboard();
+  getTeacherDashboard(teacherId: string) {
+    return this.dashboardRepository.getTeacherDashboard(teacherId);
   }
 
-  getStudentDashboard() {
-    // Logic for student dashboard
-    return this.dashboardRepository.getStudentDashboard();
+  getStudentDashboard(studentId: string) {
+    return this.dashboardRepository.getStudentDashboard(studentId);
   }
 
-  getParentDashboard() {
-    // Logic for parent dashboard
-    return this.dashboardRepository.getParentDashboard();
+  getParentDashboard(parentId: string) {
+    return this.dashboardRepository.getParentDashboard(parentId);
   }
 }

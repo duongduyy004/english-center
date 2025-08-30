@@ -10,7 +10,12 @@ import appConfig from '@/config/configs/app.config';
 import jwtConfig from '@/config/configs/jwt.config';
 import redisConfig from '@/config/configs/redis.config';
 import cloudinaryConfig from '@/config/configs/cloudinary.config';
-import { AcceptLanguageResolver, HeaderResolver, I18nModule, QueryResolver } from 'nestjs-i18n';
+import {
+  AcceptLanguageResolver,
+  HeaderResolver,
+  I18nModule,
+  QueryResolver,
+} from 'nestjs-i18n';
 import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { TransformInterceptor } from '@/core/transform.interceptor';
 import { StudentsModule } from 'modules/students/students.module';
@@ -37,13 +42,20 @@ import { RedisConfigService } from './database/redis-config.service';
 import { RegistrationsModule } from './modules/registrations/registrations.module';
 import { FilesModule } from './modules/files/files.module';
 import { AdvertisementsModule } from './modules/advertisements/advertisements.module';
+import { DashboardModule } from './modules/dashboard/dashboard.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [databaseConfig, appConfig, jwtConfig, redisConfig, cloudinaryConfig],
-      envFilePath: ['.env']
+      load: [
+        databaseConfig,
+        appConfig,
+        jwtConfig,
+        redisConfig,
+        cloudinaryConfig,
+      ],
+      envFilePath: ['.env'],
     }),
     I18nModule.forRoot({
       fallbackLanguage: 'en',
@@ -51,23 +63,28 @@ import { AdvertisementsModule } from './modules/advertisements/advertisements.mo
         path: path.join(process.cwd(), 'src', 'i18n'),
         watch: true,
       },
-      typesOutputPath: path.join(process.cwd(), 'src', 'generated', 'i18n.generated.ts'),
+      typesOutputPath: path.join(
+        process.cwd(),
+        'src',
+        'generated',
+        'i18n.generated.ts',
+      ),
       resolvers: [
         { use: QueryResolver, options: ['lang'] },
         { use: HeaderResolver, options: ['x-lang'] },
         AcceptLanguageResolver,
-      ]
+      ],
     }),
     TypeOrmModule.forRootAsync({
-      useClass: TypeOrmConfigService
+      useClass: TypeOrmConfigService,
     }),
     WinstonModule.forRoot(winstonConfig),
     ClsModule.forRoot({
       global: true,
-      middleware: { mount: true }
+      middleware: { mount: true },
     }),
     BullModule.forRootAsync({
-      useClass: RedisConfigService
+      useClass: RedisConfigService,
     }),
     UsersModule,
     StudentsModule,
@@ -84,27 +101,28 @@ import { AdvertisementsModule } from './modules/advertisements/advertisements.mo
     AuditLogModule,
     RegistrationsModule,
     FilesModule,
-    AdvertisementsModule
+    AdvertisementsModule,
+    DashboardModule,
   ],
   controllers: [AppController],
-  providers: [AppService,
+  providers: [
+    AppService,
     {
       provide: APP_INTERCEPTOR,
-      useClass: TransformInterceptor
+      useClass: TransformInterceptor,
     },
     {
       provide: APP_GUARD,
-      useClass: JwtAuthGuard
+      useClass: JwtAuthGuard,
     },
     {
       provide: APP_GUARD,
-      useClass: PoliciesGuard
+      useClass: PoliciesGuard,
     },
     {
       provide: APP_INTERCEPTOR,
-      useClass: HttpLoggerInterceptor
-    }
+      useClass: HttpLoggerInterceptor,
+    },
   ],
 })
-
-export class AppModule { }
+export class AppModule {}
