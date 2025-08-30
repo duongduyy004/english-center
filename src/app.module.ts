@@ -43,6 +43,7 @@ import { RegistrationsModule } from './modules/registrations/registrations.modul
 import { FilesModule } from './modules/files/files.module';
 import { AdvertisementsModule } from './modules/advertisements/advertisements.module';
 import { DashboardModule } from './modules/dashboard/dashboard.module';
+import { FeedbackModule } from './modules/feedback/feedback.module';
 
 @Module({
   imports: [
@@ -103,6 +104,7 @@ import { DashboardModule } from './modules/dashboard/dashboard.module';
     FilesModule,
     AdvertisementsModule,
     DashboardModule,
+    FeedbackModule
   ],
   controllers: [AppController],
   providers: [
@@ -125,4 +127,4 @@ import { DashboardModule } from './modules/dashboard/dashboard.module';
     },
   ],
 })
-export class AppModule {}
+export class AppModule { }
