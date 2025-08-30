@@ -60,6 +60,7 @@ export const VN_FIELD = Object.freeze({
   //transaction_category
   categoryType: 'loại',
   categoryName: 'tên',
+  type: 'loại',
   //menu
   title: 'tiêu đề',
   slug: 'đường dẫn',
