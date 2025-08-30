@@ -1,0 +1,14 @@
+{
+  "SUCCESS": {
+    "GET_ADMIN_DASHBOARD": "Admin dashboard data fetched successfully",
+    "GET_TEACHER_DASHBOARD": "Teacher dashboard data fetched successfully",
+    "GET_STUDENT_DASHBOARD": "Student dashboard data fetched successfully",
+    "GET_PARENT_DASHBOARD": "Parent dashboard data fetched successfully"
+  },
+  "FAIL": {
+    "CAN_NOT_FETCH_ADMIN_DASHBOARD": "Failed to fetch admin dashboard data",
+    "CAN_NOT_FETCH_TEACHER_DASHBOARD": "Failed to fetch teacher dashboard data",
+    "CAN_NOT_FETCH_STUDENT_DASHBOARD": "Failed to fetch student dashboard data",
+    "CAN_NOT_FETCH_PARENT_DASHBOARD": "Failed to fetch parent dashboard data"
+  }
+}
