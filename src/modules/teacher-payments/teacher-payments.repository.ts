@@ -6,12 +6,20 @@ import {
   SortTeacherPaymentDto,
 } from './dto/query-teacher-payment.dto';
 import { IPaginationOptions } from 'utils/types/pagination-options';
+import { PaginationResponseDto } from 'utils/types/pagination-response.dto';
 import { SessionEntity } from 'modules/sessions/entities/session.entity';
 import { UpdateTeacherPaymentDto } from './dto/update-teacher-payment.dto';
+import {
+  CreateTeacherPaymentDto,
+  HistoryDto,
+} from './dto/create-teacher-payment.dto';
+import { TeacherPaymentMapper } from './teacher-payments.mapper';
+import { TeacherPayment } from './teacher-payments.domain';
 import { ClassesService } from '../classes/classes.service';
 import { BadRequestException } from '@nestjs/common';
 import { I18nService } from 'nestjs-i18n';
 import { I18nTranslations } from '@/generated/i18n.generated';
+import { method } from 'lodash';
 
 export class TeacherPaymentRepository {
   constructor(
@@ -21,7 +29,7 @@ export class TeacherPaymentRepository {
     private sessionRepository: Repository<SessionEntity>,
     private classesService: ClassesService,
     private i18nService: I18nService<I18nTranslations>,
-  ) { }
+  ) {}
 
   async autoUpdateTeacherPaymentRecord(session: SessionEntity) {
     const classInfo = await this.classesService.findOne(session.classId);
@@ -127,24 +135,29 @@ export class TeacherPaymentRepository {
     filterOptions,
     sortOptions,
     paginationOptions,
+    classesService,
   }: {
-    filterOptions: FilterTeacherPaymentDto;
+    filterOptions: FilterTeacherPaymentDto | {};
     sortOptions: SortTeacherPaymentDto[];
     paginationOptions: IPaginationOptions;
-  }) {
+    classesService?: ClassesService;
+  }): Promise<PaginationResponseDto<TeacherPayment>> {
     const where: FindOptionsWhere<TeacherPaymentEntity> = {};
 
-    if (filterOptions?.teacherId) where.teacherId = filterOptions.teacherId;
+    // Type guard to check if filterOptions has the expected properties
+    const filters = filterOptions as FilterTeacherPaymentDto;
 
-    if (filterOptions?.status) where.status = filterOptions.status;
+    if (filters?.teacherId) where.teacherId = filters.teacherId;
 
-    if (filterOptions?.month) where.month = filterOptions.month;
+    if (filters?.status) where.status = filters.status;
 
-    if (filterOptions?.year) where.year = filterOptions.year;
+    if (filters?.month) where.month = filters.month;
 
-    if (filterOptions?.startMonth && filterOptions?.endMonth) {
-      where.month = Between(filterOptions.startMonth, filterOptions.endMonth);
-      where.year = filterOptions.year;
+    if (filters?.year) where.year = filters.year;
+
+    if (filters?.startMonth && filters?.endMonth && filters?.year) {
+      where.month = Between(filters.startMonth, filters.endMonth);
+      where.year = filters.year;
     }
 
     const [entities, total] = await this.teacherPaymentRepository.findAndCount({
@@ -152,6 +165,13 @@ export class TeacherPaymentRepository {
       relations: ['teacher'],
       skip: (paginationOptions.page - 1) * paginationOptions.limit,
       take: paginationOptions.limit,
+      order:
+        sortOptions.length > 0
+          ? sortOptions.reduce((acc, sort) => {
+              acc[sort.orderBy] = sort.order;
+              return acc;
+            }, {})
+          : { year: 'DESC', month: 'DESC' },
     });
 
     const totalItems = total;
@@ -164,10 +184,10 @@ export class TeacherPaymentRepository {
         totalPages,
         totalItems,
       },
-      result: entities,
+      result: await TeacherPaymentMapper.toDomainList(entities, classesService),
     };
   }
-  async createPayment(createPaymentDto) {
+  async createPayment(createPaymentDto: CreateTeacherPaymentDto) {
     const payment = this.teacherPaymentRepository.create(createPaymentDto);
     return this.teacherPaymentRepository.save(payment);
   }
@@ -175,10 +195,92 @@ export class TeacherPaymentRepository {
     id: TeacherPaymentEntity['id'],
     updatePaymentDto: UpdateTeacherPaymentDto,
   ) {
+    const oldPayment = await this.teacherPaymentRepository.findOne({
+      where: { id },
+    });
+
+    if (!oldPayment) {
+      throw new BadRequestException(this.i18nService.t('teacherPayment.FAIL.PAYMENT_NOT_FOUND'));
+    }
+
+    // Kiểm tra đã thanh toán hết thì không cho thanh toán nữa
+    if (oldPayment.status === 'paid') {
+      throw new BadRequestException(
+        this.i18nService.t('teacherPayment.FAIL.PAYMENT_ALREADY_COMPLETED'),
+      );
+    }
+
+    // Nếu có paidAmount mới, xử lý logic thanh toán
+    if (updatePaymentDto.paidAmount && updatePaymentDto.paidAmount > 0) {
+      return await this.processPayment(updatePaymentDto, oldPayment);
+    }
+
+    // Nếu không có paidAmount, chỉ update các field khác
     await this.teacherPaymentRepository.update(id, updatePaymentDto);
     return this.teacherPaymentRepository.findOne({ where: { id } });
   }
+
   async deletePayment(id: TeacherPaymentEntity['id']) {
     return this.teacherPaymentRepository.delete(id);
+  }
+
+  private async processPayment(
+    updatePaymentDto: UpdateTeacherPaymentDto,
+    oldPayment: TeacherPaymentEntity,
+  ) {
+    const newPaymentAmount = updatePaymentDto.paidAmount;
+
+    // Kiểm tra số tiền thanh toán không vượt quá số tiền còn lại
+    const remainingAmount = oldPayment.totalAmount - oldPayment.paidAmount;
+    if (newPaymentAmount > remainingAmount) {
+      throw new BadRequestException(
+        this.i18nService.t('teacherPayment.FAIL.EXCEED_AMOUNT'),
+      );
+    }
+
+    // Thêm vào histories
+    const newHistory = {
+      method: updatePaymentDto.histories?.[0]?.method || 'banking',
+      amount: newPaymentAmount,
+      note: updatePaymentDto.histories?.[0]?.note || '',
+      date: new Date(),
+    };
+
+    const updatedHistories = [...oldPayment.histories, newHistory];
+
+    // Filter out invalid histories and calculate total paid amount
+    const validHistories = updatedHistories.filter(
+      (history) =>
+        history &&
+        typeof history.amount === 'number' &&
+        !isNaN(history.amount) &&
+        history.amount > 0,
+    );
+
+    // Tính tổng paidAmount từ valid histories (đảm bảo consistency)
+    const totalPaidAmount = validHistories.reduce(
+      (sum, history) => sum + history.amount,
+      0,
+    );
+
+    // Xác định status
+    let status: 'pending' | 'partial' | 'paid' = 'pending';
+    if (totalPaidAmount >= oldPayment.totalAmount) {
+      status = 'paid';
+    } else if (totalPaidAmount > 0) {
+      status = 'partial';
+    }
+
+    // Update payment record
+    const updatedFields: Partial<TeacherPaymentEntity> = {
+      histories: validHistories, // Chỉ lưu valid histories
+      paidAmount: totalPaidAmount, // paidAmount = tổng amount của valid histories
+      status: status,
+    };
+
+    await this.teacherPaymentRepository.update(oldPayment.id, updatedFields);
+    return this.teacherPaymentRepository.findOne({
+      where: { id: oldPayment.id },
+    });
   }
 }

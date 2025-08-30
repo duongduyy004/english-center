@@ -31,14 +31,12 @@ export class TeacherPaymentsController {
   getAllPayments(
     @Query() query: QueryDto<FilterTeacherPaymentDto, SortTeacherPaymentDto>,
   ) {
-    const limit = query.limit;
-    const page = query.page;
     return this.teacherPaymentsService.getAllPayments({
-      filterOptions: query.filters,
-      sortOptions: query.sort,
+      filterOptions: query.filters || ({} as FilterTeacherPaymentDto),
+      sortOptions: query.sort || [],
       paginationOptions: {
-        limit,
-        page,
+        limit: query.limit || 10,
+        page: query.page || 1,
       },
     });
   }

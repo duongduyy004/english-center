@@ -74,6 +74,9 @@ export type I18nTranslations = {
             "UPDATE_TEACHER_PAYMENT": string;
             "DELETE_TEACHER_PAYMENT": string;
             "CLASS_TEACHER_NOT_FOUND": string;
+            "PAYMENT_NOT_FOUND": string;
+            "EXCEED_AMOUNT": string;
+            "PAYMENT_ALREADY_COMPLETED": string;
         };
     };
     "user": {

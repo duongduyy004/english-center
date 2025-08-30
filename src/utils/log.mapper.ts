@@ -53,6 +53,8 @@ export const VN_FIELD = Object.freeze({
   paidAmount: 'số tiền đã thanh toán',
   totalAmount: 'tổng số tiền',
   histories: 'lịch sử',
+  teacherId: 'ID giáo viên',
+  classes: 'các lớp học',
   // transaction
   amount: 'số tiền',
   transactionAt: 'thời gian giao dịch',
@@ -79,14 +81,14 @@ export const VN_FIELD = Object.freeze({
   action: 'hành động',
   //advertisement
   imageUrl: 'đường dẫn ảnh',
-  priority: 'độ ưu tiên'
+  priority: 'độ ưu tiên',
 });
 
 export const VN_ACTION = Object.freeze({
   CREATE: 'tạo',
   UPDATE: 'cập nhật',
-  DELETE: 'xóa'
-})
+  DELETE: 'xóa',
+});
 
 export const VN_ENTITY = Object.freeze({
   ClassEntity: 'lớp',
@@ -100,5 +102,5 @@ export const VN_ENTITY = Object.freeze({
   RegistrationEntity: 'form đăng ký',
   AdvertisementEntity: 'quảng cáo',
   TransactionEntity: 'thu chi khác',
-  TransactionCategoryEntity: 'danh mục thu chi'
-})
+  TransactionCategoryEntity: 'danh mục thu chi',
+});
