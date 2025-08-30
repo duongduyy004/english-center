@@ -33,6 +33,9 @@ export class UserEntity {
   @Column({ nullable: true })
   avatar?: string;
 
+  @Column({ nullable: true })
+  publicId: string;
+
   @ManyToOne(() => RoleEntity, { eager: true })
   role: RoleEntity;
 

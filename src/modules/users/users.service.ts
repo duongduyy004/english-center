@@ -121,4 +121,70 @@ export class UsersService {
       return await this.studentRepository.findOne({ where: { refreshToken } })
     }
   }
+
+  async uploadAvatar(imageUrl: string, publicId: string, user: User) {
+    if (user && user?.role?.id === RoleEnum.admin) {
+      const admin = await this.userRepository.findOne({ where: { id: user.id } })
+      if (!admin) {
+        throw new NotFoundException(this.i18nService.t('user.FAIL.NOT_FOUND'));
+      }
+
+      // Check if avatar already exists
+      if (admin.avatar && admin.publicId) {
+        throw new BadRequestException('Avatar already exists. Please delete the current avatar before uploading a new one.');
+      }
+
+      admin.avatar = imageUrl;
+      admin.publicId = publicId;
+      await this.userRepository.save(admin);
+    }
+
+    if (user && user?.role?.id === RoleEnum.teacher) {
+      const teacher = await this.teacherRepository.findOne({ where: { id: user.id } })
+      if (!teacher) {
+        throw new NotFoundException(this.i18nService.t('user.FAIL.NOT_FOUND'));
+      }
+
+      // Check if avatar already exists
+      if (teacher.avatar && teacher.publicId) {
+        throw new BadRequestException('Avatar already exists. Please delete the current avatar before uploading a new one.');
+      }
+
+      teacher.avatar = imageUrl;
+      teacher.publicId = publicId;
+      await this.teacherRepository.save(teacher);
+    }
+
+    if (user && user?.role?.id === RoleEnum.parent) {
+      const parent = await this.parentRepository.findOne({ where: { id: user.id } })
+      if (!parent) {
+        throw new NotFoundException(this.i18nService.t('user.FAIL.NOT_FOUND'));
+      }
+
+      // Check if avatar already exists
+      if (parent.avatar && parent.publicId) {
+        throw new BadRequestException('Avatar already exists. Please delete the current avatar before uploading a new one.');
+      }
+
+      parent.avatar = imageUrl;
+      parent.publicId = publicId;
+      await this.parentRepository.save(parent);
+    }
+
+    if (user && user?.role?.id === RoleEnum.student) {
+      const student = await this.studentRepository.findOne({ where: { id: user.id } })
+      if (!student) {
+        throw new NotFoundException(this.i18nService.t('user.FAIL.NOT_FOUND'));
+      }
+
+      // Check if avatar already exists
+      if (student.avatar && student.publicId) {
+        throw new BadRequestException('Avatar already exists. Please delete the current avatar before uploading a new one.');
+      }
+
+      student.avatar = imageUrl;
+      student.publicId = publicId;
+      await this.studentRepository.save(student);
+    }
+  }
 }

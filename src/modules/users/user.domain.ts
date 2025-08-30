@@ -21,6 +21,8 @@ export class User {
 
     avatar?: string;
 
+    publicId?: string;
+
     role: Role;
 
     createdAt: Date;

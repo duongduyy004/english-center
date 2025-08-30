@@ -26,7 +26,7 @@ export class AuthService {
   }
 
   async login(user: User, response: Response) {
-    const { id, name, email, role, address, gender, dayOfBirth, phone } = user
+    const { id, name, email, role, address, gender, dayOfBirth, phone, avatar, publicId } = user
     const payload = {
       sub: 'token login',
       iss: 'server',
@@ -47,7 +47,7 @@ export class AuthService {
         expiresIn: this.configService.get('jwt.jwt_access_expiration_minutes', { infer: true })
       }),
       user: {
-        id, name, email, role, address, gender, dayOfBirth, phone
+        id, name, email, role, address, gender, dayOfBirth, phone, avatar, publicId
       }
     }
   }
