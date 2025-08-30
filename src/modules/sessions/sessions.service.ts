@@ -9,7 +9,9 @@ import { IPaginationOptions } from 'utils/types/pagination-options';
 
 @Injectable()
 export class SessionsService {
-  constructor(private sessionRepository: SessionRepository) {}
+  constructor(
+    private sessionRepository: SessionRepository
+  ) { }
 
   getTodaySession(classId: Class['id']) {
     return this.sessionRepository.getTodaySession(classId);
@@ -29,18 +31,12 @@ export class SessionsService {
     return this.sessionRepository.getStudentAttendance(studentId);
   }
 
-  getAttendancesByClassId(
-    classId: Class['id'],
-    paginationOptions: IPaginationOptions,
-  ): Promise<PaginationResponseDto<Session>> {
-    return this.sessionRepository.getAttendancesByClassId(
-      classId,
-      paginationOptions,
-    );
+  getAttendancesByClassId(classId: Class['id'], paginationOptions: IPaginationOptions): Promise<PaginationResponseDto<Session>> {
+    return this.sessionRepository.getAttendancesByClassId(classId, paginationOptions)
   }
 
-  getSessions(classId: Class['id']) {
-    return this.sessionRepository.getSessions(classId);
+  getTotalSessions(classId: Class['id']) {
+    return this.sessionRepository.getTotalSessions(classId);
   }
 
   getTeacherSessionsInMonth(teacherId: string, month: number, year: number) {

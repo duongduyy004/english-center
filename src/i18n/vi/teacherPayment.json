@@ -11,6 +11,9 @@
     "MANUAL_TEACHER_PAYMENT": "Không thể xử lý thanh toán thủ công cho giáo viên",
     "UPDATE_TEACHER_PAYMENT": "Không thể cập nhật thanh toán cho giáo viên",
     "DELETE_TEACHER_PAYMENT": "Không thể xóa thanh toán cho giáo viên",
-    "CLASS_TEACHER_NOT_FOUND": "Không tìm thấy lớp học hoặc giáo viên"
+    "CLASS_TEACHER_NOT_FOUND": "Không tìm thấy lớp học hoặc giáo viên",
+    "PAYMENT_NOT_FOUND": "Không tìm thấy thanh toán",
+    "EXCEED_AMOUNT": "Số tiền thanh toán vượt quá giới hạn cho phép",
+    "PAYMENT_ALREADY_COMPLETED": "Thanh toán đã hoàn tất. Không thể thực hiện thêm thanh toán."
   }
 }

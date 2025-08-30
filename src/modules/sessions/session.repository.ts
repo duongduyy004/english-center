@@ -406,4 +406,11 @@ export class SessionRepository {
       },
     });
   }
+  async getTotalSessions(classId: Class['id']) {
+    return await this.sessionRepository.count({
+      where: { classId }
+    })
+  }
 }
+
+

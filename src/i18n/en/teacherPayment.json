@@ -11,6 +11,9 @@
     "MANUAL_TEACHER_PAYMENT": "Failed to process manual teacher payment",
     "UPDATE_TEACHER_PAYMENT": "Failed to update teacher payment",
     "DELETE_TEACHER_PAYMENT": "Failed to delete teacher payment",
-    "CLASS_TEACHER_NOT_FOUND": "Class or teacher not found"
+    "CLASS_TEACHER_NOT_FOUND": "Class or teacher not found",
+    "PAYMENT_NOT_FOUND": "Payment not found",
+    "EXCEED_AMOUNT": "Exceeding payment amount",
+    "PAYMENT_ALREADY_COMPLETED": "Payment is already completed. No further payments allowed."
   }
 }

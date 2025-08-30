@@ -1,28 +1,29 @@
-import { Class } from '../classes/class.domain';
-import { Histories } from '../payments/entities/payment.entity';
-import { Teacher } from '../teachers/teacher.domain';
-import { ClassLessons } from './entities/teacher-payment.entity';
-
 export class TeacherPayment {
   id: string;
   month: number;
   year: number;
   totalAmount: number;
   paidAmount: number;
-  status: 'pending' | 'partial' | 'paid';
-  teacherId: Teacher['id'];
+  status: string;
+  teacher: {
+    id: string,
+    name: string,
+    email: string,
+    phone: string,
+  };
   classes: {
-    classId: Class['id'];
-    class: Partial<Class>;
-    totalLessons: number;
+    totalLessons: number,
+    id: string,
+    name: string,
+    grade: number,
+    section: number,
+    year: number
   }[];
   histories: {
-    method: string;
-    amount: number;
-    note: string;
-    date: Date;
+    method: string,
+    amount: number,
+    note: string,
+    date: Date
   }[];
-  createdAt: Date;
-  updatedAt: Date;
-  deletedAt: Date;
 }
+
