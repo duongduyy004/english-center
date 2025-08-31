@@ -5,6 +5,7 @@ import { UpdateTeacherDto } from './dto/update-teacher.dto';
 import { FilterTeacherDto, SortTeacherDto } from './teacher.repository';
 import { QueryDto } from 'utils/types/query.dto';
 import { Teacher } from './teacher.domain';
+import { Public } from '@/decorator/customize.decorator';
 
 @Controller('teachers')
 export class TeachersController {
@@ -27,6 +28,12 @@ export class TeachersController {
         limit
       }
     });
+  }
+
+  @Get('typical')
+  @Public()
+  getTypicalTeachers() {
+    return this.teachersService.getTypicalTeachers();
   }
 
   @Get('/schedule/:id')

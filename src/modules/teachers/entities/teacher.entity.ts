@@ -27,6 +27,9 @@ export class TeacherEntity extends UserEntity {
     @Column()
     salaryPerLesson: number
 
+    @Column({ default: false })
+    typical: boolean;
+
     @OneToMany(() => ClassEntity, (aclass) => aclass.teacher)
     classes: ClassEntity[]
 

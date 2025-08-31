@@ -25,12 +25,12 @@ export class TeacherRepository {
   constructor(
     @InjectRepository(TeacherEntity)
     private teacherRepository: Repository<TeacherEntity>,
-  ) {}
+  ) { }
 
   async create(
     data: Omit<
       Teacher,
-      'id' | 'createdAt' | 'updatedAt' | 'deletedAt' | 'classes'
+      'id' | 'createdAt' | 'updatedAt' | 'deletedAt' | 'classes' | 'typical'
     >,
   ): Promise<Teacher> {
     const persistenceModel = TeacherMapper.toPersistence({
@@ -138,5 +138,14 @@ export class TeacherRepository {
     });
 
     return TeacherMapper.toDomain(entity).classes;
+  }
+
+  async getTypicalTeachers() {
+    const entities = await this.teacherRepository.find({
+      where: { typical: true },
+      order: { 'createdAt': 'ASC' }
+    })
+
+    return entities ? entities.map(item => TeacherMapper.toDomain(item)) : null;
   }
 }

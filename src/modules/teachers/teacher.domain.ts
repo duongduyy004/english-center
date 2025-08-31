@@ -8,13 +8,15 @@ export class Teacher extends User {
 
     workExperience: string;
 
-    description: string
+    description: string;
 
-    qualifications: string[]
+    qualifications: string[];
 
-    specializations: string[]
+    specializations: string[];
 
-    salaryPerLesson: number
+    salaryPerLesson: number;
 
-    classes: Partial<Class>[]
+    typical: boolean;
+
+    classes: Partial<Class>[];
 }

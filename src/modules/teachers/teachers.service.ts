@@ -56,4 +56,8 @@ export class TeachersService {
   getSchedule(id: Teacher['id']) {
     return this.teacherRepository.getSchedule(id)
   }
+
+  getTypicalTeachers() {
+    return this.teacherRepository.getTypicalTeachers();
+  }
 }
