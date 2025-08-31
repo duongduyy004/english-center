@@ -23,6 +23,7 @@ export class TeacherPaymentMapper {
         name: raw.teacher.name,
         email: raw.teacher.email,
         phone: raw.teacher.phone,
+        salaryPerLesson: raw.teacher.salaryPerLesson,
       };
     }
 

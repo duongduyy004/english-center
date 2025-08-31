@@ -176,7 +176,6 @@ export class TeacherPaymentRepository {
 
     const totalItems = total;
     const totalPages = Math.ceil(totalItems / paginationOptions.limit);
-
     return {
       meta: {
         limit: paginationOptions.limit,
