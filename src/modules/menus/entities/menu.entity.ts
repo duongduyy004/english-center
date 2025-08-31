@@ -15,6 +15,9 @@ export class MenuEntity {
     @Column({ nullable: true })
     order: number;
 
+    @Column({ default: true })
+    isActive: boolean;
+
     @TreeChildren({ cascade: true })
     children: MenuEntity[];
 

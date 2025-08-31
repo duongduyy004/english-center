@@ -1,6 +1,22 @@
+import { IsString, IsNumber, IsUUID, IsOptional, IsBoolean } from 'class-validator';
+
 export class CreateMenuDto {
+    @IsString()
     title: string;
-    slug: string;
-    order: number;
-    parentId: string;
+
+    @IsOptional()
+    @IsString()
+    slug?: string;
+
+    @IsOptional()
+    @IsNumber()
+    order?: number;
+
+    @IsOptional()
+    @IsBoolean()
+    isActive?: boolean = true;
+
+    @IsOptional()
+    @IsUUID()
+    parentId?: string;
 }

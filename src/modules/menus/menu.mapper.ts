@@ -12,6 +12,10 @@ export class MenuMapper {
         domain.slug = entity.slug;
         domain.title = entity.title;
         domain.order = entity.order;
+        domain.isActive = entity.isActive;
+        domain.createdAt = entity.createdAt;
+        domain.updatedAt = entity.updatedAt;
+        domain.deletedAt = entity.deletedAt;
 
         // Map children if they exist
         if (entity.children && entity.children.length > 0) {
@@ -38,6 +42,7 @@ export class MenuMapper {
         entity.slug = domain.slug;
         entity.title = domain.title;
         entity.order = domain.order;
+        entity.isActive = domain.isActive;
 
         // Map children if they exist
         if (domain.children && domain.children.length > 0) {
