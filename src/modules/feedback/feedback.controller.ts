@@ -10,7 +10,6 @@ export class FeedbackController {
   constructor(private readonly feedbackService: FeedbackService) { }
 
   @Post()
-  @Public()
   create(@Body() createFeedbackDto: CreateFeedbackDto) {
     return this.feedbackService.create(createFeedbackDto);
   }
