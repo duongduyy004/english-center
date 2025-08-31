@@ -44,6 +44,7 @@ import { FilesModule } from './modules/files/files.module';
 import { AdvertisementsModule } from './modules/advertisements/advertisements.module';
 import { DashboardModule } from './modules/dashboard/dashboard.module';
 import { FeedbackModule } from './modules/feedback/feedback.module';
+import { IntroductionModule } from './modules/introduction/introduction.module';
 
 @Module({
   imports: [
@@ -104,7 +105,8 @@ import { FeedbackModule } from './modules/feedback/feedback.module';
     FilesModule,
     AdvertisementsModule,
     DashboardModule,
-    FeedbackModule
+    FeedbackModule,
+    IntroductionModule
   ],
   controllers: [AppController],
   providers: [
