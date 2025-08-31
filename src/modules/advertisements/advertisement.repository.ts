@@ -73,7 +73,7 @@ export class AdvertisementRepository {
                 totalPages,
                 totalItems
             },
-            result: entities.map((advertisement) => AdvertisementMapper.toDomain(advertisement))
+            result: entities ? entities.map((advertisement) => AdvertisementMapper.toDomain(advertisement)) : null
         };
     }
 
@@ -97,5 +97,14 @@ export class AdvertisementRepository {
 
     async delete(id: Advertisement['id']): Promise<void> {
         await this.advertisementRepository.softRemove({ id });
+    }
+
+    async getLimitAdvertisements(limit: number) {
+        const entities = await this.advertisementRepository.find({
+            take: limit,
+            order: { 'priority': "ASC" }
+        })
+
+        return entities ? entities.map((advertisement) => AdvertisementMapper.toDomain(advertisement)) : null;
     }
 }
