@@ -244,4 +244,14 @@ export class TeacherPaymentRepository {
   async deletePayment(id: TeacherPaymentEntity['id']) {
     return this.teacherPaymentRepository.delete(id);
   }
+
+  async getPaymentById(id: TeacherPaymentEntity['id']) {
+    return TeacherPaymentMapper.toDomain(
+      await this.teacherPaymentRepository.findOne({
+        where: { id },
+        relations: ['teacher'],
+      }),
+      this.classesService,
+    );
+  }
 }

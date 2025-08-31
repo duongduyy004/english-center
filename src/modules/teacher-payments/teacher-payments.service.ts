@@ -54,4 +54,7 @@ export class TeacherPaymentsService {
       session,
     );
   }
+  getPaymentById(id: TeacherPaymentEntity['id']) {
+    return this.teacherPaymentsRepository.getPaymentById(id);
+  }
 }

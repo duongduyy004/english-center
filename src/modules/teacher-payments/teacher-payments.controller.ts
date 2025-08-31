@@ -68,4 +68,10 @@ export class TeacherPaymentsController {
   autoUpdatePayment(@Body() session: SessionEntity) {
     return this.teacherPaymentsService.autoUpdatePayment(session);
   }
+
+  @Get(':id')
+  @ResponseMessage('teacherPayment.SUCCESS.GET_TEACHER_PAYMENT_BY_ID')
+  getPaymentById(@Param('id') id: string) {
+    return this.teacherPaymentsService.getPaymentById(id);
+  }
 }
