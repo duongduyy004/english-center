@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestj
 import { AdvertisementsService } from './advertisements.service';
 import { CreateAdvertisementDto } from './dto/create-advertisement.dto';
 import { UpdateAdvertisementDto } from './dto/update-advertisement.dto';
-import { ResponseMessage } from '@/decorator/customize.decorator';
+import { Public, ResponseMessage } from '@/decorator/customize.decorator';
 import { QueryDto } from '@/utils/types/query.dto';
 import { FilterAdvertisementDto, SortAdvertisementDto } from './dto/query-advertisement.dto';
 import { Advertisement } from './advertisement.domain';
@@ -28,6 +28,12 @@ export class AdvertisementsController {
         limit
       }
     });
+  }
+
+  @Get('home/:limit')
+  @Public()
+  getLimitAdvertisements(@Param('limit') limit: string) {
+    return this.advertisementsService.getLimitAdvertisements(+limit);
   }
 
   @Get(':id')

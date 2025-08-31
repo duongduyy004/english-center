@@ -46,4 +46,8 @@ export class AdvertisementsService {
     await this.findOne(id);
     return this.advertisementRepository.delete(id);
   }
+
+  async getLimitAdvertisements(limit: number) {
+    return await this.advertisementRepository.getLimitAdvertisements(limit);
+  }
 }
