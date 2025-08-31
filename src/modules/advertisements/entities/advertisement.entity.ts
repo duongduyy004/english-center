@@ -13,7 +13,7 @@ export class AdvertisementEntity {
     description: string;
 
     @Column({ enum: ['popup', 'banner'] })
-    type: string;
+    type: 'popup' | 'banner';
 
     @Column({ type: 'int', default: 0 })
     priority: number;

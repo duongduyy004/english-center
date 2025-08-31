@@ -47,7 +47,11 @@ export class AdvertisementsService {
     return this.advertisementRepository.delete(id);
   }
 
-  async getLimitAdvertisements(limit: number) {
-    return await this.advertisementRepository.getLimitAdvertisements(limit);
+  async getLimitBanners(limit: number) {
+    return this.advertisementRepository.getLimitBanners(limit);
+  }
+
+  async getHighestPriorityPopup() {
+    return this.advertisementRepository.getHighestPriorityPopup();
   }
 }

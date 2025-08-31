@@ -9,7 +9,7 @@ export class AdvertisementMapper {
         domainEntity.id = raw.id;
         domainEntity.title = raw.title;
         domainEntity.description = raw.description;
-        domainEntity.type = raw.type as 'popup' | 'banner';
+        domainEntity.type = raw.type;
         domainEntity.priority = raw.priority;
         domainEntity.imageUrl = raw.imageUrl;
         domainEntity.publicId = raw.publicId;

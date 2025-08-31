@@ -99,12 +99,22 @@ export class AdvertisementRepository {
         await this.advertisementRepository.softRemove({ id });
     }
 
-    async getLimitAdvertisements(limit: number) {
+    async getLimitBanners(limit: number) {
         const entities = await this.advertisementRepository.find({
+            where: { type: 'banner' },
             take: limit,
             order: { 'priority': "ASC" }
         })
 
         return entities ? entities.map((advertisement) => AdvertisementMapper.toDomain(advertisement)) : null;
+    }
+
+    async getHighestPriorityPopup() {
+        const entity = await this.advertisementRepository.findOne({
+            where: { type: 'popup' },
+            order: { 'priority': "ASC" }
+        })
+
+        return AdvertisementMapper.toDomain(entity)
     }
 }

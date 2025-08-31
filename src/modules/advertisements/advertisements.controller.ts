@@ -30,10 +30,16 @@ export class AdvertisementsController {
     });
   }
 
-  @Get('home/:limit')
+  @Get('banners/:limit')
   @Public()
-  getLimitAdvertisements(@Param('limit') limit: string) {
-    return this.advertisementsService.getLimitAdvertisements(+limit);
+  getLimitBanners(@Param('limit') limit: string) {
+    return this.advertisementsService.getLimitBanners(+limit);
+  }
+
+  @Get('popup')
+  @Public()
+  getHighestPriorityPopup() {
+    return this.advertisementsService.getHighestPriorityPopup();
   }
 
   @Get(':id')
