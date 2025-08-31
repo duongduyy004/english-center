@@ -1,6 +1,7 @@
 import { Class } from 'modules/classes/class.domain';
 import { Histories } from 'modules/payments/entities/payment.entity';
 import {
+  BeforeUpdate,
   Column,
   Entity,
   JoinColumn,
@@ -56,4 +57,36 @@ export class TeacherPaymentEntity {
   @ManyToOne(() => TeacherEntity, (teacher) => teacher.payments)
   @JoinColumn({ name: 'teacherId' })
   teacher: TeacherEntity;
+
+  @BeforeUpdate()
+  processPaymentLogic() {
+    // Filter valid histories and recalculate paidAmount before update
+    if (this.histories && Array.isArray(this.histories)) {
+      const validHistories = this.histories.filter(
+        (history) =>
+          history &&
+          typeof history.amount === 'number' &&
+          !isNaN(history.amount) &&
+          history.amount > 0,
+      );
+
+      // Update histories to only valid ones
+      this.histories = validHistories;
+
+      // Recalculate paidAmount from valid histories
+      this.paidAmount = validHistories.reduce(
+        (sum, history) => sum + history.amount,
+        0,
+      );
+
+      // Update status based on payment amount
+      if (this.paidAmount >= this.totalAmount) {
+        this.status = 'paid';
+      } else if (this.paidAmount > 0) {
+        this.status = 'partial';
+      } else {
+        this.status = 'pending';
+      }
+    }
+  }
 }

@@ -176,7 +176,6 @@ export class TeacherPaymentRepository {
 
     const totalItems = total;
     const totalPages = Math.ceil(totalItems / paginationOptions.limit);
-
     return {
       meta: {
         limit: paginationOptions.limit,
@@ -191,6 +190,7 @@ export class TeacherPaymentRepository {
     const payment = this.teacherPaymentRepository.create(createPaymentDto);
     return this.teacherPaymentRepository.save(payment);
   }
+
   async updatePayment(
     id: TeacherPaymentEntity['id'],
     updatePaymentDto: UpdateTeacherPaymentDto,
@@ -200,87 +200,48 @@ export class TeacherPaymentRepository {
     });
 
     if (!oldPayment) {
-      throw new BadRequestException(this.i18nService.t('teacherPayment.FAIL.PAYMENT_NOT_FOUND'));
+      throw new BadRequestException(
+        this.i18nService.t('teacherPayment.FAIL.PAYMENT_NOT_FOUND'),
+      );
     }
 
-    // Kiểm tra đã thanh toán hết thì không cho thanh toán nữa
     if (oldPayment.status === 'paid') {
       throw new BadRequestException(
         this.i18nService.t('teacherPayment.FAIL.PAYMENT_ALREADY_COMPLETED'),
       );
     }
 
-    // Nếu có paidAmount mới, xử lý logic thanh toán
     if (updatePaymentDto.paidAmount && updatePaymentDto.paidAmount > 0) {
-      return await this.processPayment(updatePaymentDto, oldPayment);
+      const remainingAmount = oldPayment.totalAmount - oldPayment.paidAmount;
+      if (updatePaymentDto.paidAmount > remainingAmount) {
+        throw new BadRequestException(
+          this.i18nService.t('teacherPayment.FAIL.EXCEED_AMOUNT'),
+        );
+      }
+
+      const newHistory = {
+        method: updatePaymentDto.histories?.[0]?.method || 'banking',
+        amount: updatePaymentDto.paidAmount,
+        note: updatePaymentDto.histories?.[0]?.note || '',
+        date: new Date(),
+      };
+
+      const updatedPayment = this.teacherPaymentRepository.merge(oldPayment, {
+        ...updatePaymentDto,
+        histories: [...oldPayment.histories, newHistory],
+      });
+
+      return await this.teacherPaymentRepository.save(updatedPayment);
     }
 
-    // Nếu không có paidAmount, chỉ update các field khác
-    await this.teacherPaymentRepository.update(id, updatePaymentDto);
-    return this.teacherPaymentRepository.findOne({ where: { id } });
+    const updatedPayment = this.teacherPaymentRepository.merge(
+      oldPayment,
+      updatePaymentDto,
+    );
+    return await this.teacherPaymentRepository.save(updatedPayment);
   }
 
   async deletePayment(id: TeacherPaymentEntity['id']) {
     return this.teacherPaymentRepository.delete(id);
-  }
-
-  private async processPayment(
-    updatePaymentDto: UpdateTeacherPaymentDto,
-    oldPayment: TeacherPaymentEntity,
-  ) {
-    const newPaymentAmount = updatePaymentDto.paidAmount;
-
-    // Kiểm tra số tiền thanh toán không vượt quá số tiền còn lại
-    const remainingAmount = oldPayment.totalAmount - oldPayment.paidAmount;
-    if (newPaymentAmount > remainingAmount) {
-      throw new BadRequestException(
-        this.i18nService.t('teacherPayment.FAIL.EXCEED_AMOUNT'),
-      );
-    }
-
-    // Thêm vào histories
-    const newHistory = {
-      method: updatePaymentDto.histories?.[0]?.method || 'banking',
-      amount: newPaymentAmount,
-      note: updatePaymentDto.histories?.[0]?.note || '',
-      date: new Date(),
-    };
-
-    const updatedHistories = [...oldPayment.histories, newHistory];
-
-    // Filter out invalid histories and calculate total paid amount
-    const validHistories = updatedHistories.filter(
-      (history) =>
-        history &&
-        typeof history.amount === 'number' &&
-        !isNaN(history.amount) &&
-        history.amount > 0,
-    );
-
-    // Tính tổng paidAmount từ valid histories (đảm bảo consistency)
-    const totalPaidAmount = validHistories.reduce(
-      (sum, history) => sum + history.amount,
-      0,
-    );
-
-    // Xác định status
-    let status: 'pending' | 'partial' | 'paid' = 'pending';
-    if (totalPaidAmount >= oldPayment.totalAmount) {
-      status = 'paid';
-    } else if (totalPaidAmount > 0) {
-      status = 'partial';
-    }
-
-    // Update payment record
-    const updatedFields: Partial<TeacherPaymentEntity> = {
-      histories: validHistories, // Chỉ lưu valid histories
-      paidAmount: totalPaidAmount, // paidAmount = tổng amount của valid histories
-      status: status,
-    };
-
-    await this.teacherPaymentRepository.update(oldPayment.id, updatedFields);
-    return this.teacherPaymentRepository.findOne({
-      where: { id: oldPayment.id },
-    });
   }
 }
