@@ -4,7 +4,8 @@
     "MANUAL_TEACHER_PAYMENT": "Manual teacher payment processed successfully",
     "UPDATE_TEACHER_PAYMENT": "Teacher payment updated successfully",
     "DELETE_TEACHER_PAYMENT": "Teacher payment deleted successfully",
-    "GET_ALL_TEACHER_PAYMENTS": "Get teacher payment list successfully"
+    "GET_ALL_TEACHER_PAYMENTS": "Get teacher payment list successfully",
+    "GET_TEACHER_PAYMENT_BY_ID": "Get teacher payment by ID successfully"
   },
   "FAIL": {
     "AUTO_TEACHER_PAYMENT": "Failed to process auto teacher payment",

@@ -4,7 +4,8 @@
     "MANUAL_TEACHER_PAYMENT": "Cập nhật thanh toán cho giáo viên thủ công thành công",
     "UPDATE_TEACHER_PAYMENT": "Cập nhật thanh toán cho giáo viên thành công",
     "DELETE_TEACHER_PAYMENT": "Xóa thanh toán cho giáo viên thành công",
-    "GET_ALL_TEACHER_PAYMENTS": "Lấy danh sách thanh toán cho giáo viên thành công"
+    "GET_ALL_TEACHER_PAYMENTS": "Lấy danh sách thanh toán cho giáo viên thành công",
+    "GET_TEACHER_PAYMENT_BY_ID": "Lấy thanh toán cho giáo viên theo ID thành công"
   },
   "FAIL": {
     "AUTO_TEACHER_PAYMENT": "Không thể xử lý thanh toán tự động cho giáo viên",

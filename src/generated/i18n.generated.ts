@@ -67,6 +67,7 @@ export type I18nTranslations = {
             "UPDATE_TEACHER_PAYMENT": string;
             "DELETE_TEACHER_PAYMENT": string;
             "GET_ALL_TEACHER_PAYMENTS": string;
+            "GET_TEACHER_PAYMENT_BY_ID": string;
         };
         "FAIL": {
             "AUTO_TEACHER_PAYMENT": string;
