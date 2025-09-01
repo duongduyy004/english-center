@@ -3,6 +3,7 @@ import { MenusService } from './menu.service';
 import { CreateMenuDto } from './dto/create-menu.dto';
 import { UpdateMenuDto } from './dto/update-menu.dto';
 import { Menu } from './menu.domain';
+import { Public } from '@/decorator/customize.decorator';
 
 @Controller('menus')
 export class MenusController {
@@ -14,6 +15,7 @@ export class MenusController {
   }
 
   @Get()
+  @Public()
   findAll() {
     return this.menuService.findAll();
   }
