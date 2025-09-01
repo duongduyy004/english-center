@@ -60,4 +60,8 @@ export class TeachersService {
   getTypicalTeachers() {
     return this.teacherRepository.getTypicalTeachers();
   }
+
+  getTypicalTeacherDetail(id: Teacher['id']) {
+    return this.teacherRepository.getTypicalTeacherDetail(id);
+  }
 }

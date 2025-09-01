@@ -1,6 +1,6 @@
 import { FindOptionsWhere, ILike, Repository } from 'typeorm';
 import { TeacherEntity } from './entities/teacher.entity';
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { Teacher } from './teacher.domain';
 import { InjectRepository } from '@nestjs/typeorm';
 import { TeacherMapper } from './teacher.mapper';
@@ -8,6 +8,7 @@ import { NullableType } from 'utils/types/nullable.type';
 import { IPaginationOptions } from 'utils/types/pagination-options';
 import { PaginationResponseDto } from 'utils/types/pagination-response.dto';
 import { RoleEnum } from '../roles/roles.enum';
+import { OmitType } from '@nestjs/mapped-types';
 
 export class FilterTeacherDto {
   name?: string;
@@ -147,5 +148,23 @@ export class TeacherRepository {
     })
 
     return entities ? entities.map(item => TeacherMapper.toDomain(item)) : null;
+  }
+
+  async getTypicalTeacherDetail(id: Teacher['id']) {
+    const entity = await this.teacherRepository.findOne({
+      where: { id, typical: true }
+    })
+    if (!entity) throw new BadRequestException('Not found teacher');
+    return {
+      id: entity.id,
+      name: entity.name,
+      email: entity.email,
+      specializations: entity.specializations,
+      qualifications: entity.qualifications,
+      description: entity.description,
+      introduction: entity.introduction,
+      workExperience: entity.workExperience,
+      avatar: entity.avatar
+    }
   }
 }
