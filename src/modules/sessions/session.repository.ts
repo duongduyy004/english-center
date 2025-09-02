@@ -149,6 +149,8 @@ export class SessionRepository {
       relations: ['class.students', 'attendances.student']
     })
 
+    if (!entity) return;
+
     const classInfo = await this.classesService.findOne(entity.classId)
     const studentIds = classInfo.students.map(item => {
       if (item.isActivce) return item.student.id;
@@ -177,8 +179,8 @@ export class SessionRepository {
     // Audit logging after update
     await this.auditAttendanceChanges(sessionId, oldAttendances, entity.attendances, payload);
 
-    this.paymentsService.autoUpdatePaymentRecord(entity)
-    // this.teacherPaymentsService.autoUpdatePayment(entity);
+    await this.paymentsService.autoUpdatePaymentRecord(entity)
+    await this.teacherPaymentsService.autoUpdatePayment(entity);
     return updateRes
   }
 

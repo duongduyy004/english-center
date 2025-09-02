@@ -53,6 +53,14 @@ export class ClassRepository {
         return entity ? ClassMapper.toDomain(entity) : null;
     }
 
+    async findWithoutMapper(id: Class['id']) {
+        const entity = await this.classRepository.findOne({
+            where: { id },
+            relations: ['students.student', 'teacher']
+        });
+        return entity;
+    }
+
     async update(id: Class['id'], data: Partial<Omit<Class, 'id' | 'createdAt' | 'updatedAt' | 'teacher' | 'students'>>): Promise<Class> {
         const entity = await this.classRepository.findOne({
             where: { id }

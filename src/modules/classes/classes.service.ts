@@ -55,6 +55,13 @@ export class ClassesService {
     return result;
   }
 
+  async findById(id: Class['id']) {
+    const result = await this.classRepository.findWithoutMapper(id);
+    if (!result)
+      throw new BadRequestException(this.i18nService.t('class.FAIL.NOT_FOUND'));
+    return result;
+  }
+
   update(id: Class['id'], updateClassDto: UpdateClassDto) {
     return this.classRepository.update(id, updateClassDto);
   }

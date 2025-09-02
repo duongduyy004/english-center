@@ -29,10 +29,10 @@ export class TeacherPaymentRepository {
     private sessionRepository: Repository<SessionEntity>,
     private classesService: ClassesService,
     private i18nService: I18nService<I18nTranslations>,
-  ) {}
+  ) { }
 
   async autoUpdateTeacherPaymentRecord(session: SessionEntity) {
-    const classInfo = await this.classesService.findOne(session.classId);
+    const classInfo = await this.classesService.findById(session.classId);
     if (!classInfo || !classInfo.teacher) {
       throw new BadRequestException(
         this.i18nService.t('teacherPayment.FAIL.CLASS_TEACHER_NOT_FOUND'),
@@ -168,9 +168,9 @@ export class TeacherPaymentRepository {
       order:
         sortOptions.length > 0
           ? sortOptions.reduce((acc, sort) => {
-              acc[sort.orderBy] = sort.order;
-              return acc;
-            }, {})
+            acc[sort.orderBy] = sort.order;
+            return acc;
+          }, {})
           : { year: 'DESC', month: 'DESC' },
     });
 
