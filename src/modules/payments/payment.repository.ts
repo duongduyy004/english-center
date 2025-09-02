@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { PaymentEntity } from "./entities/payment.entity";
-import { Between, FindOptionsWhere, In, Repository } from "typeorm";
+import { Between, FindOptionsWhere, In, MoreThan, Repository } from "typeorm";
 import * as dayjs from "dayjs";
 import { FilterPaymentDto, SortPaymentDto } from "./dto/query-payment.dto";
 import { IPaginationOptions } from "utils/types/pagination-options";
@@ -90,7 +90,7 @@ export class PaymentRepository {
         }
 
         const [entities, total] = await this.paymentsRepository.findAndCount({
-            where: where,
+            where: { ...where, totalAmount: MoreThan(0) },
             relations: ['class', 'student.classes'],
             skip: (paginationOptions.page - 1) * paginationOptions.limit || 0,
             take: paginationOptions.limit,

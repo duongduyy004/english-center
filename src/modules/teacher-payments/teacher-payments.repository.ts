@@ -1,6 +1,6 @@
 import { InjectRepository } from '@nestjs/typeorm';
 import { TeacherPaymentEntity } from './entities/teacher-payment.entity';
-import { Between, FindOptionsWhere, Repository, In } from 'typeorm';
+import { Between, FindOptionsWhere, Repository, In, MoreThan } from 'typeorm';
 import {
   FilterTeacherPaymentDto,
   SortTeacherPaymentDto,
@@ -161,7 +161,7 @@ export class TeacherPaymentRepository {
     }
 
     const [entities, total] = await this.teacherPaymentRepository.findAndCount({
-      where: where,
+      where: { ...where, totalAmount: MoreThan(0) },
       relations: ['teacher'],
       skip: (paginationOptions.page - 1) * paginationOptions.limit || 0,
       take: paginationOptions.limit,
