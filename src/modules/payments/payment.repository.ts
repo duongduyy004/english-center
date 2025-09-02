@@ -30,7 +30,8 @@ export class PaymentRepository {
         })
 
         if (paymentEntities.length <= 0) {
-            const paymentRecords = session.attendances.map(student => {
+            const paymentRecords = [];
+            session.attendances.filter(student => {
                 let totalLessons = 0;
                 let discountPercent = 0;
                 let totalAmount = 0;
@@ -41,7 +42,8 @@ export class PaymentRepository {
                         totalAmount = totalLessons * session.class.feePerLesson
                     }
                 })
-                return this.paymentsRepository.create({
+                if (totalLessons <= 0) return false;
+                paymentRecords.push(this.paymentsRepository.create({
                     month,
                     year,
                     totalLessons,
@@ -49,7 +51,7 @@ export class PaymentRepository {
                     discountPercent,
                     studentId: student.studentId.toString(),
                     classId: classId.toString()
-                })
+                }))
             })
             return await this.paymentsRepository.save(paymentRecords)
         }
