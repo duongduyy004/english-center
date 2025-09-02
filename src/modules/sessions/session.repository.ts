@@ -132,8 +132,6 @@ export class SessionRepository {
     });
   }
 
-
-
   async updateAttendanceSession(sessionId: Session['id'], payload: UpdateAttendanceSessionDto[]) {
     // Store old values before update for audit logging
     const oldAttendances = await this.attendanceSessionRepository.find({
@@ -172,6 +170,7 @@ export class SessionRepository {
       for (const payloadItem of payload) {
         if (item.student.id.toString() === payloadItem.studentId.toString()) {
           item.isModified = payloadItem.isModified;
+          item.status = payloadItem.status
         }
       }
     }

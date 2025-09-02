@@ -64,9 +64,8 @@ export class PaymentRepository {
                     }
                 })
             }
-            await this.paymentsRepository.save(paymentEntities)
+            return await this.paymentsRepository.save(paymentEntities)
         }
-        return paymentEntities
     }
 
     async getAllPayments(
