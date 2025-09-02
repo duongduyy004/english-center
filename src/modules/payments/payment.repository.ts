@@ -93,7 +93,13 @@ export class PaymentRepository {
             where: where,
             relations: ['class', 'student.classes'],
             skip: (paginationOptions.page - 1) * paginationOptions.limit || 0,
-            take: paginationOptions.limit
+            take: paginationOptions.limit,
+            order: sortOptions.length > 0
+                ? sortOptions.reduce((acc, sort) => {
+                    acc[sort.orderBy] = sort.order;
+                    return acc;
+                }, {})
+                : { year: 'DESC', month: 'DESC' },
         })
 
         const totalItems = total;

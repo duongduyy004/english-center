@@ -17,15 +17,28 @@ export class TransactionsController {
 
   @Get()
   findAll(@Query() query: QueryDto<FilterTransactionDto, SortTransactionDto>) {
-    const limit = query.limit;
-    const page = query.page;
+    const limit = query.limit || 10;
+    const page = query.page || 1;
     return this.transactionsService.findAll({
       filterOptions: query.filters,
-      sortOptions: query.sort,
+      sortOptions: query.sort || [],
       paginationOptions: {
         limit, page
       }
     });
+  }
+
+  @Get('report')
+  exportReport(@Query() query: QueryDto<FilterTransactionDto, SortTransactionDto>) {
+    const limit = query?.limit;
+    const page = query?.page;
+    return this.transactionsService.findAll({
+      filterOptions: query.filters,
+      sortOptions: query.sort || [],
+      paginationOptions: {
+        limit, page
+      }
+    })
   }
 
   @Get(':id')

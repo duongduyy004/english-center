@@ -11,11 +11,11 @@ export class PaymentsController {
 
   @Get('all')
   getAllPayments(@Query() query: QueryDto<FilterPaymentDto, SortPaymentDto>) {
-    const limit = query.limit;
-    const page = query.page;
+    const limit = query.limit || 10;
+    const page = query.page || 1;
     return this.paymentsService.getAllPayments({
       filterOptions: query.filters,
-      sortOptions: query.sort,
+      sortOptions: query.sort || [],
       paginationOptions: {
         limit, page
       }
@@ -24,11 +24,24 @@ export class PaymentsController {
 
   @Get('students/:studentId')
   getPaymentBytStudentId(@Param('studentId') studentId: string, @Query() query: QueryDto<FilterPaymentDto, SortPaymentDto>) {
+    const limit = query?.limit || 10;
+    const page = query?.page || 1;
+    return this.paymentsService.getAllPayments({
+      filterOptions: { ...query.filters, studentId },
+      sortOptions: query.sort || [],
+      paginationOptions: {
+        limit, page
+      }
+    })
+  }
+
+  @Get('report')
+  exportReport(@Query() query: QueryDto<FilterPaymentDto, SortPaymentDto>) {
     const limit = query?.limit;
     const page = query?.page;
     return this.paymentsService.getAllPayments({
-      filterOptions: { ...query.filters, studentId },
-      sortOptions: query.sort,
+      filterOptions: query.filters,
+      sortOptions: query.sort || [],
       paginationOptions: {
         limit, page
       }

@@ -24,7 +24,7 @@ import { ResponseMessage } from '@/decorator/customize.decorator';
 export class TeacherPaymentsController {
   constructor(
     private readonly teacherPaymentsService: TeacherPaymentsService,
-  ) {}
+  ) { }
 
   @Get()
   @ResponseMessage('teacherPayment.SUCCESS.GET_ALL_TEACHER_PAYMENTS')
@@ -45,6 +45,19 @@ export class TeacherPaymentsController {
   @ResponseMessage('teacherPayment.SUCCESS.MANUAL_TEACHER_PAYMENT')
   createPayment(@Body() createPaymentDto: CreateTeacherPaymentDto) {
     return this.teacherPaymentsService.createPayment(createPaymentDto);
+  }
+
+  @Get('report')
+  exportReport(@Query() query: QueryDto<FilterTeacherPaymentDto, SortTeacherPaymentDto>) {
+    const limit = query?.limit;
+    const page = query?.page;
+    return this.teacherPaymentsService.getAllPayments({
+      filterOptions: query.filters,
+      sortOptions: query.sort || [],
+      paginationOptions: {
+        limit, page
+      }
+    })
   }
 
   @Patch(':id')

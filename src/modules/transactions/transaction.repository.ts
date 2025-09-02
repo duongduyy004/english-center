@@ -54,7 +54,7 @@ export class TransactionRepository {
         }
         const [entities, total] = await this.transactionRepository.findAndCount({
             where,
-            skip: (paginationOptions.page - 1) * paginationOptions.limit,
+            skip: (paginationOptions.page - 1) * paginationOptions.limit || 0,
             take: paginationOptions.limit,
             relations: { category: true },
             order: sortOptions?.reduce(
@@ -67,12 +67,12 @@ export class TransactionRepository {
         })
 
         const totalItems = total;
-        const totalPages = Math.ceil(totalItems / paginationOptions.limit)
+        const totalPages = Math.ceil(totalItems / paginationOptions.limit) || 1;
 
         return {
             meta: {
-                page: paginationOptions.page,
-                limit: paginationOptions.limit,
+                page: paginationOptions.page || null,
+                limit: paginationOptions.limit || null,
                 totalPages,
                 totalItems
             },

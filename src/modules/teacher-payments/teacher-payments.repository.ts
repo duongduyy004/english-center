@@ -163,7 +163,7 @@ export class TeacherPaymentRepository {
     const [entities, total] = await this.teacherPaymentRepository.findAndCount({
       where: where,
       relations: ['teacher'],
-      skip: (paginationOptions.page - 1) * paginationOptions.limit,
+      skip: (paginationOptions.page - 1) * paginationOptions.limit || 0,
       take: paginationOptions.limit,
       order:
         sortOptions.length > 0
@@ -175,11 +175,11 @@ export class TeacherPaymentRepository {
     });
 
     const totalItems = total;
-    const totalPages = Math.ceil(totalItems / paginationOptions.limit);
+    const totalPages = Math.ceil(totalItems / paginationOptions.limit) || 1;
     return {
       meta: {
-        limit: paginationOptions.limit,
-        page: paginationOptions.page,
+        limit: paginationOptions.limit || null,
+        page: paginationOptions.page || null,
         totalPages,
         totalItems,
       },
