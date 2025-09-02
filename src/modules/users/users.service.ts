@@ -129,11 +129,6 @@ export class UsersService {
         throw new NotFoundException(this.i18nService.t('user.FAIL.NOT_FOUND'));
       }
 
-      // Check if avatar already exists
-      if (admin.avatar && admin.publicId) {
-        throw new BadRequestException('Avatar already exists. Please delete the current avatar before uploading a new one.');
-      }
-
       admin.avatar = imageUrl;
       admin.publicId = publicId;
       await this.userRepository.save(admin);
