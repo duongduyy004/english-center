@@ -24,8 +24,8 @@ export class PaymentsController {
 
   @Get('students/:studentId')
   getPaymentBytStudentId(@Param('studentId') studentId: string, @Query() query: QueryDto<FilterPaymentDto, SortPaymentDto>) {
-    const limit = query.limit;
-    const page = query.page;
+    const limit = query?.limit;
+    const page = query?.page;
     return this.paymentsService.getAllPayments({
       filterOptions: { ...query.filters, studentId },
       sortOptions: query.sort,

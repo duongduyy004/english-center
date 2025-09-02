@@ -92,17 +92,17 @@ export class PaymentRepository {
         const [entities, total] = await this.paymentsRepository.findAndCount({
             where: where,
             relations: ['class', 'student.classes'],
-            skip: (paginationOptions.page - 1) * paginationOptions.limit,
+            skip: (paginationOptions.page - 1) * paginationOptions.limit || 0,
             take: paginationOptions.limit
         })
 
         const totalItems = total;
-        const totalPages = Math.ceil(totalItems / paginationOptions.limit)
+        const totalPages = Math.ceil(totalItems / paginationOptions.limit) || 1
 
         return {
             meta: {
-                limit: paginationOptions.limit,
-                page: paginationOptions.page,
+                limit: paginationOptions.limit || null,
+                page: paginationOptions.page || null,
                 totalPages,
                 totalItems
             },
