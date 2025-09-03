@@ -2,7 +2,7 @@ import { StudentEntity } from "@/modules/students/entities/student.entity";
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
-import { data } from "./class-data";
+import { data } from "./student-data";
 import { RoleEnum } from "@/modules/roles/roles.enum";
 
 @Injectable()

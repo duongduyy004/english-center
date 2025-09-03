@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Req, Res, UseGuards, BadRequestException } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { Request, Response } from 'express';
-import { CheckPolicies, Public } from '@/decorator/customize.decorator';
+import { Public } from '@/decorator/customize.decorator';
 import { LocalAuthGuard } from './guard/local-auth.guard';
 import { I18nService } from 'nestjs-i18n';
 import { I18nTranslations } from '@/generated/i18n.generated';
