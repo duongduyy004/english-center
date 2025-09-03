@@ -43,11 +43,11 @@ export class TransactionRepository {
     }): Promise<PaginationResponseDto<Transaction>> {
         const where: FindOptionsWhere<TransactionEntity> = {};
         if (filterOptions?.type) {
-            const categories = await this.transactionCategoryRepository.find({
+            const category = await this.transactionCategoryRepository.findOne({
                 where: { type: filterOptions.type }
             })
 
-            where.category = In(categories)
+            where.category = category
         }
         if (filterOptions?.startDate && filterOptions?.endDate) {
             where.transactionAt = Between(filterOptions.startDate, filterOptions.endDate)
@@ -56,7 +56,7 @@ export class TransactionRepository {
             where,
             skip: (paginationOptions.page - 1) * paginationOptions.limit || 0,
             take: paginationOptions.limit,
-            relations: { category: true },
+            relations: ['category'],
             order: sortOptions?.reduce(
                 (accumulator, sort) => ({
                     ...accumulator,
