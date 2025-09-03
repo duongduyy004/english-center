@@ -1,5 +1,4 @@
 import { I18nTranslations } from '@/generated/i18n.generated';
-import { PolicyHandler } from '@/modules/casl/policy-handler.interface';
 import { createParamDecorator, ExecutionContext, SetMetadata } from '@nestjs/common';
 
 export const IS_PUBLIC_KEY = 'isPublic';
@@ -15,10 +14,5 @@ export const User = createParamDecorator(
     },
 );
 
-export const ROLES = 'roles'
-export const Roles = (...roles: number[]) => SetMetadata(ROLES, roles);
-
-
-export const CHECK_POLICIES_KEY = 'check_policy';
-export const CheckPolicies = (...handlers: PolicyHandler[]) =>
-    SetMetadata(CHECK_POLICIES_KEY, handlers);
+export const ROLES_KEY = 'roles'
+export const Roles = (...roles: number[]) => SetMetadata(ROLES_KEY, roles);

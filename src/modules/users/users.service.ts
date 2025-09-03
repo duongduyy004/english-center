@@ -12,9 +12,6 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { RoleEnum } from 'modules/roles/roles.enum';
 import { UserMapper } from './user.mapper';
 import { User } from './user.domain';
-import { Parent } from '../parents/parent.domain';
-import { Teacher } from '../teachers/teacher.domain';
-import { Student } from '../students/student.domain';
 
 @Injectable()
 export class UsersService {

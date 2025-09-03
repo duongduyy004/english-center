@@ -5,10 +5,7 @@ import { UpdateTeacherDto } from './dto/update-teacher.dto';
 import { FilterTeacherDto, SortTeacherDto } from './teacher.repository';
 import { QueryDto } from 'utils/types/query.dto';
 import { Teacher } from './teacher.domain';
-import { CheckPolicies, Public } from '@/decorator/customize.decorator';
-import { AppAbility } from 'modules/casl/casl-ability.factory/casl-ability.factory';
-import { Actions } from '@/utils/constants';
-import { TeacherEntity } from './entities/teacher.entity';
+import { Public } from '@/decorator/customize.decorator';
 
 @Controller('teachers')
 export class TeachersController {
@@ -50,7 +47,6 @@ export class TeachersController {
   }
 
   @Get(':id')
-  @CheckPolicies((ability: AppAbility) => ability.can(Actions.Read, TeacherEntity))
   findOne(@Param('id') id: Teacher['id']) {
     return this.teachersService.findOne(id);
   }

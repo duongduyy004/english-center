@@ -28,8 +28,6 @@ import { TeacherPaymentsModule } from 'modules/teacher-payments/teacher-payments
 import { AuthModule } from 'modules/auth/auth.module';
 import * as path from 'path';
 import { JwtAuthGuard } from './modules/auth/guard/jwt-auth.guard';
-import { CaslModule } from './modules/casl/casl.module';
-import { PoliciesGuard } from './modules/auth/guard/policies.guard';
 import { WinstonModule } from 'nest-winston';
 import { winstonConfig } from '@/logger/logger.config';
 import { HttpLoggerInterceptor } from './core/logger.interceptor';
@@ -45,6 +43,7 @@ import { AdvertisementsModule } from './modules/advertisements/advertisements.mo
 import { DashboardModule } from './modules/dashboard/dashboard.module';
 import { FeedbackModule } from './modules/feedback/feedback.module';
 import { IntroductionModule } from './modules/introduction/introduction.module';
+import { RolesGuard } from 'modules/roles/roles.guard';
 
 @Module({
   imports: [
@@ -97,7 +96,6 @@ import { IntroductionModule } from './modules/introduction/introduction.module';
     SessionsModule,
     TeacherPaymentsModule,
     AuthModule,
-    CaslModule,
     MenuModule,
     TransactionsModule,
     AuditLogModule,
@@ -121,7 +119,7 @@ import { IntroductionModule } from './modules/introduction/introduction.module';
     },
     {
       provide: APP_GUARD,
-      useClass: PoliciesGuard,
+      useClass: RolesGuard,
     },
     {
       provide: APP_INTERCEPTOR,
