@@ -45,6 +45,7 @@ import { AdvertisementsModule } from './modules/advertisements/advertisements.mo
 import { DashboardModule } from './modules/dashboard/dashboard.module';
 import { FeedbackModule } from './modules/feedback/feedback.module';
 import { IntroductionModule } from './modules/introduction/introduction.module';
+import { ArticlesModule } from './modules/articles/articles.module';
 
 @Module({
   imports: [
@@ -106,7 +107,8 @@ import { IntroductionModule } from './modules/introduction/introduction.module';
     AdvertisementsModule,
     DashboardModule,
     FeedbackModule,
-    IntroductionModule
+    IntroductionModule,
+    ArticlesModule
   ],
   controllers: [AppController],
   providers: [
