@@ -4,7 +4,7 @@ import { ResponseMessage } from '@/decorator/customize.decorator';
 
 @Controller('dashboard')
 export class DashboardController {
-  constructor(private readonly dashboardService: DashboardService) {}
+  constructor(private readonly dashboardService: DashboardService) { }
 
   @Get('admin')
   @ResponseMessage('dashboard.SUCCESS.GET_ADMIN_DASHBOARD')

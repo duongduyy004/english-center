@@ -48,7 +48,10 @@ export class ParentMapper {
         persistenceEntity.createdAt = domainEntity.createdAt;
         persistenceEntity.updatedAt = domainEntity.updatedAt;
         persistenceEntity.deletedAt = domainEntity.deletedAt;
-        persistenceEntity.role = domainEntity.role;
+        persistenceEntity.role = {
+            id: domainEntity.role.id,
+            name: domainEntity.role.name
+        };
         return persistenceEntity;
     }
 }

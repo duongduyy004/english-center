@@ -4,8 +4,7 @@ import { QueryDto } from 'utils/types/query.dto';
 import { FilterPaymentDto, SortPaymentDto } from './dto/query-payment.dto';
 import { Payment } from './payment.domain';
 import { PayStudentDto } from './dto/pay-student.dto';
-import { Roles } from '@/decorator/customize.decorator';
-import { RoleEnum } from '../roles/roles.enum';
+import { User } from '@/decorator/customize.decorator';
 
 @Controller('payments')
 export class PaymentsController {
@@ -25,8 +24,7 @@ export class PaymentsController {
   }
 
   @Get('students/:studentId')
-  @Roles(RoleEnum.student)
-  getPaymentBytStudentId(@Param('studentId') studentId: string, @Query() query: QueryDto<FilterPaymentDto, SortPaymentDto>) {
+  getPaymentBytStudentId(@Param('studentId') studentId: string, @Query() query: QueryDto<FilterPaymentDto, SortPaymentDto>, @User() user: any) {
     const limit = query.limit || 10;
     const page = query.page || 1;
     return this.paymentsService.getAllPayments({

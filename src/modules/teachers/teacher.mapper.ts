@@ -63,7 +63,10 @@ export class TeacherMapper {
     persistenceEntity.salaryPerLesson = domainEntity.salaryPerLesson;
     persistenceEntity.introduction = domainEntity.introduction;
     persistenceEntity.workExperience = domainEntity.workExperience;
-    persistenceEntity.role = domainEntity.role;
+    persistenceEntity.role = {
+      id: domainEntity.role.id,
+      name: domainEntity.role.name
+    };
     persistenceEntity.typical = domainEntity.typical;
     return persistenceEntity;
   }

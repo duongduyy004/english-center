@@ -2,11 +2,10 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestj
 import { StudentsService } from './students.service';
 import { CreateStudentDto } from './dto/create-student.dto';
 import { UpdateStudentDto } from './dto/update-student.dto';
-import { ResponseMessage, Roles } from '@/decorator/customize.decorator';
+import { ResponseMessage } from '@/decorator/customize.decorator';
 import { QueryDto } from 'utils/types/query.dto';
 import { FilterStudentDto, SortStudentDto } from './dto/query-student.dto';
 import { Student } from './student.domain';
-import { RoleEnum } from '../roles/roles.enum';
 
 @Controller('students')
 export class StudentsController {
@@ -32,13 +31,12 @@ export class StudentsController {
     });
   }
 
-  @Get('/schedule/:id')
+  @Get('schedule/:id')
   getSchedule(@Param('id') id: Student['id']) {
     return this.studentsService.getSchedule(id)
   }
 
   @Get(':id')
-  @Roles(RoleEnum.student)
   findOne(@Param('id') id: Student['id']) {
     return this.studentsService.findOne(id);
   }
