@@ -1,5 +1,5 @@
 import { I18nTranslations } from "@/generated/i18n.generated";
-import { IsNotEmpty, IsString, IsUUID } from "class-validator";
+import { IsNotEmpty, IsOptional, IsString, IsUUID } from "class-validator";
 import { i18nValidationMessage } from "nestjs-i18n";
 
 export class CreateArticleDto {
@@ -15,11 +15,11 @@ export class CreateArticleDto {
     @IsUUID('4')
     menuId: string;
 
-    @IsNotEmpty({ message: i18nValidationMessage<I18nTranslations>('validation.NOT_EMPTY') })
+    @IsOptional()
     @IsString()
     file: string;
 
-    @IsNotEmpty({ message: i18nValidationMessage<I18nTranslations>('validation.NOT_EMPTY') })
+    @IsOptional()
     @IsString()
     publicId: string;
 }

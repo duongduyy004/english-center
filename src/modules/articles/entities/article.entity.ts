@@ -15,10 +15,10 @@ export class ArticleEnity {
     @Column()
     menuId: string;
 
-    @Column()
+    @Column({ nullable: true })
     file: string;
 
-    @Column()
+    @Column({ nullable: true })
     publicId: string;
 
     @OneToOne(() => MenuEntity, { eager: true })
