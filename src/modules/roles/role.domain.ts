@@ -8,5 +8,9 @@ export class Role {
     @Allow()
     name?: string;
 
+    isActive: boolean;
+
+    description: string;
+
     permissions?: Partial<Permission>[]
 }

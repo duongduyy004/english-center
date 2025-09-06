@@ -46,6 +46,7 @@ import { IntroductionModule } from './modules/introduction/introduction.module';
 import { RolesGuard } from 'modules/roles/roles.guard';
 import { PermissionsModule } from './modules/permissions/permissions.module';
 import { RolesModule } from './modules/roles/roles.module';
+import { CacheModule } from '@nestjs/cache-manager';
 
 @Module({
   imports: [

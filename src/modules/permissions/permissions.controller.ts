@@ -1,11 +1,9 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { PermissionsService } from './permissions.service';
 import { CreatePermissionDto } from './dto/create-permission.dto';
 import { UpdatePermissionDto } from './dto/update-permission.dto';
 import { Roles } from '@/decorator/customize.decorator';
 import { RoleEnum } from '../roles/roles.enum';
-import { QueryDto } from '@/utils/types/query.dto';
-import { FilterPermissionDto, SortPermissionDto } from './dto/query-permission.dto';
 
 @Controller('permissions')
 export class PermissionsController {
@@ -19,17 +17,8 @@ export class PermissionsController {
 
   @Get()
   @Roles(RoleEnum.admin)
-  findAll(@Query() query: QueryDto<FilterPermissionDto, SortPermissionDto>) {
-    const page = query?.page;
-    const limit = query?.limit;
-    return this.permissionsService.findAll({
-      filterOptions: query.filters,
-      sortOptions: query.sort,
-      paginationOptions: {
-        page,
-        limit
-      }
-    });
+  findAllGroupedByModule() {
+    return this.permissionsService.findAllGroupedByModule();
   }
 
   @Get(':id')

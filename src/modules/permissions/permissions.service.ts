@@ -4,9 +4,6 @@ import { CreatePermissionDto } from './dto/create-permission.dto';
 import { UpdatePermissionDto } from './dto/update-permission.dto';
 import { PermissionRepository } from './permission.repository';
 import { Permission } from './permission.domain';
-import { FilterPermissionDto, SortPermissionDto } from './dto/query-permission.dto';
-import { IPaginationOptions } from '@/utils/types/pagination-options';
-import { PaginationResponseDto } from '@/utils/types/pagination-response.dto';
 
 @Injectable()
 export class PermissionsService {
@@ -29,20 +26,8 @@ export class PermissionsService {
     return this.permissionRepository.create(createPermissionDto);
   }
 
-  async findAll({
-    filterOptions,
-    sortOptions,
-    paginationOptions,
-  }: {
-    filterOptions?: FilterPermissionDto | null;
-    sortOptions?: SortPermissionDto[] | null;
-    paginationOptions: IPaginationOptions;
-  }): Promise<PaginationResponseDto<Permission>> {
-    return this.permissionRepository.findManyWithPagination({
-      filterOptions,
-      sortOptions,
-      paginationOptions,
-    });
+  async findAllGroupedByModule(): Promise<Record<string, Permission[]>> {
+    return this.permissionRepository.findAllGroupedByModule();
   }
 
   async findOne(id: Permission['id']): Promise<Permission> {

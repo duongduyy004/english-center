@@ -18,7 +18,9 @@ export class StudentMapper {
         domainEntity.avatar = raw.avatar;
         domainEntity.role = {
             id: raw.role.id,
-            name: RoleEnum[raw.role.id]
+            name: RoleEnum[raw.role.id],
+            isActive: raw.role.isActive,
+            description: raw.role.description
         }
         if (raw.classes) {
             domainEntity.classes = raw.classes.map(item => ({
@@ -60,7 +62,9 @@ export class StudentMapper {
         persistenceEntity.avatar = domainEntity.avatar;
         persistenceEntity.role = {
             id: domainEntity.role.id,
-            name: domainEntity.role.name
+            name: domainEntity.role.name,
+            isActive: domainEntity.role.isActive,
+            description: domainEntity.role.description
         }
 
         return persistenceEntity;

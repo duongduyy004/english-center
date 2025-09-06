@@ -30,7 +30,7 @@ async function bootstrap() {
     new ClassSerializerInterceptor(app.get(Reflector))
   )
   app.enableCors({
-    origin: configService.get('app.frontendDomain', { infer: true }),
+    origin: [configService.get('app.frontendDomain', { infer: true }), 'http://localhost:3000'],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     preflightContinue: false,
     optionsSuccessStatus: 204,

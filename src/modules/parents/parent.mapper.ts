@@ -16,7 +16,9 @@ export class ParentMapper {
         domainEntity.avatar = raw.avatar;
         domainEntity.role = {
             id: raw.role.id,
-            name: RoleEnum[raw.role.id]
+            name: RoleEnum[raw.role.id],
+            isActive: raw.role.isActive,
+            description: raw.role.description
         }
         if (raw.students) {
             domainEntity.students = raw.students.map(item => ({
@@ -50,7 +52,9 @@ export class ParentMapper {
         persistenceEntity.deletedAt = domainEntity.deletedAt;
         persistenceEntity.role = {
             id: domainEntity.role.id,
-            name: domainEntity.role.name
+            name: domainEntity.role.name,
+            isActive: domainEntity.role.isActive,
+            description: domainEntity.role.description
         };
         return persistenceEntity;
     }

@@ -40,65 +40,25 @@ export class PermissionRepository {
         return entity ? PermissionMapper.toDomain(entity) : null;
     }
 
-    async findManyWithPagination({
-        filterOptions,
-        sortOptions,
-        paginationOptions,
-    }: {
-        filterOptions?: FilterPermissionDto | null;
-        sortOptions?: SortPermissionDto[] | null;
-        paginationOptions: IPaginationOptions;
-    }): Promise<PaginationResponseDto<Permission>> {
-        const where: FindOptionsWhere<PermissionEntity> = {};
-
-        if (filterOptions?.path) {
-            where.path = ILike(`%${filterOptions.path}%`);
-        }
-
-        if (filterOptions?.method) {
-            where.method = ILike(`%${filterOptions.method}%`);
-        }
-
-        if (filterOptions?.description) {
-            where.description = ILike(`%${filterOptions.description}%`);
-        }
-
-        if (filterOptions?.module) {
-            where.module = ILike(`%${filterOptions.module}%`);
-        }
-
-        if (filterOptions?.module) {
-            where.module = ILike(`%${filterOptions.module}%`);
-        }
-
-        if (filterOptions?.version) {
-            where.module = ILike(`%${filterOptions.version}%`);
-        }
-
-        const [entities, total] = await this.permissionRepository.findAndCount({
-            skip: (paginationOptions.page - 1) * paginationOptions.limit,
-            take: paginationOptions.limit,
-            where,
-            order: sortOptions?.reduce(
-                (accumulator, sort) => ({
-                    ...accumulator,
-                    [sort.orderBy]: sort.order,
-                }),
-                {},
-            ),
+    async findAllGroupedByModule(): Promise<Record<string, Permission[]>> {
+        const entities = await this.permissionRepository.find({
+            order: { module: 'ASC', path: 'ASC' }
         });
-        const totalItems = total;
-        const totalPages = Math.ceil(totalItems / paginationOptions.limit)
 
-        return {
-            meta: {
-                page: paginationOptions.page,
-                limit: paginationOptions.limit,
-                totalPages,
-                totalItems
-            },
-            result: entities.map((item) => PermissionMapper.toDomain(item))
-        }
+        const permissions = entities.map(entity => PermissionMapper.toDomain(entity));
+
+        // Group permissions by module
+        const groupedPermissions: Record<string, Permission[]> = {};
+
+        permissions.forEach(permission => {
+            const module = permission.module || 'UNKNOWN';
+            if (!groupedPermissions[module]) {
+                groupedPermissions[module] = [];
+            }
+            groupedPermissions[module].push(permission);
+        });
+
+        return groupedPermissions;
     }
 
     async update(

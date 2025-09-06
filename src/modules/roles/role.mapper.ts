@@ -6,6 +6,8 @@ export class RoleMapper {
         const domainEntity = new Role();
         domainEntity.id = raw.id;
         domainEntity.name = raw.name;
+        domainEntity.isActive = raw.isActive;
+        domainEntity.description = raw.description;
         if (raw.permissions) {
             domainEntity.permissions = raw.permissions.map(item => ({
                 id: item.id,
