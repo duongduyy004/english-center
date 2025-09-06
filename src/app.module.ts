@@ -44,6 +44,9 @@ import { DashboardModule } from './modules/dashboard/dashboard.module';
 import { FeedbackModule } from './modules/feedback/feedback.module';
 import { IntroductionModule } from './modules/introduction/introduction.module';
 import { RolesGuard } from 'modules/roles/roles.guard';
+import { PermissionsModule } from './modules/permissions/permissions.module';
+import { RolesModule } from './modules/roles/roles.module';
+import { CacheModule } from '@nestjs/cache-manager';
 
 @Module({
   imports: [
@@ -104,7 +107,9 @@ import { RolesGuard } from 'modules/roles/roles.guard';
     AdvertisementsModule,
     DashboardModule,
     FeedbackModule,
-    IntroductionModule
+    IntroductionModule,
+    PermissionsModule,
+    RolesModule
   ],
   controllers: [AppController],
   providers: [

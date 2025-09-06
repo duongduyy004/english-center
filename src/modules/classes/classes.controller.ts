@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestj
 import { ClassesService } from './classes.service';
 import { CreateClassDto } from './dto/create-class.dto';
 import { UpdateClassDto } from './dto/update-class.dto';
-import { Roles, ResponseMessage, User } from '@/decorator/customize.decorator';
+import { ResponseMessage } from '@/decorator/customize.decorator';
 import { QueryDto } from 'utils/types/query.dto';
 import { FilterClassDto, SortClassDto } from './dto/query-class.dto';
 import { Class } from './class.domain';

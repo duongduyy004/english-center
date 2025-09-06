@@ -1,4 +1,5 @@
 import { Allow } from 'class-validator';
+import { Permission } from 'modules/permissions/permission.domain';
 
 export class Role {
     @Allow()
@@ -6,4 +7,10 @@ export class Role {
 
     @Allow()
     name?: string;
+
+    isActive: boolean;
+
+    description: string;
+
+    permissions?: Partial<Permission>[]
 }

@@ -7,6 +7,7 @@ import { StudentSeedService } from './student/student-seed.service';
 import { TeacherSeedService } from './teacher/teacher-seed.service';
 import { ParentSeedService } from './parent/parent-seed.service';
 import { MenuSeedService } from './menu/menu-seed.service';
+import { PermissionSeedService } from './permission/permission-seed.service';
 
 const runSeed = async () => {
     const app = await NestFactory.create(SeedModule);
@@ -21,17 +22,20 @@ const runSeed = async () => {
     console.log('Seeding classes...');
     await app.get(ClassSeedService).run();
 
-    console.log('Seed students...')
+    console.log('Seeding students...')
     await app.get(StudentSeedService).run();
 
-    console.log('Seed teachers...')
+    console.log('Seeding teachers...')
     await app.get(TeacherSeedService).run();
 
-    console.log('Seed parents...')
+    console.log('Seeding parents...')
     await app.get(ParentSeedService).run();
 
-    console.log('Seed menus...')
+    console.log('Seeding menus...')
     await app.get(MenuSeedService).run();
+
+    console.log('Seeding permission...')
+    await app.get(PermissionSeedService).run();
 
     console.log('Seeding completed successfully!');
     await app.close();
