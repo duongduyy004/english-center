@@ -47,6 +47,7 @@ import { RolesGuard } from 'modules/roles/roles.guard';
 import { PermissionsModule } from './modules/permissions/permissions.module';
 import { RolesModule } from './modules/roles/roles.module';
 import { CacheModule } from '@nestjs/cache-manager';
+import { ArticlesModule } from './modules/articles/articles.module';
 
 @Module({
   imports: [
@@ -109,7 +110,8 @@ import { CacheModule } from '@nestjs/cache-manager';
     FeedbackModule,
     IntroductionModule,
     PermissionsModule,
-    RolesModule
+    RolesModule,
+    ArticlesModule
   ],
   controllers: [AppController],
   providers: [
