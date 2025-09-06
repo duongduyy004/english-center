@@ -4,6 +4,8 @@ export class FilterArticleDto {
     title?: string;
     content?: string;
     menuId?: string;
+    order?: number;
+    isActive?: boolean;
 }
 
 export class SortArticleDto {

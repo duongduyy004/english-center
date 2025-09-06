@@ -7,6 +7,8 @@ export class ArticleMapper {
         domain.id = raw.id;
         domain.title = raw.title;
         domain.content = raw.content;
+        domain.order = raw.order;
+        domain.isActive = raw.isActive;
         domain.file = raw.file;
         domain.publicId = raw.publicId;
         domain.menu = raw.menu;

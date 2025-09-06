@@ -16,6 +16,12 @@ export class ArticleEnity {
     menuId: string;
 
     @Column({ nullable: true })
+    order: number;
+
+    @Column({ default: true })
+    isActive: boolean;
+
+    @Column({ nullable: true })
     file: string;
 
     @Column({ nullable: true })

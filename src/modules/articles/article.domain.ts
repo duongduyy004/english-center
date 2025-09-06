@@ -12,6 +12,12 @@ export class Article {
     content: string;
 
     @Allow()
+    order: number;
+
+    @Allow()
+    isActive: boolean;
+
+    @Allow()
     file: string;
 
     @Allow()

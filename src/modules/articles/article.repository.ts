@@ -56,6 +56,14 @@ export class ArticleRepository {
             where.menuId = filterOptions.menuId;
         }
 
+        if (filterOptions?.order !== undefined) {
+            where.order = filterOptions.order;
+        }
+
+        if (filterOptions?.isActive !== undefined) {
+            where.isActive = filterOptions.isActive;
+        }
+
         const [entities, total] = await this.articleRepository.findAndCount({
             skip: (paginationOptions.page - 1) * paginationOptions.limit,
             take: paginationOptions.limit,
