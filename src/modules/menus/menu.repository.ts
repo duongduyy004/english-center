@@ -31,6 +31,13 @@ export class MenusRepository {
         return this.treeRepo.findTrees();
     }
 
+    async findById(id: Menu['id']) {
+        return await this.menuRepository.findOne({
+            where: { id },
+            relations: ['parent', 'children']
+        });
+    }
+
     async updateMenu(id: Menu['id'], updateMenuDto: UpdateMenuDto) {
         const entity = await this.menuRepository.findOne({ where: { id } });
         if (updateMenuDto.title) entity.title = updateMenuDto.title;

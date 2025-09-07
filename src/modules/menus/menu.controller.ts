@@ -20,6 +20,12 @@ export class MenusController {
     return this.menuService.findAll();
   }
 
+  @Get(':id')
+  @Public()
+  findOne(@Param('id') id: Menu['id']) {
+    return this.menuService.findOne(id);
+  }
+
   @Patch(':id')
   update(@Param('id') id: Menu['id'], @Body() updateMenuDto: UpdateMenuDto) {
     return this.menuService.update(id, updateMenuDto);

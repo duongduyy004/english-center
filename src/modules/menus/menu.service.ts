@@ -17,6 +17,10 @@ export class MenusService {
     return this.menuRepository.getAllMenus();
   }
 
+  findOne(id: Menu['id']) {
+    return this.menuRepository.findById(id);
+  }
+
   update(id: Menu['id'], updateMenuDto: UpdateMenuDto) {
     return this.menuRepository.updateMenu(id, updateMenuDto);
   }
