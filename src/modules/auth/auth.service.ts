@@ -36,7 +36,7 @@ export class AuthService {
     const refreshToken = this.createRefreshToken(payload)
     response.cookie('refresh_token', refreshToken, {
       httpOnly: true,
-      maxAge: 90000
+      maxAge: 2592000 * 1000
     })
 
     await this.usersService.updateUserToken(user, refreshToken)
@@ -82,7 +82,7 @@ export class AuthService {
         response.clearCookie('refresh_token')
         response.cookie('refresh_token', refresh_token, {
           httpOnly: true,
-          maxAge: 900000
+          maxAge: 2592000 * 1000
         });
 
         return {
