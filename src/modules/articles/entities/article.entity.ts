@@ -1,5 +1,5 @@
 import { MenuEntity } from "@/modules/menus/entities/menu.entity";
-import { Column, CreateDateColumn, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity('article')
 export class ArticleEnity {
@@ -27,7 +27,7 @@ export class ArticleEnity {
     @Column({ nullable: true })
     publicId: string;
 
-    @OneToOne(() => MenuEntity, { eager: true })
+    @ManyToOne(() => MenuEntity, { eager: true })
     @JoinColumn({ name: 'menuId' })
     menu: MenuEntity;
 
