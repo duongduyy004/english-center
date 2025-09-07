@@ -4,7 +4,7 @@ import { CreateArticleDto } from './dto/create-article.dto';
 import { UpdateArticleDto } from './dto/update-article.dto';
 import { QueryDto } from '@/utils/types/query.dto';
 import { FilterArticleDto, SortArticleDto } from './dto/query-article.dto';
-import { Roles } from '@/decorator/customize.decorator';
+import { Public, Roles } from '@/decorator/customize.decorator';
 import { RoleEnum } from '@/modules/roles/roles.enum';
 
 @Controller('articles')
@@ -18,13 +18,13 @@ export class ArticlesController {
   }
 
   @Get()
-  @Roles(RoleEnum.admin)
+  @Public()
   findAll(@Query() query: QueryDto<FilterArticleDto, SortArticleDto>) {
     return this.articlesService.findAll(query);
   }
 
   @Get(':id')
-  @Roles(RoleEnum.admin)
+  @Public()
   findOne(@Param('id') id: string) {
     return this.articlesService.findOne(id);
   }
