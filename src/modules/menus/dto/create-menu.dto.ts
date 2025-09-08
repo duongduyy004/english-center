@@ -14,7 +14,7 @@ export class CreateMenuDto {
 
     @IsOptional()
     @IsBoolean()
-    isActive?: boolean = true;
+    isActive?: boolean;
 
     @IsOptional()
     @IsUUID()
