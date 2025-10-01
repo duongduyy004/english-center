@@ -23,6 +23,17 @@ services:
     image: duongduyy/eng-center-app:lastest
     environment:
       - DATABASE_HOST=eng-center-db
+      - DATABASE_PORT=5432
+      - DATABASE_USERNAME=root
+      - DATABASE_PASSWORD=123456
+      - DATABASE_NAME=postgres
+      - DATABASE_TYPE=postgres
+      - DATABASE_SSL_MODE=false
+      - DATABASE_CHANNEL_BINDING=require
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - REDIS_USERNAME=default
+      - REDIS_PASSWORD=qrdG2MLYcaPrLImYgF79gTQiS4z8wqkn
     expose:
       - 8080
     ports:
