@@ -40,10 +40,6 @@ export class AuditLogRepository {
         await this.auditLogRepository.save(log, { listeners: false })
     }
 
-    create(createAuditLogDto: CreateAuditLogDto) {
-        return this.auditLogRepository.create(createAuditLogDto)
-    }
-
     async getAuditLogs(
         { filterOptions, sortOptions = [{ order: 'DESC', orderBy: 'createdAt' }], paginationOptions }:
             { filterOptions: FilterAuditLogDto, sortOptions: SortAuditLogDto[], paginationOptions: IPaginationOptions }

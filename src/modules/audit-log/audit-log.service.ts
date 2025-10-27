@@ -19,10 +19,6 @@ export class AuditLogService {
     return this.auditLogRepository.getAuditLogs({ filterOptions, sortOptions, paginationOptions });
   }
 
-  create(createAuditLogDto: CreateAuditLogDto) {
-    return this.auditLogRepository.create(createAuditLogDto)
-  }
-
   pushLog(log: CreateAuditLogDto) {
     return this.auditLogRepository.pushLog(log)
   }
