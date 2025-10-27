@@ -2,7 +2,7 @@ services:
   eng-center-db:
     image: postgres:17.5-alpine
     container_name: eng-center-db
-    restart: none
+    restart: always
     ports:
       - '5432:5432'
     environment:
