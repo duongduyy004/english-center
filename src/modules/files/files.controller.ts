@@ -1,4 +1,4 @@
-import { Controller, Delete, Param, Post, Query, UploadedFile, UseInterceptors } from "@nestjs/common";
+import { Body, Controller, Delete, Param, Post, Query, UploadedFile, UseInterceptors } from "@nestjs/common";
 import { FilesService } from "./files.service";
 import { Public } from "@/decorator/customize.decorator";
 import { FileInterceptor } from "@nestjs/platform-express";
@@ -10,8 +10,8 @@ export class FilesController {
     @Public()
     @Post()
     @UseInterceptors(FileInterceptor('file'))
-    upload(@UploadedFile() file: Express.Multer.File) {
-        return this.filesService.uploadFile(file, 'test')
+    upload(@UploadedFile() file: Express.Multer.File, @Body() path: string) {
+        return this.filesService.uploadFile(file, path)
     }
 
     @Public()
