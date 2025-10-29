@@ -2,7 +2,7 @@ import { BadRequestException, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { PaymentEntity } from "./entities/payment.entity";
 import { Between, FindOptionsWhere, In, MoreThan, Repository } from "typeorm";
-import * as dayjs from "dayjs";
+import dayjs from "dayjs";
 import { FilterPaymentDto, SortPaymentDto } from "./dto/query-payment.dto";
 import { IPaginationOptions } from "utils/types/pagination-options";
 import { PaginationResponseDto } from "utils/types/pagination-response.dto";
@@ -12,6 +12,9 @@ import { PayStudentDto } from "./dto/pay-student.dto";
 import { I18nService } from "nestjs-i18n";
 import { I18nTranslations } from "@/generated/i18n.generated";
 import { SessionEntity } from "modules//sessions/entities/session.entity";
+import { RequestPaymentDto } from "./dto/request-payment.dto";
+import { User } from "modules/users/user.domain";
+import { ProcessRequestPaymentDto, RequestPaymentAction } from "./dto/process-request-payment.dto";
 
 @Injectable()
 export class PaymentRepository {
@@ -118,10 +121,7 @@ export class PaymentRepository {
         }
     }
 
-    async payStudent(paymentId: Payment['id'], payStudentDto: PayStudentDto) {
-        const entity = await this.paymentsRepository.findOne({
-            where: { id: paymentId }
-        })
+    handleProcessPayment(entity: PaymentEntity, payStudentDto: PayStudentDto) {
         if (entity.totalLessons === 0) throw new BadRequestException('No lessons');
         if (entity.status === 'paid') throw new BadRequestException('Fully paid');
         if (entity.paidAmount + +payStudentDto.amount > entity.totalAmount) throw new BadRequestException('Exceeds remaning balance')
@@ -132,8 +132,58 @@ export class PaymentRepository {
                 note: payStudentDto.note,
                 date: new Date()
             })
-            await this.paymentsRepository.save(entity)
         }
+    }
+
+    async payStudent(paymentId: Payment['id'], payStudentDto: PayStudentDto) {
+        const entity = await this.paymentsRepository.findOne({
+            where: { id: paymentId }
+        })
+        this.handleProcessPayment(entity, payStudentDto);
+        await this.paymentsRepository.save(entity)
         return PaymentMapper.toDomain(entity)
+    }
+
+    async requestPayment(paymentId: Payment['id'], requestPayment: RequestPaymentDto, user: User) {
+        const entity = await this.paymentsRepository.findOne({
+            where: { id: paymentId }
+        })
+
+        entity.paymentRequests.push({
+            amount: requestPayment.amount,
+            imageProof: requestPayment.imageProof,
+            status: 'pending',
+            rejectionReason: requestPayment.rejectionReason,
+            requestedAt: dayjs().toDate()
+        })
+
+        return await this.paymentsRepository.save(entity);
+    }
+
+    async processRequestPayment(paymentId: Payment['id'], processRequestPaymentDto: ProcessRequestPaymentDto, user: User) {
+        const entity = await this.paymentsRepository.findOne({
+            where: { id: paymentId }
+        })
+
+        entity.paymentRequests.map(item => {
+            if (processRequestPaymentDto.imageProof === item.imageProof) {
+                if (processRequestPaymentDto.action === RequestPaymentAction.PROCESS) {
+                    this.handleProcessPayment(entity, {
+                        amount: item.amount,
+                        method: 'bank_transfer',
+                        note: `Thanh toán học phí tháng ${entity.month}/${entity.year}`
+                    })
+                }
+                return {
+                    ...item,
+                    status: processRequestPaymentDto.action,
+                    processedAt: dayjs().toDate(),
+                    processedBy: user.id
+                }
+            }
+            return item;
+        })
+
+        return await this.paymentsRepository.save(entity);
     }
 }

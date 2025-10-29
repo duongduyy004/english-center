@@ -31,4 +31,14 @@ export class Payment {
         note: string,
         date: Date
     }[];
+
+    paymentRequests: {
+        amount: number;
+        imageProof: string;
+        status: 'pending' | 'approved' | 'rejected';
+        requestedAt: Date;
+        processedAt?: Date;
+        processedBy?: string;
+        rejectionReason?: string;
+    }[]
 }

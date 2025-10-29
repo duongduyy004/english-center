@@ -6,6 +6,9 @@ import { PaginationResponseDto } from 'utils/types/pagination-response.dto';
 import { Payment } from './payment.domain';
 import { PayStudentDto } from './dto/pay-student.dto';
 import { SessionEntity } from 'modules/sessions/entities/session.entity';
+import { RequestPaymentDto } from './dto/request-payment.dto';
+import { User } from 'modules/users/user.domain';
+import { ProcessRequestPaymentDto } from './dto/process-request-payment.dto';
 
 @Injectable()
 export class PaymentsService {
@@ -26,5 +29,13 @@ export class PaymentsService {
 
   payStudent(paymentId: Payment['id'], payStudentDto: PayStudentDto) {
     return this.paymentRepository.payStudent(paymentId, payStudentDto)
+  }
+
+  requestPayment(paymentId: Payment['id'], requestPayment: RequestPaymentDto, user: User) {
+    return this.paymentRepository.requestPayment(paymentId, requestPayment, user);
+  }
+
+  processRequestPayment(paymentId: Payment['id'], processRequestPaymentDto: ProcessRequestPaymentDto, user: User) {
+    return this.paymentRepository.processRequestPayment(paymentId, processRequestPaymentDto, user);
   }
 }

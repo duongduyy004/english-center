@@ -14,6 +14,22 @@ export class Histories {
     date?: Date
 }
 
+export class PaymentRequests {
+    amount: number;
+
+    imageProof: string;
+
+    status: 'pending' | 'approved' | 'rejected';
+
+    requestedAt: Date;
+
+    processedAt?: Date;
+
+    processedBy?: string;
+
+    rejectionReason?: string;
+}
+
 @Entity('payments')
 export class PaymentEntity {
     @PrimaryGeneratedColumn('uuid')
@@ -57,6 +73,8 @@ export class PaymentEntity {
     @Column('jsonb', { nullable: true, default: [] })
     histories: Histories[]
 
+    @Column('jsonb', { nullable: true, default: [] })
+    paymentRequests: PaymentRequests[]
 
     @BeforeUpdate()
     @BeforeInsert()
