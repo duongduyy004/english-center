@@ -10,8 +10,8 @@ import { Teacher } from 'modules/teachers/teacher.domain';
 import { TeachersService } from 'modules/teachers/teachers.service';
 import { StudentsService } from 'modules/students/students.service';
 import { AddStudentsDto } from './dto/add-students.dto';
-import * as dayjs from 'dayjs';
-import * as customParseFormat from 'dayjs/plugin/customParseFormat';
+import dayjs from 'dayjs';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
 import { Student } from 'modules/students/student.domain';
 import {
   FilterStudentDto,

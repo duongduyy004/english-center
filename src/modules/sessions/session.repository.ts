@@ -4,7 +4,7 @@ import { Between, In, Repository } from "typeorm";
 import { SessionEntity } from "./entities/session.entity";
 import { Class } from "modules/classes/class.domain";
 import { ClassesService } from "modules/classes/classes.service";
-import * as dayjs from "dayjs";
+import dayjs from "dayjs";
 import { BadRequestException } from "@nestjs/common";
 import { SessionMapper } from "./session.mapper";
 import { Session } from "./session.domain";

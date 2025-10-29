@@ -10,7 +10,7 @@ export class FilesController {
     @Public()
     @Post()
     @UseInterceptors(FileInterceptor('file'))
-    upload(@UploadedFile() file: Express.Multer.File, @Body() path: string) {
+    upload(@UploadedFile() file: Express.Multer.File, @Body('path') path: string) {
         return this.filesService.uploadFile(file, path)
     }
 
