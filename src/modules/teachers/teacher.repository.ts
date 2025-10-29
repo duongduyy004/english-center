@@ -155,16 +155,6 @@ export class TeacherRepository {
       where: { id, typical: true }
     })
     if (!entity) throw new BadRequestException('Not found teacher');
-    return {
-      id: entity.id,
-      name: entity.name,
-      email: entity.email,
-      specializations: entity.specializations,
-      qualifications: entity.qualifications,
-      description: entity.description,
-      introduction: entity.introduction,
-      workExperience: entity.workExperience,
-      avatar: entity.avatar
-    }
+    return TeacherMapper.toDomain(entity);
   }
 }
