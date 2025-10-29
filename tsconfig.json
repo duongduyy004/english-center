@@ -6,11 +6,9 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
-    "target": "es2017",
+    "target": "es2023",
     "sourceMap": true,
     "outDir": "./dist",
-    "baseUrl": "./",
-    "ignoreDeprecations": "6.0",
     "incremental": true,
     "skipLibCheck": true,
     "strictNullChecks": false,
@@ -18,21 +16,25 @@
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
+    "esModuleInterop": true,
     "paths": {
+      "*": [
+        "./src/*"
+      ],
       "@/*": [
-        "src/*"
+        "./src/*"
       ],
       "config/*": [
-        "src/config/*"
+        "./src/config/*"
       ],
       "utils/*": [
-        "src/utils/*"
+        "./src/utils/*"
       ],
       "modules/*": [
-        "src/modules/*"
+        "./src/modules/*"
       ],
       "i18n/*": [
-        "src/i18n/*"
+        "./src/i18n/*"
       ]
     }
   }

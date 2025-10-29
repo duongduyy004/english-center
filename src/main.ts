@@ -4,7 +4,7 @@ import { ConfigService } from '@nestjs/config';
 import { AllConfigType } from './config/config.type';
 import { I18nValidationExceptionFilter, I18nValidationPipe } from 'nestjs-i18n';
 import { ClassSerializerInterceptor, VersioningType } from '@nestjs/common';
-import * as cookieParser from 'cookie-parser';
+import cookieParser from 'cookie-parser';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
