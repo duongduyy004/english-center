@@ -34,6 +34,7 @@ services:
       - REDIS_PORT=6379
       - REDIS_USERNAME=default
       - REDIS_PASSWORD=qrdG2MLYcaPrLImYgF79gTQiS4z8wqkn
+      - TZ=Asia/Ho_Chi_Minh
     expose:
       - 8080
     ports:
