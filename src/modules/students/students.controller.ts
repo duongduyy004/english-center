@@ -1,4 +1,13 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Query,
+} from '@nestjs/common';
 import { StudentsService } from './students.service';
 import { CreateStudentDto } from './dto/create-student.dto';
 import { UpdateStudentDto } from './dto/update-student.dto';
@@ -9,7 +18,7 @@ import { Student } from './student.domain';
 
 @Controller('students')
 export class StudentsController {
-  constructor(private readonly studentsService: StudentsService) { }
+  constructor(private readonly studentsService: StudentsService) {}
 
   @Post()
   @ResponseMessage('student.SUCCESS.CREATE_A_STUDENT')
@@ -26,14 +35,19 @@ export class StudentsController {
       sortOptions: query.sort,
       paginationOptions: {
         page,
-        limit
-      }
+        limit,
+      },
     });
+  }
+
+  @Get('statistics')
+  getStatistics() {
+    return this.studentsService.getStatistics();
   }
 
   @Get('schedule/:id')
   getSchedule(@Param('id') id: Student['id']) {
-    return this.studentsService.getSchedule(id)
+    return this.studentsService.getSchedule(id);
   }
 
   @Get(':id')
@@ -42,7 +56,10 @@ export class StudentsController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: Student['id'], @Body() updateStudentDto: UpdateStudentDto) {
+  update(
+    @Param('id') id: Student['id'],
+    @Body() updateStudentDto: UpdateStudentDto,
+  ) {
     return this.studentsService.update(id, updateStudentDto);
   }
 
