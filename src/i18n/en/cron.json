@@ -1,0 +1,8 @@
+{
+  "SUCCESS": {
+    "UPDATE_CLASS_STATUS": "Update class status success"
+  },
+  "FAIL": {
+    "UPDATE_CLASS_STATUS_FAIL": "Update class status failed"
+  }
+}

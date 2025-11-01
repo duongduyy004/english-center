@@ -48,7 +48,8 @@ import { PermissionsModule } from './modules/permissions/permissions.module';
 import { RolesModule } from './modules/roles/roles.module';
 import { CacheModule } from '@nestjs/cache-manager';
 import { ArticlesModule } from './modules/articles/articles.module';
-
+import { ScheduleModule } from '@nestjs/schedule';
+import { CronModule } from 'modules/cron/cron.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -91,6 +92,8 @@ import { ArticlesModule } from './modules/articles/articles.module';
     BullModule.forRootAsync({
       useClass: RedisConfigService,
     }),
+    ScheduleModule.forRoot(),
+
     UsersModule,
     StudentsModule,
     ParentsModule,
@@ -111,7 +114,8 @@ import { ArticlesModule } from './modules/articles/articles.module';
     IntroductionModule,
     PermissionsModule,
     RolesModule,
-    ArticlesModule
+    ArticlesModule,
+    CronModule,
   ],
   controllers: [AppController],
   providers: [
@@ -134,4 +138,4 @@ import { ArticlesModule } from './modules/articles/articles.module';
     },
   ],
 })
-export class AppModule { }
+export class AppModule {}

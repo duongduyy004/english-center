@@ -26,8 +26,8 @@ export class ClassesService {
     private classRepository: ClassRepository,
     private teachersService: TeachersService,
     private studentsService: StudentsService,
-    private i18nService: I18nService<I18nTranslations>
-  ) { }
+    private i18nService: I18nService<I18nTranslations>,
+  ) {}
   create(createClassDto: CreateClassDto) {
     return this.classRepository.create(createClassDto);
   }
@@ -159,6 +159,24 @@ export class ClassesService {
 
   async removeStudentsFromClass(id: Class['id'], students: Student['id'][]) {
     return this.classRepository.removeStudentsFromClass(id, students);
+  }
+
+  async updateClassStatus() {
+    const classes = await this.classRepository.findAll();
+    for(const aclass of classes) {
+      const now = Date.now();
+      const startDate = new Date(aclass.schedule.start_date).getTime();
+      const endDate = new Date(aclass.schedule.end_date).getTime();
+      let newStatus = aclass.status;
+      if(now < startDate) {
+        newStatus = 'upcoming';
+      } else if(now > endDate) {
+        newStatus = 'closed';
+      } else {
+        newStatus = 'active';
+      }
+      await this.classRepository.update(aclass.id, { status: newStatus });
+    }
   }
 
   private isDateOverlap(schedule1: Schedule, schedule2: Schedule) {

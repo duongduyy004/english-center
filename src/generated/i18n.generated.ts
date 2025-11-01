@@ -33,6 +33,14 @@ export type I18nTranslations = {
     "common": {
         "NOT_FOUND": string;
     };
+    "cron": {
+        "SUCCESS": {
+            "UPDATE_CLASS_STATUS": string;
+        };
+        "FAIL": {
+            "UPDATE_CLASS_STATUS_FAIL": string;
+        };
+    };
     "dashboard": {
         "SUCCESS": {
             "GET_ADMIN_DASHBOARD": string;
