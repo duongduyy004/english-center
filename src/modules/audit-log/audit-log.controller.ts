@@ -1,7 +1,8 @@
-import { Controller, Get, Query } from '@nestjs/common';
+import { Controller, Get, Param, Query } from '@nestjs/common';
 import { AuditLogService } from './audit-log.service';
 import { QueryDto } from '@/utils/types/query.dto';
 import { FilterAuditLogDto, SortAuditLogDto } from './dto/query-audit-log.dto';
+import { Public } from 'decorator/customize.decorator';
 
 @Controller('audit-log')
 export class AuditLogController {
@@ -18,6 +19,14 @@ export class AuditLogController {
         limit, page
       }
     });
+  }
+
+  @Public()
+  @Get(':id')
+  getLogDetail(
+    @Param('id') logId: string
+  ) {
+    return this.auditLogService.getLogDetail(logId);
   }
 
 }

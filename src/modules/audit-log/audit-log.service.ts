@@ -22,4 +22,8 @@ export class AuditLogService {
   pushLog(log: CreateAuditLogDto) {
     return this.auditLogRepository.pushLog(log)
   }
+
+  getLogDetail(logId: AuditLog['id']) {
+    return this.auditLogRepository.getLogDetail(logId)
+  }
 }
