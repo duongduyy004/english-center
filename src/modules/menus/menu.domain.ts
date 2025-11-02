@@ -5,7 +5,7 @@ export class Menu {
     order: number;
     isActive: boolean;
     children: Menu[];
-    parent: Menu;
+    parentMenu: Menu;
     createdAt?: Date;
     updatedAt?: Date;
     deletedAt?: Date;
