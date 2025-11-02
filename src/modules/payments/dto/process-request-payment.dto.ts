@@ -1,10 +1,11 @@
 export class ProcessRequestPaymentDto {
-    imageProof: string;
+    status: PaymentRequestStatus
 
-    action: RequestPaymentAction
+    rejectionReason?: string;
 }
 
-export class RequestPaymentAction {
-    static PROCESS = 'process';
-    static REJECT = 'reject';
+export enum PaymentRequestStatus {
+    APPROVE = 'approved',
+    REJECT = 'rejected',
+    PENDING = 'pending'
 }

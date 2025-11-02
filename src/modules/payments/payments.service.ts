@@ -31,11 +31,11 @@ export class PaymentsService {
     return this.paymentRepository.payStudent(paymentId, payStudentDto)
   }
 
-  requestPayment(paymentId: Payment['id'], requestPayment: RequestPaymentDto, user: User) {
-    return this.paymentRepository.requestPayment(paymentId, requestPayment, user);
+  requestPayment(paymentId: Payment['id'], requestPayment: RequestPaymentDto) {
+    return this.paymentRepository.requestPayment(paymentId, requestPayment);
   }
 
-  processRequestPayment(paymentId: Payment['id'], processRequestPaymentDto: ProcessRequestPaymentDto, user: User) {
-    return this.paymentRepository.processRequestPayment(paymentId, processRequestPaymentDto, user);
+  processRequestPayment(paymentRequestId: number, processRequestPaymentDto: ProcessRequestPaymentDto, user: User) {
+    return this.paymentRepository.processRequestPayment(paymentRequestId, processRequestPaymentDto, user);
   }
 }

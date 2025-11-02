@@ -1,4 +1,5 @@
 import { Student } from "modules/students/student.domain";
+import { PaymentRequestStatus } from "./dto/process-request-payment.dto";
 
 export class Payment {
     id: string;
@@ -33,9 +34,10 @@ export class Payment {
     }[];
 
     paymentRequests: {
+        id: number;
         amount: number;
         imageProof: string;
-        status: 'pending' | 'approved' | 'rejected';
+        status: PaymentRequestStatus;
         requestedAt: Date;
         processedAt?: Date;
         processedBy?: string;

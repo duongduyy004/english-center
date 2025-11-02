@@ -14,12 +14,14 @@ import { I18nTranslations } from "@/generated/i18n.generated";
 import { SessionEntity } from "modules//sessions/entities/session.entity";
 import { RequestPaymentDto } from "./dto/request-payment.dto";
 import { User } from "modules/users/user.domain";
-import { ProcessRequestPaymentDto, RequestPaymentAction } from "./dto/process-request-payment.dto";
+import { ProcessRequestPaymentDto, PaymentRequestStatus } from "./dto/process-request-payment.dto";
+import { PaymentRequestEntity } from "./entities/payment.request.entity";
 
 @Injectable()
 export class PaymentRepository {
     constructor(
         @InjectRepository(PaymentEntity) private paymentsRepository: Repository<PaymentEntity>,
+        @InjectRepository(PaymentRequestEntity) private paymentRequestsRepository: Repository<PaymentRequestEntity>,
         private i18nService: I18nService<I18nTranslations>
     ) { }
 
@@ -144,46 +146,47 @@ export class PaymentRepository {
         return PaymentMapper.toDomain(entity)
     }
 
-    async requestPayment(paymentId: Payment['id'], requestPayment: RequestPaymentDto, user: User) {
-        const entity = await this.paymentsRepository.findOne({
-            where: { id: paymentId }
-        })
-
-        entity.paymentRequests.push({
-            amount: requestPayment.amount,
-            imageProof: requestPayment.imageProof,
-            status: 'pending',
-            rejectionReason: requestPayment.rejectionReason,
-            requestedAt: dayjs().toDate()
-        })
-
-        return await this.paymentsRepository.save(entity);
+    async requestPayment(paymentId: Payment['id'], requestPayment: RequestPaymentDto) {
+        return await this.paymentRequestsRepository.save(
+            this.paymentRequestsRepository.create({
+                paymentId: paymentId,
+                amount: requestPayment.amount,
+                imageProof: requestPayment.imageProof,
+                rejectionReason: requestPayment.rejectionReason,
+                requestedAt: dayjs().toDate()
+            })
+        )
     }
 
-    async processRequestPayment(paymentId: Payment['id'], processRequestPaymentDto: ProcessRequestPaymentDto, user: User) {
-        const entity = await this.paymentsRepository.findOne({
-            where: { id: paymentId }
+    async processRequestPayment(id: number, processRequestPaymentDto: ProcessRequestPaymentDto, user: User) {
+        const request = await this.paymentRequestsRepository.findOne({
+            where: { id }
         })
 
-        entity.paymentRequests.map(item => {
-            if (processRequestPaymentDto.imageProof === item.imageProof) {
-                if (processRequestPaymentDto.action === RequestPaymentAction.PROCESS) {
-                    this.handleProcessPayment(entity, {
-                        amount: item.amount,
-                        method: 'bank_transfer',
-                        note: `Thanh toán học phí tháng ${entity.month}/${entity.year}`
-                    })
-                }
-                return {
-                    ...item,
-                    status: processRequestPaymentDto.action,
-                    processedAt: dayjs().toDate(),
-                    processedBy: user.id
-                }
-            }
-            return item;
+        const payment = await this.paymentsRepository.findOne({
+            where: { id: request.paymentId }
         })
 
-        return await this.paymentsRepository.save(entity);
+        if (processRequestPaymentDto
+            && processRequestPaymentDto.status
+            && processRequestPaymentDto.rejectionReason
+        ) {
+            request.status = processRequestPaymentDto.status;
+            request.processedAt = dayjs().toDate();
+            request.processedBy = user.id;
+            request.rejectionReason = processRequestPaymentDto.rejectionReason;
+        }
+
+        await this.paymentRequestsRepository.save(request);
+
+        if (processRequestPaymentDto.status === PaymentRequestStatus.APPROVE) {
+            this.handleProcessPayment(payment, {
+                amount: request.amount,
+                method: 'bank_transfer',
+                note: `Thanh toán học phí tháng ${payment.month}/${payment.year}`
+            })
+        }
+
+        return await this.paymentsRepository.save(payment);
     }
 }
