@@ -151,8 +151,7 @@ export class AuditSubscriber implements EntitySubscriberInterface {
                 const oldValue = oldEntity && oldEntity[key] || null;
                 const newValue = newEntity && newEntity[key] || null;
 
-                if (!isEqual(oldValue, newValue) && newValue) {
-
+                if (!isEqual(_.toString(oldValue), _.toString(newValue)) && newValue) {
                     changes[key] = {
                         oldValue: oldValue,
                         newValue: newValue
