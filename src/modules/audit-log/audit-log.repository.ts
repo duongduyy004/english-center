@@ -1,6 +1,6 @@
 import { InjectRepository } from "@nestjs/typeorm";
-import { AuditLogEntity } from "./entities/audit-log.entity";
-import { DataSource, FindOptionsWhere, Repository } from "typeorm";
+import { AuditLogAction, AuditLogEntity } from "./entities/audit-log.entity";
+import { Between, DataSource, FindOptionsWhere, Repository } from "typeorm";
 import { CreateAuditLogDto } from "./dto/create-audit-log.dto";
 import { FilterAuditLogDto, SortAuditLogDto } from "./dto/query-audit-log.dto";
 import { IPaginationOptions } from "@/utils/types/pagination-options";
@@ -90,6 +90,9 @@ export class AuditLogRepository {
         if (filterOptions?.userId) where.userId = filterOptions.userId;
         if (filterOptions?.entityName) where.entityName = filterOptions.entityName;
         if (filterOptions?.entityId) where.entityId = filterOptions.entityId;
+        if (filterOptions?.startTime && filterOptions?.endTime) {
+            where.createdAt = Between(filterOptions.startTime, filterOptions.endTime);
+        }
 
         const [entities, total] = await this.auditLogRepository.findAndCount({
             skip: (paginationOptions.page - 1) * paginationOptions.limit,
@@ -142,18 +145,18 @@ export class AuditLogRepository {
         const entityName = `<strong>${VN_ENTITY[data.entityName] || data.entityName}</strong>`;
         const action = `<strong>${capitalize(VN_ACTION[data.action] || data.action)}</strong>`;
 
-        if (data.action === 'CREATE') {
+        if (data.action === AuditLogAction.CREATE) {
             const changeList = Object.keys(returnData).map(item =>
                 `<li><strong>${capitalize(item)}</strong>: <span style="color: green;">${returnData[item].newValue}</span></li>`
             ).join('');
             return `${action} ${entityName} bởi ${userName} - ${userEmail}:<ul style="margin: 8px 0; padding-left: 20px;">${changeList}</ul>`;
         }
-        else if (data.action === 'UPDATE') {
+        else if (data.action === AuditLogAction.UPDATE) {
             const changeList = Object.keys(returnData).map(item =>
                 `<li><strong>${capitalize(item)}</strong>: <span style="color: #666;">${returnData[item].oldValue}</span> → <span style="color: blue;">${returnData[item].newValue}</span></li>`
             ).join('');
             return `${action} ${entityName} bởi ${userName} - ${userEmail}:<ul style="margin: 8px 0; padding-left: 20px;">${changeList}</ul>`;
-        } else if (data.action === 'DELETE') {
+        } else if (data.action === AuditLogAction.DELETE) {
             const changeList = Object.keys(returnData).map(item =>
                 `<li><strong>${capitalize(item)}</strong>: <span style="color: red; text-decoration: line-through;">${returnData[item].oldValue}</span></li>`
             ).join('');

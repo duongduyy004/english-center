@@ -4,6 +4,12 @@ interface AuditValue {
     [key: string]: any
 }
 
+export enum AuditLogAction {
+    CREATE = 'CREATE',
+    UPDATE = 'UPDATE',
+    DELETE = 'DELETE'
+}
+
 @Entity('audit_log')
 export class AuditLogEntity {
     @PrimaryGeneratedColumn('uuid')
@@ -37,7 +43,7 @@ export class AuditLogEntity {
     method: string;
 
     @Column()
-    action: string;
+    action: AuditLogAction;
 
     @Column("text", { array: true })
     changedFields: string[];

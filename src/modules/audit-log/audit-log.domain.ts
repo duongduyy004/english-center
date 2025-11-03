@@ -1,4 +1,5 @@
 import { Role } from "modules/roles/role.domain";
+import { AuditLogAction } from "./entities/audit-log.entity";
 
 export class AuditLog {
     id: string;
@@ -20,7 +21,7 @@ export class AuditLog {
 
     method: string;
 
-    action: string;
+    action: AuditLogAction;
 
     changedFields: string[];
 

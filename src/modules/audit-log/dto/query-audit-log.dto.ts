@@ -4,6 +4,8 @@ export class FilterAuditLogDto {
     userId: string;
     entityName: string;
     entityId: string;
+    startTime: Date;
+    endTime: Date;
 }
 
 export class SortAuditLogDto {
