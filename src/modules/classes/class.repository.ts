@@ -18,6 +18,7 @@ import { I18nTranslations } from "@/generated/i18n.generated";
 import { AuditLogService } from "modules/audit-log/audit-log.service";
 import { ClsService } from "nestjs-cls";
 import { StudentsService } from "modules/students/students.service";
+import { AuditLogAction } from "modules/audit-log/entities/audit-log.entity";
 
 @Injectable()
 export class ClassRepository {
@@ -231,7 +232,7 @@ export class ClassRepository {
             entityId: classId,
             path: path,
             method: method,
-            action: 'ADD_STUDENT',
+            action: AuditLogAction.UPDATE,
             changedFields: ['students'],
             oldValue: null,
             newValue: addedStudents.map(item => ({
@@ -269,7 +270,7 @@ export class ClassRepository {
             entityId: classId,
             path: path,
             method: method,
-            action: 'DELETE_STUDENT',
+            action: AuditLogAction.UPDATE,
             changedFields: ['students'],
             newValue: null,
             oldValue: studentsList.map(item => ({

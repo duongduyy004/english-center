@@ -17,6 +17,7 @@ import { PaginationResponseDto } from "utils/types/pagination-response.dto";
 import { AuditLogService } from "../audit-log/audit-log.service";
 import { ClsService } from "nestjs-cls";
 import { TeacherPaymentsService } from "../teacher-payments/teacher-payments.service";
+import { AuditLogAction } from "modules/audit-log/entities/audit-log.entity";
 
 const ATTENDANCE_STATUS = Object.freeze({
   absent: 'vắng',
@@ -247,7 +248,7 @@ export class SessionRepository {
           entityId: sessionId,
           path: path,
           method: method,
-          action: 'UPDATE_ATTENDANCE',
+          action: AuditLogAction.UPDATE,
           changedFields: ['status'],
           oldValue: changedStudents.map(item => ({
             status: item.oldStatus,
