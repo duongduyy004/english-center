@@ -1,7 +1,7 @@
 import { AuditLog } from "../audit-log.domain";
 
 export class FilterAuditLogDto {
-    userId: string;
+    userEmail: string;
     entityName: string;
     entityId: string;
     startTime: Date;

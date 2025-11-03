@@ -1,6 +1,6 @@
 import { InjectRepository } from "@nestjs/typeorm";
 import { AuditLogAction, AuditLogEntity } from "./entities/audit-log.entity";
-import { Between, DataSource, FindOptionsWhere, Repository } from "typeorm";
+import { Between, DataSource, FindOptionsWhere, ILike, Repository } from "typeorm";
 import { CreateAuditLogDto } from "./dto/create-audit-log.dto";
 import { FilterAuditLogDto, SortAuditLogDto } from "./dto/query-audit-log.dto";
 import { IPaginationOptions } from "@/utils/types/pagination-options";
@@ -87,7 +87,7 @@ export class AuditLogRepository {
     ): Promise<PaginationResponseDto<AuditLog>> {
         const where: FindOptionsWhere<AuditLogEntity> = {}
 
-        if (filterOptions?.userId) where.userId = filterOptions.userId;
+        if (filterOptions?.userEmail) where.userEmail = ILike(filterOptions.userEmail);
         if (filterOptions?.entityName) where.entityName = filterOptions.entityName;
         if (filterOptions?.entityId) where.entityId = filterOptions.entityId;
         if (filterOptions?.startTime && filterOptions?.endTime) {
