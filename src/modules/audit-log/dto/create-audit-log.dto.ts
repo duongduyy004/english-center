@@ -1,4 +1,4 @@
-import { AuditLogAction } from "@/modules/audit-log/entities/audit-log.entity";
+import { AuditLogAction } from "subscribers/audit-log.constants";
 
 export class CreateAuditLogDto {
     user: {

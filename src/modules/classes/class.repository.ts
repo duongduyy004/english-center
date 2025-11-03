@@ -18,7 +18,7 @@ import { I18nTranslations } from "@/generated/i18n.generated";
 import { AuditLogService } from "modules/audit-log/audit-log.service";
 import { ClsService } from "nestjs-cls";
 import { StudentsService } from "modules/students/students.service";
-import { AuditLogAction } from "modules/audit-log/entities/audit-log.entity";
+import { AuditLogAction } from "subscribers/audit-log.constants";
 
 @Injectable()
 export class ClassRepository {

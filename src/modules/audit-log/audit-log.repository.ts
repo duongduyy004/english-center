@@ -1,5 +1,5 @@
 import { InjectRepository } from "@nestjs/typeorm";
-import { AuditLogAction, AuditLogEntity } from "./entities/audit-log.entity";
+import { AuditLogEntity } from "./entities/audit-log.entity";
 import { Between, DataSource, FindOptionsWhere, ILike, Repository } from "typeorm";
 import { CreateAuditLogDto } from "./dto/create-audit-log.dto";
 import { FilterAuditLogDto, SortAuditLogDto } from "./dto/query-audit-log.dto";
@@ -31,6 +31,7 @@ import { RegistrationMapper } from "@/modules/registrations/registration.mapper"
 import { TransactionMapper } from "@/modules/transactions/transaction.mapper";
 import { FeedbackMapper } from "@/modules/feedback/feedback.mapper";
 import { IntroductionMapper } from "@/modules/introduction/introduction.mapper";
+import { AuditLogAction } from "subscribers/audit-log.constants";
 
 // Mapper registry - maps entity names to their respective mappers
 const ENTITY_MAPPER_REGISTRY: Record<string, any> = {

@@ -1,13 +1,8 @@
+import { AuditLogAction } from "subscribers/audit-log.constants";
 import { Column, CreateDateColumn, Entity, JoinColumn, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 interface AuditValue {
     [key: string]: any
-}
-
-export enum AuditLogAction {
-    CREATE = 'CREATE',
-    UPDATE = 'UPDATE',
-    DELETE = 'DELETE'
 }
 
 @Entity('audit_log')

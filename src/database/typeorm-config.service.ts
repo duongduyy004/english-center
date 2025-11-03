@@ -1,5 +1,5 @@
 import { AllConfigType } from "@/config/config.type";
-import { AuditSubscriber } from "@/subscribers/entity.subscriber";
+import { AuditSubscriber } from "subscribers/audit-log.subscriber";
 import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { TypeOrmModuleOptions, TypeOrmOptionsFactory } from "@nestjs/typeorm";

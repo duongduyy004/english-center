@@ -3,6 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { ClsServiceManager } from 'nestjs-cls';
 import _, { capitalize, isArray, isEqual } from 'lodash';
 import { AuditLog } from '@/modules/audit-log/audit-log.domain';
+import { AuditLogAction, SKIP_FIELDS } from './audit-log.constants';
 
 @EventSubscriber()
 @Injectable()
@@ -41,7 +42,7 @@ export class AuditSubscriber implements EntitySubscriberInterface {
                 changedFields: Object.keys(changesFields),
                 newValue,
                 oldValue,
-                action: 'CREATE'
+                action: AuditLogAction.CREATE
             })
         }
     }
@@ -74,7 +75,7 @@ export class AuditSubscriber implements EntitySubscriberInterface {
                 changedFields: Object.keys(changesFields),
                 newValue,
                 oldValue,
-                action: 'UPDATE'
+                action: AuditLogAction.UPDATE
             })
         }
     }
@@ -107,7 +108,7 @@ export class AuditSubscriber implements EntitySubscriberInterface {
                 changedFields: Object.keys(changesFields),
                 newValue,
                 oldValue,
-                action: 'DELETE'
+                action: AuditLogAction.DELETE
             })
         }
     }
@@ -115,16 +116,11 @@ export class AuditSubscriber implements EntitySubscriberInterface {
     private getChangedFields(oldEntity: any, newEntity: any): Record<string, { oldValue: any, newValue: any }> {
         const changes: Record<string, { oldValue: any, newValue: any }> = {};
 
-
         // if trigger insert
         if (!oldEntity && newEntity) {
-            const skipFields = ['createdAt', 'updatedAt', 'deletedAt', 'refreshToken', 'password', 'id', 'role',
-                'dayOfBirth', 'isEmailVerified', 'address', 'phone', 'avatar', 'schedule', 'gender',
-                'description', 'qualifications', 'specializations', 'introduction', 'workExperience'
-            ]
             newEntity = this.convertNestedObject(newEntity)
             for (const key in newEntity) {
-                if (skipFields.includes(key) || newEntity[key] === undefined || null) continue;
+                if (SKIP_FIELDS.includes(key) || newEntity[key] === undefined || null) continue;
                 changes[key] = {
                     oldValue: null,
                     newValue: newEntity[key]
@@ -135,13 +131,9 @@ export class AuditSubscriber implements EntitySubscriberInterface {
 
         // if trigger soft remove
         if (oldEntity && !newEntity) {
-            const skipFields = ['createdAt', 'updatedAt', 'deletedAt', 'refreshToken', 'password', 'id', 'role',
-                'dayOfBirth', 'isEmailVerified', 'address', 'phone', 'avatar', 'schedule', 'gender',
-                'description', 'qualifications', 'specializations', 'introduction', 'workExperience'
-            ]
             oldEntity = this.convertNestedObject(oldEntity);
             for (const key in oldEntity) {
-                if (skipFields.includes(key) || oldEntity[key] === undefined || null) continue;
+                if (SKIP_FIELDS.includes(key) || oldEntity[key] === undefined || null) continue;
                 changes[key] = {
                     oldValue: oldEntity[key],
                     newValue: null
@@ -152,11 +144,10 @@ export class AuditSubscriber implements EntitySubscriberInterface {
 
         // if trigger udpate
         if (oldEntity && newEntity) {
-            const skipFields = ['createdAt', 'updatedAt', 'deletedAt', 'refreshToken', 'password', 'id', 'role'];
             oldEntity = this.convertNestedObject(oldEntity);
             newEntity = this.convertNestedObject(newEntity)
             for (const key in newEntity) {
-                if (skipFields.includes(key) || newEntity[key] === undefined || null) continue;
+                if (SKIP_FIELDS.includes(key) || newEntity[key] === undefined || null) continue;
                 const oldValue = oldEntity && oldEntity[key] || null;
                 const newValue = newEntity && newEntity[key] || null;
 

@@ -1,5 +1,5 @@
 import { Role } from "modules/roles/role.domain";
-import { AuditLogAction } from "./entities/audit-log.entity";
+import { AuditLogAction } from "subscribers/audit-log.constants";
 
 export class AuditLog {
     id: string;
