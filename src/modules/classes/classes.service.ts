@@ -10,7 +10,7 @@ import { Teacher } from 'modules/teachers/teacher.domain';
 import { TeachersService } from 'modules/teachers/teachers.service';
 import { StudentsService } from 'modules/students/students.service';
 import { AddStudentsDto } from './dto/add-students.dto';
-import dayjs from 'dayjs';
+import dayjs from '@/utils/dayjs.config';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import { Student } from 'modules/students/student.domain';
 import {

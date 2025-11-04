@@ -2,7 +2,7 @@ import { BadRequestException, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { PaymentEntity } from "./entities/payment.entity";
 import { Between, FindOptionsWhere, In, MoreThan, Repository } from "typeorm";
-import dayjs from "dayjs";
+import dayjs from "@/utils/dayjs.config";
 import { FilterPaymentDto, SortPaymentDto } from "./dto/query-payment.dto";
 import { IPaginationOptions } from "utils/types/pagination-options";
 import { PaginationResponseDto } from "utils/types/pagination-response.dto";

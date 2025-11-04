@@ -20,7 +20,8 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
             synchronize: true,
             ssl: false,
             extra: {
-                channel_binding: this.configService.get('database.channelBinding', { infer: true }) || 'require'
+                channel_binding: this.configService.get('database.channelBinding', { infer: true }) || 'require',
+                timezone: this.configService.get('app.timeZone', { infer: true })
             },
         } as TypeOrmModuleOptions;
     }

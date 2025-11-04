@@ -39,12 +39,16 @@ class EnvironmentVariablesValidator {
     @IsString()
     @IsOptional()
     APP_NAME: string;
+
+    @IsString()
+    TZ: string
 }
 
 export default registerAs<AppConfig>('app', () => {
     validateConfig(process.env, EnvironmentVariablesValidator);
     return {
         nodeEnv: process.env.NODE_ENV || 'development',
+        timeZone: process.env.TZ,
         name: process.env.APP_NAME || 'app',
         frontendDomain: process.env.FRONTEND_DOMAIN,
         backendDomain: process.env.BACKEND_DOMAIN ?? 'http://localhost',

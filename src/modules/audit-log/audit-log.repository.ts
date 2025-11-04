@@ -63,6 +63,7 @@ export class AuditLogRepository {
     ) { }
 
     async track(data: CreateAuditLogDto) {
+        if (!data || data.changedFields.length === 0) return;
         const description = data.description ? data.description : this.generateDescription(data);
         const log = this.auditLogRepository.create({
             userId: data.user.id,
