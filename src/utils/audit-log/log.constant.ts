@@ -153,6 +153,12 @@ export const VN_MAPS = Object.freeze({
     imageUrl: 'đường dẫn ảnh',
     publicId: 'mã công khai',
     class: 'lớp'
+  },
+  role: {
+    id: "mã vai trò",
+    name: 'tên vai trò',
+    isActive: 'kích hoạt',
+    description: 'mô tả'
   }
 });
 

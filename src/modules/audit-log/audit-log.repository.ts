@@ -184,7 +184,7 @@ export class AuditLogRepository {
         }
 
         try {
-            return logMapper(mapper.toDomain(entity), entityName);
+            return logMapper(mapper.toDomain(entity), ENTITY_MAP[entityName]);
         } catch (error) {
             console.error(`Error mapping ${entityName} to domain:`, error);
             return entity;
