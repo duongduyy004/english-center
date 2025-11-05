@@ -24,9 +24,9 @@ export class MenuMapper {
             domain.children = [];
         }
 
-        // Map parentMenu if it exists
-        if (entity.parentMenu) {
-            domain.parentMenu = MenuMapper.toDomain(entity.parentMenu);
+        // Map parent if it exists
+        if (entity.parent) {
+            domain.parent = MenuMapper.toDomain(entity.parent);
         }
 
         return domain;
@@ -49,9 +49,9 @@ export class MenuMapper {
             entity.children = domain.children.map(child => MenuMapper.toPersistence(child));
         }
 
-        // Map parentMenu if it exists
-        if (domain.parentMenu) {
-            entity.parentMenu = MenuMapper.toPersistence(domain.parentMenu);
+        // Map parent if it exists
+        if (domain.parent) {
+            entity.parent = MenuMapper.toPersistence(domain.parent);
         }
 
         return entity;

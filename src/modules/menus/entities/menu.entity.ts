@@ -22,7 +22,7 @@ export class MenuEntity {
     children: MenuEntity[];
 
     @TreeParent({ onDelete: 'RESTRICT' })
-    parentMenu: MenuEntity;
+    parent: MenuEntity;
 
     @CreateDateColumn({ type: "timestamp" })
     createdAt: Date;
