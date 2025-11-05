@@ -26,8 +26,8 @@ export class ClassesService {
     private classRepository: ClassRepository,
     private teachersService: TeachersService,
     private studentsService: StudentsService,
-    private i18nService: I18nService<I18nTranslations>
-  ) { }
+    private i18nService: I18nService<I18nTranslations>,
+  ) {}
   create(createClassDto: CreateClassDto) {
     return this.classRepository.create(createClassDto);
   }
@@ -193,7 +193,18 @@ export class ClassesService {
     return this.classRepository.findClassesByTeacherId(teacherId);
   }
 
-  async updateStudentStatus(studentId: Student['id'], classId: Class['id'], isActive: boolean) {
-    return this.classRepository.updateStudentStatus(studentId, classId, isActive);
+  async updateStudentStatus(
+    studentId: Student['id'],
+    classId: Class['id'],
+    isActive: boolean,
+  ) {
+    return this.classRepository.updateStudentStatus(
+      studentId,
+      classId,
+      isActive,
+    );
+  }
+  async getInfoForBanner(id: Class['id']) {
+    return this.classRepository.getInfoForBanner(id);
   }
 }

@@ -132,7 +132,8 @@ export const VN_MAPS = Object.freeze({
     title: 'tiêu đề',
     order: 'thứ tự',
     isActive: 'trạng thái',
-    children: 'menu con'
+    children: 'menu con',
+    parentMenu: 'menu cha'
   },
   children: {
     id: 'mã menu',
@@ -140,7 +141,17 @@ export const VN_MAPS = Object.freeze({
     title: 'tiêu đề',
     order: 'thứ tự',
     isActive: 'trạng thái',
-    children: 'menu con'
+    children: 'menu con',
+    parentMenu: 'menu cha'
+  },
+  parentMenu: {
+    id: 'mã menu',
+    slug: 'đường dẫn',
+    title: 'tiêu đề',
+    order: 'thứ tự',
+    isActive: 'trạng thái',
+    children: 'menu con',
+    parentMenu: 'menu cha'
   },
   advertisement: {
     id: "mã quảng cáo",

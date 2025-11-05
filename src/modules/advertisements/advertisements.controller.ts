@@ -1,15 +1,27 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Query,
+} from '@nestjs/common';
 import { AdvertisementsService } from './advertisements.service';
 import { CreateAdvertisementDto } from './dto/create-advertisement.dto';
 import { UpdateAdvertisementDto } from './dto/update-advertisement.dto';
 import { Public, ResponseMessage } from '@/decorator/customize.decorator';
 import { QueryDto } from '@/utils/types/query.dto';
-import { FilterAdvertisementDto, SortAdvertisementDto } from './dto/query-advertisement.dto';
+import {
+  FilterAdvertisementDto,
+  SortAdvertisementDto,
+} from './dto/query-advertisement.dto';
 import { Advertisement } from './advertisement.domain';
 
 @Controller('advertisements')
 export class AdvertisementsController {
-  constructor(private readonly advertisementsService: AdvertisementsService) { }
+  constructor(private readonly advertisementsService: AdvertisementsService) {}
 
   @Post()
   create(@Body() createAdvertisementDto: CreateAdvertisementDto) {
@@ -17,7 +29,9 @@ export class AdvertisementsController {
   }
 
   @Get()
-  findAll(@Query() query: QueryDto<FilterAdvertisementDto, SortAdvertisementDto>) {
+  findAll(
+    @Query() query: QueryDto<FilterAdvertisementDto, SortAdvertisementDto>,
+  ) {
     const page = query?.page;
     const limit = query?.limit;
     return this.advertisementsService.findAll({
@@ -25,8 +39,8 @@ export class AdvertisementsController {
       sortOptions: query.sort,
       paginationOptions: {
         page,
-        limit
-      }
+        limit,
+      },
     });
   }
 
@@ -48,7 +62,10 @@ export class AdvertisementsController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: Advertisement['id'], @Body() updateAdvertisementDto: UpdateAdvertisementDto) {
+  update(
+    @Param('id') id: Advertisement['id'],
+    @Body() updateAdvertisementDto: UpdateAdvertisementDto,
+  ) {
     return this.advertisementsService.update(id, updateAdvertisementDto);
   }
 

@@ -1,21 +1,23 @@
 {
-    "SUCCESS": {
-        "CREATE_A_CLASS": "Create a class successfully",
-        "GET_A_CLASS": "Get a class successfully",
-        "GET_CLASS_PAGINATION": "Fetch classes with pagination successfully",
-        "UPDATE_A_CLASS": "Update a class successfully",
-        "DELETE_A_CLASS": "Delete a class successfully",
-        "ASSIGN_TEACHER": "Assign teacher to class successfully",
-        "UNASSIGN_TEACHER": "Unassign teacher from class successfully",
-        "ADD_STUDENTS": "Add students to class successfully",
-        "REMOVE_STUDENTS": "Remove students from class successfully",
-        "GET_AVAILABLE_STUDENTS": "Get available students successfully"
-    },
-    "FAIL": {
-        "NOT_FOUND": "Class not found",
-        "TEACHER_ALREADY_ASSIGNED": "This teacher was already assigned to this class",
-        "TEACHER_NOT_ASSIGNED": "This teacher was not assigned to this class",
-        "STUDENT_ALREADY_IN_CLASS": "Student was already added to this class",
-        "SCHEDULE_CONFLICT": "Student {{studentName}} has class {{conflictClassName}} with schedule conflict with class {{className}}"
-    }
+  "SUCCESS": {
+    "CREATE_A_CLASS": "Create a class successfully",
+    "GET_A_CLASS": "Get a class successfully",
+    "GET_CLASS_PAGINATION": "Fetch classes with pagination successfully",
+    "UPDATE_A_CLASS": "Update a class successfully",
+    "DELETE_A_CLASS": "Delete a class successfully",
+    "ASSIGN_TEACHER": "Assign teacher to class successfully",
+    "UNASSIGN_TEACHER": "Unassign teacher from class successfully",
+    "ADD_STUDENTS": "Add students to class successfully",
+    "REMOVE_STUDENTS": "Remove students from class successfully",
+    "GET_AVAILABLE_STUDENTS": "Get available students successfully",
+    "GET_CLASS_BANNER_INFO": "Get class banner info successfully"
+  },
+  "FAIL": {
+    "NOT_FOUND": "Class not found",
+    "TEACHER_ALREADY_ASSIGNED": "This teacher was already assigned to this class",
+    "TEACHER_NOT_ASSIGNED": "This teacher was not assigned to this class",
+    "STUDENT_ALREADY_IN_CLASS": "Student was already added to this class",
+    "SCHEDULE_CONFLICT": "Student {{studentName}} has class {{conflictClassName}} with schedule conflict with class {{className}}",
+    "CAN_NOT_GET_CLASS_BANNER_INFO": "Can not get class banner info"
+  }
 }
