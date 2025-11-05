@@ -192,6 +192,18 @@ export class ClassesService {
   async findClassesByTeacherId(teacherId: Teacher['id']) {
     return this.classRepository.findClassesByTeacherId(teacherId);
   }
+
+  async updateStudentStatus(
+    studentId: Student['id'],
+    classId: Class['id'],
+    isActive: boolean,
+  ) {
+    return this.classRepository.updateStudentStatus(
+      studentId,
+      classId,
+      isActive,
+    );
+  }
   async getInfoForBanner(id: Class['id']) {
     return this.classRepository.getInfoForBanner(id);
   }

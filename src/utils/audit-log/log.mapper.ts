@@ -1,3 +1,4 @@
+import _ from "lodash";
 import { VN_MAPS } from "./log.constant";
 
 const logMapper = (data: any, entityName: string) => {
@@ -9,7 +10,7 @@ const logMapper = (data: any, entityName: string) => {
 
     const entityKey = VN_MAPS[entityName] || entityName;
     for (const [key, value] of Object.entries(data)) {
-        const newKey = entityKey[key] || key;
+        const newKey = _.capitalize(entityKey[key] || key);
         if (entityKey[key]) {
             const nestedEntity = VN_MAPS[key] ? key : entityName;
             translated[newKey] = logMapper(value, nestedEntity);
