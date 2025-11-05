@@ -187,6 +187,7 @@ export const VN_ENTITY = Object.freeze({
 
 export const ENTITY_MAP = Object.freeze({
   ClassEntity: 'class',
+  ClassStudentEntity: 'class',
   StudentEntity: 'student',
   TeacherEntity: 'teacher',
   MenuEntity: 'menu',
