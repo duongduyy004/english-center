@@ -1,21 +1,23 @@
 {
-    "SUCCESS": {
-        "CREATE_A_CLASS": "Tạo lớp học thành công",
-        "GET_A_CLASS": "Lấy thông tin lớp học thành công",
-        "GET_CLASS_PAGINATION": "Lấy danh sách lớp học phân trang thành công",
-        "UPDATE_A_CLASS": "Cập nhật lớp học thành công",
-        "DELETE_A_CLASS": "Xóa lớp học thành công",
-        "ASSIGN_TEACHER": "Phân công giáo viên vào lớp thành công",
-        "UNASSIGN_TEACHER": "Bỏ phân công giáo viên khỏi lớp thành công",
-        "ADD_STUDENTS": "Thêm học sinh vào lớp thành công",
-        "REMOVE_STUDENTS": "Xóa học sinh khỏi lớp thành công",
-        "GET_AVAILABLE_STUDENTS": "Lấy danh sách học sinh có thể thêm thành công"
-    },
-    "FAIL": {
-        "NOT_FOUND": "Không tìm thấy lớp học",
-        "TEACHER_ALREADY_ASSIGNED": "Giáo viên này đã được phân công vào lớp này",
-        "TEACHER_NOT_ASSIGNED": "Giáo viên này chưa được phân công vào lớp này",
-        "STUDENT_ALREADY_IN_CLASS": "Học sinh đã được thêm vào lớp này",
-        "SCHEDULE_CONFLICT": "Học sinh {{studentName}} có lớp {{conflictClassName}} bị trung lịch với lớp {{className}}"
-    }
+  "SUCCESS": {
+    "CREATE_A_CLASS": "Tạo lớp học thành công",
+    "GET_A_CLASS": "Lấy thông tin lớp học thành công",
+    "GET_CLASS_PAGINATION": "Lấy danh sách lớp học phân trang thành công",
+    "UPDATE_A_CLASS": "Cập nhật lớp học thành công",
+    "DELETE_A_CLASS": "Xóa lớp học thành công",
+    "ASSIGN_TEACHER": "Phân công giáo viên vào lớp thành công",
+    "UNASSIGN_TEACHER": "Bỏ phân công giáo viên khỏi lớp thành công",
+    "ADD_STUDENTS": "Thêm học sinh vào lớp thành công",
+    "REMOVE_STUDENTS": "Xóa học sinh khỏi lớp thành công",
+    "GET_AVAILABLE_STUDENTS": "Lấy danh sách học sinh có thể thêm thành công",
+    "GET_CLASS_BANNER_INFO": "Lấy thông tin banner lớp học thành công"
+  },
+  "FAIL": {
+    "NOT_FOUND": "Không tìm thấy lớp học",
+    "TEACHER_ALREADY_ASSIGNED": "Giáo viên này đã được phân công vào lớp này",
+    "TEACHER_NOT_ASSIGNED": "Giáo viên này chưa được phân công vào lớp này",
+    "STUDENT_ALREADY_IN_CLASS": "Học sinh đã được thêm vào lớp này",
+    "SCHEDULE_CONFLICT": "Học sinh {{studentName}} có lớp {{conflictClassName}} bị trung lịch với lớp {{className}}",
+    "CAN_NOT_GET_CLASS_BANNER_INFO": "Không thể lấy thông tin banner lớp học"
+  }
 }

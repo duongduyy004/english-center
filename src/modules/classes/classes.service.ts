@@ -26,8 +26,8 @@ export class ClassesService {
     private classRepository: ClassRepository,
     private teachersService: TeachersService,
     private studentsService: StudentsService,
-    private i18nService: I18nService<I18nTranslations>
-  ) { }
+    private i18nService: I18nService<I18nTranslations>,
+  ) {}
   create(createClassDto: CreateClassDto) {
     return this.classRepository.create(createClassDto);
   }
@@ -191,5 +191,8 @@ export class ClassesService {
 
   async findClassesByTeacherId(teacherId: Teacher['id']) {
     return this.classRepository.findClassesByTeacherId(teacherId);
+  }
+  async getInfoForBanner(id: Class['id']) {
+    return this.classRepository.getInfoForBanner(id);
   }
 }
