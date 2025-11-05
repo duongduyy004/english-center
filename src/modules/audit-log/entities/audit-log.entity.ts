@@ -1,3 +1,4 @@
+import { AuditLogAction } from "subscribers/audit-log.constants";
 import { Column, CreateDateColumn, Entity, JoinColumn, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 interface AuditValue {
@@ -37,7 +38,7 @@ export class AuditLogEntity {
     method: string;
 
     @Column()
-    action: string;
+    action: AuditLogAction;
 
     @Column("text", { array: true })
     changedFields: string[];
@@ -48,6 +49,6 @@ export class AuditLogEntity {
     @Column({ type: 'jsonb', nullable: true })
     newValue: AuditValue
 
-    @CreateDateColumn({ type: "timestamp" })
+    @CreateDateColumn({ type: "timestamptz" })
     createdAt: Date;
 }

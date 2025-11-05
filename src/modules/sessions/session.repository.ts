@@ -4,7 +4,7 @@ import { Between, In, Repository } from "typeorm";
 import { SessionEntity } from "./entities/session.entity";
 import { Class } from "modules/classes/class.domain";
 import { ClassesService } from "modules/classes/classes.service";
-import dayjs from "dayjs";
+import dayjs from "@/utils/dayjs.config";
 import { BadRequestException } from "@nestjs/common";
 import { SessionMapper } from "./session.mapper";
 import { Session } from "./session.domain";
@@ -17,6 +17,7 @@ import { PaginationResponseDto } from "utils/types/pagination-response.dto";
 import { AuditLogService } from "../audit-log/audit-log.service";
 import { ClsService } from "nestjs-cls";
 import { TeacherPaymentsService } from "../teacher-payments/teacher-payments.service";
+import { AuditLogAction } from "subscribers/audit-log.constants";
 
 const ATTENDANCE_STATUS = Object.freeze({
   absent: 'vắng',
@@ -247,7 +248,7 @@ export class SessionRepository {
           entityId: sessionId,
           path: path,
           method: method,
-          action: 'UPDATE_ATTENDANCE',
+          action: AuditLogAction.UPDATE,
           changedFields: ['status'],
           oldValue: changedStudents.map(item => ({
             status: item.oldStatus,

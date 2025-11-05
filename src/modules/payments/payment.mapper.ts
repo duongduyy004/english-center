@@ -38,6 +38,7 @@ export class PaymentMapper {
 
         if (raw.paymentRequests) {
             domainEntity.paymentRequests = raw.paymentRequests.map(item => ({
+                id: item.id,
                 amount: item.amount,
                 imageProof: item.imageProof,
                 status: item.status,

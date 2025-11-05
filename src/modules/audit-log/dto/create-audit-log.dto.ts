@@ -1,4 +1,4 @@
-import { User } from "@/modules/users/user.domain";
+import { AuditLogAction } from "subscribers/audit-log.constants";
 
 export class CreateAuditLogDto {
     user: {
@@ -11,7 +11,7 @@ export class CreateAuditLogDto {
     entityId: string;
     path: string;
     method: string;
-    action: string;
+    action: AuditLogAction;
     changedFields: string[];
     oldValue: any;
     newValue: any;

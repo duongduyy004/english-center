@@ -1,7 +1,8 @@
-import { BeforeInsert, BeforeUpdate, Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { BeforeInsert, BeforeUpdate, Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { StudentEntity } from "modules/students/entities/student.entity";
 import { ClassEntity } from "modules/classes/entities/class.entity";
 import { Student } from "modules/students/student.domain";
+import { PaymentRequestEntity } from "./payment.request.entity";
 
 
 export class Histories {
@@ -12,22 +13,6 @@ export class Histories {
     note: string;
 
     date?: Date
-}
-
-export class PaymentRequests {
-    amount: number;
-
-    imageProof: string;
-
-    status: 'pending' | 'approved' | 'rejected';
-
-    requestedAt: Date;
-
-    processedAt?: Date;
-
-    processedBy?: string;
-
-    rejectionReason?: string;
 }
 
 @Entity('payments')
@@ -73,8 +58,8 @@ export class PaymentEntity {
     @Column('jsonb', { nullable: true, default: [] })
     histories: Histories[]
 
-    @Column('jsonb', { nullable: true, default: [] })
-    paymentRequests: PaymentRequests[]
+    @OneToMany(() => PaymentRequestEntity, paymentRequests => paymentRequests.paymentId, { eager: true })
+    paymentRequests: PaymentRequestEntity[]
 
     @BeforeUpdate()
     @BeforeInsert()

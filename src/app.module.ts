@@ -48,6 +48,7 @@ import { PermissionsModule } from './modules/permissions/permissions.module';
 import { RolesModule } from './modules/roles/roles.module';
 import { CacheModule } from '@nestjs/cache-manager';
 import { ArticlesModule } from './modules/articles/articles.module';
+import { DataSource } from 'typeorm';
 
 @Module({
   imports: [
@@ -82,6 +83,10 @@ import { ArticlesModule } from './modules/articles/articles.module';
     }),
     TypeOrmModule.forRootAsync({
       useClass: TypeOrmConfigService,
+      dataSourceFactory: async (options) => {
+        const dataSource = await new DataSource(options).initialize()
+        return dataSource;
+      }
     }),
     WinstonModule.forRoot(winstonConfig),
     ClsModule.forRoot({

@@ -64,17 +64,16 @@ export class PaymentsController {
   requestPayment(
     @Param('paymentId') paymentId: Payment['id'],
     @Body() requestPaymentDto: RequestPaymentDto,
-    @UserInfo() user: User
   ) {
-    return this.paymentsService.requestPayment(paymentId, requestPaymentDto, user);
+    return this.paymentsService.requestPayment(paymentId, requestPaymentDto);
   }
 
-  @Patch('process/:paymentId')
+  @Patch('process/:paymentRequestId')
   processRequestPayment(
-    @Param('paymentId') paymentId: Payment['id'],
+    @Param('paymentRequestId') paymentRequestId: number,
     @Body() processRequestPaymentDto: ProcessRequestPaymentDto,
     @UserInfo() user: User
   ) {
-    return this.paymentsService.processRequestPayment(paymentId, processRequestPaymentDto, user);
+    return this.paymentsService.processRequestPayment(paymentRequestId, processRequestPaymentDto, user);
   }
 }

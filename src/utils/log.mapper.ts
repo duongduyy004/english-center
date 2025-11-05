@@ -83,6 +83,12 @@ export const VN_FIELD = Object.freeze({
   //advertisement
   imageUrl: 'đường dẫn ảnh',
   priority: 'độ ưu tiên',
+  //payment request
+  imageProof: 'ảnh minh chứng',
+  processedAt: 'thời điểm xử lý',
+  processedBy: 'xử lý bởi',
+  rejectionReason: 'lý do từ chối',
+  paymentId: 'ID hóa đơn'
 });
 
 export const VN_ACTION = Object.freeze({
@@ -104,4 +110,8 @@ export const VN_ENTITY = Object.freeze({
   AdvertisementEntity: 'quảng cáo',
   TransactionEntity: 'thu chi khác',
   TransactionCategoryEntity: 'danh mục thu chi',
+  PaymentRequestEntity: 'yêu cầu thanh toán',
+  IntroductionEntity: 'giới thiệu',
+  PermissionEntity: 'quyền hạn',
+  RoleEntity: 'vai trò'
 });

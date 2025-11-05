@@ -1,5 +1,5 @@
 import { AllConfigType } from "@/config/config.type";
-import { AuditSubscriber } from "@/subscribers/entity.subscriber";
+import { AuditSubscriber } from "subscribers/audit-log.subscriber";
 import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { TypeOrmModuleOptions, TypeOrmOptionsFactory } from "@nestjs/typeorm";
@@ -20,7 +20,8 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
             synchronize: true,
             ssl: false,
             extra: {
-                channel_binding: this.configService.get('database.channelBinding', { infer: true }) || 'require'
+                channel_binding: this.configService.get('database.channelBinding', { infer: true }) || 'require',
+                timezone: this.configService.get('app.timeZone', { infer: true })
             },
         } as TypeOrmModuleOptions;
     }

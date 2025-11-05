@@ -4,4 +4,5 @@ export type AppConfig = {
     frontendDomain?: string;
     backendDomain: string;
     port: number;
+    timeZone: string
 };
