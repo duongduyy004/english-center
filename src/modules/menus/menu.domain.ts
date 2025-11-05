@@ -4,8 +4,8 @@ export class Menu {
     title: string;
     order: number;
     isActive: boolean;
-    children: Menu[];
-    parent: Menu;
+    childrenMenu: Menu[];
+    parentMenu: Menu;
     createdAt?: Date;
     updatedAt?: Date;
     deletedAt?: Date;

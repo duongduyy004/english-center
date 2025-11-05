@@ -30,6 +30,19 @@ export const VN_MAPS = Object.freeze({
     parent: 'phụ huynh',
     classes: 'các lớp học'
   },
+  parent: {
+    id: 'ID',
+    name: 'tên',
+    email: 'email',
+    phone: 'số điện thoại',
+    gender: 'giới tính',
+    address: 'địa chỉ',
+    dayOfBirth: 'ngày sinh',
+    avatar: 'ảnh đại diện',
+    role: 'vai trò',
+    isEmailVerified: 'tình trạng xác thực email',
+    students: 'các học sinh'
+  },
   classes: {
     discountPercent: 'phần trăm giảm giá',
     class: 'lớp',
@@ -132,16 +145,16 @@ export const VN_MAPS = Object.freeze({
     title: 'tiêu đề',
     order: 'thứ tự',
     isActive: 'trạng thái',
-    children: 'menu con',
+    childrenMenu: 'menu con',
     parentMenu: 'menu cha'
   },
-  children: {
+  childrenMenu: {
     id: 'mã menu',
     slug: 'đường dẫn',
     title: 'tiêu đề',
     order: 'thứ tự',
     isActive: 'trạng thái',
-    children: 'menu con',
+    childrenMenu: 'menu con',
     parentMenu: 'menu cha'
   },
   parentMenu: {
@@ -150,7 +163,7 @@ export const VN_MAPS = Object.freeze({
     title: 'tiêu đề',
     order: 'thứ tự',
     isActive: 'trạng thái',
-    children: 'menu con',
+    childrenMenu: 'menu con',
     parentMenu: 'menu cha'
   },
   advertisement: {

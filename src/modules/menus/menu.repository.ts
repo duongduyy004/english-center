@@ -21,7 +21,7 @@ export class MenusRepository {
         menuEntity.slug = createMenuDto.slug;
 
         if (createMenuDto.parentId) {
-            menuEntity.parent = await this.menuRepository.findOne({ where: { id: createMenuDto.parentId } })
+            menuEntity.parentMenu = await this.menuRepository.findOne({ where: { id: createMenuDto.parentId } })
         }
 
         return await this.menuRepository.save(menuEntity)
@@ -34,7 +34,7 @@ export class MenusRepository {
     async findById(id: Menu['id']) {
         return await this.menuRepository.findOne({
             where: { id },
-            relations: ['parent', 'children']
+            relations: ['parentMenu', 'childrenMenu']
         });
     }
 
@@ -43,7 +43,7 @@ export class MenusRepository {
         if (updateMenuDto.title) entity.title = updateMenuDto.title;
         if (updateMenuDto.slug) entity.slug = updateMenuDto.slug;
         if (updateMenuDto.order) entity.order = updateMenuDto.order;
-        if (updateMenuDto.parentId) entity.parent = await this.menuRepository.findOne({ where: { id: updateMenuDto.parentId } });
+        if (updateMenuDto.parentId) entity.parentMenu = await this.menuRepository.findOne({ where: { id: updateMenuDto.parentId } });
         if (updateMenuDto.isActive) entity.isActive = updateMenuDto.isActive;
 
         return await this.menuRepository.save(entity);

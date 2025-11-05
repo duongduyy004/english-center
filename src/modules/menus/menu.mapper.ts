@@ -17,16 +17,16 @@ export class MenuMapper {
         domain.updatedAt = entity.updatedAt;
         domain.deletedAt = entity.deletedAt;
 
-        // Map children if they exist
-        if (entity.children && entity.children.length > 0) {
-            domain.children = entity.children.map(child => MenuMapper.toDomain(child));
+        // Map childrenMenu if they exist
+        if (entity.childrenMenu && entity.childrenMenu.length > 0) {
+            domain.childrenMenu = entity.childrenMenu.map(child => MenuMapper.toDomain(child));
         } else {
-            domain.children = [];
+            domain.childrenMenu = [];
         }
 
-        // Map parent if it exists
-        if (entity.parent) {
-            domain.parent = MenuMapper.toDomain(entity.parent);
+        // Map parentMenu if it exists
+        if (entity.parentMenu) {
+            domain.parentMenu = MenuMapper.toDomain(entity.parentMenu);
         }
 
         return domain;
@@ -44,14 +44,14 @@ export class MenuMapper {
         entity.order = domain.order;
         entity.isActive = domain.isActive;
 
-        // Map children if they exist
-        if (domain.children && domain.children.length > 0) {
-            entity.children = domain.children.map(child => MenuMapper.toPersistence(child));
+        // Map childrenMenu if they exist
+        if (domain.childrenMenu && domain.childrenMenu.length > 0) {
+            entity.childrenMenu = domain.childrenMenu.map(child => MenuMapper.toPersistence(child));
         }
 
-        // Map parent if it exists
-        if (domain.parent) {
-            entity.parent = MenuMapper.toPersistence(domain.parent);
+        // Map parentMenu if it exists
+        if (domain.parentMenu) {
+            entity.parentMenu = MenuMapper.toPersistence(domain.parentMenu);
         }
 
         return entity;
