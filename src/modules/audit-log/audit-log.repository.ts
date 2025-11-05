@@ -139,9 +139,7 @@ export class AuditLogRepository {
         const action = `<strong>${capitalize(VN_ACTION[data.action] || data.action)}</strong>`;
 
         if (data.action === AuditLogAction.CREATE) {
-            const changeList = Object.keys(newValue).map(item =>
-                `<li><strong>${capitalize(item)}</strong>: <span style="color: green;">${newValue[item]}</span></li>`
-            ).join('');
+            const changeList = this.generateInsertAndDeleteList(newValue);
             return `${action} ${entityName} bởi ${userName} - ${userEmail}:<ul style="margin: 8px 0; padding-left: 20px;">${changeList}</ul>`;
         }
         else if (data.action === AuditLogAction.UPDATE) {
@@ -150,9 +148,7 @@ export class AuditLogRepository {
             ).join('');
             return `${action} ${entityName} bởi ${userName} - ${userEmail}:<ul style="margin: 8px 0; padding-left: 20px;">${changeList}</ul>`;
         } else if (data.action === AuditLogAction.DELETE) {
-            const changeList = Object.keys(oldValue).map(item =>
-                `<li><strong>${capitalize(item)}</strong>: <span style="color: red; text-decoration: line-through;">${oldValue[item]}</span></li>`
-            ).join('');
+            const changeList = this.generateInsertAndDeleteList(oldValue)
             return `${action} ${entityName} bởi ${userName} - ${userEmail}:<ul style="margin: 8px 0; padding-left: 20px;">${changeList}</ul>`;
         }
         return '';
@@ -171,6 +167,36 @@ export class AuditLogRepository {
 
         return this.mapEntityToDomain(entityName, entity);
 
+    }
+
+    private generateInsertAndDeleteList(data: any) {
+        let result = ""
+        if (Array.isArray(data)) return data.map(item => this.generateInsertAndDeleteList(item))
+        for (const [key, value] of Object.entries(data)) {
+            if (value === null || value === undefined) continue;
+            if (typeof value === 'object') {
+                result += `<li><strong>${capitalize(key)}</strong>: <span><ul>${this.generateInsertAndDeleteList(value)}</ul></span></li>`
+            }
+            else {
+                result += `<li><strong>${capitalize(key)}</strong>: <span style="color: green;">${value}</span></li>`
+            }
+        }
+        return result
+    }
+
+    private generateUpdateList(oldValue: any, newValue: any) {
+        let result = ""
+        if (Array.isArray(newValue)) return newValue.map((item, index) => this.generateUpdateList(oldValue[index], item))
+        for (const [key, value] of Object.entries(newValue)) {
+            if (value === null || value === undefined) continue;
+            if (typeof value === 'object') {
+                result += `<li><strong>${capitalize(key)}</strong>: <span><ul>${this.generateUpdateList(oldValue[key], value)}</ul></span></li>`
+            }
+            else {
+                result += `<li><strong>${capitalize(key)}</strong>: <span style="color: #666;">${oldValue[key]}</span> → <span style="color: blue;">${newValue[key]}</span></li>`
+            }
+        }
+        return result
     }
 
     private mapEntityToDomain(entityName: string, entity: any): any {

@@ -1,5 +1,5 @@
 import _ from "lodash";
-import { VN_MAPS } from "./log.constant";
+import { VN_MAPS, VN_TIMESTAMP } from "./log.constant";
 
 const logMapper = (data: any, entityName: string) => {
     if (data === null || typeof data !== 'object') return data;
@@ -10,13 +10,17 @@ const logMapper = (data: any, entityName: string) => {
 
     const entityKey = VN_MAPS[entityName] || entityName;
     for (const [key, value] of Object.entries(data)) {
-        const newKey = _.capitalize(entityKey[key] || key);
+        if (value === null || value === undefined) continue;
+        const newKey = _.capitalize(entityKey[key] || VN_TIMESTAMP[key] || key);
         if (entityKey[key]) {
             const nestedEntity = VN_MAPS[key] ? key : entityName;
             translated[newKey] = logMapper(value, nestedEntity);
         }
+        else if (value instanceof Date) {
+            translated[newKey] = new Date(value).toLocaleString("vi-VN", { hour12: false })
+        }
         else {
-            translated[newKey] = value;
+            translated[newKey] = String(value)
         }
     }
     return translated;

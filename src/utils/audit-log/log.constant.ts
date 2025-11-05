@@ -11,9 +11,6 @@ export const VN_MAPS = Object.freeze({
     role: 'vai trò',
     isEmailVerified: 'tình trạng xác thực email',
     note: 'ghi chú',
-    createdAt: 'tạo lúc',
-    updatedAt: 'cập nhật lúc',
-    deletedAt: 'xóa lúc',
     isActive: 'tình trạng hoạt động',
   },
   student: {
@@ -183,6 +180,12 @@ export const VN_MAPS = Object.freeze({
     description: 'mô tả'
   }
 });
+
+export const VN_TIMESTAMP = Object.freeze({
+  createdAt: 'tạo lúc',
+  updatedAt: 'cập nhật lúc',
+  deletedAt: 'xóa lúc',
+})
 
 export const VN_ACTION = Object.freeze({
   CREATE: 'tạo',
