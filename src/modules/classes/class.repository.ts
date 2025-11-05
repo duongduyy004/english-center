@@ -288,4 +288,14 @@ export class ClassRepository {
         });
         return entities.map((entity) => ClassMapper.toDomain(entity));
     }
+
+    async updateStudentStatus(studentId: Student['id'], classId: Class['id'], isActive: boolean) {
+        const entity = await this.classStudentRepository.findOne({
+            where: {
+                classId, studentId
+            }
+        })
+
+        await this.classStudentRepository.save({ ...entity, isActive });
+    }
 }

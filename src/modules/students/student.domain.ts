@@ -8,6 +8,7 @@ export class Student extends User {
 
     classes?: {
         discountPercent: number,
-        class: Partial<Class>
+        class: Partial<Class>,
+        isActive: boolean
     }[]
 }

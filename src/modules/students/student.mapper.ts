@@ -31,7 +31,8 @@ export class StudentMapper {
                     section: item.class.section,
                     room: item.class.room,
                     schedule: item.class.schedule,
-                }
+                },
+                isActive: item.isActive
             }))
         }
         if (raw.parent) {

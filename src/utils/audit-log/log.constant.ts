@@ -32,7 +32,8 @@ export const VN_MAPS = Object.freeze({
   },
   classes: {
     discountPercent: 'phần trăm giảm giá',
-    class: 'lớp'
+    class: 'lớp',
+    isActive: 'trạng thái'
   },
   class: {
     name: 'tên lớp',

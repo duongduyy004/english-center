@@ -84,6 +84,15 @@ export class ClassesController {
     return this.classesService.removeStudentsFromClass(id, students)
   }
 
+  @Patch('student-status/:id')
+  updateStudentStatus(
+    @Body('isActive') isActive: boolean,
+    @Query('studentId') studentId: string,
+    @Param('id') classId: string
+  ) {
+    return this.classesService.updateStudentStatus(studentId, classId, isActive);
+  }
+
   @Get(':id')
   @ResponseMessage('class.SUCCESS.GET_A_CLASS')
   findOne(@Param('id') id: string) {
