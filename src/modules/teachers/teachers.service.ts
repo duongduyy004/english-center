@@ -41,7 +41,8 @@ export class TeachersService {
   }
 
   async update(id: Teacher['id'], updateTeacherDto: UpdateTeacherDto) {
-    if (updateTeacherDto && updateTeacherDto.email) {
+    const teacher = await this.findOne(id)
+    if (updateTeacherDto && updateTeacherDto.email !== teacher.email) {
       this.usersService.isEmailExist(updateTeacherDto.email)
     }
     return this.teacherRepository.update(id, updateTeacherDto)
