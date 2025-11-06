@@ -49,7 +49,8 @@ import { RolesModule } from './modules/roles/roles.module';
 import { CacheModule } from '@nestjs/cache-manager';
 import { ArticlesModule } from './modules/articles/articles.module';
 import { DataSource } from 'typeorm';
-
+import { ScheduleModule } from '@nestjs/schedule';
+import { CronModule } from 'modules/cron/cron.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -96,6 +97,8 @@ import { DataSource } from 'typeorm';
     BullModule.forRootAsync({
       useClass: RedisConfigService,
     }),
+    ScheduleModule.forRoot(),
+
     UsersModule,
     StudentsModule,
     ParentsModule,
@@ -116,7 +119,8 @@ import { DataSource } from 'typeorm';
     IntroductionModule,
     PermissionsModule,
     RolesModule,
-    ArticlesModule
+    ArticlesModule,
+    CronModule,
   ],
   controllers: [AppController],
   providers: [

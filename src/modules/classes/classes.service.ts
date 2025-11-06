@@ -161,6 +161,24 @@ export class ClassesService {
     return this.classRepository.removeStudentsFromClass(id, students);
   }
 
+  async updateClassStatus() {
+    const classes = await this.classRepository.findAll();
+    for(const aclass of classes) {
+      const now = Date.now();
+      const startDate = new Date(aclass.schedule.start_date).getTime();
+      const endDate = new Date(aclass.schedule.end_date).getTime();
+      let newStatus = aclass.status;
+      if(now < startDate) {
+        newStatus = 'upcoming';
+      } else if(now > endDate) {
+        newStatus = 'closed';
+      } else {
+        newStatus = 'active';
+      }
+      await this.classRepository.update(aclass.id, { status: newStatus });
+    }
+  }
+
   private isDateOverlap(schedule1: Schedule, schedule2: Schedule) {
     return (
       schedule1.start_date <= schedule2.end_date &&
