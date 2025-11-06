@@ -26,7 +26,7 @@ export class DashboardRepository {
     private readonly teacherPaymentRepository: Repository<TeacherPaymentEntity>,
     @InjectRepository(RegistrationEntity)
     private readonly registrationRepository: Repository<RegistrationEntity>,
-  ) {}
+  ) { }
 
   async getAdminDashboard() {
     // Đếm tổng số

@@ -124,6 +124,10 @@ export class TeacherPaymentRepository {
         class: {
           id: classInfo.id,
           name: classInfo.name,
+          grade: classInfo.grade,
+          year: classInfo.year,
+          section: classInfo.section,
+          feePerLesson: classInfo.feePerLesson
         },
         totalLessons: classSessionCount,
       });
@@ -183,7 +187,7 @@ export class TeacherPaymentRepository {
         totalPages,
         totalItems,
       },
-      result: await TeacherPaymentMapper.toDomainList(entities, classesService),
+      result: entities ? entities.map(item => TeacherPaymentMapper.toDomain(item)) : []
     };
   }
   async createPayment(createPaymentDto: CreateTeacherPaymentDto) {
@@ -250,8 +254,7 @@ export class TeacherPaymentRepository {
       await this.teacherPaymentRepository.findOne({
         where: { id },
         relations: ['teacher'],
-      }),
-      this.classesService,
+      })
     );
   }
 }
