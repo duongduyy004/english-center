@@ -1,5 +1,6 @@
 import _ from "lodash";
 import { VN_MAPS, VN_TIMESTAMP } from "./log.constant";
+import dayjs from "@/utils/dayjs.config";
 
 const logMapper = (data: any, entityName: string) => {
     if (data === null || typeof data !== 'object') return data;
@@ -14,12 +15,14 @@ const logMapper = (data: any, entityName: string) => {
 
         const newKey = _.capitalize(entityKey[key] || VN_TIMESTAMP[key] || key);
 
-        if (entityKey[key]) {
+        if (value instanceof Date) {
+            let format = 'HH:mm:ss DD/MM/YYYY';
+            if (key === 'dayOfBirth') format = 'DD/MM/YYYY';
+            translated[newKey] = dayjs(value).format(format);
+        }
+        else if (entityKey[key]) {
             const nestedEntity = VN_MAPS[key] ? key : entityName;
             translated[newKey] = logMapper(value, nestedEntity);
-        }
-        else if (value instanceof Date) {
-            translated[newKey] = new Date(value).toLocaleString("vi-VN", { hour12: false })
         }
         else {
             translated[newKey] = String(value)
