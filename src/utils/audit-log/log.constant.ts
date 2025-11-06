@@ -93,6 +93,7 @@ export const VN_MAPS = Object.freeze({
     salaryPerLesson: 'lương mỗi buổi',
     introduction: 'giới thiệu',
     workExperience: 'kinh nghiệm làm việc',
+    classes: 'các lớp dạy'
   },
   payments: {
     id: 'mã hóa đơn',
