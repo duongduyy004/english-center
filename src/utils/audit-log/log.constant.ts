@@ -81,8 +81,15 @@ export const VN_MAPS = Object.freeze({
     end_time: 'thời gian kết thúc'
   },
   registration: {
-    processed: 'tình trạng xử lý',
-    classId: 'ID lớp',
+    id: 'mã đăng ký',
+    email: 'email',
+    name: 'họ tên',
+    phone: 'số điện thoại',
+    gender: 'giới tính',
+    address: 'địa chỉ',
+    note: 'ghi chú',
+    class: 'lớp',
+    processed: 'tình trạng xử lý'
   },
   teacher: {
     id: 'ID',
