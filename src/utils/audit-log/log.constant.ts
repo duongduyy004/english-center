@@ -69,6 +69,12 @@ export const VN_MAPS = Object.freeze({
     room: 'phòng học',
     schedule: 'thời khóa biểu',
     teacher: 'giáo viên',
+    students: 'danh sách học sinh'
+  },
+  students: {
+    discountPercent: 'phần trăm giảm giá',
+    student: 'thông tin',
+    isActive: 'đang theo học'
   },
   schedule: {
     start_date: 'ngày bắt đầu',
@@ -227,6 +233,17 @@ export const VN_MAPS = Object.freeze({
     description: 'mô tả',
     module: 'module',
     version: 'phiên bản'
+  },
+  session: {
+    id: 'mã điểm danh',
+    date: 'thời gian',
+    class: 'lớp',
+    attendances: 'danh sách điểm danh',
+  },
+  attendances: {
+    status: 'trạng thái',
+    student: 'thông tin học sinh',
+    note: 'ghi chú'
   }
 });
 
@@ -258,7 +275,8 @@ export const VN_ENTITY = Object.freeze({
   PaymentRequestEntity: 'yêu cầu thanh toán',
   IntroductionEntity: 'giới thiệu',
   PermissionEntity: 'quyền hạn',
-  RoleEntity: 'vai trò'
+  RoleEntity: 'vai trò',
+  SessionEntity: 'điểm danh'
 });
 
 export const ENTITY_MAP = Object.freeze({
@@ -278,5 +296,6 @@ export const ENTITY_MAP = Object.freeze({
   PaymentRequestEntity: 'paymentRequests',
   IntroductionEntity: 'introduction',
   PermissionEntity: 'permission',
-  RoleEntity: 'role'
+  RoleEntity: 'role',
+  SessionEntity: 'session'
 })

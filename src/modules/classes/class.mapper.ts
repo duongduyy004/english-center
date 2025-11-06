@@ -27,7 +27,7 @@ export class ClassMapper {
                     gender: item?.student?.gender,
                     phone: item?.student?.phone
                 },
-                isActivce: item.isActive
+                isActive: item.isActive
             }
             ))
         }

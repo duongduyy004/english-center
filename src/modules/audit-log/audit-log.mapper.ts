@@ -22,8 +22,8 @@ export class AuditLogMapper {
             role: RoleEnum[raw.userRole]
         }
 
-        const key = VN_MAPS[ENTITY_MAP[raw.entityName]]
-        if (raw.changedFields) domainEntity.changedFields = raw.changedFields.map(item => (key[item]));
+        const key = VN_MAPS[ENTITY_MAP[raw.entityName]] || raw.entityName;
+        if (raw.changedFields) domainEntity.changedFields = raw.changedFields.map(item => (key[item] || item));
         if (raw.newValue) domainEntity.newValue = raw.newValue;
         if (raw.oldValue) domainEntity.oldValue = raw.oldValue;
         domainEntity.createdAt = raw.createdAt;
