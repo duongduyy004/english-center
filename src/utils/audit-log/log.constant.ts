@@ -209,7 +209,24 @@ export const VN_MAPS = Object.freeze({
     id: "mã vai trò",
     name: 'tên vai trò',
     isActive: 'kích hoạt',
-    description: 'mô tả'
+    description: 'mô tả',
+    permisisons: 'quyền'
+  },
+  permissions: {
+    id: 'mã quyền',
+    path: 'đường dẫn',
+    method: 'phương thức',
+    description: 'mô tả',
+    module: 'module',
+    version: 'phiên bản'
+  },
+  permission: {
+    id: 'mã quyền',
+    path: 'đường dẫn',
+    method: 'phương thức',
+    description: 'mô tả',
+    module: 'module',
+    version: 'phiên bản'
   }
 });
 
