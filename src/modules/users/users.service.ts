@@ -6,7 +6,7 @@ import { UserEntity } from 'modules/users/entities/user.entity';
 import { ParentEntity } from 'modules/parents/entities/parent.entity';
 import { StudentEntity } from 'modules/students/entities/student.entity';
 import { TeacherEntity } from 'modules/teachers/entities/teacher.entity';
-import { Repository } from 'typeorm';
+import { DataSource, Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { CreateUserDto } from './dto/create-user.dto';
 import { RoleEnum } from 'modules/roles/roles.enum';
@@ -17,167 +17,115 @@ import { User } from './user.domain';
 export class UsersService {
   constructor(
     private readonly i18nService: I18nService<I18nTranslations>,
+    private readonly dataSource: DataSource,
     @InjectRepository(UserEntity) private userRepository: Repository<UserEntity>,
     @InjectRepository(ParentEntity) private parentRepository: Repository<ParentEntity>,
     @InjectRepository(StudentEntity) private studentRepository: Repository<StudentEntity>,
     @InjectRepository(TeacherEntity) private teacherRepository: Repository<TeacherEntity>,
+
   ) { }
 
-  async isEmailExist(email: string) {
-    const userExists = await this.userRepository.findOne({
-      where: { email }
-    });
-    if (email === userExists.email) return;
-    if (userExists.email) {
-      throw new BadRequestException(this.i18nService.t('user.FAIL.EMAIL_EXIST'));
-    }
+  async isEmailExist(email: string): Promise<boolean> {
+    const [user, teacher, parent, student] = await Promise.all([
+      this.userRepository.createQueryBuilder('user')
+        .where('user.email = :email', { email })
+        .getExists(),
+      this.teacherRepository.createQueryBuilder('teacher')
+        .where('teacher.email = :email', { email })
+        .getExists(),
+      this.parentRepository.createQueryBuilder('parent')
+        .where('parent.email = :email', { email })
+        .getExists(),
+      this.studentRepository.createQueryBuilder('student')
+        .where('student.email = :email', { email })
+        .getExists()
+    ])
 
-    const parentExists = await this.parentRepository.findOne({
-      where: { email }
-    });
-    if (parentExists) {
-      throw new BadRequestException(this.i18nService.t('user.FAIL.EMAIL_EXIST'));
-    }
-
-    const studentExists = await this.studentRepository.findOne({
-      where: { email }
-    });
-    if (studentExists) {
-      throw new BadRequestException(this.i18nService.t('user.FAIL.EMAIL_EXIST'));
-    }
-
-    const teacherExists = await this.teacherRepository.findOne({
-      where: { email }
-    });
-    if (teacherExists) {
+    const exist = user || teacher || parent || student;
+    if (exist) {
       throw new BadRequestException(this.i18nService.t('user.FAIL.EMAIL_EXIST'));
     }
 
     return false;
   }
 
-  async findByEmail(email: string) {
-    const userExists = await this.userRepository.findOne({
-      where: { email }
-    })
-    if (userExists) return userExists
+  async findByEmail(email: string): Promise<UserEntity | ParentEntity | StudentEntity | TeacherEntity | null> {
+    const [user, parent, student, teacher] = await Promise.all([
+      this.userRepository.findOne({ where: { email }, relations: ['role'] }),
+      this.parentRepository.findOne({ where: { email }, relations: ['role'] }),
+      this.studentRepository.findOne({ where: { email }, relations: ['role'] }),
+      this.teacherRepository.findOne({ where: { email }, relations: ['role'] }),
+    ]);
 
-    const parentExists = await this.parentRepository.findOne({
-      where: { email }
-    });
-    if (parentExists) return parentExists;
-
-    const studentExists = await this.studentRepository.findOne({
-      where: { email }
-    });
-    if (studentExists) return studentExists;
-
-    const teacherExists = await this.teacherRepository.findOne({
-      where: { email }
-    });
-    if (teacherExists) return teacherExists;
+    return user || parent || student || teacher || null;
   }
 
-  isValidPassword(password: string, hash: string) {
+  isValidPassword(password: string, hash: string): Promise<boolean> {
     return bcrypt.compare(password, hash);
   }
 
-  async createAdmin(createUserDto: CreateUserDto) {
+  async createAdmin(createUserDto: CreateUserDto): Promise<User> {
     await this.isEmailExist(createUserDto.email);
     const newEntity = await this.userRepository.save(
-      this.userRepository.create({ ...createUserDto, role: { id: RoleEnum.admin } } as UserEntity), { transaction: true }
-    )
-    return UserMapper.toDomain(newEntity)
+      this.userRepository.create({ ...createUserDto, role: { id: RoleEnum.admin } } as UserEntity)
+    );
+    return UserMapper.toDomain(newEntity);
   }
 
-  async updateUserToken(user: any, refreshToken: string) {
-    if (user.role.id === RoleEnum.admin) {
-      await this.userRepository.update({ id: user.id }, { refreshToken })
-    }
-    if (user.role.id === RoleEnum.teacher) {
-      await this.teacherRepository.update({ id: user.id }, { refreshToken })
-    }
-    if (user.role.id === RoleEnum.parent) {
-      await this.parentRepository.update({ id: user.id }, { refreshToken })
-    }
-    if (user.role.id === RoleEnum.student) {
-      await this.studentRepository.update({ id: user.id }, { refreshToken })
-    }
-  }
+  async updateUserToken(user: any, refreshToken: string): Promise<void> {
+    const roleId = user.role?.id;
 
-  async findUserByToken(role: any, refreshToken: string) {
-    if (role.id === RoleEnum.admin) {
-      return await this.userRepository.findOne({ where: { refreshToken } })
-    }
-    if (role.id === RoleEnum.teacher) {
-      return await this.teacherRepository.findOne({ where: { refreshToken } })
-    }
-    if (role.id === RoleEnum.parent) {
-      return await this.parentRepository.findOne({ where: { refreshToken } })
-    }
-    if (role.id === RoleEnum.student) {
-      return await this.studentRepository.findOne({ where: { refreshToken } })
+    const updateMap: Record<string, Repository<any>> = {
+      [RoleEnum.admin]: this.userRepository,
+      [RoleEnum.teacher]: this.teacherRepository,
+      [RoleEnum.parent]: this.parentRepository,
+      [RoleEnum.student]: this.studentRepository,
+    };
+
+    const repository = updateMap[roleId];
+    if (repository) {
+      await repository.update({ id: user.id }, { refreshToken });
     }
   }
 
-  async uploadAvatar(imageUrl: string, publicId: string, user: User) {
-    if (user && user?.role?.id === RoleEnum.admin) {
-      const admin = await this.userRepository.findOne({ where: { id: user.id } })
-      if (!admin) {
-        throw new NotFoundException(this.i18nService.t('user.FAIL.NOT_FOUND'));
-      }
+  async findUserByToken(role: any, refreshToken: string): Promise<UserEntity | ParentEntity | StudentEntity | TeacherEntity | null> {
+    const roleId = role?.id;
 
-      admin.avatar = imageUrl;
-      admin.publicId = publicId;
-      await this.userRepository.save(admin);
+    const repositoryMap: Record<string, Repository<any>> = {
+      [RoleEnum.admin]: this.userRepository,
+      [RoleEnum.teacher]: this.teacherRepository,
+      [RoleEnum.parent]: this.parentRepository,
+      [RoleEnum.student]: this.studentRepository,
+    };
+
+    const repository = repositoryMap[roleId];
+    return repository ? await repository.findOne({ where: { refreshToken }, relations: ['role'] }) : null;
+  }
+
+  async uploadAvatar(imageUrl: string, publicId: string, user: User): Promise<void> {
+    const roleId = user?.role?.id;
+
+    const repositoryMap: Record<string, { repo: Repository<any> }> = {
+      [RoleEnum.admin]: { repo: this.userRepository },
+      [RoleEnum.teacher]: { repo: this.teacherRepository },
+      [RoleEnum.parent]: { repo: this.parentRepository },
+      [RoleEnum.student]: { repo: this.studentRepository },
+    };
+
+    const config = repositoryMap[roleId];
+    if (!config) return;
+
+    const entity = await config.repo.findOne({ where: { id: user.id } });
+    if (!entity) {
+      throw new NotFoundException(this.i18nService.t('user.FAIL.NOT_FOUND'));
     }
 
-    if (user && user?.role?.id === RoleEnum.teacher) {
-      const teacher = await this.teacherRepository.findOne({ where: { id: user.id } })
-      if (!teacher) {
-        throw new NotFoundException(this.i18nService.t('user.FAIL.NOT_FOUND'));
-      }
-
-      // Check if avatar already exists
-      if (teacher.avatar && teacher.publicId) {
-        throw new BadRequestException('Avatar already exists. Please delete the current avatar before uploading a new one.');
-      }
-
-      teacher.avatar = imageUrl;
-      teacher.publicId = publicId;
-      await this.teacherRepository.save(teacher);
+    if (roleId !== RoleEnum.admin && entity.avatar && entity.publicId) {
+      throw new BadRequestException('Avatar already exists. Please delete the current avatar before uploading a new one.');
     }
 
-    if (user && user?.role?.id === RoleEnum.parent) {
-      const parent = await this.parentRepository.findOne({ where: { id: user.id } })
-      if (!parent) {
-        throw new NotFoundException(this.i18nService.t('user.FAIL.NOT_FOUND'));
-      }
-
-      // Check if avatar already exists
-      if (parent.avatar && parent.publicId) {
-        throw new BadRequestException('Avatar already exists. Please delete the current avatar before uploading a new one.');
-      }
-
-      parent.avatar = imageUrl;
-      parent.publicId = publicId;
-      await this.parentRepository.save(parent);
-    }
-
-    if (user && user?.role?.id === RoleEnum.student) {
-      const student = await this.studentRepository.findOne({ where: { id: user.id } })
-      if (!student) {
-        throw new NotFoundException(this.i18nService.t('user.FAIL.NOT_FOUND'));
-      }
-
-      // Check if avatar already exists
-      if (student.avatar && student.publicId) {
-        throw new BadRequestException('Avatar already exists. Please delete the current avatar before uploading a new one.');
-      }
-
-      student.avatar = imageUrl;
-      student.publicId = publicId;
-      await this.studentRepository.save(student);
-    }
+    entity.avatar = imageUrl;
+    entity.publicId = publicId;
+    await config.repo.save(entity);
   }
 }
