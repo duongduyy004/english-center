@@ -10,16 +10,16 @@ export class AuditLogEntity {
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
-    @Column()
+    @Column({ nullable: true })
     userId: string
 
-    @Column()
+    @Column({ nullable: true, default: 'Guest User' })
     userName: string;
 
-    @Column()
+    @Column({ nullable: true })
     userEmail: string;
 
-    @Column()
+    @Column({ nullable: true })
     userRole: string;
 
     @Column()
