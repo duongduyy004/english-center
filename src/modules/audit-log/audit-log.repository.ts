@@ -160,9 +160,12 @@ export class AuditLogRepository {
         })
 
         const { entityId, entityName } = logEntity
+        const metadata = this.dataSource.getMetadata(entityName);
+        const relations = metadata.relations.map(rel => rel.propertyName);
         const repository = this.dataSource.getRepository(entityName);
         const entity = await repository.findOne({
-            where: { id: entityId }
+            where: { id: entityId },
+            relations
         })
 
         return this.mapEntityToDomain(entityName, entity);
