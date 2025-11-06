@@ -132,7 +132,7 @@ export const VN_MAPS = Object.freeze({
     classes: 'các lớp dạy',
     histories: 'lịch sử'
   },
-  payments: {
+  payment: {
     id: 'mã hóa đơn',
     month: 'tháng',
     year: 'năm',
@@ -160,7 +160,8 @@ export const VN_MAPS = Object.freeze({
     requestedAt: 'thời gian yêu cầu',
     proccessedAt: 'thời gian xử lý',
     proccessedBy: 'xử lý bởi',
-    rejectionReason: 'lý do từ chối'
+    rejectionReason: 'lý do từ chối',
+    payment: 'hóa đơn'
   },
   transaction: {
     id: 'mã thu chi',
@@ -287,7 +288,7 @@ export const ENTITY_MAP = Object.freeze({
   MenuEntity: 'menu',
   ParentEntity: 'parent',
   UserEntity: 'user',
-  PaymentEntity: 'payments',
+  PaymentEntity: 'payment',
   TeacherPaymentEntity: 'teacherPayment',
   RegistrationEntity: 'registration',
   AdvertisementEntity: 'advertisement',

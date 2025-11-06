@@ -58,7 +58,7 @@ export class PaymentEntity {
     @Column('jsonb', { nullable: true, default: [] })
     histories: Histories[]
 
-    @OneToMany(() => PaymentRequestEntity, paymentRequests => paymentRequests.paymentId, { eager: true })
+    @OneToMany(() => PaymentRequestEntity, paymentRequests => paymentRequests.payment, { eager: true })
     paymentRequests: PaymentRequestEntity[]
 
     @BeforeUpdate()

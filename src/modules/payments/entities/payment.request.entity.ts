@@ -29,6 +29,6 @@ export class PaymentRequestEntity {
     @Column({ nullable: true })
     rejectionReason?: string;
 
-    @ManyToOne(() => PaymentEntity, paymentId => paymentId.paymentRequests)
-    paymentId: string;
+    @ManyToOne(() => PaymentEntity, payment => payment.paymentRequests)
+    payment: PaymentEntity;
 }

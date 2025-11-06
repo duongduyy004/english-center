@@ -147,9 +147,10 @@ export class PaymentRepository {
     }
 
     async requestPayment(paymentId: Payment['id'], requestPayment: RequestPaymentDto) {
+        const paymentEntity = await this.paymentsRepository.findOne({ where: { id: paymentId } })
         return await this.paymentRequestsRepository.save(
             this.paymentRequestsRepository.create({
-                paymentId: paymentId,
+                payment: paymentEntity,
                 amount: requestPayment.amount,
                 imageProof: requestPayment.imageProof,
                 rejectionReason: requestPayment.rejectionReason,
@@ -160,11 +161,12 @@ export class PaymentRepository {
 
     async processRequestPayment(id: number, processRequestPaymentDto: ProcessRequestPaymentDto, user: User) {
         const request = await this.paymentRequestsRepository.findOne({
-            where: { id }
+            where: { id },
+            relations: { payment: true }
         })
 
         const payment = await this.paymentsRepository.findOne({
-            where: { id: request.paymentId }
+            where: { id: request.payment.id }
         })
 
         if (processRequestPaymentDto
