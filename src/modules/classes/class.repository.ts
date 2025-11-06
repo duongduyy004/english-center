@@ -343,6 +343,69 @@ export class ClassRepository {
 
     await this.classStudentRepository.save({ ...entity, isActive });
   }
+
+  async getPublicClasses({
+    filterOptions,
+    sortOptions,
+    paginationOptions,
+  }: {
+    filterOptions?: FilterClassDto | null;
+    sortOptions?: SortClassDto[] | null;
+    paginationOptions: IPaginationOptions;
+  }): Promise<PaginationResponseDto<Class>> {
+    const where: FindOptionsWhere<ClassEntity> = {};
+
+    if (filterOptions?.name) {
+      where.name = ILike(`%${filterOptions.name}%`);
+    }
+
+    if (filterOptions?.grade) {
+      where.grade = filterOptions.grade;
+    }
+
+    if (filterOptions?.section) {
+      where.section = filterOptions.section;
+    }
+
+    if (filterOptions?.year) {
+      where.year = filterOptions.year;
+    }
+
+    if (filterOptions?.status) {
+      where.status = filterOptions.status;
+    }
+
+    if (filterOptions?.room) {
+      where.room = ILike(`%${filterOptions.room}%`);
+    }
+
+    const [entities, total] = await this.classRepository.findAndCount({
+      skip: (paginationOptions.page - 1) * paginationOptions.limit,
+      take: paginationOptions.limit,
+      where: where,
+      relations: ['teacher'],
+      order: sortOptions?.reduce(
+        (accumulator, sort) => ({
+          ...accumulator,
+          [sort.orderBy]: sort.order,
+        }),
+        {},
+      ),
+    });
+    const totalItems = total;
+    const totalPages = Math.ceil(totalItems / paginationOptions.limit);
+
+    return {
+      meta: {
+        page: paginationOptions.page,
+        limit: paginationOptions.limit,
+        totalPages,
+        totalItems,
+      },
+      result: entities.map((classEntity) => ClassMapper.toDomain(classEntity)),
+    };
+  }
+
   async getInfoForBanner(id: Class['id']): Promise<Class> {
     const classEntity = await this.classRepository.findOne({
       where: { id },

@@ -204,6 +204,24 @@ export class ClassesService {
       isActive,
     );
   }
+
+  async getPublicClasses({
+    filterOptions,
+    sortOptions,
+    paginationOptions,
+  }: {
+    filterOptions?: FilterClassDto | null;
+    sortOptions?: SortClassDto[] | null;
+    paginationOptions: IPaginationOptions;
+  }): Promise<PaginationResponseDto<Class>> {
+    return this.classRepository.getPublicClasses({
+      filterOptions,
+      sortOptions,
+      paginationOptions,
+    });
+  }
+
+
   async getInfoForBanner(id: Class['id']) {
     return this.classRepository.getInfoForBanner(id);
   }

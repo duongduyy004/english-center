@@ -27,7 +27,8 @@ export class UsersService {
     const userExists = await this.userRepository.findOne({
       where: { email }
     });
-    if (userExists) {
+    if (email === userExists.email) return;
+    if (userExists.email) {
       throw new BadRequestException(this.i18nService.t('user.FAIL.EMAIL_EXIST'));
     }
 

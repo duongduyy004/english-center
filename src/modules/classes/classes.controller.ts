@@ -66,6 +66,22 @@ export class ClassesController {
     return this.classesService.unassignTeacherToClass(classId, teacherId);
   }
 
+  @Get('public')
+  @Public()
+  @ResponseMessage('class.SUCCESS.GET_PUBLIC_CLASSES')
+  getPublicClasses(@Query() query: QueryDto<FilterClassDto, SortClassDto>) {
+    const page = query?.page;
+    const limit = query?.limit;
+    return this.classesService.getPublicClasses({
+      filterOptions: query.filters,
+      sortOptions: query.sort,
+      paginationOptions: {
+        page,
+        limit,
+      },
+    });
+  }
+
   @Get('available-students/:id')
   @ResponseMessage('class.SUCCESS.GET_AVAILABLE_STUDENTS')
   getAvailableToAddStudents(
@@ -106,9 +122,13 @@ export class ClassesController {
   updateStudentStatus(
     @Body('isActive') isActive: boolean,
     @Query('studentId') studentId: string,
-    @Param('id') classId: string
+    @Param('id') classId: string,
   ) {
-    return this.classesService.updateStudentStatus(studentId, classId, isActive);
+    return this.classesService.updateStudentStatus(
+      studentId,
+      classId,
+      isActive,
+    );
   }
 
   @Get(':id')

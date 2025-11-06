@@ -10,7 +10,8 @@
     "ADD_STUDENTS": "Add students to class successfully",
     "REMOVE_STUDENTS": "Remove students from class successfully",
     "GET_AVAILABLE_STUDENTS": "Get available students successfully",
-    "GET_CLASS_BANNER_INFO": "Get class banner info successfully"
+    "GET_CLASS_BANNER_INFO": "Get class banner info successfully",
+    "GET_PUBLIC_CLASSES": "Get public classes successfully"
   },
   "FAIL": {
     "NOT_FOUND": "Class not found",
@@ -18,6 +19,7 @@
     "TEACHER_NOT_ASSIGNED": "This teacher was not assigned to this class",
     "STUDENT_ALREADY_IN_CLASS": "Student was already added to this class",
     "SCHEDULE_CONFLICT": "Student {{studentName}} has class {{conflictClassName}} with schedule conflict with class {{className}}",
-    "CAN_NOT_GET_CLASS_BANNER_INFO": "Can not get class banner info"
+    "CAN_NOT_GET_CLASS_BANNER_INFO": "Can not get class banner info",
+    "CAN_NOT_GET_PUBLIC_CLASSES": "Can not get public classes"
   }
 }
