@@ -41,7 +41,6 @@ export class TeachersService {
   }
 
   async update(id: Teacher['id'], updateTeacherDto: UpdateTeacherDto) {
-    await this.findOne(id)
     if (updateTeacherDto && updateTeacherDto.email) {
       this.usersService.isEmailExist(updateTeacherDto.email)
     }
