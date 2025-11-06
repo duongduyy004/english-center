@@ -10,7 +10,8 @@
     "ADD_STUDENTS": "Thêm học sinh vào lớp thành công",
     "REMOVE_STUDENTS": "Xóa học sinh khỏi lớp thành công",
     "GET_AVAILABLE_STUDENTS": "Lấy danh sách học sinh có thể thêm thành công",
-    "GET_CLASS_BANNER_INFO": "Lấy thông tin banner lớp học thành công"
+    "GET_CLASS_BANNER_INFO": "Lấy thông tin banner lớp học thành công",
+    "GET_PUBLIC_CLASSES": "Lấy danh sách lớp học công khai thành công"
   },
   "FAIL": {
     "NOT_FOUND": "Không tìm thấy lớp học",
@@ -18,6 +19,7 @@
     "TEACHER_NOT_ASSIGNED": "Giáo viên này chưa được phân công vào lớp này",
     "STUDENT_ALREADY_IN_CLASS": "Học sinh đã được thêm vào lớp này",
     "SCHEDULE_CONFLICT": "Học sinh {{studentName}} có lớp {{conflictClassName}} bị trung lịch với lớp {{className}}",
-    "CAN_NOT_GET_CLASS_BANNER_INFO": "Không thể lấy thông tin banner lớp học"
+    "CAN_NOT_GET_CLASS_BANNER_INFO": "Không thể lấy thông tin banner lớp học",
+    "CAN_NOT_GET_PUBLIC_CLASSES": "Không thể lấy danh sách lớp học công khai"
   }
 }

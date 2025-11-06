@@ -22,6 +22,7 @@ export type I18nTranslations = {
             "REMOVE_STUDENTS": string;
             "GET_AVAILABLE_STUDENTS": string;
             "GET_CLASS_BANNER_INFO": string;
+            "GET_PUBLIC_CLASSES": string;
         };
         "FAIL": {
             "NOT_FOUND": string;
@@ -30,6 +31,7 @@ export type I18nTranslations = {
             "STUDENT_ALREADY_IN_CLASS": string;
             "SCHEDULE_CONFLICT": string;
             "CAN_NOT_GET_CLASS_BANNER_INFO": string;
+            "CAN_NOT_GET_PUBLIC_CLASSES": string;
         };
     };
     "common": {
