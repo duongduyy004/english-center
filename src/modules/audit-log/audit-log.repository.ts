@@ -172,7 +172,7 @@ export class AuditLogRepository {
 
     private generateInsertAndDeleteList(data: any) {
         let result = ""
-        if (Array.isArray(data)) return data.map(item => this.generateInsertAndDeleteList(item))
+        if (Array.isArray(data) && typeof data[0] === 'object') return data.map(item => this.generateInsertAndDeleteList(item))
         for (const [key, value] of Object.entries(data)) {
             if (value === null || value === undefined) continue;
             if (typeof value === 'object') {
@@ -187,7 +187,7 @@ export class AuditLogRepository {
 
     private generateUpdateList(oldValue: any, newValue: any) {
         let result = ""
-        if (Array.isArray(newValue)) return newValue.map((item, index) => this.generateUpdateList(oldValue[index], item))
+        if (Array.isArray(newValue) && typeof newValue[0] === 'object') return newValue.map((item, index) => this.generateUpdateList(oldValue[index], item))
         for (const [key, value] of Object.entries(newValue)) {
             if (value === null || value === undefined) continue;
             if (typeof value === 'object') {
