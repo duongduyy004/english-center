@@ -11,7 +11,9 @@ const logMapper = (data: any, entityName: string) => {
     const entityKey = VN_MAPS[entityName] || entityName;
     for (const [key, value] of Object.entries(data)) {
         if (value === null || value === undefined) continue;
+
         const newKey = _.capitalize(entityKey[key] || VN_TIMESTAMP[key] || key);
+
         if (entityKey[key]) {
             const nestedEntity = VN_MAPS[key] ? key : entityName;
             translated[newKey] = logMapper(value, nestedEntity);
@@ -23,6 +25,7 @@ const logMapper = (data: any, entityName: string) => {
             translated[newKey] = String(value)
         }
     }
+
     return translated;
 }
 

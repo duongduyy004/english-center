@@ -43,7 +43,19 @@ export const VN_MAPS = Object.freeze({
   classes: {
     discountPercent: 'phần trăm giảm giá',
     class: 'lớp',
-    isActive: 'trạng thái'
+    isActive: 'trạng thái',
+    name: 'tên lớp',
+    grade: 'khối',
+    section: 'phân lớp',
+    year: 'năm',
+    description: 'mô tả',
+    feePerLesson: 'học phí mỗi buổi',
+    status: 'trạng thái',
+    max_student: 'số học sinh tối đa',
+    room: 'phòng học',
+    schedule: 'thời khóa biểu',
+    teacher: 'giáo viên',
+    totalLessons: 'tổng số buổi dạy'
   },
   class: {
     name: 'tên lớp',
@@ -93,7 +105,19 @@ export const VN_MAPS = Object.freeze({
     salaryPerLesson: 'lương mỗi buổi',
     introduction: 'giới thiệu',
     workExperience: 'kinh nghiệm làm việc',
-    classes: 'các lớp dạy'
+    classes: 'các lớp dạy',
+
+  },
+  teacherPayment: {
+    id: 'mã tài chính giáo viên',
+    month: 'tháng',
+    year: 'năm',
+    totalAmount: 'tổng số tiền',
+    paidAmount: 'số tiền đã thanh toán',
+    status: 'trạng thái',
+    teacher: 'giáo viên',
+    classes: 'các lớp dạy',
+    histories: 'lịch sử'
   },
   payments: {
     id: 'mã hóa đơn',

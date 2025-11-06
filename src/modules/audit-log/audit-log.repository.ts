@@ -143,9 +143,7 @@ export class AuditLogRepository {
             return `${action} ${entityName} bởi ${userName} - ${userEmail}:<ul style="margin: 8px 0; padding-left: 20px;">${changeList}</ul>`;
         }
         else if (data.action === AuditLogAction.UPDATE) {
-            const changeList = Object.keys(newValue).map(item =>
-                `<li><strong>${capitalize(item)}</strong>: <span style="color: #666;">${oldValue[item]}</span> → <span style="color: blue;">${newValue[item]}</span></li>`
-            ).join('');
+            const changeList = this.generateUpdateList(oldValue, newValue);
             return `${action} ${entityName} bởi ${userName} - ${userEmail}:<ul style="margin: 8px 0; padding-left: 20px;">${changeList}</ul>`;
         } else if (data.action === AuditLogAction.DELETE) {
             const changeList = this.generateInsertAndDeleteList(oldValue)
@@ -163,13 +161,13 @@ export class AuditLogRepository {
         const metadata = this.dataSource.getMetadata(entityName);
         const relations = metadata.relations.map(rel => rel.propertyName);
         const repository = this.dataSource.getRepository(entityName);
+
         const entity = await repository.findOne({
             where: { id: entityId },
             relations
         })
 
         return this.mapEntityToDomain(entityName, entity);
-
     }
 
     private generateInsertAndDeleteList(data: any) {
