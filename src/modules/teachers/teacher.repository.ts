@@ -9,6 +9,7 @@ import { IPaginationOptions } from 'utils/types/pagination-options';
 import { PaginationResponseDto } from 'utils/types/pagination-response.dto';
 import { RoleEnum } from '../roles/roles.enum';
 import { OmitType } from '@nestjs/mapped-types';
+import { UpdateTeacherDto } from './dto/update-teacher.dto';
 
 export class FilterTeacherDto {
   name?: string;
@@ -111,9 +112,7 @@ export class TeacherRepository {
 
   async update(
     id: Teacher['id'],
-    payload: Partial<
-      Omit<Teacher, 'id' | 'password' | 'createdAt' | 'updatedAt' | 'deletedAt'>
-    >,
+    payload: UpdateTeacherDto
   ): Promise<Teacher> {
     const entity = await this.teacherRepository.findOne({
       where: { id },

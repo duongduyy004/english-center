@@ -41,12 +41,7 @@ export class UsersService {
         .getExists()
     ])
 
-    const exist = user || teacher || parent || student;
-    if (exist) {
-      throw new BadRequestException(this.i18nService.t('user.FAIL.EMAIL_EXIST'));
-    }
-
-    return false;
+    return user || teacher || parent || student;
   }
 
   async findByEmail(email: string): Promise<UserEntity | ParentEntity | StudentEntity | TeacherEntity | null> {
