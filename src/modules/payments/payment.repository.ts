@@ -167,14 +167,12 @@ export class PaymentRepository {
             where: { id: request.paymentId }
         })
 
-        if (processRequestPaymentDto
-            && processRequestPaymentDto.status
-            && processRequestPaymentDto.rejectionReason
+        if (processRequestPaymentDto && processRequestPaymentDto.status
         ) {
             request.status = processRequestPaymentDto.status;
             request.processedAt = dayjs().toDate();
             request.processedBy = user.id;
-            request.rejectionReason = processRequestPaymentDto.rejectionReason;
+            request.rejectionReason = processRequestPaymentDto.rejectionReason || '';
         }
 
         await this.paymentRequestsRepository.save(request);
