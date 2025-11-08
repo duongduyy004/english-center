@@ -179,7 +179,7 @@ export class PaymentRepository {
 
         await this.paymentRequestsRepository.save(request);
 
-        if (processRequestPaymentDto.status === PaymentRequestStatus.APPROVE) {
+        if (processRequestPaymentDto.status === PaymentRequestStatus.APPROVE && request.status === PaymentRequestStatus.PENDING) {
             this.handleProcessPayment(payment, {
                 amount: request.amount,
                 method: 'bank_transfer',

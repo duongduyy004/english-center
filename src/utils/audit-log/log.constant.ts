@@ -158,8 +158,8 @@ export const VN_MAPS = Object.freeze({
     imageProof: 'ảnh minh chứng',
     status: 'trạng thái',
     requestedAt: 'thời gian yêu cầu',
-    proccessedAt: 'thời gian xử lý',
-    proccessedBy: 'xử lý bởi',
+    processedAt: 'thời gian xử lý',
+    processedBy: 'xử lý bởi',
     rejectionReason: 'lý do từ chối',
     payment: 'hóa đơn'
   },

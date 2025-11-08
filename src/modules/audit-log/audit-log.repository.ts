@@ -140,14 +140,14 @@ export class AuditLogRepository {
         const entityName = `<strong>${VN_ENTITY[data.entityName] || data.entityName}</strong>`;
         const action = `<strong>${capitalize(VN_ACTION[data.action] || data.action)}</strong>`;
 
-        if (data.action === AuditLogAction.CREATE) {
+        if (data.action === AuditLogAction.CREATE && newValue) {
             const changeList = this.generateInsertAndDeleteList(newValue);
             return `${action} ${entityName} bởi ${userName} - ${userEmail}:<ul style="margin: 8px 0; padding-left: 20px;">${changeList}</ul>`;
         }
-        else if (data.action === AuditLogAction.UPDATE) {
+        else if (data.action === AuditLogAction.UPDATE && oldValue && newValue) {
             const changeList = this.generateUpdateList(oldValue, newValue);
             return `${action} ${entityName} bởi ${userName} - ${userEmail}:<ul style="margin: 8px 0; padding-left: 20px;">${changeList}</ul>`;
-        } else if (data.action === AuditLogAction.DELETE) {
+        } else if (data.action === AuditLogAction.DELETE && oldValue) {
             const changeList = this.generateInsertAndDeleteList(oldValue)
             return `${action} ${entityName} bởi ${userName} - ${userEmail}:<ul style="margin: 8px 0; padding-left: 20px;">${changeList}</ul>`;
         }
