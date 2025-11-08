@@ -9,11 +9,12 @@ import { IPaginationOptions } from 'utils/types/pagination-options';
 import { PaginationResponseDto } from 'utils/types/pagination-response.dto';
 import { RoleEnum } from '../roles/roles.enum';
 import { OmitType } from '@nestjs/mapped-types';
+import { filter } from 'lodash';
 
 export class FilterTeacherDto {
   name?: string;
   email?: string;
-  status?: string;
+  isActive?: boolean;
 }
 
 export class SortTeacherDto {
@@ -26,7 +27,7 @@ export class TeacherRepository {
   constructor(
     @InjectRepository(TeacherEntity)
     private teacherRepository: Repository<TeacherEntity>,
-  ) { }
+  ) {}
 
   async create(
     data: Omit<
@@ -81,6 +82,9 @@ export class TeacherRepository {
       where.email = ILike(`%${filterOptions.email}%`);
     }
 
+    if (filterOptions?.isActive !== undefined) {
+      where.isActive = filterOptions.isActive;
+    }
     const [entities, total] = await this.teacherRepository.findAndCount({
       skip: (paginationOptions.page - 1) * paginationOptions.limit,
       take: paginationOptions.limit,
@@ -144,16 +148,18 @@ export class TeacherRepository {
   async getTypicalTeachers() {
     const entities = await this.teacherRepository.find({
       where: { typical: true },
-      order: { 'createdAt': 'ASC' }
-    })
+      order: { createdAt: 'ASC' },
+    });
 
-    return entities ? entities.map(item => TeacherMapper.toDomain(item)) : null;
+    return entities
+      ? entities.map((item) => TeacherMapper.toDomain(item))
+      : null;
   }
 
   async getTypicalTeacherDetail(id: Teacher['id']) {
     const entity = await this.teacherRepository.findOne({
-      where: { id, typical: true }
-    })
+      where: { id, typical: true },
+    });
     if (!entity) throw new BadRequestException('Not found teacher');
     return TeacherMapper.toDomain(entity);
   }
