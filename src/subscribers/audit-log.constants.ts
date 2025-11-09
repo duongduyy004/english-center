@@ -4,4 +4,4 @@ export enum AuditLogAction {
     DELETE = 'DELETE'
 }
 
-export const SKIP_FIELDS = ['createdAt', 'updatedAt', 'deletedAt', 'refreshToken', 'password', 'id', 'role']
+export const SKIP_FIELDS = ['createdAt', 'updatedAt', 'deletedAt', 'refreshToken', 'password', 'id', 'role', 'histories']

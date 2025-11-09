@@ -72,7 +72,7 @@ export class PaymentEntity {
     @BeforeUpdate()
     updateStatus() {
         if (this.paidAmount === 0) this.status = 'pending';
-        else if (this.paidAmount < this.totalAmount - this.discountPercent * this.totalAmount) this.status = 'partial';
-        else if (this.paidAmount >= this.totalAmount - this.discountPercent * this.totalAmount) this.status = 'paid';
+        else if (this.paidAmount < this.totalAmount - this.discountPercent * this.totalAmount / 100) this.status = 'partial';
+        else if (this.paidAmount >= this.totalAmount - this.discountPercent * this.totalAmount / 100) this.status = 'paid';
     }
 }
