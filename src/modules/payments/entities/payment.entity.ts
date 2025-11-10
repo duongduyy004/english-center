@@ -64,7 +64,7 @@ export class PaymentEntity {
     @BeforeUpdate()
     generateReferenceCode() {
         console.log('check gen ref code')
-        if (!this.referenceCode && this.id) {
+        if (!this.referenceCode) {
             const date = `${this.year}${this.month}`
 
             console.log('check id', this.studentId, this.classId)
