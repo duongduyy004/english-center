@@ -60,18 +60,24 @@ export class PaymentEntity {
     @Column('jsonb', { nullable: true, default: [] })
     histories: Histories[]
 
-    @AfterInsert()
+    @BeforeInsert()
+    @BeforeUpdate()
     generateReferenceCode() {
+        console.log('check gen ref code')
         if (!this.referenceCode && this.id) {
             const date = `${this.year}${this.month}`
 
+            console.log('check id', this.studentId, this.classId)
+
             const hash = crypto.createHash('sha256')
-                .update(`${this.id}-${this.studentId}-${Date.now()}`)
+                .update(`${this.studentId}-${this.classId}-${Date.now()}`)
                 .digest('hex')
                 .substring(0, 8)
                 .toUpperCase()
             this.referenceCode = `${date}-${hash}`
+            console.log('check hash', hash)
         }
+        console.log('check ref code', this.referenceCode)
     }
 
     @BeforeUpdate()
