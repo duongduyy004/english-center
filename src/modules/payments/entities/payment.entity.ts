@@ -1,7 +1,8 @@
-import { BeforeInsert, BeforeUpdate, Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { AfterInsert, BeforeInsert, BeforeUpdate, Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { StudentEntity } from "modules/students/entities/student.entity";
 import { ClassEntity } from "modules/classes/entities/class.entity";
 import { Student } from "modules/students/student.domain";
+import * as crypto from "crypto";
 
 export class Histories {
     method: string;
@@ -17,6 +18,9 @@ export class Histories {
 export class PaymentEntity {
     @PrimaryGeneratedColumn('uuid')
     id: string;
+
+    @Column({ unique: true, nullable: true })
+    referenceCode: string;
 
     @Column()
     month: number;
@@ -55,6 +59,20 @@ export class PaymentEntity {
 
     @Column('jsonb', { nullable: true, default: [] })
     histories: Histories[]
+
+    @AfterInsert()
+    generateReferenceCode() {
+        if (!this.referenceCode && this.id) {
+            const date = `${this.year}${this.month}`
+
+            const hash = crypto.createHash('sha256')
+                .update(`${this.id}-${this.studentId}-${Date.now()}`)
+                .digest('hex')
+                .substring(0, 8)
+                .toUpperCase()
+            this.referenceCode = `${date}-${hash}`
+        }
+    }
 
     @BeforeUpdate()
     @BeforeInsert()
