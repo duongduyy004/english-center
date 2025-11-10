@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Patch, Query } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post, Query } from '@nestjs/common';
 import { PaymentsService } from './payments.service';
 import { QueryDto } from 'utils/types/query.dto';
 import { FilterPaymentDto, SortPaymentDto } from './dto/query-payment.dto';
@@ -8,6 +8,7 @@ import { UserInfo } from '@/decorator/customize.decorator';
 import { RequestPaymentDto } from './dto/request-payment.dto';
 import { User } from '../users/user.domain';
 import { ProcessRequestPaymentDto } from './dto/process-request-payment.dto';
+import { ConfirmDto } from './dto/confirm.dto';
 
 @Controller('payments')
 export class PaymentsController {
@@ -75,5 +76,11 @@ export class PaymentsController {
     @UserInfo() user: User
   ) {
     return this.paymentsService.processRequestPayment(paymentRequestId, processRequestPaymentDto, user);
+  }
+
+  @Post('confirm-payments')
+  confirmPayment(@Body() confirmDto: ConfirmDto) {
+    console.log(confirmDto)
+    return { success: true, confirmDto };
   }
 }
