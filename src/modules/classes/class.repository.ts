@@ -1,12 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FindOptionsWhere, Repository, ILike, In } from 'typeorm';
+import { FindOptionsWhere, Repository, ILike, In, Between } from 'typeorm';
 import { ClassEntity } from './entities/class.entity';
 import { Class } from './class.domain';
 import { ClassMapper } from './class.mapper';
 import { NullableType } from 'utils/types/nullable.type';
 import { IPaginationOptions } from 'utils/types/pagination-options';
-import { FilterClassDto, SortClassDto } from './dto/query-class.dto';
+import {
+  FilterClassDto,
+  FilterPublicClassDto,
+  SortClassDto,
+} from './dto/query-class.dto';
 import { PaginationResponseDto } from 'utils/types/pagination-response.dto';
 import { Teacher } from 'modules/teachers/teacher.domain';
 import { TeacherMapper } from '../teachers/teacher.mapper';
@@ -19,6 +23,7 @@ import { AuditLogService } from 'modules/audit-log/audit-log.service';
 import { ClsService } from 'nestjs-cls';
 import { StudentsService } from 'modules/students/students.service';
 import { AuditLogAction } from 'subscribers/audit-log.constants';
+import { filter } from 'lodash';
 
 @Injectable()
 export class ClassRepository {
@@ -349,7 +354,7 @@ export class ClassRepository {
     sortOptions,
     paginationOptions,
   }: {
-    filterOptions?: FilterClassDto | null;
+    filterOptions?: FilterPublicClassDto | null;
     sortOptions?: SortClassDto[] | null;
     paginationOptions: IPaginationOptions;
   }): Promise<PaginationResponseDto<Class>> {
@@ -361,6 +366,16 @@ export class ClassRepository {
 
     if (filterOptions?.grade) {
       where.grade = filterOptions.grade;
+    }
+
+    if (filterOptions?.gradeStart) {
+      if (filterOptions?.gradeEnd) {
+        where.grade = Between(filterOptions.gradeStart, filterOptions.gradeEnd);
+      } else {
+        where.grade = Between(filterOptions.gradeStart, 12);
+      }
+    } else if (filterOptions?.gradeEnd) {
+      where.grade = Between(1, filterOptions.gradeEnd);
     }
 
     if (filterOptions?.section) {
