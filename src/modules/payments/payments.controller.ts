@@ -1,13 +1,11 @@
-import { Body, Controller, Get, Param, Patch, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, Headers, Param, Patch, Query } from '@nestjs/common';
 import { PaymentsService } from './payments.service';
 import { QueryDto } from 'utils/types/query.dto';
 import { FilterPaymentDto, SortPaymentDto } from './dto/query-payment.dto';
 import { Payment } from './payment.domain';
 import { PayStudentDto } from './dto/pay-student.dto';
 import { Public, UserInfo } from '@/decorator/customize.decorator';
-import { RequestPaymentDto } from './dto/request-payment.dto';
-import { User } from '../users/user.domain';
-import { ProcessRequestPaymentDto } from './dto/process-request-payment.dto';
+import { GetQRDto } from './dto/get-QR.dto';
 import { ConfirmDto } from './dto/confirm.dto';
 
 @Controller('payments')
@@ -61,27 +59,18 @@ export class PaymentsController {
     return this.paymentsService.payStudent(paymentId, payStudentDto)
   }
 
-  @Patch('request/:paymentId')
-  requestPayment(
-    @Param('paymentId') paymentId: Payment['id'],
-    @Body() requestPaymentDto: RequestPaymentDto,
-  ) {
-    return this.paymentsService.requestPayment(paymentId, requestPaymentDto);
-  }
-
-  @Patch('process/:paymentRequestId')
-  processRequestPayment(
-    @Param('paymentRequestId') paymentRequestId: number,
-    @Body() processRequestPaymentDto: ProcessRequestPaymentDto,
-    @UserInfo() user: User
-  ) {
-    return this.paymentsService.processRequestPayment(paymentRequestId, processRequestPaymentDto, user);
+  @Public()
+  @Get('qrcode')
+  getQRCode(@Body() getQrDto: GetQRDto) {
+    return this.paymentsService.getQR(getQrDto);
   }
 
   @Public()
-  @Post('confirm-payments')
-  confirmPayment(@Body() confirmDto: ConfirmDto) {
-    console.log(confirmDto)
-    return { success: true, confirmDto };
+  @Get('confirm-payment')
+  confirmPayment(
+    @Body() confirmDto: ConfirmDto,
+    @Headers('Authorization') apiKey: string
+  ) {
+
   }
 }

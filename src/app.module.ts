@@ -51,6 +51,10 @@ import { ArticlesModule } from './modules/articles/articles.module';
 import { DataSource } from 'typeorm';
 import { ScheduleModule } from '@nestjs/schedule';
 import { CronModule } from 'modules/cron/cron.module';
+import { HttpModule } from '@nestjs/axios';
+import { CacheConfigService } from 'cache/cache-config.service';
+import paymentConfig from 'config/configs/payment.config';
+
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -61,6 +65,7 @@ import { CronModule } from 'modules/cron/cron.module';
         jwtConfig,
         redisConfig,
         cloudinaryConfig,
+        paymentConfig
       ],
       envFilePath: ['.env'],
     }),
@@ -98,7 +103,16 @@ import { CronModule } from 'modules/cron/cron.module';
       useClass: RedisConfigService,
     }),
     ScheduleModule.forRoot(),
-
+    HttpModule.registerAsync({
+      useFactory: () => ({
+        timeout: 5000,
+        maxRedirects: 5
+      })
+    }),
+    CacheModule.registerAsync({
+      isGlobal: true,
+      useClass: CacheConfigService
+    }),
     UsersModule,
     StudentsModule,
     ParentsModule,

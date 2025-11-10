@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from "@nestjs/common";
+import { BadRequestException, Inject, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { PaymentEntity } from "./entities/payment.entity";
 import { Between, FindOptionsWhere, In, MoreThan, Repository } from "typeorm";
@@ -12,17 +12,20 @@ import { PayStudentDto } from "./dto/pay-student.dto";
 import { I18nService } from "nestjs-i18n";
 import { I18nTranslations } from "@/generated/i18n.generated";
 import { SessionEntity } from "modules//sessions/entities/session.entity";
-import { RequestPaymentDto } from "./dto/request-payment.dto";
-import { User } from "modules/users/user.domain";
-import { ProcessRequestPaymentDto, PaymentRequestStatus } from "./dto/process-request-payment.dto";
-import { PaymentRequestEntity } from "./entities/payment.request.entity";
+import { GetQRDto } from "./dto/get-QR.dto";
+import { HttpService } from "@nestjs/axios";
+import { ConfigService } from "@nestjs/config";
+import { AllConfigType } from "config/config.type";
+import { catchError, firstValueFrom, Observable } from "rxjs";
+import { ConfirmDto } from "./dto/confirm.dto";
 
 @Injectable()
 export class PaymentRepository {
     constructor(
         @InjectRepository(PaymentEntity) private paymentsRepository: Repository<PaymentEntity>,
-        @InjectRepository(PaymentRequestEntity) private paymentRequestsRepository: Repository<PaymentRequestEntity>,
-        private i18nService: I18nService<I18nTranslations>
+        private i18nService: I18nService<I18nTranslations>,
+        private readonly httpService: HttpService,
+        private readonly configService: ConfigService<AllConfigType>,
     ) { }
 
     async autoUpdatePaymentRecord(session: SessionEntity) {
@@ -146,47 +149,41 @@ export class PaymentRepository {
         return PaymentMapper.toDomain(entity)
     }
 
-    async requestPayment(paymentId: Payment['id'], requestPayment: RequestPaymentDto) {
-        const paymentEntity = await this.paymentsRepository.findOne({ where: { id: paymentId } })
-        return await this.paymentRequestsRepository.save(
-            this.paymentRequestsRepository.create({
-                payment: paymentEntity,
-                amount: requestPayment.amount,
-                imageProof: requestPayment.imageProof,
-                rejectionReason: requestPayment.rejectionReason,
-                requestedAt: dayjs().toDate()
-            })
-        )
+    async getQR(getQrDto: GetQRDto): Promise<any> {
+        const bank = this.configService.get('payment.bank', { infer: true });
+        const acc = this.configService.get('payment.acc', { infer: true });
+
+        const generateContent = () => {
+
+        }
+
+        if (getQrDto && (!getQrDto.amount || getQrDto.amount <= 0)) {
+            throw new BadRequestException('Số tiền phải là số nguyên lớn hơn 0')
+        }
+
+        const qrUrl = `https://qr.sepay.vn/img?acc=${acc}&bank=${bank}&amount=${getQrDto.amount}&des=${getQrDto.des}&template=TEMPLATE&download=${getQrDto.download}`;
+
+        const { data } = await firstValueFrom(
+            this.httpService.get(qrUrl))
+        return data && qrUrl
     }
 
-    async processRequestPayment(id: number, processRequestPaymentDto: ProcessRequestPaymentDto, user: User) {
-        const request = await this.paymentRequestsRepository.findOne({
-            where: { id },
-            relations: { payment: true }
-        })
 
-        const payment = await this.paymentsRepository.findOne({
-            where: { id: request.payment.id }
-        })
 
-        if (processRequestPaymentDto && processRequestPaymentDto.status
-        ) {
-            request.status = processRequestPaymentDto.status;
-            request.processedAt = dayjs().toDate();
-            request.processedBy = user.id;
-            request.rejectionReason = processRequestPaymentDto.rejectionReason || '';
-        }
-
-        await this.paymentRequestsRepository.save(request);
-
-        if (processRequestPaymentDto.status === PaymentRequestStatus.APPROVE && request.status === PaymentRequestStatus.PENDING) {
-            this.handleProcessPayment(payment, {
-                amount: request.amount,
-                method: 'bank_transfer',
-                note: `Thanh toán học phí tháng ${payment.month}/${payment.year}`
-            })
-        }
-
-        return await this.paymentsRepository.save(payment);
+    async confirmPayment(confirmDto: ConfirmDto) {
+        //   ConfirmDto {                                                                                                                                                                                                                                 
+        //   id: 29904718,                                                                                                                                                                                                                              
+        //   gateway: 'MBBank',                                                                                                                                                                                                                         
+        //   transactionDate: '2025-11-10 16:19:00',                                                                                                                                                                                                    
+        //   accountNumber: '1509122004',                                                                                                                                                                                                               
+        //   code: null,                                                                                                                                                                                                                                
+        //   content: 'DUONG THE DUY chuyen tien',                                                                                                                                                                                                      
+        //   transferType: 'in',                                                                                                                                                                                                                        
+        //   transferAmount: 2000,                                                                                                                                                               
+        //   accumulated: 10000,                                                                                                                                                                                                                        
+        //   subAccount: null,                                                                                                                                                                                                                          
+        //   referenceCode: 'FT25314095259604',                                                                                                                                                                                                         
+        //   description: 'BankAPINotify DUONG THE DUY chuyen tien'                                                                                                                                                                                     
+        // }    
     }
 }

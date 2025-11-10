@@ -2,8 +2,6 @@ import { BeforeInsert, BeforeUpdate, Column, Entity, JoinColumn, ManyToOne, OneT
 import { StudentEntity } from "modules/students/entities/student.entity";
 import { ClassEntity } from "modules/classes/entities/class.entity";
 import { Student } from "modules/students/student.domain";
-import { PaymentRequestEntity } from "./payment.request.entity";
-
 
 export class Histories {
     method: string;
@@ -57,9 +55,6 @@ export class PaymentEntity {
 
     @Column('jsonb', { nullable: true, default: [] })
     histories: Histories[]
-
-    @OneToMany(() => PaymentRequestEntity, paymentRequests => paymentRequests.payment, { eager: true })
-    paymentRequests: PaymentRequestEntity[]
 
     @BeforeUpdate()
     @BeforeInsert()

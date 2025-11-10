@@ -33,7 +33,6 @@ import { FeedbackMapper } from "@/modules/feedback/feedback.mapper";
 import { IntroductionMapper } from "@/modules/introduction/introduction.mapper";
 import { AuditLogAction } from "subscribers/audit-log.constants";
 import logMapper from "utils/audit-log/log.mapper";
-import { PaymentRequestMapper } from "modules/payments/payment.request.mapper";
 
 // Mapper registry - maps entity names to their respective mappers
 const ENTITY_MAPPER_REGISTRY: Record<string, any> = {
@@ -43,7 +42,6 @@ const ENTITY_MAPPER_REGISTRY: Record<string, any> = {
     'ParentEntity': ParentMapper,
     'ClassEntity': ClassMapper,
     'PaymentEntity': PaymentMapper,
-    'PaymentRequestEntity': PaymentRequestMapper,
     'SessionEntity': SessionMapper,
     'TeacherPaymentEntity': TeacherPaymentMapper,
     'MenuEntity': MenuMapper,
