@@ -13,7 +13,11 @@ import { CreateClassDto } from './dto/create-class.dto';
 import { UpdateClassDto } from './dto/update-class.dto';
 import { Public, ResponseMessage } from '@/decorator/customize.decorator';
 import { QueryDto } from 'utils/types/query.dto';
-import { FilterClassDto, SortClassDto } from './dto/query-class.dto';
+import {
+  FilterClassDto,
+  FilterPublicClassDto,
+  SortClassDto,
+} from './dto/query-class.dto';
 import { Class } from './class.domain';
 import { Teacher } from 'modules/teachers/teacher.domain';
 import { AddStudentsDto } from './dto/add-students.dto';
@@ -69,7 +73,9 @@ export class ClassesController {
   @Get('public')
   @Public()
   @ResponseMessage('class.SUCCESS.GET_PUBLIC_CLASSES')
-  getPublicClasses(@Query() query: QueryDto<FilterClassDto, SortClassDto>) {
+  getPublicClasses(
+    @Query() query: QueryDto<FilterPublicClassDto, SortClassDto>,
+  ) {
     const page = query?.page;
     const limit = query?.limit;
     return this.classesService.getPublicClasses({
