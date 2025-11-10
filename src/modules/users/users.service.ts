@@ -12,6 +12,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { RoleEnum } from 'modules/roles/roles.enum';
 import { UserMapper } from './user.mapper';
 import { User } from './user.domain';
+import { FilesService } from 'modules/files/files.service';
 
 @Injectable()
 export class UsersService {
@@ -22,7 +23,7 @@ export class UsersService {
     @InjectRepository(ParentEntity) private parentRepository: Repository<ParentEntity>,
     @InjectRepository(StudentEntity) private studentRepository: Repository<StudentEntity>,
     @InjectRepository(TeacherEntity) private teacherRepository: Repository<TeacherEntity>,
-
+    private readonly filesService: FilesService
   ) { }
 
   async isEmailExist(email: string): Promise<boolean> {
@@ -115,6 +116,12 @@ export class UsersService {
       throw new NotFoundException(this.i18nService.t('user.FAIL.NOT_FOUND'));
     }
 
+    if (entity && entity.publicId && entity.avatar) {
+      await this.filesService.deleteFile(entity.publicId);
+      entity.avatar = null;
+      entity.publicId = null
+    }
+
     if (roleId !== RoleEnum.admin && entity.avatar && entity.publicId) {
       throw new BadRequestException('Avatar already exists. Please delete the current avatar before uploading a new one.');
     }
@@ -122,5 +129,55 @@ export class UsersService {
     entity.avatar = imageUrl;
     entity.publicId = publicId;
     await config.repo.save(entity);
+  }
+
+  async findUserById(userId: User['id']) {
+    const [user, parent, student, teacher] = await Promise.all([
+      this.userRepository.findOne({ where: { id: userId }, relations: ['role'] }),
+      this.parentRepository.findOne({ where: { id: userId }, relations: ['role'] }),
+      this.studentRepository.findOne({ where: { id: userId }, relations: ['role'] }),
+      this.teacherRepository.findOne({ where: { id: userId }, relations: ['role'] }),
+    ]);
+
+    return user || parent || student || teacher || null;
+  }
+
+  async assignRole(userId: string, roleId: RoleEnum): Promise<UserEntity | ParentEntity | StudentEntity | TeacherEntity> {
+    // Find the user in all possible tables
+    const user = await this.findUserById(userId);
+
+    if (!user) {
+      throw new NotFoundException(this.i18nService.t('user.FAIL.NOT_FOUND'));
+    }
+
+    // Get the current role to determine which repository to use
+    const currentRoleId = user.role?.id;
+
+    const repositoryMap: Record<string, Repository<any>> = {
+      [RoleEnum.admin]: this.userRepository,
+      [RoleEnum.teacher]: this.teacherRepository,
+      [RoleEnum.parent]: this.parentRepository,
+      [RoleEnum.student]: this.studentRepository,
+    };
+
+    const repository = repositoryMap[currentRoleId] || this.userRepository;
+
+    if (!repository) {
+      throw new BadRequestException('Invalid current role');
+    }
+
+    // Update the role
+    await repository.update(
+      { id: userId },
+      { role: { id: roleId } }
+    );
+
+    // Fetch and return the updated user
+    const updatedUser = await repository.findOne({
+      where: { id: userId },
+      relations: ['role']
+    });
+
+    return updatedUser;
   }
 }

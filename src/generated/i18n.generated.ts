@@ -113,10 +113,12 @@ export type I18nTranslations = {
             "GET_USER_PAGINATION": string;
             "UPDATE_A_USER": string;
             "DELETE_A_USER": string;
+            "ASSIGN_ROLE": string;
         };
         "FAIL": {
             "NOT_FOUND": string;
             "EMAIL_EXIST": string;
+            "INVALID_ROLE": string;
         };
     };
     "validation": {
