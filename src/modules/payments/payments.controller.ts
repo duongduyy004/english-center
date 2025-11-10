@@ -4,7 +4,7 @@ import { QueryDto } from 'utils/types/query.dto';
 import { FilterPaymentDto, SortPaymentDto } from './dto/query-payment.dto';
 import { Payment } from './payment.domain';
 import { PayStudentDto } from './dto/pay-student.dto';
-import { UserInfo } from '@/decorator/customize.decorator';
+import { Public, UserInfo } from '@/decorator/customize.decorator';
 import { RequestPaymentDto } from './dto/request-payment.dto';
 import { User } from '../users/user.domain';
 import { ProcessRequestPaymentDto } from './dto/process-request-payment.dto';
@@ -78,6 +78,7 @@ export class PaymentsController {
     return this.paymentsService.processRequestPayment(paymentRequestId, processRequestPaymentDto, user);
   }
 
+  @Public()
   @Post('confirm-payments')
   confirmPayment(@Body() confirmDto: ConfirmDto) {
     console.log(confirmDto)
