@@ -168,7 +168,16 @@ export class PaymentRepository {
 
         const { data } = await firstValueFrom(
             this.httpService.get(qrUrl))
-        return data && qrUrl
+        return data && {
+            qrUrl,
+            studentName: paymentEntity.student.name,
+            class: {
+                name: paymentEntity.class.name,
+                grade: paymentEntity.class.grade,
+                section: paymentEntity.class.section,
+                year: paymentEntity.class.year
+            }
+        }
     }
 
 
