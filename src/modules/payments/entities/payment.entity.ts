@@ -63,21 +63,16 @@ export class PaymentEntity {
     @BeforeInsert()
     @BeforeUpdate()
     generateReferenceCode() {
-        console.log('check gen ref code')
         if (!this.referenceCode) {
             const date = `${this.year}${this.month}`
-
-            console.log('check id', this.studentId, this.classId)
 
             const hash = crypto.createHash('sha256')
                 .update(`${this.studentId}-${this.classId}-${Date.now()}`)
                 .digest('hex')
                 .substring(0, 8)
                 .toUpperCase()
-            this.referenceCode = `${date}-${hash}`
-            console.log('check hash', hash)
+            this.referenceCode = `${date}${hash}`
         }
-        console.log('check ref code', this.referenceCode)
     }
 
     @BeforeUpdate()

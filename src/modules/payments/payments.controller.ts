@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Headers, Param, Patch, Query } from '@nestjs/common';
+import { Body, Controller, Get, Headers, Param, Patch, Post, Query } from '@nestjs/common';
 import { PaymentsService } from './payments.service';
 import { QueryDto } from 'utils/types/query.dto';
 import { FilterPaymentDto, SortPaymentDto } from './dto/query-payment.dto';
@@ -66,11 +66,11 @@ export class PaymentsController {
   }
 
   @Public()
-  @Get('confirm-payment')
+  @Post('confirm-payment')
   confirmPayment(
     @Body() confirmDto: ConfirmDto,
     @Headers('Authorization') apiKey: string
   ) {
-
+    return this.paymentsService.confirmPayment(confirmDto, apiKey)
   }
 }

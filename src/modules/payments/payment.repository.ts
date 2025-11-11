@@ -1,4 +1,4 @@
-import { BadRequestException, Inject, Injectable } from "@nestjs/common";
+import { BadRequestException, Inject, Injectable, UnauthorizedException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { PaymentEntity } from "./entities/payment.entity";
 import { Between, FindOptionsWhere, In, MoreThan, Repository } from "typeorm";
@@ -18,6 +18,7 @@ import { ConfigService } from "@nestjs/config";
 import { AllConfigType } from "config/config.type";
 import { catchError, firstValueFrom, Observable } from "rxjs";
 import { ConfirmDto } from "./dto/confirm.dto";
+import { PAYMENT_METHOD } from "utils/payments/constant";
 
 @Injectable()
 export class PaymentRepository {
@@ -152,16 +153,18 @@ export class PaymentRepository {
     async getQR(getQrDto: GetQRDto): Promise<any> {
         const bank = this.configService.get('payment.bank', { infer: true });
         const acc = this.configService.get('payment.acc', { infer: true });
+        const paymentEntity = await this.paymentsRepository.findOne({
+            where: { id: getQrDto.paymentId },
+            relations: { student: true, class: true }
+        })
 
-        const generateContent = () => {
-
-        }
+        const content = `${paymentEntity.student.name} ${paymentEntity.class.name} ${paymentEntity.referenceCode}`
 
         if (getQrDto && (!getQrDto.amount || getQrDto.amount <= 0)) {
             throw new BadRequestException('Số tiền phải là số nguyên lớn hơn 0')
         }
 
-        const qrUrl = `https://qr.sepay.vn/img?acc=${acc}&bank=${bank}&amount=${getQrDto.amount}&des=${getQrDto.des}&template=TEMPLATE&download=${getQrDto.download}`;
+        const qrUrl = `https://qr.sepay.vn/img?acc=${acc}&bank=${bank}&amount=${getQrDto.amount}&des=${content}&template=TEMPLATE&download=${getQrDto.download}`;
 
         const { data } = await firstValueFrom(
             this.httpService.get(qrUrl))
@@ -170,20 +173,28 @@ export class PaymentRepository {
 
 
 
-    async confirmPayment(confirmDto: ConfirmDto) {
-        //   ConfirmDto {                                                                                                                                                                                                                                 
-        //   id: 29904718,                                                                                                                                                                                                                              
-        //   gateway: 'MBBank',                                                                                                                                                                                                                         
-        //   transactionDate: '2025-11-10 16:19:00',                                                                                                                                                                                                    
-        //   accountNumber: '1509122004',                                                                                                                                                                                                               
-        //   code: null,                                                                                                                                                                                                                                
-        //   content: 'DUONG THE DUY chuyen tien',                                                                                                                                                                                                      
-        //   transferType: 'in',                                                                                                                                                                                                                        
-        //   transferAmount: 2000,                                                                                                                                                               
-        //   accumulated: 10000,                                                                                                                                                                                                                        
-        //   subAccount: null,                                                                                                                                                                                                                          
-        //   referenceCode: 'FT25314095259604',                                                                                                                                                                                                         
-        //   description: 'BankAPINotify DUONG THE DUY chuyen tien'                                                                                                                                                                                     
-        // }    
+    async confirmPayment(confirmDto: ConfirmDto, apiKey: string) {
+        const splitedContent = confirmDto.content.split(' ');
+
+        const referenceCode = splitedContent.at(splitedContent.length - 1);
+
+        const systemApiKey = this.configService.get('payment.apiKey', { infer: true })
+
+        if (apiKey !== `Apikey ${systemApiKey}`) throw new UnauthorizedException('Please authenticate')
+
+        const payment = await this.paymentsRepository.findOne({
+            where: { referenceCode }
+        })
+
+        if (confirmDto && confirmDto.transferType === 'in' && confirmDto.transferAmount > 0) {
+            this.handleProcessPayment(payment, {
+                amount: confirmDto.transferAmount,
+                method: PAYMENT_METHOD.BANK_TRANSFER,
+                note: confirmDto.content
+            })
+
+            await this.paymentsRepository.save(payment);
+        }
+        return { success: true }
     }
 }

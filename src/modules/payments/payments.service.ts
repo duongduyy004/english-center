@@ -7,6 +7,7 @@ import { Payment } from './payment.domain';
 import { PayStudentDto } from './dto/pay-student.dto';
 import { SessionEntity } from 'modules/sessions/entities/session.entity';
 import { GetQRDto } from './dto/get-QR.dto';
+import { ConfirmDto } from './dto/confirm.dto';
 
 @Injectable()
 export class PaymentsService {
@@ -31,6 +32,10 @@ export class PaymentsService {
 
   getQR(getQRDto: GetQRDto) {
     return this.paymentRepository.getQR(getQRDto)
+  }
+
+  confirmPayment(confirmDto: ConfirmDto, apiKey: string) {
+    return this.paymentRepository.confirmPayment(confirmDto, apiKey)
   }
 
 }
