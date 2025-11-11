@@ -71,7 +71,7 @@ export class PaymentEntity {
                 .digest('hex')
                 .substring(0, 8)
                 .toUpperCase()
-            this.referenceCode = `${date}-${hash}`
+            this.referenceCode = `${date}${hash}`
         }
     }
 
