@@ -59,7 +59,6 @@ export class PaymentsController {
     return this.paymentsService.payStudent(paymentId, payStudentDto)
   }
 
-  @Public()
   @Get('qrcode')
   getQRCode(@Body() getQrDto: GetQRDto) {
     return this.paymentsService.getQR(getQrDto);
