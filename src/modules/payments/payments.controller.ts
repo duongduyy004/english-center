@@ -60,7 +60,7 @@ export class PaymentsController {
   }
 
   @Get('qrcode')
-  getQRCode(@Body() getQrDto: GetQRDto) {
+  getQRCode(@Query() getQrDto: GetQRDto) {
     return this.paymentsService.getQR(getQrDto);
   }
 
