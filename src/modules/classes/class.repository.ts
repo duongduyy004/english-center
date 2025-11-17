@@ -36,7 +36,7 @@ export class ClassRepository {
     private auditLogService: AuditLogService,
     private clsService: ClsService,
     private studentsService: StudentsService,
-  ) {}
+  ) { }
 
   async create(
     data: Omit<
@@ -346,7 +346,7 @@ export class ClassRepository {
       },
     });
 
-    await this.classStudentRepository.save({ ...entity, isActive });
+    await this.classStudentRepository.save({ ...entity, isActive }, { listeners: false });
   }
 
   async getPublicClasses({
