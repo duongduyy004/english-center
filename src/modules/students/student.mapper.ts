@@ -10,7 +10,6 @@ export class StudentMapper {
         domainEntity.id = raw.id;
         domainEntity.name = raw.name;
         domainEntity.email = raw.email;
-        domainEntity.password = raw.password;
         domainEntity.gender = raw.gender;
         domainEntity.dayOfBirth = raw.dayOfBirth;
         domainEntity.address = raw.address;
@@ -32,7 +31,8 @@ export class StudentMapper {
                     section: item.class.section,
                     room: item.class.room,
                     schedule: item.class.schedule,
-                }
+                },
+                isActive: item.isActive
             }))
         }
         if (raw.parent) {

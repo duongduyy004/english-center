@@ -16,10 +16,10 @@ export class AttendanceSessionEntity {
     @Column({ nullable: true })
     note?: string
 
-    @ManyToOne(() => StudentEntity, student => student.attendance)
+    @ManyToOne(() => StudentEntity, student => student.attendance, { eager: true })
     student?: StudentEntity
 
-    @ManyToOne(() => SessionEntity, session => session.attendances)
+    @ManyToOne(() => SessionEntity, session => session.attendances, { eager: true })
     session?: SessionEntity
 
     isModified?: boolean;

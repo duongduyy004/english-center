@@ -10,7 +10,7 @@ import { AuditLogMapper } from "./audit-log.mapper";
 import { Injectable } from "@nestjs/common";
 import { InjectQueue } from "@nestjs/bullmq";
 import { Queue } from "bullmq";
-import { VN_ACTION, VN_ENTITY, VN_FIELD } from "@/utils/log.mapper";
+import { ENTITY_MAP, VN_ACTION, VN_ENTITY, VN_MAPS } from "utils/audit-log/log.constant";
 import _, { capitalize } from "lodash";
 
 // Import all mappers
@@ -32,6 +32,7 @@ import { TransactionMapper } from "@/modules/transactions/transaction.mapper";
 import { FeedbackMapper } from "@/modules/feedback/feedback.mapper";
 import { IntroductionMapper } from "@/modules/introduction/introduction.mapper";
 import { AuditLogAction } from "subscribers/audit-log.constants";
+import logMapper from "utils/audit-log/log.mapper";
 
 // Mapper registry - maps entity names to their respective mappers
 const ENTITY_MAPPER_REGISTRY: Record<string, any> = {
@@ -129,39 +130,23 @@ export class AuditLogRepository {
     }
 
     private generateDescription(data: CreateAuditLogDto) {
-        let returnData = {}
-        for (const field of data.changedFields) {
-            const vnField = VN_FIELD[field] || field;
-            if (!vnField || _.isArray(data.newValue[field]) || _.isArray(data.oldValue[field])) continue;
-            returnData = {
-                ...returnData,
-                [vnField]: {
-                    newValue: data.newValue[field],
-                    oldValue: data.oldValue[field]
-                }
-            }
-        }
+        let newValue = logMapper(data.newValue, ENTITY_MAP[data.entityName] || data.entityName);
+        let oldValue = logMapper(data.oldValue, ENTITY_MAP[data.entityName] || data.entityName);
 
         const userName = `<strong>${data.user.name}</strong>`;
         const userEmail = `<em>${data.user.email}</em>`;
         const entityName = `<strong>${VN_ENTITY[data.entityName] || data.entityName}</strong>`;
         const action = `<strong>${capitalize(VN_ACTION[data.action] || data.action)}</strong>`;
 
-        if (data.action === AuditLogAction.CREATE) {
-            const changeList = Object.keys(returnData).map(item =>
-                `<li><strong>${capitalize(item)}</strong>: <span style="color: green;">${returnData[item].newValue}</span></li>`
-            ).join('');
+        if (data.action === AuditLogAction.CREATE && newValue) {
+            const changeList = this.generateInsertAndDeleteList(newValue);
             return `${action} ${entityName} bởi ${userName} - ${userEmail}:<ul style="margin: 8px 0; padding-left: 20px;">${changeList}</ul>`;
         }
-        else if (data.action === AuditLogAction.UPDATE) {
-            const changeList = Object.keys(returnData).map(item =>
-                `<li><strong>${capitalize(item)}</strong>: <span style="color: #666;">${returnData[item].oldValue}</span> → <span style="color: blue;">${returnData[item].newValue}</span></li>`
-            ).join('');
+        else if (data.action === AuditLogAction.UPDATE && oldValue && newValue) {
+            const changeList = this.generateUpdateList(oldValue, newValue);
             return `${action} ${entityName} bởi ${userName} - ${userEmail}:<ul style="margin: 8px 0; padding-left: 20px;">${changeList}</ul>`;
-        } else if (data.action === AuditLogAction.DELETE) {
-            const changeList = Object.keys(returnData).map(item =>
-                `<li><strong>${capitalize(item)}</strong>: <span style="color: red; text-decoration: line-through;">${returnData[item].oldValue}</span></li>`
-            ).join('');
+        } else if (data.action === AuditLogAction.DELETE && oldValue) {
+            const changeList = this.generateInsertAndDeleteList(oldValue)
             return `${action} ${entityName} bởi ${userName} - ${userEmail}:<ul style="margin: 8px 0; padding-left: 20px;">${changeList}</ul>`;
         }
         return '';
@@ -173,13 +158,46 @@ export class AuditLogRepository {
         })
 
         const { entityId, entityName } = logEntity
+        const metadata = this.dataSource.getMetadata(entityName);
+        const relations = metadata.relations.map(rel => rel.propertyName);
         const repository = this.dataSource.getRepository(entityName);
+
         const entity = await repository.findOne({
-            where: { id: entityId }
+            where: { id: entityId },
+            relations
         })
 
         return this.mapEntityToDomain(entityName, entity);
+    }
 
+    private generateInsertAndDeleteList(data: any) {
+        let result = ""
+        if (Array.isArray(data) && typeof data[0] === 'object') return data.map(item => this.generateInsertAndDeleteList(item))
+        for (const [key, value] of Object.entries(data)) {
+            if (value === null || value === undefined) continue;
+            if (typeof value === 'object') {
+                result += `<li><strong>${capitalize(key)}</strong>: <span><ul>${this.generateInsertAndDeleteList(value)}</ul></span></li>`
+            }
+            else {
+                result += `<li><strong>${capitalize(key)}</strong>: <span style="color: green;">${value}</span></li>`
+            }
+        }
+        return result
+    }
+
+    private generateUpdateList(oldValue: any, newValue: any) {
+        let result = ""
+        if (Array.isArray(newValue) && typeof newValue[0] === 'object') return newValue.map((item, index) => this.generateUpdateList(oldValue[index], item))
+        for (const [key, value] of Object.entries(newValue)) {
+            if (value === null || value === undefined) continue;
+            if (typeof value === 'object') {
+                result += `<li><strong>${capitalize(key)}</strong>: <span><ul>${this.generateUpdateList(oldValue[key], value)}</ul></span></li>`
+            }
+            else {
+                result += `<li><strong>${capitalize(key)}</strong>: <span style="color: #666;">${oldValue[key]}</span> → <span style="color: blue;">${newValue[key]}</span></li>`
+            }
+        }
+        return result
     }
 
     private mapEntityToDomain(entityName: string, entity: any): any {
@@ -193,7 +211,7 @@ export class AuditLogRepository {
         }
 
         try {
-            return mapper.toDomain(entity);
+            return logMapper(mapper.toDomain(entity), ENTITY_MAP[entityName]);
         } catch (error) {
             console.error(`Error mapping ${entityName} to domain:`, error);
             return entity;

@@ -8,7 +8,7 @@ export class ParentMapper {
         domainEntity.id = raw.id;
         domainEntity.name = raw.name;
         domainEntity.email = raw.email;
-        domainEntity.password = raw.password;
+
         domainEntity.gender = raw.gender;
         domainEntity.dayOfBirth = raw.dayOfBirth;
         domainEntity.address = raw.address;

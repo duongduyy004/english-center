@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateStudentDto } from './dto/create-student.dto';
 import { UpdateStudentDto } from './dto/update-student.dto';
 import { StudentRepository } from './student.repository';
@@ -15,10 +19,10 @@ export class StudentsService {
   constructor(
     private studentRepository: StudentRepository,
     private usersService: UsersService,
-    private i18nSerivce: I18nService<I18nTranslations>
-  ) { }
+    private i18nSerivce: I18nService<I18nTranslations>,
+  ) {}
   async create(createStudentDto: CreateStudentDto) {
-    await this.usersService.isEmailExist(createStudentDto?.email)
+    await this.usersService.isEmailExist(createStudentDto?.email);
     return this.studentRepository.create(createStudentDto);
   }
 
@@ -31,32 +35,40 @@ export class StudentsService {
     sortOptions?: SortStudentDto[] | null;
     paginationOptions: IPaginationOptions;
   }): Promise<PaginationResponseDto<Student>> {
-    return this.studentRepository.findManyWithPagination({ filterOptions, sortOptions, paginationOptions })
+    return this.studentRepository.findManyWithPagination({
+      filterOptions,
+      sortOptions,
+      paginationOptions,
+    });
   }
 
   async findOne(id: Student['id']) {
-    const student = await this.studentRepository.findById(id)
-    if (!student) throw new NotFoundException(this.i18nSerivce.t('user.FAIL.NOT_FOUND'))
-    return student
+    const student = await this.studentRepository.findById(id);
+    if (!student)
+      throw new NotFoundException(this.i18nSerivce.t('user.FAIL.NOT_FOUND'));
+    return student;
   }
 
   async update(id: Student['id'], updateStudentDto: UpdateStudentDto) {
     if (updateStudentDto && updateStudentDto.email) {
-      this.usersService.isEmailExist(updateStudentDto?.email)
+      this.usersService.isEmailExist(updateStudentDto?.email);
     }
     return this.studentRepository.update(id, updateStudentDto);
   }
 
   async delete(id: Student['id']) {
-    await this.findOne(id)
+    await this.findOne(id);
     return this.studentRepository.delete(id);
   }
 
   async findStudents(ids: Student['id'][]) {
-    return await this.studentRepository.findStudents(ids)
+    return await this.studentRepository.findStudents(ids);
   }
 
   async getSchedule(id: Student['id']) {
-    return this.studentRepository.getSchedule(id)
+    return this.studentRepository.getSchedule(id);
+  }
+  async getStatistics() {
+    return this.studentRepository.getStatistics();
   }
 }

@@ -4,10 +4,10 @@ import { PaymentsController } from './payments.controller';
 import { PaymentEntity } from './entities/payment.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PaymentRepository } from './payment.repository';
-import { PaymentRequestEntity } from './entities/payment.request.entity';
+import { HttpModule, HttpService } from '@nestjs/axios';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([PaymentEntity, PaymentRequestEntity])],
+  imports: [TypeOrmModule.forFeature([PaymentEntity]), HttpModule],
   controllers: [PaymentsController],
   providers: [PaymentsService, PaymentRepository],
   exports: [PaymentsService]

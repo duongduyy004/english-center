@@ -49,6 +49,11 @@ import { RolesModule } from './modules/roles/roles.module';
 import { CacheModule } from '@nestjs/cache-manager';
 import { ArticlesModule } from './modules/articles/articles.module';
 import { DataSource } from 'typeorm';
+import { ScheduleModule } from '@nestjs/schedule';
+import { CronModule } from 'modules/cron/cron.module';
+import { HttpModule } from '@nestjs/axios';
+import { CacheConfigService } from 'cache/cache-config.service';
+import paymentConfig from 'config/configs/payment.config';
 
 @Module({
   imports: [
@@ -60,6 +65,7 @@ import { DataSource } from 'typeorm';
         jwtConfig,
         redisConfig,
         cloudinaryConfig,
+        paymentConfig
       ],
       envFilePath: ['.env'],
     }),
@@ -96,6 +102,17 @@ import { DataSource } from 'typeorm';
     BullModule.forRootAsync({
       useClass: RedisConfigService,
     }),
+    ScheduleModule.forRoot(),
+    HttpModule.registerAsync({
+      useFactory: () => ({
+        timeout: 5000,
+        maxRedirects: 5
+      })
+    }),
+    CacheModule.registerAsync({
+      isGlobal: true,
+      useClass: CacheConfigService
+    }),
     UsersModule,
     StudentsModule,
     ParentsModule,
@@ -116,7 +133,8 @@ import { DataSource } from 'typeorm';
     IntroductionModule,
     PermissionsModule,
     RolesModule,
-    ArticlesModule
+    ArticlesModule,
+    CronModule,
   ],
   controllers: [AppController],
   providers: [

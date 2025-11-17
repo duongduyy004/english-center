@@ -152,7 +152,7 @@ export class SessionRepository {
 
     const classInfo = await this.classesService.findOne(entity.classId)
     const studentIds = classInfo.students.map(item => {
-      if (item.isActivce) return item.student.id;
+      if (item.isActive) return item.student.id;
     });
     const statusCases = payload.map(item => `WHEN '${item.studentId}' THEN '${item.status}'`).join(' ')
     const noteCases = payload.map(item => `WHEN '${item.studentId}' THEN '${item.note || ''}'`).join(' ')

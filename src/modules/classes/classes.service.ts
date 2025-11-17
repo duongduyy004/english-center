@@ -26,8 +26,8 @@ export class ClassesService {
     private classRepository: ClassRepository,
     private teachersService: TeachersService,
     private studentsService: StudentsService,
-    private i18nService: I18nService<I18nTranslations>
-  ) { }
+    private i18nService: I18nService<I18nTranslations>,
+  ) {}
   create(createClassDto: CreateClassDto) {
     return this.classRepository.create(createClassDto);
   }
@@ -161,6 +161,24 @@ export class ClassesService {
     return this.classRepository.removeStudentsFromClass(id, students);
   }
 
+  async updateClassStatus() {
+    const classes = await this.classRepository.findAll();
+    for(const aclass of classes) {
+      const now = Date.now();
+      const startDate = new Date(aclass.schedule.start_date).getTime();
+      const endDate = new Date(aclass.schedule.end_date).getTime();
+      let newStatus = aclass.status;
+      if(now < startDate) {
+        newStatus = 'upcoming';
+      } else if(now > endDate) {
+        newStatus = 'closed';
+      } else {
+        newStatus = 'active';
+      }
+      await this.classRepository.update(aclass.id, { status: newStatus });
+    }
+  }
+
   private isDateOverlap(schedule1: Schedule, schedule2: Schedule) {
     return (
       schedule1.start_date <= schedule2.end_date &&
@@ -191,5 +209,38 @@ export class ClassesService {
 
   async findClassesByTeacherId(teacherId: Teacher['id']) {
     return this.classRepository.findClassesByTeacherId(teacherId);
+  }
+
+  async updateStudentStatus(
+    studentId: Student['id'],
+    classId: Class['id'],
+    isActive: boolean,
+  ) {
+    return this.classRepository.updateStudentStatus(
+      studentId,
+      classId,
+      isActive,
+    );
+  }
+
+  async getPublicClasses({
+    filterOptions,
+    sortOptions,
+    paginationOptions,
+  }: {
+    filterOptions?: FilterClassDto | null;
+    sortOptions?: SortClassDto[] | null;
+    paginationOptions: IPaginationOptions;
+  }): Promise<PaginationResponseDto<Class>> {
+    return this.classRepository.getPublicClasses({
+      filterOptions,
+      sortOptions,
+      paginationOptions,
+    });
+  }
+
+
+  async getInfoForBanner(id: Class['id']) {
+    return this.classRepository.getInfoForBanner(id);
   }
 }

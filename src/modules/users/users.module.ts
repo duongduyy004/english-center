@@ -6,6 +6,7 @@ import { StudentEntity } from 'modules/students/entities/student.entity';
 import { ParentEntity } from 'modules/parents/entities/parent.entity';
 import { TeacherEntity } from 'modules/teachers/entities/teacher.entity';
 import { UsersController } from './user.controller';
+import { FilesService } from 'modules/files/files.service';
 
 @Module({
   imports: [
@@ -17,7 +18,7 @@ import { UsersController } from './user.controller';
     ])
   ],
   controllers: [UsersController],
-  providers: [UsersService],
+  providers: [UsersService, FilesService],
   exports: [UsersService]
 })
 export class UsersModule { }

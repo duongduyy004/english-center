@@ -21,7 +21,6 @@ export class AuditLogController {
     });
   }
 
-  @Public()
   @Get(':id')
   getLogDetail(
     @Param('id') logId: string

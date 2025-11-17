@@ -42,6 +42,9 @@ class EnvironmentVariablesValidator {
 
     @IsString()
     TZ: string
+
+    @IsInt()
+    CACHE_TTL: number
 }
 
 export default registerAs<AppConfig>('app', () => {
@@ -49,6 +52,7 @@ export default registerAs<AppConfig>('app', () => {
     return {
         nodeEnv: process.env.NODE_ENV || 'development',
         timeZone: process.env.TZ,
+        cacheTTL: process.env.CACHE_TTL ? parseInt(process.env.CACHE_TTL, 10) * 1000 : 5000 * 1000,
         name: process.env.APP_NAME || 'app',
         frontendDomain: process.env.FRONTEND_DOMAIN,
         backendDomain: process.env.BACKEND_DOMAIN ?? 'http://localhost',

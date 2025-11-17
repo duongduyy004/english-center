@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateTeacherDto } from './dto/create-teacher.dto';
 import { UpdateTeacherDto } from './dto/update-teacher.dto';
 import { FilterTeacherDto, SortTeacherDto, TeacherRepository } from './teacher.repository';
@@ -41,9 +41,10 @@ export class TeachersService {
   }
 
   async update(id: Teacher['id'], updateTeacherDto: UpdateTeacherDto) {
-    await this.findOne(id)
-    if (updateTeacherDto && updateTeacherDto.email) {
-      this.usersService.isEmailExist(updateTeacherDto.email)
+    const teacher = await this.findOne(id)
+    if (updateTeacherDto && updateTeacherDto.email !== teacher.email) {
+      const isExist = await this.usersService.isEmailExist(updateTeacherDto.email)
+      if (isExist) throw new BadRequestException(this.i18nService.t('user.FAIL.EMAIL_EXIST'))
     }
     return this.teacherRepository.update(id, updateTeacherDto)
   }

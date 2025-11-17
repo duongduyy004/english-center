@@ -19,7 +19,7 @@ export class MenuEntity {
     isActive: boolean;
 
     @TreeChildren({ cascade: true })
-    children: MenuEntity[];
+    childrenMenu: MenuEntity[];
 
     @TreeParent({ onDelete: 'RESTRICT' })
     parentMenu: MenuEntity;

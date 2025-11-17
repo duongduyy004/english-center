@@ -17,7 +17,7 @@ export class ClassLessons {
   @Column()
   classId: Class['id'];
 
-  @OneToOne(() => ClassEntity)
+  @OneToOne(() => ClassEntity, { eager: true })
   @JoinColumn({ name: 'classId' })
   class: Partial<Class>;
 

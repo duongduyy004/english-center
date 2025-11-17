@@ -5,6 +5,7 @@ import { Public } from "@/decorator/customize.decorator";
 import { UserInfo } from "@/decorator/customize.decorator";
 import { User } from "./user.domain";
 import { UploadAvatarDto } from "./dto/upload-avatar.dto";
+import { AssignRoleDto } from "./dto/assign-role.dto";
 
 @Controller('user')
 export class UsersController {
@@ -19,5 +20,12 @@ export class UsersController {
     @Patch('avatar')
     uploadAvatar(@Body() uploadavatarDto: UploadAvatarDto, @UserInfo() user: User) {
         return this.usersService.uploadAvatar(uploadavatarDto.imageUrl, uploadavatarDto.publicId, user);
+    }
+
+    @Patch('role')
+    assignRole(
+        @Body() assignRoleDto: AssignRoleDto
+    ) {
+        return this.assignRole(assignRoleDto);
     }
 }

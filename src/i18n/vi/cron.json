@@ -1,0 +1,8 @@
+{
+  "SUCCESS": {
+    "UPDATE_CLASS_STATUS": "Cập nhật trạng thái lớp học thành công"
+  },
+  "FAIL": {
+    "UPDATE_CLASS_STATUS_FAIL": "Cập nhật trạng thái lớp học thất bại"
+  }
+}

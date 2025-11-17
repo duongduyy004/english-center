@@ -4,10 +4,12 @@
         "GET_A_USER": "Get a user success",
         "GET_USER_PAGINATION": "Fetch user with pagination",
         "UPDATE_A_USER": "Update a user success",
-        "DELETE_A_USER": "Delete a user success"
+        "DELETE_A_USER": "Delete a user success",
+        "ASSIGN_ROLE": "Role assigned successfully"
     },
     "FAIL": {
         "NOT_FOUND": "User not found",
-        "EMAIL_EXIST": "Email already exist"
+        "EMAIL_EXIST": "Email already exist",
+        "INVALID_ROLE": "Invalid role provided"
     }
 }

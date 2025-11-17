@@ -19,6 +19,7 @@ export class TeacherPayment {
     grade: number;
     section: number;
     year: number;
+    feePerLesson: number
   }[];
   histories: {
     method: string;

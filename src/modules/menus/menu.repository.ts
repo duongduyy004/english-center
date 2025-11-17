@@ -34,7 +34,7 @@ export class MenusRepository {
     async findById(id: Menu['id']) {
         return await this.menuRepository.findOne({
             where: { id },
-            relations: ['parent', 'children']
+            relations: ['parentMenu', 'childrenMenu']
         });
     }
 

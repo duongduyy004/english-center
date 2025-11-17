@@ -21,6 +21,8 @@ export type I18nTranslations = {
             "ADD_STUDENTS": string;
             "REMOVE_STUDENTS": string;
             "GET_AVAILABLE_STUDENTS": string;
+            "GET_CLASS_BANNER_INFO": string;
+            "GET_PUBLIC_CLASSES": string;
         };
         "FAIL": {
             "NOT_FOUND": string;
@@ -28,10 +30,20 @@ export type I18nTranslations = {
             "TEACHER_NOT_ASSIGNED": string;
             "STUDENT_ALREADY_IN_CLASS": string;
             "SCHEDULE_CONFLICT": string;
+            "CAN_NOT_GET_CLASS_BANNER_INFO": string;
+            "CAN_NOT_GET_PUBLIC_CLASSES": string;
         };
     };
     "common": {
         "NOT_FOUND": string;
+    };
+    "cron": {
+        "SUCCESS": {
+            "UPDATE_CLASS_STATUS": string;
+        };
+        "FAIL": {
+            "UPDATE_CLASS_STATUS_FAIL": string;
+        };
     };
     "dashboard": {
         "SUCCESS": {
@@ -101,10 +113,12 @@ export type I18nTranslations = {
             "GET_USER_PAGINATION": string;
             "UPDATE_A_USER": string;
             "DELETE_A_USER": string;
+            "ASSIGN_ROLE": string;
         };
         "FAIL": {
             "NOT_FOUND": string;
             "EMAIL_EXIST": string;
+            "INVALID_ROLE": string;
         };
     };
     "validation": {

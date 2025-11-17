@@ -4,10 +4,12 @@
         "GET_A_USER": "Lấy thông tin người dùng thành công",
         "GET_USER_PAGINATION": "Lấy người dùng với phân trang",
         "UPDATE_A_USER": "Cập nhật người dùng thành công",
-        "DELETE_A_USER": "Xóa người dùng thành công"
+        "DELETE_A_USER": "Xóa người dùng thành công",
+        "ASSIGN_ROLE": "Phân quyền thành công"
     },
     "FAIL": {
         "NOT_FOUND": "Không tìm thấy người dùng",
-        "EMAIL_EXIST": "Email đã tồn tại"
+        "EMAIL_EXIST": "Email đã tồn tại",
+        "INVALID_ROLE": "Vai trò không hợp lệ"
     }
 }

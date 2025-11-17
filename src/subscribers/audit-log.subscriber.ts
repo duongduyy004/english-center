@@ -118,7 +118,6 @@ export class AuditSubscriber implements EntitySubscriberInterface {
 
         // if trigger insert
         if (!oldEntity && newEntity) {
-            newEntity = this.convertNestedObject(newEntity)
             for (const key in newEntity) {
                 if (SKIP_FIELDS.includes(key) || newEntity[key] === undefined || null) continue;
                 changes[key] = {
@@ -131,7 +130,6 @@ export class AuditSubscriber implements EntitySubscriberInterface {
 
         // if trigger soft remove
         if (oldEntity && !newEntity) {
-            oldEntity = this.convertNestedObject(oldEntity);
             for (const key in oldEntity) {
                 if (SKIP_FIELDS.includes(key) || oldEntity[key] === undefined || null) continue;
                 changes[key] = {
@@ -144,8 +142,6 @@ export class AuditSubscriber implements EntitySubscriberInterface {
 
         // if trigger udpate
         if (oldEntity && newEntity) {
-            oldEntity = this.convertNestedObject(oldEntity);
-            newEntity = this.convertNestedObject(newEntity)
             for (const key in newEntity) {
                 if (SKIP_FIELDS.includes(key) || newEntity[key] === undefined || null) continue;
                 const oldValue = oldEntity && oldEntity[key] || null;
@@ -160,20 +156,6 @@ export class AuditSubscriber implements EntitySubscriberInterface {
             }
             return changes;
         }
-    }
-
-    private convertNestedObject(object: Object, parentKey = '', result = {}) {
-        for (const key in object) {
-            if (object.hasOwnProperty(key)) {
-                const newKey = parentKey ? `${parentKey}${capitalize(key)}` : key;
-                if (typeof object[key] === 'object' && object[key] !== null && !Array.isArray(object[key])) {
-                    this.convertNestedObject(object[key], newKey, result);
-                } else {
-                    result[newKey] = object[key];
-                }
-            }
-        }
-        return result;
     }
 
 }

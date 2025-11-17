@@ -1,9 +1,8 @@
-import { BeforeInsert, BeforeUpdate, Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { AfterInsert, BeforeInsert, BeforeUpdate, Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { StudentEntity } from "modules/students/entities/student.entity";
 import { ClassEntity } from "modules/classes/entities/class.entity";
 import { Student } from "modules/students/student.domain";
-import { PaymentRequestEntity } from "./payment.request.entity";
-
+import * as crypto from "crypto";
 
 export class Histories {
     method: string;
@@ -19,6 +18,9 @@ export class Histories {
 export class PaymentEntity {
     @PrimaryGeneratedColumn('uuid')
     id: string;
+
+    @Column({ unique: true, nullable: true })
+    referenceCode: string;
 
     @Column()
     month: number;
@@ -58,8 +60,20 @@ export class PaymentEntity {
     @Column('jsonb', { nullable: true, default: [] })
     histories: Histories[]
 
-    @OneToMany(() => PaymentRequestEntity, paymentRequests => paymentRequests.paymentId, { eager: true })
-    paymentRequests: PaymentRequestEntity[]
+    @BeforeInsert()
+    @BeforeUpdate()
+    generateReferenceCode() {
+        if (!this.referenceCode) {
+            const date = `${this.year}${this.month}`
+
+            const hash = crypto.createHash('sha256')
+                .update(`${this.studentId}-${this.classId}-${Date.now()}`)
+                .digest('hex')
+                .substring(0, 8)
+                .toUpperCase()
+            this.referenceCode = `${date}${hash}`
+        }
+    }
 
     @BeforeUpdate()
     @BeforeInsert()
@@ -72,7 +86,7 @@ export class PaymentEntity {
     @BeforeUpdate()
     updateStatus() {
         if (this.paidAmount === 0) this.status = 'pending';
-        else if (this.paidAmount < this.totalAmount) this.status = 'partial';
-        else if (this.paidAmount >= this.totalAmount) this.status = 'paid';
+        else if (this.paidAmount < this.totalAmount - this.discountPercent * this.totalAmount / 100) this.status = 'partial';
+        else if (this.paidAmount >= this.totalAmount - this.discountPercent * this.totalAmount / 100) this.status = 'paid';
     }
 }
