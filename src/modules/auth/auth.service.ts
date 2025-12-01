@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, HttpStatus, Injectable, NotFoundException, UnprocessableEntityException } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import { I18nService } from 'nestjs-i18n';
@@ -9,18 +9,21 @@ import { ConfigService } from '@nestjs/config';
 import { AllConfigType } from '@/config/config.type';
 import { Response } from 'express';
 import { RoleEnum } from '../roles/roles.enum';
+import { MailService } from 'modules/mail/mail.service';
+import { ForgotPasswordDto } from './dto/forgot-password.dto';
 @Injectable()
 export class AuthService {
   constructor(
     private usersService: UsersService,
     private jwtService: JwtService,
     private i18nService: I18nService<I18nTranslations>,
-    private configService: ConfigService<AllConfigType>
+    private configService: ConfigService<AllConfigType>,
+    private mailService: MailService
   ) { }
 
   async validateUser(email: string, pass: string): Promise<any> {
     const user = await this.usersService.findByEmail(email);
-    const isValid = this.usersService.isValidPassword(pass, user?.password || '')
+    const isValid = await this.usersService.isValidPassword(pass, user?.password || '')
     if (isValid) return user;
     return null;
   }
@@ -103,6 +106,113 @@ export class AuthService {
       }
     } catch (error) {
       throw new BadRequestException(error.message)
+    }
+  }
+
+
+  async sendVerifyEmail(user: User) {
+    const token = this.jwtService.sign(
+      {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+      },
+      {
+        secret: this.configService.get('jwt.jwt_confirm_email_secret', {
+          infer: true,
+        }),
+        expiresIn: this.configService.get(
+          'jwt.jwt_verify_email_expiration_minutes',
+          { infer: true },
+        ),
+      },
+    );
+    return this.mailService.verifyEmail({
+      to: user.email,
+      data: { token },
+    });
+  }
+
+  async verifyEmail(token: string) {
+    try {
+      const isValidToken = this.jwtService.verify(token, {
+        secret: this.configService.get('jwt.jwt_confirm_email_secret', {
+          infer: true,
+        }),
+      });
+      const userData = this.jwtService.decode(token);
+
+      const { id, email } = userData;
+
+      const user = await this.usersService.findByEmail(email);
+
+      if (!user) {
+        throw new UnprocessableEntityException({
+          status: HttpStatus.UNPROCESSABLE_ENTITY,
+          errors: {
+            user: 'userNotFound',
+          },
+        });
+      }
+      // Change status of isEmailVerified
+      user.isEmailVerified = true;
+      const updatedUser = await this.usersService.setVerifiedEmail(id, user);
+
+      if (!isValidToken) return false;
+      return 'valid token';
+    } catch (error) {
+      throw new BadRequestException('Invalid token');
+    }
+  }
+
+  async sendRequestPassword(email: string) {
+    const user = await this.usersService.findByEmail(email);
+
+    if (!user)
+      throw new BadRequestException('Email does not exist');
+
+    if (!user.isEmailVerified)
+      throw new UnprocessableEntityException(
+        this.i18nService.t('forgot-password.EMAIL_NOT_VERIFIED'),
+      );
+
+    const token = this.jwtService.sign(
+      {
+        email,
+      },
+      {
+        secret: this.configService.get('jwt.jwt_forgot_secret', {
+          infer: true,
+        }),
+        expiresIn: this.configService.get(
+          'jwt.jwt_reset_password_expiration_minutes',
+          { infer: true },
+        ),
+      },
+    );
+
+    return this.mailService.forgotPassword({
+      data: { token },
+      to: user.email,
+    });
+  }
+
+  async resetPassword(token: string, forgotPasswordDto: ForgotPasswordDto) {
+    try {
+      const payload = this.jwtService.verify(token, {
+        secret: this.configService.get('jwt.jwt_forgot_secret', {
+          infer: true,
+        }),
+      });
+
+      const { newPassword, confirmPassword } = forgotPasswordDto;
+      const { email } = payload;
+      if (newPassword !== confirmPassword)
+        throw new BadRequestException('Password not match');
+
+      return await this.usersService.resetPassword(email, newPassword);
+    } catch (error) {
+      throw new BadRequestException(error.message);
     }
   }
 }

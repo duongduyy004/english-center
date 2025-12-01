@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}}</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7fa;
+        }
+
+        .email-container {
+            max-width: 600px;
+            margin: 40px auto;
+            background-color: #ffffff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            margin: 0;
+            color: #ffffff;
+            font-size: 32px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .content {
+            padding: 40px 30px;
+        }
+
+        .greeting {
+            font-size: 20px;
+            color: #2d3748;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .message {
+            color: #4a5568;
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .button-container {
+            text-align: center;
+            margin: 40px 0;
+        }
+
+        .verify-button {
+            display: inline-block;
+            padding: 16px 48px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .verify-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(102, 126, 234, 0.5);
+        }
+
+        .alternative-link {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #e2e8f0;
+            font-size: 14px;
+            color: #718096;
+            line-height: 1.5;
+        }
+
+        .alternative-link a {
+            color: #667eea;
+            word-break: break-all;
+        }
+
+        .footer {
+            background-color: #f7fafc;
+            padding: 30px;
+            text-align: center;
+            color: #718096;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .footer-brand {
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 10px;
+        }
+
+        .divider {
+            height: 1px;
+            background: linear-gradient(to right, transparent, #e2e8f0, transparent);
+            margin: 30px 0;
+        }
+
+        .icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="email-container">
+        <div class="header">
+            <div class="icon">✉️</div>
+            <h1>{{app_name}}</h1>
+        </div>
+
+        <div class="content">
+            <div class="greeting">Hello! 👋</div>
+
+            <p class="message">
+                {{text1}}
+            </p>
+
+            <p class="message">
+                {{text2}}
+            </p>
+
+            <p class="message">
+                {{text3}}
+            </p>
+
+            <div class="button-container">
+                <a href="{{url}}" class="verify-button">{{actionTitle}}</a>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="alternative-link">
+                <p><strong>Button not working?</strong></p>
+                <p>Copy and paste this link into your browser:</p>
+                <p><a href="{{url}}">{{url}}</a></p>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="footer-brand">{{app_name}}</div>
+            <p>This email was sent to verify your email address.</p>
+            <p>If you didn't request this verification, please ignore this email.</p>
+            <p style="margin-top: 20px; font-size: 12px; color: #a0aec0;">
+                © {{currentYear}} {{app_name}}. All rights reserved.
+            </p>
+        </div>
+    </div>
+</body>
+
+</html>

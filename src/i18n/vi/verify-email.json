@@ -1,0 +1,21 @@
+{
+    "TITLE": "Xác Thực Địa Chỉ Email",
+    "GREETING": "Xin chào!",
+    "TEXT_1": "Cảm ơn bạn đã đăng ký tài khoản với {app_name}. Chúng tôi rất vui mừng được chào đón bạn!",
+    "TEXT_2": "Để hoàn tất đăng ký và bắt đầu sử dụng nền tảng của chúng tôi, vui lòng xác thực địa chỉ email của bạn bằng cách nhấp vào nút bên dưới.",
+    "TEXT_3": "Link xác thực này sẽ hết hạn sau {expirationTime} phút vì lý do bảo mật.",
+    "ACTION_TITLE": "Xác Thực Email",
+    "BUTTON_NOT_WORKING": "Nút không hoạt động?",
+    "COPY_LINK": "Sao chép và dán link này vào trình duyệt:",
+    "FOOTER_TEXT_1": "Email này được gửi để xác thực địa chỉ email của bạn.",
+    "FOOTER_TEXT_2": "Nếu bạn không yêu cầu xác thực này, vui lòng bỏ qua email này.",
+    "SUCCESS": {
+        "VERIFIED": "Xác thực email thành công",
+        "WELCOME": "Chào mừng bạn đến với {app_name}!"
+    },
+    "FAIL": {
+        "INVALID_TOKEN": "Mã xác thực không hợp lệ hoặc đã hết hạn",
+        "ALREADY_VERIFIED": "Email đã được xác thực",
+        "EXPIRED": "Link xác thực đã hết hạn. Vui lòng yêu cầu link mới."
+    }
+}

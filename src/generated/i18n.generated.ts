@@ -59,6 +59,15 @@ export type I18nTranslations = {
             "CAN_NOT_FETCH_PARENT_DASHBOARD": string;
         };
     };
+    "forgot-password": {
+        "TITLE": string;
+        "TEXT_1": string;
+        "TEXT_2": string;
+        "TEXT_3": string;
+        "TEXT_4": string;
+        "ACTION_TITLE": string;
+        "EMAIL_NOT_VERIFIED": string;
+    };
     "registration": {
         "SUCCESS": {
             "CREATE_A_REGISTRATION": string;
@@ -130,6 +139,27 @@ export type I18nTranslations = {
         "MIN_VALUE": string;
         "MAX_VALUE": string;
         "INVALID_ENUM_VALUE": string;
+    };
+    "verify-email": {
+        "TITLE": string;
+        "GREETING": string;
+        "TEXT_1": string;
+        "TEXT_2": string;
+        "TEXT_3": string;
+        "ACTION_TITLE": string;
+        "BUTTON_NOT_WORKING": string;
+        "COPY_LINK": string;
+        "FOOTER_TEXT_1": string;
+        "FOOTER_TEXT_2": string;
+        "SUCCESS": {
+            "VERIFIED": string;
+            "WELCOME": string;
+        };
+        "FAIL": {
+            "INVALID_TOKEN": string;
+            "ALREADY_VERIFIED": string;
+            "EXPIRED": string;
+        };
     };
 };
 /* prettier-ignore */

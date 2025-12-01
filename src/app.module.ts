@@ -54,6 +54,7 @@ import { CronModule } from 'modules/cron/cron.module';
 import { HttpModule } from '@nestjs/axios';
 import { CacheConfigService } from 'cache/cache-config.service';
 import paymentConfig from 'config/configs/payment.config';
+import mailerConfig from 'config/configs/mailer.config';
 
 @Module({
   imports: [
@@ -65,7 +66,8 @@ import paymentConfig from 'config/configs/payment.config';
         jwtConfig,
         redisConfig,
         cloudinaryConfig,
-        paymentConfig
+        paymentConfig,
+        mailerConfig
       ],
       envFilePath: ['.env'],
     }),
@@ -147,10 +149,10 @@ import paymentConfig from 'config/configs/payment.config';
       provide: APP_GUARD,
       useClass: JwtAuthGuard,
     },
-    {
-      provide: APP_GUARD,
-      useClass: RolesGuard,
-    },
+    // {
+    //   provide: APP_GUARD,
+    //   useClass: RolesGuard,
+    // },
     {
       provide: APP_INTERCEPTOR,
       useClass: HttpLoggerInterceptor,
