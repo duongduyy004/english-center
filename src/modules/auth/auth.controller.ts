@@ -8,6 +8,7 @@ import { I18nTranslations } from '@/generated/i18n.generated';
 import { RoleEnum } from '../roles/roles.enum';
 import { User } from 'modules/users/user.domain';
 import { ForgotPasswordDto } from './dto/forgot-password.dto';
+import { ChangePasswordDto } from './dto/change-password.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -78,6 +79,14 @@ export class AuthController {
     @Body() forgotPasswordDto: ForgotPasswordDto
   ) {
     return this.authService.resetPassword(token, forgotPasswordDto);
+  }
+
+  @Patch('change-password')
+  changePassword(
+    @Body() changePasswordDto: ChangePasswordDto,
+    @UserInfo() user: User
+  ) {
+    return this.authService.changePassword(user.id, changePasswordDto);
   }
 
 }

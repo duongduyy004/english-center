@@ -11,6 +11,7 @@ import { Response } from 'express';
 import { RoleEnum } from '../roles/roles.enum';
 import { MailService } from 'modules/mail/mail.service';
 import { ForgotPasswordDto } from './dto/forgot-password.dto';
+import { ChangePasswordDto } from './dto/change-password.dto';
 @Injectable()
 export class AuthService {
   constructor(
@@ -214,5 +215,20 @@ export class AuthService {
     } catch (error) {
       throw new BadRequestException(error.message);
     }
+  }
+
+  async changePassword(userId: User['id'], changePasswordDto: ChangePasswordDto) {
+    const user = await this.usersService.findUserById(userId);
+
+    if (!user) throw new BadRequestException('User not found');
+
+    const isValidPassword = this.usersService.isValidPassword(changePasswordDto.oldPassword, user.password);
+    if (!isValidPassword) throw new BadRequestException('Old password is incorrect');
+
+    if (changePasswordDto.newPassword !== changePasswordDto.confirmPassword) throw new BadRequestException('Password not match');
+
+    user.password = changePasswordDto.newPassword;
+
+    await this.usersService.resetPassword(user.email, changePasswordDto.newPassword);
   }
 }
