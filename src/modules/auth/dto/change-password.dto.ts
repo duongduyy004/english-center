@@ -1,18 +1,18 @@
-import { IsString, MinLength, MaxLength, Matches, IsNotEmpty } from 'class-validator';
-import { PASSWORD_REGEX } from '@/utils/constants';
+import { IsNotEmpty, IsString, Matches } from "class-validator";
+import { PASSWORD_REGEX } from "utils/constants";
 
 export class ChangePasswordDto {
+    @IsNotEmpty()
     @IsString()
     @Matches(PASSWORD_REGEX)
-    @IsNotEmpty()
     oldPassword: string;
 
+    @IsNotEmpty()
     @IsString()
     @Matches(PASSWORD_REGEX)
-    @IsNotEmpty()
     newPassword: string;
 
-    @IsString()
     @IsNotEmpty()
+    @IsString()
     confirmPassword: string;
 }

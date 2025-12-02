@@ -142,16 +142,20 @@
                 {{text3}}
             </p>
 
-            <div class="button-container">
-                <a href="{{url}}" class="verify-button">{{actionTitle}}</a>
+            <div
+                style="background-color: #f0f4f8; border-radius: 8px; padding: 25px; text-align: center; margin: 30px 0;">
+                <div style="font-size: 14px; color: #718096; margin-bottom: 10px;">Your Verification Code:</div>
+                <div
+                    style="font-size: 36px; font-weight: 700; color: #667eea; letter-spacing: 4px; font-family: 'Courier New', monospace;">
+                    {{otp}}</div>
+                <div style="font-size: 13px; color: #a0aec0; margin-top: 15px;">Valid for 5 minutes</div>
             </div>
 
             <div class="divider"></div>
 
             <div class="alternative-link">
-                <p><strong>Button not working?</strong></p>
-                <p>Copy and paste this link into your browser:</p>
-                <p><a href="{{url}}">{{url}}</a></p>
+                <p><strong>Didn't request this?</strong></p>
+                <p>If you didn't request email verification, please ignore this email. Your account is secure.</p>
             </div>
         </div>
 

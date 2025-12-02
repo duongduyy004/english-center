@@ -62,8 +62,11 @@ export class AuthController {
   }
 
   @Patch('verify-email')
-  verifyEmail(@Query('token') token: string) {
-    return this.authService.verifyEmail(token);
+  verifyEmail(
+    @Query('code') code: string,
+    @UserInfo() user: User
+  ) {
+    return this.authService.verifyEmail(code, user.id);
   }
 
   @Public()
@@ -75,10 +78,10 @@ export class AuthController {
   @Public()
   @Patch('reset-password')
   resetPassword(
-    @Query('token') token: string,
+    @Query('code') code: string,
     @Body() forgotPasswordDto: ForgotPasswordDto
   ) {
-    return this.authService.resetPassword(token, forgotPasswordDto);
+    return this.authService.resetPassword(code, forgotPasswordDto);
   }
 
   @Patch('change-password')

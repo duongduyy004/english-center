@@ -3,15 +3,14 @@ import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import { I18nService } from 'nestjs-i18n';
 import { I18nTranslations } from '@/generated/i18n.generated';
-import * as bcrypt from 'bcrypt'
 import { User } from '../users/user.domain';
 import { ConfigService } from '@nestjs/config';
 import { AllConfigType } from '@/config/config.type';
 import { Response } from 'express';
-import { RoleEnum } from '../roles/roles.enum';
 import { MailService } from 'modules/mail/mail.service';
 import { ForgotPasswordDto } from './dto/forgot-password.dto';
 import { ChangePasswordDto } from './dto/change-password.dto';
+import { OtpService } from 'modules/otp/otp.service';
 @Injectable()
 export class AuthService {
   constructor(
@@ -19,7 +18,8 @@ export class AuthService {
     private jwtService: JwtService,
     private i18nService: I18nService<I18nTranslations>,
     private configService: ConfigService<AllConfigType>,
-    private mailService: MailService
+    private mailService: MailService,
+    private otpService: OtpService
   ) { }
 
   async validateUser(email: string, pass: string): Promise<any> {
@@ -112,40 +112,21 @@ export class AuthService {
 
 
   async sendVerifyEmail(user: User) {
-    const token = this.jwtService.sign(
-      {
-        id: user.id,
-        name: user.name,
-        email: user.email,
-      },
-      {
-        secret: this.configService.get('jwt.jwt_confirm_email_secret', {
-          infer: true,
-        }),
-        expiresIn: this.configService.get(
-          'jwt.jwt_verify_email_expiration_minutes',
-          { infer: true },
-        ),
-      },
-    );
+    const otp = await this.otpService.generateOtp(user.id);
+
     return this.mailService.verifyEmail({
       to: user.email,
-      data: { token },
+      data: { otp },
     });
   }
 
-  async verifyEmail(token: string) {
+  async verifyEmail(otp: string, userId: User['id']) {
     try {
-      const isValidToken = this.jwtService.verify(token, {
-        secret: this.configService.get('jwt.jwt_confirm_email_secret', {
-          infer: true,
-        }),
-      });
-      const userData = this.jwtService.decode(token);
+      const isValidOTP = this.otpService.verifyOtp(otp);
 
-      const { id, email } = userData;
+      if (!isValidOTP) throw new BadRequestException('Invalid OTP')
 
-      const user = await this.usersService.findByEmail(email);
+      const user = await this.usersService.findUserById(userId);
 
       if (!user) {
         throw new UnprocessableEntityException({
@@ -155,12 +136,11 @@ export class AuthService {
           },
         });
       }
+
       // Change status of isEmailVerified
       user.isEmailVerified = true;
-      const updatedUser = await this.usersService.setVerifiedEmail(id, user);
-
-      if (!isValidToken) return false;
-      return 'valid token';
+      await this.usersService.setVerifiedEmail(userId, user);
+      return 'success';
     } catch (error) {
       throw new BadRequestException('Invalid token');
     }
@@ -177,41 +157,26 @@ export class AuthService {
         this.i18nService.t('forgot-password.EMAIL_NOT_VERIFIED'),
       );
 
-    const token = this.jwtService.sign(
-      {
-        email,
-      },
-      {
-        secret: this.configService.get('jwt.jwt_forgot_secret', {
-          infer: true,
-        }),
-        expiresIn: this.configService.get(
-          'jwt.jwt_reset_password_expiration_minutes',
-          { infer: true },
-        ),
-      },
-    );
+    const otp = await this.otpService.generateOtp(user.id);
 
     return this.mailService.forgotPassword({
-      data: { token },
+      data: { otp },
       to: user.email,
     });
   }
 
-  async resetPassword(token: string, forgotPasswordDto: ForgotPasswordDto) {
+  async resetPassword(otp: string, forgotPasswordDto: ForgotPasswordDto) {
     try {
-      const payload = this.jwtService.verify(token, {
-        secret: this.configService.get('jwt.jwt_forgot_secret', {
-          infer: true,
-        }),
-      });
+      const isValidOTP = this.otpService.verifyOtp(otp);
+
+      if (!isValidOTP) throw new BadRequestException('Invalid OTP')
 
       const { newPassword, confirmPassword } = forgotPasswordDto;
-      const { email } = payload;
+
       if (newPassword !== confirmPassword)
         throw new BadRequestException('Password not match');
 
-      return await this.usersService.resetPassword(email, newPassword);
+      return await this.usersService.resetPassword(forgotPasswordDto.email, newPassword);
     } catch (error) {
       throw new BadRequestException(error.message);
     }
