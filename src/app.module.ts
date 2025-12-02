@@ -55,6 +55,8 @@ import { HttpModule } from '@nestjs/axios';
 import { CacheConfigService } from 'cache/cache-config.service';
 import paymentConfig from 'config/configs/payment.config';
 import mailerConfig from 'config/configs/mailer.config';
+import otpConfig from 'config/configs/otp.config';
+import { OtpModule } from 'modules/otp/otp.module';
 
 @Module({
   imports: [
@@ -67,7 +69,8 @@ import mailerConfig from 'config/configs/mailer.config';
         redisConfig,
         cloudinaryConfig,
         paymentConfig,
-        mailerConfig
+        mailerConfig,
+        otpConfig
       ],
       envFilePath: ['.env'],
     }),
@@ -137,6 +140,7 @@ import mailerConfig from 'config/configs/mailer.config';
     RolesModule,
     ArticlesModule,
     CronModule,
+    OtpModule
   ],
   controllers: [AppController],
   providers: [
