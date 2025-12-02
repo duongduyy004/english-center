@@ -111,8 +111,8 @@ export class ParentRepository {
             throw new Error('Parent not found');
         }
 
-        await this.parentRepository.save({ ...entity, ...payload, role: { id: entity.role.id } })
-        return ParentMapper.toDomain(entity);
+        const newEntity = await this.parentRepository.save({ ...entity, ...payload, role: { id: entity.role.id } })
+        return ParentMapper.toDomain(newEntity);
     }
 
     async delete(id: Parent['id']): Promise<void> {
