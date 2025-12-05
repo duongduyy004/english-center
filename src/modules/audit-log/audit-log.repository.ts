@@ -59,7 +59,7 @@ const ENTITY_MAPPER_REGISTRY: Record<string, any> = {
 export class AuditLogRepository {
     constructor(
         @InjectRepository(AuditLogEntity) private auditLogRepository: Repository<AuditLogEntity>,
-        @InjectQueue('audit-log') private auditLogQueue: Queue,
+        // @InjectQueue('audit-log') private auditLogQueue: Queue,
         private readonly dataSource: DataSource
     ) { }
 
@@ -126,7 +126,7 @@ export class AuditLogRepository {
     }
 
     async pushLog(log: CreateAuditLogDto) {
-        await this.auditLogQueue.add('createLog', log)
+        // await this.auditLogQueue.add('createLog', log)
     }
 
     private generateDescription(data: CreateAuditLogDto) {

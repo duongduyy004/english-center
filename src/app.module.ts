@@ -57,6 +57,7 @@ import paymentConfig from 'config/configs/payment.config';
 import mailerConfig from 'config/configs/mailer.config';
 import otpConfig from 'config/configs/otp.config';
 import { OtpModule } from 'modules/otp/otp.module';
+import { NotificationsModule } from './modules/notifications/notifications.module';
 
 @Module({
   imports: [
@@ -104,9 +105,9 @@ import { OtpModule } from 'modules/otp/otp.module';
       global: true,
       middleware: { mount: true },
     }),
-    BullModule.forRootAsync({
-      useClass: RedisConfigService,
-    }),
+    // BullModule.forRootAsync({
+    //   useClass: RedisConfigService,
+    // }),
     ScheduleModule.forRoot(),
     HttpModule.registerAsync({
       useFactory: () => ({
@@ -114,10 +115,10 @@ import { OtpModule } from 'modules/otp/otp.module';
         maxRedirects: 5
       })
     }),
-    CacheModule.registerAsync({
-      isGlobal: true,
-      useClass: CacheConfigService
-    }),
+    // CacheModule.registerAsync({
+    //   isGlobal: true,
+    //   useClass: CacheConfigService
+    // }),
     UsersModule,
     StudentsModule,
     ParentsModule,
@@ -140,7 +141,8 @@ import { OtpModule } from 'modules/otp/otp.module';
     RolesModule,
     ArticlesModule,
     CronModule,
-    OtpModule
+    OtpModule,
+    NotificationsModule
   ],
   controllers: [AppController],
   providers: [
