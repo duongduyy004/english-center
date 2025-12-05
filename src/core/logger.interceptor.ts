@@ -27,9 +27,9 @@ export class HttpLoggerInterceptor implements NestInterceptor {
         const { method, originalUrl } = req;
         const userInfor = name && email ? `${name}:${email}` : 'Guest User';
 
-        ClsServiceManager.getClsService().set('user', req.user);
-        ClsServiceManager.getClsService().set('method', req.method);
-        ClsServiceManager.getClsService().set('path', req.originalUrl);
+        ClsServiceManager.getClsService().set('user', req.user ?? null);
+        ClsServiceManager.getClsService().set('method', req.method ?? null);
+        ClsServiceManager.getClsService().set('path', req.originalUrl ?? null);
 
         return next.handle().pipe(
             tap(() => {
