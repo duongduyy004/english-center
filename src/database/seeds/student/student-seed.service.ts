@@ -33,8 +33,7 @@ export class StudentSeedService {
                     address: item.address,
                     isEmailVerified: false,
                     role: RoleEnum[item.role]
-                }),
-                { listeners: false }
+                })
             )
         }
     }

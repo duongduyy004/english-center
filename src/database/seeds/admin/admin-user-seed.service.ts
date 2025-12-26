@@ -40,7 +40,7 @@ export class AdminUserSeedService {
                 role: adminRole,
             });
 
-            await this.userRepository.save(admin, { listeners: false });
+            await this.userRepository.save(admin);
             console.log('Default admin user created successfully');
             console.log('Email: admin@gmail.com');
             console.log('Password: password123');

@@ -8,10 +8,11 @@ import { TeacherSeedService } from './teacher/teacher-seed.service';
 import { ParentSeedService } from './parent/parent-seed.service';
 import { MenuSeedService } from './menu/menu-seed.service';
 import { PermissionSeedService } from './permission/permission-seed.service';
+import { AuditSubscriber } from 'subscribers/audit-log.subscriber';
 
 const runSeed = async () => {
     const app = await NestFactory.create(SeedModule);
-
+    AuditSubscriber.skipAuditLog = true;
     // run seeds in order
     console.log('Seeding roles...');
     await app.get(RoleSeedService).run();
@@ -19,14 +20,14 @@ const runSeed = async () => {
     console.log('Seeding admin user...');
     await app.get(AdminUserSeedService).run();
 
-    console.log('Seeding classes...');
-    await app.get(ClassSeedService).run();
-
     console.log('Seeding students...')
     await app.get(StudentSeedService).run();
 
     console.log('Seeding teachers...')
     await app.get(TeacherSeedService).run();
+
+    console.log('Seeding classes...');
+    await app.get(ClassSeedService).run();
 
     console.log('Seeding parents...')
     await app.get(ParentSeedService).run();
