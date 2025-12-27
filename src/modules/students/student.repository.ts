@@ -19,7 +19,7 @@ export class StudentRepository {
   constructor(
     @InjectRepository(StudentEntity)
     private studentRepository: Repository<StudentEntity>,
-  ) {}
+  ) { }
 
   async create(
     data: Omit<
@@ -131,13 +131,13 @@ export class StudentRepository {
       throw new Error('Student not found');
     }
 
-    await this.studentRepository.save({
+    const newEntity = await this.studentRepository.save({
       ...entity,
       ...payload,
       role: { id: entity.role.id },
     });
 
-    return StudentMapper.toDomain(entity);
+    return StudentMapper.toDomain(newEntity);
   }
 
   async delete(id: Student['id']): Promise<void> {

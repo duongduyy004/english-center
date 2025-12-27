@@ -122,13 +122,13 @@ export class TeacherRepository {
       where: { id },
     });
 
-    await this.teacherRepository.save({
+    const newEntity = await this.teacherRepository.save({
       ...entity,
       ...payload,
       role: { id: entity.role.id },
     });
 
-    return TeacherMapper.toDomain(entity);
+    return TeacherMapper.toDomain(newEntity);
   }
 
   async delete(id: Teacher['id']): Promise<void> {

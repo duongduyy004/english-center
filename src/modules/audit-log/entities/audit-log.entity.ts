@@ -28,13 +28,13 @@ export class AuditLogEntity {
     @Column({ nullable: true })
     entityId: string;
 
-    @Column()
+    @Column({ nullable: true })
     path: string;
 
     @Column()
     description: string;
 
-    @Column()
+    @Column({ nullable: true })
     method: string;
 
     @Column()

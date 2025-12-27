@@ -36,3 +36,6 @@ lerna-debug.log*
 
 .env
 storage
+
+docker-compose.yml
+Dockerfile

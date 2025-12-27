@@ -1,0 +1,21 @@
+{
+    "TITLE": "Verify Your Email Address",
+    "GREETING": "Hello!",
+    "TEXT_1": "Thank you for signing up with {app_name}. We're excited to have you on board!",
+    "TEXT_2": "To complete your registration and start using our platform, please verify your email address by clicking the button below.",
+    "TEXT_3": "This verification link will expire in {expirationTime} minutes for security purposes.",
+    "ACTION_TITLE": "Verify Email Address",
+    "BUTTON_NOT_WORKING": "Button not working?",
+    "COPY_LINK": "Copy and paste this link into your browser:",
+    "FOOTER_TEXT_1": "This email was sent to verify your email address.",
+    "FOOTER_TEXT_2": "If you didn't request this verification, please ignore this email.",
+    "SUCCESS": {
+        "VERIFIED": "Email verified successfully",
+        "WELCOME": "Welcome to {{app_name}}!"
+    },
+    "FAIL": {
+        "INVALID_TOKEN": "Invalid or expired verification token",
+        "ALREADY_VERIFIED": "Email already verified",
+        "EXPIRED": "Verification link has expired. Please request a new one."
+    }
+}

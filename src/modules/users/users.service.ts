@@ -180,4 +180,25 @@ export class UsersService {
 
     return updatedUser;
   }
+
+  async resetPassword(email: string, newPassword: string) {
+    const user = await this.findByEmail(email);
+    user.password = newPassword;
+    return await this.userRepository.save(user);
+  }
+
+  async setVerifiedEmail(id: User['id'], user: UserEntity) {
+    const currentRoleId = user.role?.id;
+
+    const repositoryMap: Record<string, Repository<any>> = {
+      [RoleEnum.admin]: this.userRepository,
+      [RoleEnum.teacher]: this.teacherRepository,
+      [RoleEnum.parent]: this.parentRepository,
+      [RoleEnum.student]: this.studentRepository,
+    };
+
+    const repository = repositoryMap[currentRoleId] || this.userRepository;
+
+    return await repository.update({ id: user.id }, { isEmailVerified: true })
+  }
 }

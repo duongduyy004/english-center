@@ -4,6 +4,8 @@ import { JwtConfig } from './types/jwt-config.type';
 import { RedisConfig } from './types/redis-config.type';
 import { CloudinaryConfig } from './types/cloudinary-config.type';
 import { PaymentConfig } from "./types/payment-config.type"
+import { MailerConfig } from './types/mailer-config.type';
+import { OtpConfig } from './types/otp-config.type';
 
 export type AllConfigType = {
     app: AppConfig;
@@ -12,4 +14,6 @@ export type AllConfigType = {
     redis: RedisConfig;
     cloudinary: CloudinaryConfig,
     payment: PaymentConfig;
+    mailer: MailerConfig;
+    otp: OtpConfig
 };

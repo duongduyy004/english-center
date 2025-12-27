@@ -8,12 +8,14 @@ import { AuditLogAction, SKIP_FIELDS } from './audit-log.constants';
 @EventSubscriber()
 @Injectable()
 export class AuditSubscriber implements EntitySubscriberInterface {
+    public static skipAuditLog = false;
     private auditLogQueue: AuditLog[] = []
     listenTo(): Function | string {
         return Object;
     }
 
     async afterInsert(event: InsertEvent<any>) {
+                if (AuditSubscriber.skipAuditLog) return;
         if (event.metadata.name === 'AttendanceSessionEntity') return;
         if (event.entity) {
             const user = ClsServiceManager.getClsService().get('user');
@@ -48,6 +50,7 @@ export class AuditSubscriber implements EntitySubscriberInterface {
     }
 
     async beforeUpdate(event: UpdateEvent<any>) {
+        if (AuditSubscriber.skipAuditLog) return;
         if (event.entity && event.databaseEntity) {
             const user = ClsServiceManager.getClsService().get('user');
             const method = ClsServiceManager.getClsService().get('method');
@@ -81,6 +84,7 @@ export class AuditSubscriber implements EntitySubscriberInterface {
     }
 
     async beforeSoftRemove(event: SoftRemoveEvent<any>) {
+                if (AuditSubscriber.skipAuditLog) return;
         if (event.databaseEntity) {
             const user = ClsServiceManager.getClsService().get('user');
             const method = ClsServiceManager.getClsService().get('method');

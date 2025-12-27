@@ -54,6 +54,10 @@ import { CronModule } from 'modules/cron/cron.module';
 import { HttpModule } from '@nestjs/axios';
 import { CacheConfigService } from 'cache/cache-config.service';
 import paymentConfig from 'config/configs/payment.config';
+import mailerConfig from 'config/configs/mailer.config';
+import otpConfig from 'config/configs/otp.config';
+import { OtpModule } from 'modules/otp/otp.module';
+// import { NotificationsModule } from './modules/notifications/notifications.module';
 
 @Module({
   imports: [
@@ -65,7 +69,9 @@ import paymentConfig from 'config/configs/payment.config';
         jwtConfig,
         redisConfig,
         cloudinaryConfig,
-        paymentConfig
+        paymentConfig,
+        mailerConfig,
+        otpConfig
       ],
       envFilePath: ['.env'],
     }),
@@ -99,9 +105,9 @@ import paymentConfig from 'config/configs/payment.config';
       global: true,
       middleware: { mount: true },
     }),
-    BullModule.forRootAsync({
-      useClass: RedisConfigService,
-    }),
+    // BullModule.forRootAsync({
+    //   useClass: RedisConfigService,
+    // }),
     ScheduleModule.forRoot(),
     HttpModule.registerAsync({
       useFactory: () => ({
@@ -109,10 +115,10 @@ import paymentConfig from 'config/configs/payment.config';
         maxRedirects: 5
       })
     }),
-    CacheModule.registerAsync({
-      isGlobal: true,
-      useClass: CacheConfigService
-    }),
+    // CacheModule.registerAsync({
+    //   isGlobal: true,
+    //   useClass: CacheConfigService
+    // }),
     UsersModule,
     StudentsModule,
     ParentsModule,
@@ -135,6 +141,8 @@ import paymentConfig from 'config/configs/payment.config';
     RolesModule,
     ArticlesModule,
     CronModule,
+    OtpModule,
+    // NotificationsModule
   ],
   controllers: [AppController],
   providers: [
@@ -147,10 +155,10 @@ import paymentConfig from 'config/configs/payment.config';
       provide: APP_GUARD,
       useClass: JwtAuthGuard,
     },
-    {
-      provide: APP_GUARD,
-      useClass: RolesGuard,
-    },
+    // {
+    //   provide: APP_GUARD,
+    //   useClass: RolesGuard,
+    // },
     {
       provide: APP_INTERCEPTOR,
       useClass: HttpLoggerInterceptor,

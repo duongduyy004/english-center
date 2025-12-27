@@ -9,9 +9,9 @@ import { BullModule } from '@nestjs/bullmq';
 @Module({
   imports: [
     TypeOrmModule.forFeature([AuditLogEntity]),
-    BullModule.registerQueue({
-      name: 'audit-log'
-    })
+    // BullModule.registerQueue({
+    //   name: 'audit-log'
+    // })
   ],
   controllers: [AuditLogController],
   providers: [AuditLogService, AuditLogRepository],

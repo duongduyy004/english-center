@@ -1,19 +1,24 @@
 import { ParentEntity } from "@/modules/parents/entities/parent.entity";
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { Repository } from "typeorm";
+import { In, Repository } from "typeorm";
 import { data } from "./parent-data";
 import { RoleEnum } from "@/modules/roles/roles.enum";
+import { StudentEntity } from "modules/students/entities/student.entity";
 
 @Injectable()
 export class ParentSeedService {
-    constructor(@InjectRepository(ParentEntity) private parentRepository: Repository<ParentEntity>) { }
+    constructor(
+        @InjectRepository(ParentEntity) private parentRepository: Repository<ParentEntity>,
+        @InjectRepository(StudentEntity) private studentRepository: Repository<StudentEntity>
+    ) { }
 
     async run() {
         const parents = await this.parentRepository.find()
         if (parents.length > 0) return;
 
         for (const item of data) {
+            const students = await this.studentRepository.find({ where: { email: In(item.students) } })
             const dateParts = item.dayOfBirth.split('/');
             const birthDate = new Date(
                 parseInt(dateParts[2]), // year
@@ -30,9 +35,9 @@ export class ParentSeedService {
                     phone: item.phone,
                     address: item.address,
                     isEmailVerified: false,
-                    role: RoleEnum[item.role]
-                }),
-                { listeners: false }
+                    role: RoleEnum[item.role],
+                    students
+                })
             )
         }
     }

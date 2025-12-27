@@ -1,1876 +1,2362 @@
-export const data = [{
-    "_id": {
-        "$oid": "6852c75e9a49f82eced82cb6"
-    },
-    "name": "1.2",
-    "grade": "1",
-    "section": "2",
-    "year": 2024,
-    "status": "closed",
-    "schedule": {
-        "startDate": {
-            "$date": "2024-06-01T00:00:00.000Z"
+export const data = [
+    {
+        "name": "1.2",
+        "grade": "1",
+        "section": "2",
+        "year": 2024,
+        "status": "closed",
+        "schedule": {
+            "startDate": "2024-06-01T00:00:00.000Z",
+            "endDate": "2024-08-10T00:00:00.000Z",
+            "dayOfWeeks": [
+                "2",
+                "3",
+                "5"
+            ],
+            "time_slots": {
+                "start_time": "09:00",
+                "end_time": "11:00"
+            }
         },
-        "endDate": {
-            "$date": "2024-08-10T00:00:00.000Z"
-        },
-        "dayOfWeeks": [
-            2,
-            3,
-            5
+        "feePerLesson": 200000,
+        "maxStudents": 25,
+        "description": "abc xyz",
+        "students": [
+            "student110@gmail.com",
+            "student1136@gmail.com",
+            "student32@gmail.com",
+            "student1339@gmail.com",
+            "student34223@gmail.com",
+            "student1129@gmail.com",
+            "student1734@gmail.com",
+            "student46@gmail.com",
+            "anhdung1@gmail.com",
+            "student123@gmail.com",
+            "student15@gmail.com",
+            "student1320@gmail.com",
+            "student1111@gmail.com",
+            "student106@gmail.com",
+            "student109@gmail.com",
+            "student120@gmail.com",
+            "student41@gmail.com",
+            "student11306@gmail.com",
+            "student0133@gmail.com",
+            "student6@gmail.com"
         ],
-        "timeSlots": {
-            "startTime": "09:00",
-            "endTime": "11:00"
-        }
+        "room": "C303",
+        "createdAt": "2025-06-18T14:04:14.246Z",
+        "updatedAt": "2025-07-03T03:25:05.597Z",
+        "teacher": "hoa.nguyen@gmail.com"
     },
-    "feePerLesson": 200000,
-    "maxStudents": 25,
-    "description": "abc xyz",
-    "room": "C303",
-    "deleted": false,
-    "createdAt": {
-        "$date": "2025-06-18T14:04:14.246Z"
+    {
+        "name": "4.2",
+        "grade": "4",
+        "section": "2",
+        "year": 2024,
+        "status": "closed",
+        "schedule": {
+            "startDate": "2024-06-01T00:00:00.000Z",
+            "endDate": "2024-08-10T00:00:00.000Z",
+            "dayOfWeeks": [
+                "1",
+                "4",
+                "6"
+            ],
+            "time_slots": {
+                "start_time": "08:00",
+                "end_time": "10:00"
+            }
+        },
+        "feePerLesson": 190000,
+        "maxStudents": 30,
+        "description": "abc xyz",
+        "students": [
+            "student1137@gmail.com",
+            "student19@gmail.com",
+            "student125674@gmail.com",
+            "student130@gmail.com",
+            "student38@gmail.com",
+            "student122@gmail.com",
+            "ayeue2824@gmail.com",
+            "student134@gmail.com",
+            "student107@gmail.com",
+            "kep47799@toaik.com",
+            "student23@gmail.com",
+            "student17@gmail.com",
+            "student30@gmail.com",
+            "student43@gmail.com",
+            "student106@gmail.com",
+            "student46@gmail.com",
+            "phucnguyenvan@gmail.com",
+            "student133@gmail.com",
+            "student120@gmail.com",
+            "student1123@gmail.com",
+            "student127@gmail.com"
+        ],
+        "room": "J010",
+        "createdAt": "2025-06-18T14:07:23.090Z",
+        "updatedAt": "2025-07-03T03:25:05.597Z",
+        "teacher": "phuc.hoang@gmail.com"
     },
-    "updatedAt": {
-        "$date": "2025-07-03T03:25:05.597Z"
+    {
+        "name": "6.1",
+        "grade": "6",
+        "section": "1",
+        "year": 2025,
+        "status": "active",
+        "schedule": {
+            "startDate": "2025-06-20T00:00:00.000Z",
+            "endDate": "2025-08-30T00:00:00.000Z",
+            "dayOfWeeks": [
+                "3",
+                "6",
+                "0"
+            ],
+            "time_slots": {
+                "start_time": "08:00",
+                "end_time": "10:00"
+            }
+        },
+        "feePerLesson": 200000,
+        "maxStudents": 30,
+        "description": "abc xyz",
+        "students": [
+            "student20@gmail.com",
+            "student1123@gmail.com",
+            "student23@gmail.com",
+            "student12321@gmail.com",
+            "student119@gmail.com",
+            "student111@gmail.com",
+            "eal17938@jioso.com",
+            "student1102@gmail.com",
+            "student113@gmail.com",
+            "student114@gmail.com",
+            "student109@gmail.com",
+            "student39@gmail.com",
+            "student107@gmail.com",
+            "student15111@gmail.com",
+            "student42@gmail.com",
+            "student0133@gmail.com",
+            "student1136@gmail.com",
+            "student44@gmail.com",
+            "student1128@gmail.com",
+            "student29@gmail.com",
+            "student34@gmail.com",
+            "student@gmail.com",
+            "anhdung1@gmail.com",
+            "student36@gmail.com",
+            "student12@gmail.com",
+            "student8@gmail.com",
+            "vwu29929@toaik.com"
+        ],
+        "room": "A101",
+        "createdAt": "2025-06-18T14:08:22.573Z",
+        "updatedAt": "2025-07-03T03:25:05.597Z",
+        "teacher": "son.do@gmail.com"
     },
-    "__v": 0,
-    "teacherId": {
-        "$oid": "6852ccd69a49f82eced82da2"
+    {
+        "name": "6.2",
+        "grade": "6",
+        "section": "2",
+        "year": 2023,
+        "status": "closed",
+        "schedule": {
+            "startDate": "2023-06-01T00:00:00.000Z",
+            "endDate": "2023-08-10T00:00:00.000Z",
+            "dayOfWeeks": [
+                "1",
+                "2",
+                "6"
+            ],
+            "time_slots": {
+                "start_time": "15:15",
+                "end_time": "17:15"
+            }
+        },
+        "feePerLesson": 200000,
+        "maxStudents": 30,
+        "description": "abc xyz",
+        "students": [
+            "student04@gmail.com",
+            "student123336@gmail.com",
+            "student1131@gmail.com",
+            "student1338@gmail.com",
+            "student19@gmail.com",
+            "student2@gmail.com",
+            "student1128@gmail.com",
+            "student1129@gmail.com",
+            "student116@gmail.com",
+            "student1320@gmail.com",
+            "student109@gmail.com",
+            "student15@gmail.com",
+            "student36@gmail.com",
+            "student106@gmail.com",
+            "student17@gmail.com",
+            "student118@gmail.com",
+            "student5@gmail.com",
+            "student101@gmail.com",
+            "student113@gmail.com",
+            "student121@gmail.com",
+            "fze07618@jioso.com",
+            "student10@gmail.com",
+            "student136@gmail.com",
+            "student13@gmail.com",
+            "mcu91250@toaik.com",
+            "student46@gmail.com"
+        ],
+        "room": "B202",
+        "createdAt": "2025-06-18T14:08:32.648Z",
+        "updatedAt": "2025-07-03T03:25:05.597Z",
+        "teacher": "thao.bui@gmail.com"
+    },
+    {
+        "name": "7.1",
+        "grade": "7",
+        "section": "1",
+        "year": 2025,
+        "status": "active",
+        "schedule": {
+            "startDate": "2025-10-10T00:00:00.000Z",
+            "endDate": "2025-12-20T00:00:00.000Z",
+            "dayOfWeeks": [
+                "2",
+                "3",
+                "5"
+            ],
+            "time_slots": {
+                "start_time": "19:45",
+                "end_time": "21:45"
+            }
+        },
+        "feePerLesson": 200000,
+        "maxStudents": 30,
+        "description": "abc xyz",
+        "students": [
+            "hoang1nguyenvan@gmail.com",
+            "student3@gmail.com",
+            "student129@gmail.com",
+            "student1320@gmail.com",
+            "student108@gmail.com",
+            "student41@gmail.com",
+            "student139@gmail.com",
+            "student1734@gmail.com",
+            "student31@gmail.com",
+            "student0133@gmail.com",
+            "student112@gmail.com",
+            "student15@gmail.com",
+            "student133@gmail.com",
+            "student32@gmail.com",
+            "vcg44476@toaik.com",
+            "student@gmail.com",
+            "student1123@gmail.com",
+            "student5@gmail.com",
+            "student136@gmail.com",
+            "student120@gmail.com",
+            "student132@gmail.com",
+            "student126@gmail.com",
+            "student10012@gmail.com",
+            "student16@gmail.com",
+            "student1111@gmail.com",
+            "student123336@gmail.com",
+            "student1102@gmail.com",
+            "student21@gmail.com",
+            "student14@gmail.com",
+            "student34@gmail.com"
+        ],
+        "room": "J010",
+        "createdAt": "2025-06-18T14:08:55.766Z",
+        "updatedAt": "2025-07-03T17:00:00.188Z",
+        "teacher": "yen.tran@gmail.com"
+    },
+    {
+        "name": "8.1",
+        "grade": "8",
+        "section": "1",
+        "year": 2025,
+        "status": "closed",
+        "schedule": {
+            "startDate": "2025-04-15T00:00:00.000Z",
+            "endDate": "2025-06-25T00:00:00.000Z",
+            "dayOfWeeks": [
+                "1",
+                "2",
+                "6"
+            ],
+            "time_slots": {
+                "start_time": "08:00",
+                "end_time": "10:00"
+            }
+        },
+        "feePerLesson": 180000,
+        "maxStudents": 30,
+        "description": "abc xyz",
+        "students": [
+            "student2@gmail.com",
+            "student132@gmail.com",
+            "student110@gmail.com",
+            "student11@gmail.com",
+            "student113@gmail.com",
+            "student4@gmail.com",
+            "student123@gmail.com",
+            "student1102@gmail.com",
+            "student3@gmail.com",
+            "student23@gmail.com",
+            "student1338@gmail.com",
+            "student27@gmail.com",
+            "student12@gmail.com",
+            "student116@gmail.com",
+            "student9@gmail.com",
+            "student19@gmail.com",
+            "student135@gmail.com",
+            "student1320@gmail.com",
+            "student15@gmail.com",
+            "mcu91250@toaik.com",
+            "duyngu@gmail.com",
+            "anhdung1@gmail.com",
+            "student0135@gmail.com",
+            "student120@gmail.com",
+            "student101@gmail.com",
+            "student136@gmail.com",
+            "student16@gmail.com",
+            "student139@gmail.com",
+            "student7@gmail.com"
+        ],
+        "room": "C303",
+        "createdAt": "2025-06-18T14:09:28.989Z",
+        "updatedAt": "2025-07-03T03:25:05.597Z",
+        "teacher": "hieu.le@gmail.com"
+    },
+    {
+        "name": "10.3",
+        "grade": "10",
+        "section": "3",
+        "year": 2025,
+        "status": "closed",
+        "schedule": {
+            "startDate": "2025-05-20T00:00:00.000Z",
+            "endDate": "2025-07-30T00:00:00.000Z",
+            "dayOfWeeks": [
+                "2",
+                "4",
+                "6"
+            ],
+            "time_slots": {
+                "start_time": "13:00",
+                "end_time": "15:00"
+            }
+        },
+        "feePerLesson": 180000,
+        "maxStudents": 30,
+        "description": "abc xyz",
+        "students": [
+            "student27@gmail.com",
+            "student41@gmail.com",
+            "student4@gmail.com",
+            "student32@gmail.com",
+            "student43@gmail.com",
+            "student3@gmail.com",
+            "kep47799@toaik.com",
+            "student12321@gmail.com",
+            "student115@gmail.com",
+            "student137@gmail.com",
+            "student1119@gmail.com",
+            "student134@gmail.com",
+            "student19@gmail.com",
+            "student133@gmail.com",
+            "student123@gmail.com",
+            "student131@gmail.com",
+            "student136@gmail.com",
+            "student109@gmail.com",
+            "student122@gmail.com",
+            "student1320@gmail.com"
+        ],
+        "room": "J010",
+        "createdAt": "2025-06-18T14:11:09.949Z",
+        "updatedAt": "2025-08-03T17:00:00.148Z",
+        "teacher": "kim.pham@gmail.com"
+    },
+    {
+        "name": "12.2",
+        "grade": "12",
+        "section": "2",
+        "year": 2022,
+        "status": "closed",
+        "schedule": {
+            "startDate": "2022-06-01T00:00:00.000Z",
+            "endDate": "2022-08-10T00:00:00.000Z",
+            "dayOfWeeks": [
+                "2",
+                "4",
+                "0"
+            ],
+            "time_slots": {
+                "start_time": "08:00",
+                "end_time": "10:00"
+            }
+        },
+        "feePerLesson": 200000,
+        "maxStudents": 30,
+        "description": "abc xyz",
+        "students": [
+            "student101@gmail.com",
+            "student137@gmail.com",
+            "student0133@gmail.com",
+            "student16@gmail.com",
+            "student34223@gmail.com",
+            "student46@gmail.com",
+            "student21@gmail.com",
+            "student20@gmail.com",
+            "student0135@gmail.com",
+            "student125674@gmail.com",
+            "student40@gmail.com",
+            "student128@gmail.com",
+            "student29@gmail.com",
+            "student23@gmail.com",
+            "student42@gmail.com",
+            "student122@gmail.com",
+            "student36@gmail.com",
+            "student34@gmail.com",
+            "vcg44476@toaik.com",
+            "fze07618@jioso.com",
+            "duyngu@gmail.com",
+            "student19@gmail.com",
+            "student8@gmail.com",
+            "student124@gmail.com",
+            "student1102@gmail.com",
+            "student1136@gmail.com",
+            "student1111@gmail.com"
+        ],
+        "room": "E505",
+        "createdAt": "2025-06-18T14:11:57.871Z",
+        "updatedAt": "2025-07-03T03:25:05.597Z",
+        "teacher": "hung.vu@gmail.com"
+    },
+    {
+        "name": "1.1",
+        "grade": "1",
+        "section": "1",
+        "year": 2024,
+        "status": "closed",
+        "schedule": {
+            "startDate": "2024-06-04T00:00:00.000Z",
+            "endDate": "2024-08-14T00:00:00.000Z",
+            "dayOfWeeks": [
+                "1",
+                "3",
+                "4",
+                "5"
+            ],
+            "time_slots": {
+                "start_time": "18:00",
+                "end_time": "22:00"
+            }
+        },
+        "feePerLesson": 200000,
+        "maxStudents": 20,
+        "description": "something",
+        "students": [
+            "student46@gmail.com",
+            "student129@gmail.com",
+            "vwu29929@toaik.com",
+            "student111@gmail.com",
+            "student15@gmail.com",
+            "student16@gmail.com",
+            "student1129@gmail.com",
+            "student2@gmail.com",
+            "student123@gmail.com",
+            "student117@gmail.com"
+        ],
+        "room": "403",
+        "createdAt": "2025-06-18T14:00:43.959Z",
+        "updatedAt": "2025-07-05T13:08:46.442Z",
+        "teacher": "lan.do@gmail.com"
+    },
+    {
+        "name": "2.1",
+        "grade": "2",
+        "section": "1",
+        "year": 2025,
+        "status": "closed",
+        "schedule": {
+            "startDate": "2025-05-31T00:00:00.000Z",
+            "endDate": "2025-07-01T00:00:00.000Z",
+            "dayOfWeeks": [
+                "2",
+                "4",
+                "5",
+                "6",
+                "0"
+            ],
+            "time_slots": {
+                "start_time": "10:15",
+                "end_time": "12:15"
+            }
+        },
+        "feePerLesson": 200000,
+        "maxStudents": 30,
+        "description": "abc xyz",
+        "students": [
+            "student8@gmail.com",
+            "student118@gmail.com",
+            "vwu29929@toaik.com",
+            "student1128@gmail.com",
+            "student7@gmail.com",
+            "student119@gmail.com",
+            "student128@gmail.com",
+            "student10012@gmail.com",
+            "student13@gmail.com",
+            "student14@gmail.com",
+            "student39@gmail.com",
+            "fze07618@jioso.com",
+            "student22@gmail.com",
+            "student15@gmail.com",
+            "student137@gmail.com",
+            "student121@gmail.com",
+            "student1131@gmail.com",
+            "student1136@gmail.com",
+            "student37@gmail.com",
+            "student108@gmail.com",
+            "student1734@gmail.com",
+            "student1102@gmail.com",
+            "student3@gmail.com",
+            "student114@gmail.com",
+            "student112@gmail.com",
+            "student1123@gmail.com",
+            "student11031@gmail.com",
+            "student34223@gmail.com"
+        ],
+        "room": "H808",
+        "createdAt": "2025-06-18T14:05:42.623Z",
+        "updatedAt": "2025-07-03T03:25:05.597Z",
+        "teacher": "nam.bui@gmail.com"
+    },
+    {
+        "name": "8.3",
+        "grade": "8",
+        "section": "3",
+        "year": 2022,
+        "status": "closed",
+        "schedule": {
+            "startDate": "2022-04-01T00:00:00.000Z",
+            "endDate": "2022-06-10T00:00:00.000Z",
+            "dayOfWeeks": [
+                "2",
+                "4",
+                "0"
+            ],
+            "time_slots": {
+                "start_time": "17:30",
+                "end_time": "19:30"
+            }
+        },
+        "feePerLesson": 200000,
+        "maxStudents": 30,
+        "description": "abc xyz",
+        "students": [
+            "student2@gmail.com",
+            "anhdung1@gmail.com",
+            "student23@gmail.com",
+            "student11306@gmail.com",
+            "student1123@gmail.com",
+            "student128@gmail.com",
+            "student4@gmail.com",
+            "student1131@gmail.com",
+            "student1734@gmail.com",
+            "student21@gmail.com",
+            "student127@gmail.com",
+            "eal17938@jioso.com",
+            "student13120@gmail.com",
+            "student31@gmail.com",
+            "ayeue2824@gmail.com",
+            "student137@gmail.com",
+            "student123@gmail.com",
+            "student139@gmail.com",
+            "student14@gmail.com",
+            "student1@gmail.com",
+            "student15@gmail.com",
+            "student110@gmail.com",
+            "student135@gmail.com",
+            "hoang1nguyenvan@gmail.com",
+            "student106@gmail.com",
+            "student6@gmail.com",
+            "student36@gmail.com"
+        ],
+        "room": "I909",
+        "createdAt": "2025-06-18T14:09:53.951Z",
+        "updatedAt": "2025-07-03T03:25:05.597Z",
+        "teacher": "khoa.tran@gmail.com"
+    },
+    {
+        "name": "9.1",
+        "grade": "9",
+        "section": "1",
+        "year": 2025,
+        "status": "active",
+        "schedule": {
+            "startDate": "2025-10-10T00:00:00.000Z",
+            "endDate": "2025-12-20T00:00:00.000Z",
+            "dayOfWeeks": [
+                "2",
+                "3",
+                "5"
+            ],
+            "time_slots": {
+                "start_time": "15:15",
+                "end_time": "17:15"
+            }
+        },
+        "feePerLesson": 200000,
+        "maxStudents": 30,
+        "description": "abc xyz",
+        "students": [
+            "student1338@gmail.com",
+            "student10@gmail.com",
+            "student35@gmail.com",
+            "student11031@gmail.com",
+            "student1136@gmail.com",
+            "student1119@gmail.com",
+            "vcg44476@toaik.com",
+            "student12@gmail.com",
+            "student29@gmail.com",
+            "student2@gmail.com",
+            "student6@gmail.com",
+            "student135@gmail.com",
+            "student44@gmail.com",
+            "student111@gmail.com",
+            "student31@gmail.com",
+            "student40@gmail.com",
+            "ayeue2824@gmail.com",
+            "student1102@gmail.com",
+            "student132@gmail.com",
+            "student21@gmail.com",
+            "student18@gmail.com",
+            "student120@gmail.com",
+            "student0133@gmail.com",
+            "student116@gmail.com"
+        ],
+        "room": "D404",
+        "createdAt": "2025-06-18T14:10:07.677Z",
+        "updatedAt": "2025-07-03T17:00:00.317Z",
+        "teacher": "minh.le@gmail.com"
+    },
+    {
+        "name": "9.3",
+        "grade": "9",
+        "section": "3",
+        "year": 2025,
+        "status": "closed",
+        "schedule": {
+            "startDate": "2025-05-15T00:00:00.000Z",
+            "endDate": "2025-07-25T00:00:00.000Z",
+            "dayOfWeeks": [
+                "1",
+                "4",
+                "6"
+            ],
+            "time_slots": {
+                "start_time": "17:30",
+                "end_time": "19:30"
+            }
+        },
+        "feePerLesson": 200000,
+        "maxStudents": 30,
+        "description": "abc xyz",
+        "students": [
+            "student2@gmail.com",
+            "student42@gmail.com",
+            "student124@gmail.com",
+            "student120@gmail.com",
+            "duyngu@gmail.com",
+            "student119@gmail.com",
+            "ayeue2824@gmail.com",
+            "student37@gmail.com",
+            "student32@gmail.com",
+            "kep47799@toaik.com",
+            "student41@gmail.com",
+            "student17@gmail.com",
+            "student38@gmail.com",
+            "student116@gmail.com",
+            "student122@gmail.com",
+            "student8@gmail.com",
+            "student112@gmail.com",
+            "student12@gmail.com",
+            "student@gmail.com",
+            "student125@gmail.com",
+            "student15111@gmail.com",
+            "student128@gmail.com",
+            "student138@gmail.com",
+            "student134@gmail.com",
+            "student46@gmail.com",
+            "student107@gmail.com",
+            "student10@gmail.com",
+            "student9@gmail.com",
+            "student12321@gmail.com",
+            "eal17938@jioso.com"
+        ],
+        "room": "J010",
+        "createdAt": "2025-06-18T14:10:37.891Z",
+        "updatedAt": "2025-07-26T17:00:00.136Z",
+        "teacher": "quynh.vu@gmail.com"
+    },
+    {
+        "name": "10.1",
+        "grade": "10",
+        "section": "1",
+        "year": 2025,
+        "status": "active",
+        "schedule": {
+            "startDate": "2025-07-15T00:00:00.000Z",
+            "endDate": "2025-09-25T00:00:00.000Z",
+            "dayOfWeeks": [
+                "2",
+                "4",
+                "0"
+            ],
+            "time_slots": {
+                "start_time": "15:15",
+                "end_time": "17:15"
+            }
+        },
+        "feePerLesson": 200000,
+        "maxStudents": 30,
+        "description": "abc xyz",
+        "students": [
+            "student1111@gmail.com",
+            "prr65023@jioso.com",
+            "student0133@gmail.com",
+            "student126@gmail.com",
+            "student125@gmail.com",
+            "student10012@gmail.com",
+            "student33@gmail.com",
+            "student118@gmail.com",
+            "student138@gmail.com",
+            "student101@gmail.com",
+            "student137@gmail.com",
+            "phucnguyenvan@gmail.com",
+            "student3@gmail.com",
+            "fze07618@jioso.com",
+            "student1136@gmail.com",
+            "student19@gmail.com",
+            "student111@gmail.com",
+            "student12@gmail.com",
+            "student13120@gmail.com",
+            "student133@gmail.com",
+            "student131@gmail.com",
+            "student31@gmail.com",
+            "student125674@gmail.com",
+            "student35@gmail.com",
+            "student1734@gmail.com",
+            "eal17938@jioso.com",
+            "student36@gmail.com",
+            "student23@gmail.com",
+            "student119@gmail.com",
+            "student1320@gmail.com"
+        ],
+        "room": "A101",
+        "createdAt": "2025-06-18T14:10:48.656Z",
+        "updatedAt": "2025-07-03T17:00:00.361Z",
+        "teacher": "duy.pham@gmail.com"
+    },
+    {
+        "name": "11.1",
+        "grade": "11",
+        "section": "1",
+        "year": 2023,
+        "status": "closed",
+        "schedule": {
+            "startDate": "2023-06-15T00:00:00.000Z",
+            "endDate": "2023-08-25T00:00:00.000Z",
+            "dayOfWeeks": [
+                "2",
+                "4",
+                "6"
+            ],
+            "time_slots": {
+                "start_time": "08:00",
+                "end_time": "10:00"
+            }
+        },
+        "feePerLesson": 190000,
+        "maxStudents": 30,
+        "description": "abc xyz",
+        "students": [
+            "eal17938@jioso.com",
+            "student42@gmail.com",
+            "student1339@gmail.com",
+            "student19@gmail.com",
+            "anhdung1@gmail.com",
+            "student41@gmail.com",
+            "student04@gmail.com",
+            "student11031@gmail.com",
+            "student119@gmail.com",
+            "student22@gmail.com",
+            "student1102@gmail.com",
+            "student127@gmail.com",
+            "student13120@gmail.com",
+            "student134@gmail.com",
+            "student1137@gmail.com",
+            "student43@gmail.com",
+            "student109@gmail.com",
+            "student1734@gmail.com",
+            "vcg44476@toaik.com",
+            "student12@gmail.com",
+            "duyngu@gmail.com",
+            "student1130@gmail.com",
+            "student21@gmail.com",
+            "student110@gmail.com",
+            "student10012@gmail.com"
+        ],
+        "room": "I909",
+        "createdAt": "2025-06-18T14:11:19.675Z",
+        "updatedAt": "2025-07-03T03:25:05.597Z",
+        "teacher": "mai.hoang@gmail.com"
+    },
+    {
+        "name": "11.2",
+        "grade": "11",
+        "section": "2",
+        "year": 2025,
+        "status": "active",
+        "schedule": {
+            "startDate": "2025-09-01T00:00:00.000Z",
+            "endDate": "2025-11-10T00:00:00.000Z",
+            "dayOfWeeks": [
+                "2",
+                "5",
+                "0"
+            ],
+            "time_slots": {
+                "start_time": "15:15",
+                "end_time": "17:15"
+            }
+        },
+        "feePerLesson": 200000,
+        "maxStudents": 30,
+        "description": "abc xyz",
+        "students": [
+            "student1111@gmail.com",
+            "student101@gmail.com",
+            "student0133@gmail.com",
+            "student113@gmail.com",
+            "student2@gmail.com",
+            "student45@gmail.com",
+            "student117@gmail.com",
+            "student3@gmail.com",
+            "student111@gmail.com",
+            "student121@gmail.com",
+            "student43@gmail.com",
+            "ayeue2824@gmail.com",
+            "student1320@gmail.com",
+            "student135@gmail.com",
+            "vcg44476@toaik.com",
+            "student10@gmail.com",
+            "student1339@gmail.com",
+            "student23@gmail.com",
+            "student34223@gmail.com",
+            "student108@gmail.com",
+            "student136@gmail.com",
+            "eal17938@jioso.com"
+        ],
+        "room": "H808",
+        "createdAt": "2025-06-18T14:11:29.906Z",
+        "updatedAt": "2025-07-03T17:00:00.410Z",
+        "teacher": "ngoc.pham@gmail.com"
+    },
+    {
+        "name": "12.3",
+        "grade": "12",
+        "section": "3",
+        "year": 2025,
+        "status": "closed",
+        "schedule": {
+            "startDate": "2025-05-15T00:00:00.000Z",
+            "endDate": "2025-07-25T00:00:00.000Z",
+            "dayOfWeeks": [
+                "3",
+                "6",
+                "0"
+            ],
+            "time_slots": {
+                "start_time": "13:00",
+                "end_time": "15:00"
+            }
+        },
+        "feePerLesson": 200000,
+        "maxStudents": 30,
+        "description": "abc xyz",
+        "students": [
+            "student7@gmail.com",
+            "student43@gmail.com",
+            "student1120@gmail.com",
+            "student115@gmail.com",
+            "student14@gmail.com",
+            "student1734@gmail.com",
+            "fze07618@jioso.com",
+            "student38@gmail.com",
+            "hoang1nguyenvan@gmail.com",
+            "student19@gmail.com",
+            "student106@gmail.com",
+            "student120@gmail.com",
+            "student126@gmail.com",
+            "student21@gmail.com",
+            "student116@gmail.com",
+            "student10@gmail.com",
+            "student10012@gmail.com",
+            "student6@gmail.com",
+            "vwu29929@toaik.com",
+            "eal17938@jioso.com",
+            "student20@gmail.com",
+            "ayeue2824@gmail.com"
+        ],
+        "room": "G707",
+        "createdAt": "2025-06-18T14:12:07.501Z",
+        "updatedAt": "2025-07-26T17:00:00.841Z",
+        "teacher": "anh.nguyen@gmail.com"
+    },
+    {
+        "name": "1.3",
+        "grade": "1",
+        "section": "3",
+        "year": 2025,
+        "status": "closed",
+        "schedule": {
+            "startDate": "2025-03-15T00:00:00.000Z",
+            "endDate": "2025-05-25T00:00:00.000Z",
+            "dayOfWeeks": [
+                "3",
+                "6",
+                "0"
+            ],
+            "time_slots": {
+                "start_time": "15:15",
+                "end_time": "17:15"
+            }
+        },
+        "feePerLesson": 200000,
+        "maxStudents": 30,
+        "description": "abc xyz",
+        "students": [
+            "student12@gmail.com",
+            "student1339@gmail.com",
+            "student8@gmail.com",
+            "student120@gmail.com",
+            "eal17938@jioso.com",
+            "student139@gmail.com",
+            "student0133@gmail.com",
+            "student39@gmail.com",
+            "student1128@gmail.com",
+            "student11031@gmail.com",
+            "student1137@gmail.com",
+            "student109@gmail.com",
+            "student38@gmail.com",
+            "student36@gmail.com",
+            "student12321@gmail.com",
+            "student6@gmail.com",
+            "student21@gmail.com",
+            "prr65023@jioso.com",
+            "kep47799@toaik.com",
+            "student121@gmail.com",
+            "student131@gmail.com",
+            "anhdung1@gmail.com",
+            "student34223@gmail.com",
+            "student1734@gmail.com",
+            "student136@gmail.com",
+            "student126@gmail.com"
+        ],
+        "room": "F606",
+        "createdAt": "2025-06-18T14:05:13.699Z",
+        "updatedAt": "2025-07-03T03:25:05.597Z",
+        "teacher": "bich.tran@gmail.com"
+    },
+    {
+        "name": "4.3",
+        "grade": "4",
+        "section": "3",
+        "year": 2025,
+        "status": "active",
+        "schedule": {
+            "startDate": "2025-05-31T00:00:00.000Z",
+            "endDate": "2025-08-24T00:00:00.000Z",
+            "dayOfWeeks": [
+                "1",
+                "3",
+                "5"
+            ],
+            "time_slots": {
+                "start_time": "17:30",
+                "end_time": "19:30"
+            }
+        },
+        "feePerLesson": 200000,
+        "maxStudents": 30,
+        "description": "abc xyz",
+        "students": [
+            "phucnguyenvan@gmail.com",
+            "student125674@gmail.com",
+            "anhdung1@gmail.com",
+            "student8@gmail.com",
+            "student109@gmail.com",
+            "student13120@gmail.com",
+            "student124@gmail.com",
+            "student34@gmail.com",
+            "student11031@gmail.com",
+            "student129@gmail.com",
+            "student18@gmail.com",
+            "student1129@gmail.com",
+            "student27@gmail.com",
+            "student38@gmail.com",
+            "vwu29929@toaik.com",
+            "student1102@gmail.com",
+            "student19@gmail.com",
+            "student108@gmail.com",
+            "student14@gmail.com",
+            "hoang1nguyenvan@gmail.com",
+            "student42@gmail.com",
+            "student112@gmail.com",
+            "eal17938@jioso.com",
+            "student7@gmail.com",
+            "student122@gmail.com",
+            "student1128@gmail.com",
+            "student113@gmail.com",
+            "student6@gmail.com"
+        ],
+        "room": "D404",
+        "createdAt": "2025-06-18T14:07:34.127Z",
+        "updatedAt": "2025-07-04T06:17:41.596Z",
+        "teacher": "chau.le@gmail.com"
+    },
+    {
+        "name": "5.1",
+        "grade": "5",
+        "section": "1",
+        "year": 2021,
+        "status": "closed",
+        "schedule": {
+            "startDate": "2021-02-01T00:00:00.000Z",
+            "endDate": "2021-04-10T00:00:00.000Z",
+            "dayOfWeeks": [
+                "2",
+                "5",
+                "0"
+            ],
+            "time_slots": {
+                "start_time": "10:15",
+                "end_time": "12:15"
+            }
+        },
+        "feePerLesson": 210000,
+        "maxStudents": 30,
+        "description": "abc xyz",
+        "students": [
+            "student46@gmail.com",
+            "student137@gmail.com",
+            "student1130@gmail.com",
+            "student42@gmail.com",
+            "phucnguyenvan@gmail.com",
+            "student23@gmail.com",
+            "student108@gmail.com",
+            "student10@gmail.com",
+            "prr65023@jioso.com",
+            "student138@gmail.com",
+            "student11306@gmail.com",
+            "student17@gmail.com",
+            "student110@gmail.com",
+            "student101@gmail.com",
+            "student3@gmail.com",
+            "student135@gmail.com",
+            "student43@gmail.com",
+            "student122@gmail.com",
+            "student133@gmail.com",
+            "student123336@gmail.com",
+            "student1129@gmail.com",
+            "student0135@gmail.com",
+            "eal17938@jioso.com",
+            "student16@gmail.com",
+            "student131@gmail.com",
+            "student22@gmail.com",
+            "student36@gmail.com",
+            "student15111@gmail.com",
+            "student127@gmail.com",
+            "student125@gmail.com"
+        ],
+        "room": "E505",
+        "createdAt": "2025-06-18T14:07:48.155Z",
+        "updatedAt": "2025-07-03T03:25:05.597Z",
+        "teacher": "tuan.nguyen@gmail.com"
+    },
+    {
+        "name": "5.3",
+        "grade": "5",
+        "section": "3",
+        "year": 2025,
+        "status": "closed",
+        "schedule": {
+            "startDate": "2025-06-01T00:00:00.000Z",
+            "endDate": "2025-08-10T00:00:00.000Z",
+            "dayOfWeeks": [
+                "2",
+                "5",
+                "0"
+            ],
+            "time_slots": {
+                "start_time": "13:00",
+                "end_time": "15:00"
+            }
+        },
+        "feePerLesson": 180000,
+        "maxStudents": 30,
+        "description": "abc xyz",
+        "students": [
+            "student109@gmail.com",
+            "student29@gmail.com",
+            "student1111@gmail.com",
+            "student35@gmail.com",
+            "student122@gmail.com",
+            "student129@gmail.com",
+            "student38@gmail.com",
+            "student44@gmail.com",
+            "student121@gmail.com",
+            "student125@gmail.com",
+            "student13120@gmail.com",
+            "student14@gmail.com",
+            "student1734@gmail.com",
+            "vcg44476@toaik.com",
+            "student46@gmail.com",
+            "vwu29929@toaik.com",
+            "student115@gmail.com",
+            "student130@gmail.com",
+            "student135@gmail.com",
+            "kep47799@toaik.com",
+            "student40@gmail.com",
+            "student11031@gmail.com"
+        ],
+        "room": "D404",
+        "createdAt": "2025-06-18T14:08:11.097Z",
+        "updatedAt": "2025-08-12T17:00:00.407Z",
+        "teacher": "bao.nguyen@gmail.com"
+    },
+    {
+        "name": "6.3",
+        "grade": "6",
+        "section": "3",
+        "year": 2025,
+        "status": "active",
+        "schedule": {
+            "startDate": "2025-06-10T00:00:00.000Z",
+            "endDate": "2025-08-30T00:00:00.000Z",
+            "dayOfWeeks": [
+                "1",
+                "4",
+                "6"
+            ],
+            "time_slots": {
+                "start_time": "19:45",
+                "end_time": "21:45"
+            }
+        },
+        "feePerLesson": 180000,
+        "maxStudents": 30,
+        "description": "abc xyz",
+        "students": [
+            "student1131@gmail.com",
+            "student36@gmail.com",
+            "student1123@gmail.com",
+            "student120@gmail.com",
+            "student136@gmail.com",
+            "student134@gmail.com",
+            "student7@gmail.com",
+            "student0133@gmail.com",
+            "student106@gmail.com",
+            "student27@gmail.com",
+            "student13@gmail.com",
+            "student107@gmail.com",
+            "student33@gmail.com",
+            "student37@gmail.com",
+            "student121@gmail.com",
+            "student130@gmail.com",
+            "student108@gmail.com",
+            "student35@gmail.com",
+            "student111@gmail.com",
+            "student34223@gmail.com",
+            "student117@gmail.com",
+            "student41@gmail.com",
+            "vcg44476@toaik.com",
+            "ayeue2824@gmail.com",
+            "eal17938@jioso.com"
+        ],
+        "room": "F606",
+        "createdAt": "2025-06-18T14:08:45.176Z",
+        "updatedAt": "2025-07-03T03:25:05.597Z",
+        "teacher": "pmchinh@gmail.com"
+    },
+    {
+        "name": "9.2",
+        "grade": "9",
+        "section": "2",
+        "year": 2021,
+        "status": "closed",
+        "schedule": {
+            "startDate": "2021-06-15T00:00:00.000Z",
+            "endDate": "2021-08-25T00:00:00.000Z",
+            "dayOfWeeks": [
+                "1",
+                "2",
+                "6"
+            ],
+            "time_slots": {
+                "start_time": "19:45",
+                "end_time": "21:45"
+            }
+        },
+        "feePerLesson": 180000,
+        "maxStudents": 30,
+        "description": "abc xyz",
+        "students": [
+            "student45@gmail.com",
+            "student137@gmail.com",
+            "student21@gmail.com",
+            "student12321@gmail.com",
+            "student136@gmail.com",
+            "student124@gmail.com",
+            "student125@gmail.com",
+            "student1338@gmail.com",
+            "student32@gmail.com",
+            "student138@gmail.com",
+            "student15@gmail.com",
+            "student119@gmail.com",
+            "ayeue2824@gmail.com",
+            "student116@gmail.com",
+            "student35@gmail.com",
+            "student112@gmail.com",
+            "student1119@gmail.com",
+            "student123@gmail.com",
+            "student1131@gmail.com",
+            "student17@gmail.com",
+            "student122@gmail.com"
+        ],
+        "room": "F606",
+        "createdAt": "2025-06-18T14:10:27.324Z",
+        "updatedAt": "2025-07-03T03:25:05.597Z",
+        "teacher": "hoangnguyenvan@gmail.com"
+    },
+    {
+        "name": "10.2",
+        "grade": "10",
+        "section": "2",
+        "year": 2024,
+        "status": "closed",
+        "schedule": {
+            "startDate": "2024-03-01T00:00:00.000Z",
+            "endDate": "2024-05-10T00:00:00.000Z",
+            "dayOfWeeks": [
+                "1",
+                "2",
+                "6"
+            ],
+            "time_slots": {
+                "start_time": "10:15",
+                "end_time": "12:15"
+            }
+        },
+        "feePerLesson": 200000,
+        "maxStudents": 30,
+        "description": "abc xyz",
+        "students": [
+            "student13120@gmail.com",
+            "student45@gmail.com",
+            "student128@gmail.com",
+            "prr65023@jioso.com",
+            "student1102@gmail.com",
+            "student1119@gmail.com",
+            "student9@gmail.com",
+            "student21@gmail.com",
+            "student34@gmail.com",
+            "ayeue2824@gmail.com",
+            "hungnguyen@gmail.com",
+            "student1130@gmail.com",
+            "student1734@gmail.com",
+            "student40@gmail.com",
+            "student101@gmail.com",
+            "student41@gmail.com",
+            "student1339@gmail.com",
+            "student33@gmail.com",
+            "student12321@gmail.com",
+            "student29@gmail.com",
+            "student16@gmail.com",
+            "student123336@gmail.com"
+        ],
+        "room": "D404",
+        "createdAt": "2025-06-18T14:11:00.079Z",
+        "updatedAt": "2025-07-03T03:25:05.597Z",
+        "teacher": "bao.nguyen1@gmail.com"
+    },
+    {
+        "name": "2.2",
+        "grade": "2",
+        "section": "2",
+        "year": 2025,
+        "status": "active",
+        "schedule": {
+            "startDate": "2025-06-10T00:00:00.000Z",
+            "endDate": "2025-08-20T00:00:00.000Z",
+            "dayOfWeeks": [
+                "1",
+                "2",
+                "6"
+            ],
+            "time_slots": {
+                "start_time": "17:30",
+                "end_time": "19:30"
+            }
+        },
+        "feePerLesson": 200000,
+        "maxStudents": 30,
+        "description": "abc xyz",
+        "students": [
+            "vcg44476@toaik.com",
+            "student14@gmail.com",
+            "student11@gmail.com",
+            "student133@gmail.com",
+            "student113@gmail.com",
+            "student1111@gmail.com",
+            "student1128@gmail.com",
+            "student1129@gmail.com",
+            "student31@gmail.com",
+            "student@gmail.com",
+            "student117@gmail.com",
+            "student5@gmail.com",
+            "student29@gmail.com",
+            "student112@gmail.com",
+            "student122@gmail.com",
+            "student30@gmail.com",
+            "student137@gmail.com",
+            "student37@gmail.com",
+            "student6@gmail.com",
+            "student21@gmail.com",
+            "student0135@gmail.com",
+            "student134@gmail.com",
+            "student40@gmail.com",
+            "student41@gmail.com",
+            "student42@gmail.com"
+        ],
+        "room": "I001",
+        "createdAt": "2025-06-18T14:05:56.821Z",
+        "updatedAt": "2025-07-03T03:25:05.597Z",
+        "teacher": "anhduc1@gmail.com"
+    },
+    {
+        "name": "2.3",
+        "grade": "2",
+        "section": "3",
+        "year": 2025,
+        "status": "active",
+        "schedule": {
+            "startDate": "2025-08-15T00:00:00.000Z",
+            "endDate": "2025-10-25T00:00:00.000Z",
+            "dayOfWeeks": [
+                "1",
+                "4",
+                "6"
+            ],
+            "time_slots": {
+                "start_time": "13:00",
+                "end_time": "15:00"
+            }
+        },
+        "feePerLesson": 200000,
+        "maxStudents": 30,
+        "description": "abc xyz",
+        "students": [
+            "student1320@gmail.com",
+            "student126@gmail.com",
+            "student0135@gmail.com",
+            "student36@gmail.com",
+            "student122@gmail.com",
+            "eal17938@jioso.com",
+            "student6@gmail.com",
+            "student19@gmail.com",
+            "student17@gmail.com",
+            "student40@gmail.com",
+            "student11031@gmail.com",
+            "student4@gmail.com",
+            "student119@gmail.com",
+            "student115@gmail.com",
+            "student29@gmail.com",
+            "student109@gmail.com",
+            "student128@gmail.com",
+            "student132@gmail.com",
+            "student@gmail.com",
+            "student1119@gmail.com",
+            "student112@gmail.com",
+            "student113@gmail.com",
+            "student2@gmail.com",
+            "student32@gmail.com",
+            "student15111@gmail.com",
+            "student1111@gmail.com"
+        ],
+        "room": "B202",
+        "createdAt": "2025-06-18T14:06:16.878Z",
+        "updatedAt": "2025-07-03T17:00:00.054Z",
+        "teacher": "hoa.nguyen@gmail.com"
+    },
+    {
+        "name": "3.1",
+        "grade": "3",
+        "section": "1",
+        "year": 2022,
+        "status": "closed",
+        "schedule": {
+            "startDate": "2022-06-20T00:00:00.000Z",
+            "endDate": "2022-08-30T00:00:00.000Z",
+            "dayOfWeeks": [
+                "2",
+                "4",
+                "0"
+            ],
+            "time_slots": {
+                "start_time": "13:00",
+                "end_time": "15:00"
+            }
+        },
+        "feePerLesson": 200000,
+        "maxStudents": 20,
+        "description": "abc xyz",
+        "students": [
+            "student13@gmail.com",
+            "student125674@gmail.com",
+            "student135@gmail.com",
+            "fze07618@jioso.com",
+            "student14@gmail.com",
+            "kep47799@toaik.com",
+            "student120@gmail.com",
+            "student30@gmail.com",
+            "student2@gmail.com",
+            "student138@gmail.com",
+            "student123336@gmail.com",
+            "eal17938@jioso.com",
+            "student1123@gmail.com",
+            "phucnguyenvan@gmail.com",
+            "student8@gmail.com",
+            "student11031@gmail.com",
+            "anhdung1@gmail.com",
+            "student35@gmail.com",
+            "ayeue2824@gmail.com",
+            "student1111@gmail.com"
+        ],
+        "room": "I909",
+        "createdAt": "2025-06-18T14:06:31.913Z",
+        "updatedAt": "2025-07-03T03:25:05.597Z",
+        "teacher": "phuc.hoang@gmail.com"
+    },
+    {
+        "name": "3.2",
+        "grade": "3",
+        "section": "2",
+        "year": 2023,
+        "status": "closed",
+        "schedule": {
+            "startDate": "2023-06-20T00:00:00.000Z",
+            "endDate": "2023-08-30T00:00:00.000Z",
+            "dayOfWeeks": [
+                "2",
+                "4",
+                "6"
+            ],
+            "time_slots": {
+                "start_time": "15:15",
+                "end_time": "17:15"
+            }
+        },
+        "feePerLesson": 180000,
+        "maxStudents": 30,
+        "description": "abc xyz",
+        "students": [
+            "student5@gmail.com",
+            "student34@gmail.com",
+            "student1123@gmail.com",
+            "student46@gmail.com",
+            "student12@gmail.com",
+            "student1320@gmail.com",
+            "student119@gmail.com",
+            "student111@gmail.com",
+            "student112@gmail.com",
+            "student121@gmail.com",
+            "student124@gmail.com",
+            "student45@gmail.com",
+            "student37@gmail.com",
+            "student106@gmail.com",
+            "student36@gmail.com",
+            "student108@gmail.com",
+            "student113@gmail.com",
+            "student1136@gmail.com",
+            "anhdung1@gmail.com",
+            "student18@gmail.com",
+            "student110@gmail.com",
+            "student135@gmail.com",
+            "student0135@gmail.com",
+            "student1137@gmail.com",
+            "student20@gmail.com",
+            "student1131@gmail.com",
+            "student22@gmail.com"
+        ],
+        "room": "C303",
+        "createdAt": "2025-06-18T14:06:44.519Z",
+        "updatedAt": "2025-07-03T03:25:05.597Z",
+        "teacher": "duy.pham@gmail.com"
+    },
+    {
+        "name": "3.3",
+        "grade": "3",
+        "section": "3",
+        "year": 2025,
+        "status": "closed",
+        "schedule": {
+            "startDate": "2025-06-10T00:00:00.000Z",
+            "endDate": "2025-08-20T00:00:00.000Z",
+            "dayOfWeeks": [
+                "1",
+                "4",
+                "6"
+            ],
+            "time_slots": {
+                "start_time": "15:15",
+                "end_time": "17:15"
+            }
+        },
+        "feePerLesson": 160000,
+        "maxStudents": 30,
+        "description": "abc xyz",
+        "students": [
+            "student15111@gmail.com",
+            "student119@gmail.com",
+            "student22@gmail.com",
+            "student1339@gmail.com",
+            "student109@gmail.com",
+            "student@gmail.com",
+            "student1128@gmail.com",
+            "student13120@gmail.com",
+            "student37@gmail.com",
+            "duyngu@gmail.com",
+            "student132@gmail.com",
+            "student112@gmail.com",
+            "student04@gmail.com",
+            "student34223@gmail.com",
+            "student1130@gmail.com",
+            "phucnguyenvan@gmail.com",
+            "student113@gmail.com",
+            "student101@gmail.com",
+            "student120@gmail.com",
+            "student12@gmail.com",
+            "student1119@gmail.com",
+            "student1120@gmail.com",
+            "student41@gmail.com",
+            "student1123@gmail.com",
+            "student121@gmail.com",
+            "student11306@gmail.com",
+            "student1@gmail.com"
+        ],
+        "room": "G707",
+        "createdAt": "2025-06-18T14:06:56.245Z",
+        "updatedAt": "2025-07-04T12:13:20.464Z",
+        "teacher": "phuc.hoang@gmail.com"
+    },
+    {
+        "name": "4.1",
+        "grade": "4",
+        "section": "1",
+        "year": 2025,
+        "status": "active",
+        "schedule": {
+            "startDate": "2025-07-15T00:00:00.000Z",
+            "endDate": "2025-09-25T00:00:00.000Z",
+            "dayOfWeeks": [
+                "2",
+                "4",
+                "0"
+            ],
+            "time_slots": {
+                "start_time": "19:45",
+                "end_time": "21:45"
+            }
+        },
+        "feePerLesson": 220000,
+        "maxStudents": 30,
+        "description": "abc xyz",
+        "students": [
+            "student20@gmail.com",
+            "student117@gmail.com",
+            "student8@gmail.com",
+            "student12@gmail.com",
+            "student118@gmail.com",
+            "student5@gmail.com",
+            "student12321@gmail.com",
+            "student1130@gmail.com",
+            "student22@gmail.com",
+            "student137@gmail.com",
+            "student1339@gmail.com",
+            "student1123@gmail.com",
+            "student125@gmail.com",
+            "student10012@gmail.com",
+            "student129@gmail.com",
+            "phucnguyenvan@gmail.com",
+            "student119@gmail.com",
+            "student128@gmail.com",
+            "student1@gmail.com",
+            "student11031@gmail.com",
+            "student111@gmail.com",
+            "student1111@gmail.com",
+            "student41@gmail.com",
+            "student1129@gmail.com"
+        ],
+        "room": "C303",
+        "createdAt": "2025-06-18T14:07:10.114Z",
+        "updatedAt": "2025-07-03T17:00:00.101Z",
+        "teacher": "yen.tran@gmail.com"
+    },
+    {
+        "name": "5.2",
+        "grade": "5",
+        "section": "2",
+        "year": 2025,
+        "status": "active",
+        "schedule": {
+            "startDate": "2025-09-10T00:00:00.000Z",
+            "endDate": "2025-11-20T00:00:00.000Z",
+            "dayOfWeeks": [
+                "2",
+                "3",
+                "5"
+            ],
+            "time_slots": {
+                "start_time": "10:15",
+                "end_time": "12:15"
+            }
+        },
+        "feePerLesson": 200000,
+        "maxStudents": 30,
+        "description": "abc xyz",
+        "students": [
+            "student1320@gmail.com",
+            "prr65023@jioso.com",
+            "student32@gmail.com",
+            "student123@gmail.com",
+            "student134@gmail.com",
+            "student15@gmail.com",
+            "student131@gmail.com",
+            "student10@gmail.com",
+            "student10012@gmail.com",
+            "student125674@gmail.com",
+            "student120@gmail.com",
+            "student15111@gmail.com",
+            "student6@gmail.com",
+            "student122@gmail.com",
+            "student118@gmail.com",
+            "duyngu@gmail.com",
+            "student133@gmail.com",
+            "student04@gmail.com",
+            "kep47799@toaik.com",
+            "student23@gmail.com",
+            "student108@gmail.com",
+            "student29@gmail.com",
+            "student1120@gmail.com",
+            "student2@gmail.com",
+            "student1130@gmail.com",
+            "student@gmail.com",
+            "student139@gmail.com",
+            "student38@gmail.com",
+            "student41@gmail.com",
+            "student42@gmail.com"
+        ],
+        "room": "H808",
+        "createdAt": "2025-06-18T14:07:58.870Z",
+        "updatedAt": "2025-07-03T17:00:00.144Z",
+        "teacher": "hung.vu@gmail.com"
+    },
+    {
+        "name": "7.2",
+        "grade": "7",
+        "section": "2",
+        "year": 2021,
+        "status": "closed",
+        "schedule": {
+            "startDate": "2021-01-20T00:00:00.000Z",
+            "endDate": "2021-03-30T00:00:00.000Z",
+            "dayOfWeeks": [
+                "2",
+                "4",
+                "0"
+            ],
+            "time_slots": {
+                "start_time": "10:15",
+                "end_time": "12:15"
+            }
+        },
+        "feePerLesson": 180000,
+        "maxStudents": 30,
+        "description": "abc xyz",
+        "students": [
+            "student32@gmail.com",
+            "student1119@gmail.com",
+            "student106@gmail.com",
+            "student15@gmail.com",
+            "student10012@gmail.com",
+            "student1128@gmail.com",
+            "hoang1nguyenvan@gmail.com",
+            "student20@gmail.com",
+            "student30@gmail.com",
+            "student129@gmail.com",
+            "student112@gmail.com",
+            "student1137@gmail.com",
+            "student17@gmail.com",
+            "student46@gmail.com",
+            "student118@gmail.com",
+            "student134@gmail.com",
+            "hungnguyen@gmail.com",
+            "student1123@gmail.com",
+            "student1111@gmail.com",
+            "student14@gmail.com",
+            "student13120@gmail.com",
+            "student37@gmail.com",
+            "student127@gmail.com"
+        ],
+        "room": "J010",
+        "createdAt": "2025-06-18T14:09:07.225Z",
+        "updatedAt": "2025-07-03T03:25:05.597Z",
+        "teacher": "kim.pham@gmail.com"
+    },
+    {
+        "name": "7.3",
+        "grade": "7",
+        "section": "3",
+        "year": 2025,
+        "status": "active",
+        "schedule": {
+            "startDate": "2025-08-01T00:00:00.000Z",
+            "endDate": "2025-10-10T00:00:00.000Z",
+            "dayOfWeeks": [
+                "2",
+                "5",
+                "0"
+            ],
+            "time_slots": {
+                "start_time": "17:30",
+                "end_time": "19:30"
+            }
+        },
+        "feePerLesson": 200000,
+        "maxStudents": 30,
+        "description": "abc xyz",
+        "students": [
+            "student127@gmail.com",
+            "hungnguyen@gmail.com",
+            "student1734@gmail.com",
+            "student3@gmail.com",
+            "student113@gmail.com",
+            "student38@gmail.com",
+            "student0135@gmail.com",
+            "student129@gmail.com",
+            "student11@gmail.com",
+            "student4@gmail.com",
+            "student23@gmail.com",
+            "student5@gmail.com",
+            "student139@gmail.com",
+            "student16@gmail.com",
+            "student134@gmail.com",
+            "student138@gmail.com",
+            "ayeue2824@gmail.com",
+            "student112@gmail.com",
+            "student125674@gmail.com",
+            "student@gmail.com"
+        ],
+        "room": "B202",
+        "createdAt": "2025-06-18T14:09:18.905Z",
+        "updatedAt": "2025-07-03T17:00:00.231Z",
+        "teacher": "tuan.nguyen@gmail.com"
+    },
+    {
+        "name": "8.2",
+        "grade": "8",
+        "section": "2",
+        "year": 2025,
+        "status": "active",
+        "schedule": {
+            "startDate": "2025-07-01T00:00:00.000Z",
+            "endDate": "2025-10-10T00:00:00.000Z",
+            "dayOfWeeks": [
+                "2",
+                "4",
+                "6"
+            ],
+            "time_slots": {
+                "start_time": "08:00",
+                "end_time": "10:00"
+            }
+        },
+        "feePerLesson": 160000,
+        "maxStudents": 30,
+        "description": "abc xyz",
+        "students": [
+            "student7@gmail.com",
+            "student17@gmail.com",
+            "student34223@gmail.com",
+            "anhdung1@gmail.com",
+            "vwu29929@toaik.com",
+            "student5@gmail.com",
+            "vcg44476@toaik.com",
+            "student3@gmail.com",
+            "student121@gmail.com",
+            "student04@gmail.com",
+            "student1120@gmail.com",
+            "kep47799@toaik.com",
+            "student44@gmail.com",
+            "student6@gmail.com",
+            "student1102@gmail.com",
+            "student117@gmail.com",
+            "student8@gmail.com",
+            "student30@gmail.com",
+            "eal17938@jioso.com",
+            "student123@gmail.com",
+            "student11306@gmail.com",
+            "student22@gmail.com",
+            "student101@gmail.com"
+        ],
+        "room": "G707",
+        "createdAt": "2025-06-18T14:09:41.475Z",
+        "updatedAt": "2025-07-04T06:21:23.304Z",
+        "teacher": "bich.tran@gmail.com"
+    },
+    {
+        "name": "11.3",
+        "grade": "11",
+        "section": "3",
+        "year": 2025,
+        "status": "closed",
+        "schedule": {
+            "startDate": "2025-06-01T00:00:00.000Z",
+            "endDate": "2025-08-10T00:00:00.000Z",
+            "dayOfWeeks": [
+                "1",
+                "4",
+                "6"
+            ],
+            "time_slots": {
+                "start_time": "10:15",
+                "end_time": "12:15"
+            }
+        },
+        "feePerLesson": 150000,
+        "maxStudents": 30,
+        "description": "abc xyz",
+        "students": [
+            "student1@gmail.com",
+            "student107@gmail.com",
+            "student113@gmail.com",
+            "student@gmail.com",
+            "hoang1nguyenvan@gmail.com",
+            "student46@gmail.com",
+            "student12@gmail.com",
+            "student18@gmail.com",
+            "student11@gmail.com",
+            "student101@gmail.com",
+            "student1734@gmail.com",
+            "student121@gmail.com",
+            "student40@gmail.com",
+            "anhdung1@gmail.com",
+            "student109@gmail.com",
+            "student123336@gmail.com",
+            "student106@gmail.com",
+            "student1120@gmail.com",
+            "student127@gmail.com",
+            "student17@gmail.com",
+            "student134@gmail.com",
+            "student12321@gmail.com",
+            "student2@gmail.com",
+            "student14@gmail.com",
+            "student120@gmail.com",
+            "hungnguyen@gmail.com",
+            "student131@gmail.com"
+        ],
+        "room": "I909",
+        "createdAt": "2025-06-18T14:11:39.528Z",
+        "updatedAt": "2025-08-12T17:00:01.374Z",
+        "teacher": "nam.bui@gmail.com"
+    },
+    {
+        "name": "12.1",
+        "grade": "12",
+        "section": "1",
+        "year": 2025,
+        "status": "active",
+        "schedule": {
+            "startDate": "2025-07-15T00:00:00.000Z",
+            "endDate": "2025-09-25T00:00:00.000Z",
+            "dayOfWeeks": [
+                "3",
+                "6",
+                "0"
+            ],
+            "time_slots": {
+                "start_time": "10:15",
+                "end_time": "12:15"
+            }
+        },
+        "feePerLesson": 180000,
+        "maxStudents": 30,
+        "description": "abc xyz",
+        "students": [
+            "student16@gmail.com",
+            "student46@gmail.com",
+            "student11@gmail.com",
+            "student120@gmail.com",
+            "anhdung1@gmail.com",
+            "vwu29929@toaik.com",
+            "prr65023@jioso.com",
+            "student9@gmail.com",
+            "student33@gmail.com",
+            "mcu91250@toaik.com",
+            "student35@gmail.com",
+            "student11031@gmail.com",
+            "student139@gmail.com",
+            "student119@gmail.com",
+            "student113@gmail.com",
+            "student1137@gmail.com",
+            "student37@gmail.com",
+            "student1339@gmail.com",
+            "student125@gmail.com",
+            "student125674@gmail.com",
+            "phucnguyenvan@gmail.com",
+            "student@gmail.com",
+            "student122@gmail.com",
+            "student23@gmail.com",
+            "student136@gmail.com",
+            "student13120@gmail.com",
+            "student3@gmail.com",
+            "student137@gmail.com"
+        ],
+        "room": "B202",
+        "createdAt": "2025-06-18T14:11:48.160Z",
+        "updatedAt": "2025-07-03T17:00:00.458Z",
+        "teacher": "ngoc.pham@gmail.com"
+    },
+    {
+        "name": "5.4",
+        "grade": "5",
+        "section": "4",
+        "year": 2025,
+        "status": "active",
+        "schedule": {
+            "startDate": "2025-07-10T00:00:00.000Z",
+            "endDate": "2025-08-16T00:00:00.000Z",
+            "dayOfWeeks": [
+                "2",
+                "3",
+                "4",
+                "6"
+            ],
+            "time_slots": {
+                "start_time": "18:00",
+                "end_time": "20:00"
+            }
+        },
+        "feePerLesson": 2000000,
+        "maxStudents": 20,
+        "description": "abc xyz",
+        "students": [
+            "student17@gmail.com",
+            "student117@gmail.com",
+            "student41@gmail.com",
+            "student131@gmail.com",
+            "student4@gmail.com",
+            "student29@gmail.com",
+            "student8@gmail.com",
+            "student18@gmail.com",
+            "student10012@gmail.com",
+            "student127@gmail.com",
+            "student114@gmail.com",
+            "student129@gmail.com",
+            "student14@gmail.com",
+            "student0135@gmail.com",
+            "student44@gmail.com",
+            "student125674@gmail.com",
+            "student138@gmail.com",
+            "student125@gmail.com"
+        ],
+        "room": "TA1-102",
+        "createdAt": "2025-07-02T07:25:26.020Z",
+        "updatedAt": "2025-07-03T17:00:00.501Z",
+        "teacher": "nam.bui@gmail.com"
+    },
+    {
+        "name": "1.5",
+        "grade": "1",
+        "section": "5",
+        "year": 2025,
+        "status": "closed",
+        "schedule": {
+            "startDate": "2025-07-24T00:00:00.000Z",
+            "endDate": "2025-07-01T00:00:00.000Z",
+            "dayOfWeeks": [
+                "2",
+                "3",
+                "4"
+            ],
+            "time_slots": {
+                "start_time": "16:00",
+                "end_time": "18:00"
+            }
+        },
+        "feePerLesson": 200000,
+        "maxStudents": 30,
+        "description": "1fege",
+        "students": [
+            "fze07618@jioso.com",
+            "student108@gmail.com",
+            "student39@gmail.com",
+            "student38@gmail.com",
+            "student46@gmail.com",
+            "student1131@gmail.com",
+            "student122@gmail.com",
+            "student37@gmail.com",
+            "vwu29929@toaik.com",
+            "ayeue2824@gmail.com",
+            "student2@gmail.com",
+            "student11306@gmail.com",
+            "anhdung1@gmail.com",
+            "student1137@gmail.com",
+            "student1129@gmail.com",
+            "student123336@gmail.com",
+            "student10012@gmail.com",
+            "student18@gmail.com",
+            "student124@gmail.com",
+            "student1136@gmail.com",
+            "student123@gmail.com"
+        ],
+        "room": "404",
+        "createdAt": "2025-07-03T04:00:11.841Z",
+        "updatedAt": "2025-07-03T15:12:22.733Z",
+        "teacher": "bao.nguyen1@gmail.com"
+    },
+    {
+        "name": "12.5",
+        "grade": "12",
+        "section": "5",
+        "year": 2025,
+        "status": "active",
+        "schedule": {
+            "startDate": "2025-07-24T00:00:00.000Z",
+            "endDate": "2025-08-21T00:00:00.000Z",
+            "dayOfWeeks": [
+                "2",
+                "4",
+                "6"
+            ],
+            "time_slots": {
+                "start_time": "16:00",
+                "end_time": "18:00"
+            }
+        },
+        "feePerLesson": 200000,
+        "maxStudents": 30,
+        "description": "some thing",
+        "students": [
+            "student43@gmail.com",
+            "student126@gmail.com",
+            "student121@gmail.com",
+            "student115@gmail.com",
+            "student138@gmail.com",
+            "student10@gmail.com",
+            "student131@gmail.com",
+            "student113@gmail.com",
+            "student5@gmail.com",
+            "prr65023@jioso.com",
+            "student135@gmail.com",
+            "student37@gmail.com",
+            "student46@gmail.com",
+            "student15@gmail.com",
+            "student19@gmail.com",
+            "student4@gmail.com",
+            "ayeue2824@gmail.com",
+            "student136@gmail.com",
+            "student1123@gmail.com",
+            "student10012@gmail.com",
+            "student45@gmail.com",
+            "duyngu@gmail.com",
+            "student23@gmail.com"
+        ],
+        "room": "401",
+        "createdAt": "2025-07-04T11:52:37.534Z",
+        "updatedAt": "2025-07-04T17:00:00.049Z",
+        "teacher": "bao.nguyen1@gmail.com"
+    },
+    {
+        "name": "3.5 itelts",
+        "grade": "3",
+        "section": "5",
+        "year": 2025,
+        "status": "closed",
+        "schedule": {
+            "startDate": "2025-06-13T00:00:00.000Z",
+            "endDate": "2025-07-25T00:00:00.000Z",
+            "dayOfWeeks": [
+                "1",
+                "3",
+                "5"
+            ],
+            "time_slots": {
+                "start_time": "09:00",
+                "end_time": "11:00"
+            }
+        },
+        "feePerLesson": 200000,
+        "maxStudents": 20,
+        "description": "ádasd",
+        "students": [
+            "student12321@gmail.com",
+            "student2@gmail.com",
+            "student40@gmail.com",
+            "student1137@gmail.com",
+            "student19@gmail.com",
+            "vcg44476@toaik.com",
+            "student116@gmail.com",
+            "student10012@gmail.com",
+            "duyngu@gmail.com",
+            "student108@gmail.com",
+            "student13@gmail.com",
+            "student11306@gmail.com",
+            "eal17938@jioso.com",
+            "student43@gmail.com",
+            "student110@gmail.com",
+            "student114@gmail.com",
+            "student45@gmail.com",
+            "student34223@gmail.com",
+            "student17@gmail.com",
+            "student117@gmail.com"
+        ],
+        "room": "12312",
+        "createdAt": "2025-07-04T11:54:51.699Z",
+        "updatedAt": "2025-07-26T17:00:01.383Z",
+        "teacher": "khoa.tran@gmail.com"
+    },
+    {
+        "name": "12.4",
+        "grade": "12",
+        "section": "4",
+        "year": 2025,
+        "status": "closed",
+        "schedule": {
+            "startDate": "2025-07-18T00:00:00.000Z",
+            "endDate": "2025-08-04T00:00:00.000Z",
+            "dayOfWeeks": [
+                "1",
+                "3",
+                "5"
+            ],
+            "time_slots": {
+                "start_time": "09:00",
+                "end_time": "11:00"
+            }
+        },
+        "feePerLesson": 200000,
+        "maxStudents": 30,
+        "description": "some thing",
+        "students": [
+            "student112@gmail.com",
+            "student37@gmail.com",
+            "student39@gmail.com",
+            "student2@gmail.com",
+            "student7@gmail.com",
+            "student122@gmail.com",
+            "student14@gmail.com",
+            "student31@gmail.com",
+            "student1136@gmail.com",
+            "student43@gmail.com",
+            "student117@gmail.com",
+            "student107@gmail.com",
+            "student32@gmail.com",
+            "student129@gmail.com",
+            "student41@gmail.com",
+            "student106@gmail.com",
+            "student45@gmail.com",
+            "student138@gmail.com",
+            "student131@gmail.com",
+            "student40@gmail.com",
+            "student110@gmail.com",
+            "student119@gmail.com",
+            "student29@gmail.com"
+        ],
+        "room": "D111",
+        "createdAt": "2025-07-04T11:55:52.957Z",
+        "updatedAt": "2025-08-06T17:00:00.190Z",
+        "teacher": "kim.pham@gmail.com"
+    },
+    {
+        "name": "3.4 ielts",
+        "grade": "3",
+        "section": "4",
+        "year": 2025,
+        "status": "closed",
+        "schedule": {
+            "startDate": "2025-06-26T00:00:00.000Z",
+            "endDate": "2025-07-17T00:00:00.000Z",
+            "dayOfWeeks": [
+                "1",
+                "3",
+                "5"
+            ],
+            "time_slots": {
+                "start_time": "14:00",
+                "end_time": "16:00"
+            }
+        },
+        "feePerLesson": 200000,
+        "maxStudents": 20,
+        "description": "adasdasd",
+        "students": [
+            "student34223@gmail.com",
+            "student1130@gmail.com",
+            "anhdung1@gmail.com",
+            "student33@gmail.com",
+            "student128@gmail.com",
+            "student31@gmail.com",
+            "prr65023@jioso.com",
+            "student18@gmail.com",
+            "student17@gmail.com",
+            "student134@gmail.com",
+            "student12321@gmail.com",
+            "student116@gmail.com",
+            "student10@gmail.com",
+            "student46@gmail.com",
+            "student111@gmail.com"
+        ],
+        "room": "404",
+        "createdAt": "2025-07-04T12:12:36.095Z",
+        "updatedAt": "2025-07-17T17:00:00.141Z",
+        "teacher": "minh.le@gmail.com"
+    },
+    {
+        "name": "4.5 itelts",
+        "grade": "4",
+        "section": "5",
+        "year": 2025,
+        "status": "closed",
+        "schedule": {
+            "startDate": "2025-06-19T00:00:00.000Z",
+            "endDate": "2025-07-23T00:00:00.000Z",
+            "dayOfWeeks": [
+                "1",
+                "3",
+                "5"
+            ],
+            "time_slots": {
+                "start_time": "14:00",
+                "end_time": "16:00"
+            }
+        },
+        "feePerLesson": 200000,
+        "maxStudents": 20,
+        "description": "abc xyz",
+        "students": [
+            "student134@gmail.com",
+            "hoang1nguyenvan@gmail.com",
+            "student1339@gmail.com",
+            "student137@gmail.com",
+            "student1734@gmail.com",
+            "anhdung1@gmail.com",
+            "student135@gmail.com",
+            "student119@gmail.com",
+            "student20@gmail.com",
+            "student1123@gmail.com",
+            "student8@gmail.com"
+        ],
+        "room": "404",
+        "createdAt": "2025-07-04T12:25:53.342Z",
+        "updatedAt": "2025-07-23T17:00:00.173Z",
+        "teacher": "bao.nguyen@gmail.com"
+    },
+    {
+        "name": "4.5",
+        "grade": "4",
+        "section": "6",
+        "year": 2025,
+        "status": "closed",
+        "schedule": {
+            "startDate": "2025-06-27T00:00:00.000Z",
+            "endDate": "2025-08-08T00:00:00.000Z",
+            "dayOfWeeks": [
+                "1",
+                "3",
+                "5"
+            ],
+            "time_slots": {
+                "start_time": "14:00",
+                "end_time": "16:00"
+            }
+        },
+        "feePerLesson": 200000,
+        "maxStudents": 20,
+        "description": "ádasd",
+        "students": [
+            "student117@gmail.com",
+            "ayeue2824@gmail.com",
+            "student128@gmail.com",
+            "student@gmail.com",
+            "student115@gmail.com",
+            "student04@gmail.com",
+            "student43@gmail.com",
+            "student1@gmail.com",
+            "mcu91250@toaik.com",
+            "student14@gmail.com",
+            "hungnguyen@gmail.com",
+            "student41@gmail.com"
+        ],
+        "room": "404",
+        "createdAt": "2025-07-05T14:19:32.947Z",
+        "updatedAt": "2025-08-09T17:00:00.297Z",
+        "teacher": "lan.do@gmail.com"
+    },
+    {
+        "name": "4.5",
+        "grade": "4",
+        "section": "5",
+        "year": 2026,
+        "status": "active",
+        "schedule": {
+            "startDate": "2026-02-05T00:00:00.000Z",
+            "endDate": "2026-07-14T00:00:00.000Z",
+            "dayOfWeeks": [
+                "2",
+                "3",
+                "4"
+            ],
+            "time_slots": {
+                "start_time": "09:00",
+                "end_time": "11:00"
+            }
+        },
+        "feePerLesson": 22222,
+        "maxStudents": 22,
+        "description": "aaaa",
+        "students": [
+            "student10@gmail.com",
+            "student1120@gmail.com",
+            "student131@gmail.com",
+            "student134@gmail.com",
+            "student22@gmail.com",
+            "student1119@gmail.com",
+            "student30@gmail.com",
+            "student23@gmail.com",
+            "anhdung1@gmail.com",
+            "student116@gmail.com",
+            "student1102@gmail.com",
+            "student20@gmail.com",
+            "student18@gmail.com",
+            "student04@gmail.com",
+            "student110@gmail.com",
+            "student11@gmail.com"
+        ],
+        "room": "404",
+        "createdAt": "2025-07-05T14:22:58.357Z",
+        "updatedAt": "2025-07-11T17:00:00.293Z",
+        "teacher": "ngoc.pham@gmail.com"
     }
-},
-{
-    "_id": {
-        "$oid": "6852c81b9a49f82eced82cdd"
-    },
-    "name": "4.2",
-    "grade": "4",
-    "section": "2",
-    "year": 2024,
-    "status": "closed",
-    "schedule": {
-        "startDate": {
-            "$date": "2024-06-01T00:00:00.000Z"
-        },
-        "endDate": {
-            "$date": "2024-08-10T00:00:00.000Z"
-        },
-        "dayOfWeeks": [
-            1,
-            4,
-            6
-        ],
-        "timeSlots": {
-            "startTime": "08:00",
-            "endTime": "10:00"
-        }
-    },
-    "feePerLesson": 190000,
-    "maxStudents": 30,
-    "description": "abc xyz",
-    "room": "J010",
-    "deleted": false,
-    "createdAt": {
-        "$date": "2025-06-18T14:07:23.090Z"
-    },
-    "updatedAt": {
-        "$date": "2025-07-03T03:25:05.597Z"
-    },
-    "__v": 0,
-    "teacherId": {
-        "$oid": "6852cce49a49f82eced82da9"
-    }
-},
-{
-    "_id": {
-        "$oid": "6852c8569a49f82eced82cf1"
-    },
-    "name": "6.1",
-    "grade": "6",
-    "section": "1",
-    "year": 2025,
-    "status": "active",
-    "schedule": {
-        "startDate": {
-            "$date": "2025-06-20T00:00:00.000Z"
-        },
-        "endDate": {
-            "$date": "2025-08-30T00:00:00.000Z"
-        },
-        "dayOfWeeks": [
-            3,
-            6,
-            0
-        ],
-        "timeSlots": {
-            "startTime": "08:00",
-            "endTime": "10:00"
-        }
-    },
-    "feePerLesson": 200000,
-    "maxStudents": 30,
-    "description": "abc xyz",
-    "room": "A101",
-    "deleted": false,
-    "createdAt": {
-        "$date": "2025-06-18T14:08:22.573Z"
-    },
-    "updatedAt": {
-        "$date": "2025-07-03T03:25:05.597Z"
-    },
-    "__v": 0,
-    "teacherId": {
-        "$oid": "6859480aba4ed683efebdd99"
-    }
-},
-{
-    "_id": {
-        "$oid": "6852c8609a49f82eced82cf5"
-    },
-    "name": "6.2",
-    "grade": "6",
-    "section": "2",
-    "year": 2023,
-    "status": "closed",
-    "schedule": {
-        "startDate": {
-            "$date": "2023-06-01T00:00:00.000Z"
-        },
-        "endDate": {
-            "$date": "2023-08-10T00:00:00.000Z"
-        },
-        "dayOfWeeks": [
-            1,
-            2,
-            6
-        ],
-        "timeSlots": {
-            "startTime": "15:15",
-            "endTime": "17:15"
-        }
-    },
-    "feePerLesson": 200000,
-    "maxStudents": 30,
-    "description": "abc xyz",
-    "room": "B202",
-    "deleted": false,
-    "createdAt": {
-        "$date": "2025-06-18T14:08:32.648Z"
-    },
-    "updatedAt": {
-        "$date": "2025-07-03T03:25:05.597Z"
-    },
-    "__v": 0,
-    "teacherId": {
-        "$oid": "6852ccc89a49f82eced82d9b"
-    }
-},
-{
-    "_id": {
-        "$oid": "6852c8779a49f82eced82cfd"
-    },
-    "name": "7.1",
-    "grade": "7",
-    "section": "1",
-    "year": 2025,
-    "status": "active",
-    "schedule": {
-        "startDate": {
-            "$date": "2025-10-10T00:00:00.000Z"
-        },
-        "endDate": {
-            "$date": "2025-12-20T00:00:00.000Z"
-        },
-        "dayOfWeeks": [
-            2,
-            3,
-            5
-        ],
-        "timeSlots": {
-            "startTime": "19:45",
-            "endTime": "21:45"
-        }
-    },
-    "feePerLesson": 200000,
-    "maxStudents": 30,
-    "description": "abc xyz",
-    "room": "J010",
-    "deleted": false,
-    "createdAt": {
-        "$date": "2025-06-18T14:08:55.766Z"
-    },
-    "updatedAt": {
-        "$date": "2025-07-03T17:00:00.188Z"
-    },
-    "__v": 0,
-    "teacherId": {
-        "$oid": "6852cd3a9a49f82eced82dda"
-    }
-},
-{
-    "_id": {
-        "$oid": "6852c8989a49f82eced82d09"
-    },
-    "name": "8.1",
-    "grade": "8",
-    "section": "1",
-    "year": 2025,
-    "status": "closed",
-    "schedule": {
-        "startDate": {
-            "$date": "2025-04-15T00:00:00.000Z"
-        },
-        "endDate": {
-            "$date": "2025-06-25T00:00:00.000Z"
-        },
-        "dayOfWeeks": [
-            1,
-            2,
-            6
-        ],
-        "timeSlots": {
-            "startTime": "08:00",
-            "endTime": "10:00"
-        }
-    },
-    "feePerLesson": 180000,
-    "maxStudents": 30,
-    "description": "abc xyz",
-    "room": "C303",
-    "deleted": false,
-    "createdAt": {
-        "$date": "2025-06-18T14:09:28.989Z"
-    },
-    "updatedAt": {
-        "$date": "2025-07-03T03:25:05.597Z"
-    },
-    "__v": 0,
-    "teacherId": {
-        "$oid": "6852cc8e9a49f82eced82d7f"
-    }
-},
-{
-    "_id": {
-        "$oid": "6852c8fd9a49f82eced82d29"
-    },
-    "name": "10.3",
-    "grade": "10",
-    "section": "3",
-    "year": 2025,
-    "status": "closed",
-    "schedule": {
-        "startDate": {
-            "$date": "2025-05-20T00:00:00.000Z"
-        },
-        "endDate": {
-            "$date": "2025-07-30T00:00:00.000Z"
-        },
-        "dayOfWeeks": [
-            2,
-            4,
-            6
-        ],
-        "timeSlots": {
-            "startTime": "13:00",
-            "endTime": "15:00"
-        }
-    },
-    "feePerLesson": 180000,
-    "maxStudents": 30,
-    "description": "abc xyz",
-    "room": "J010",
-    "deleted": false,
-    "createdAt": {
-        "$date": "2025-06-18T14:11:09.949Z"
-    },
-    "updatedAt": {
-        "$date": "2025-08-03T17:00:00.148Z"
-    },
-    "__v": 0,
-    "teacherId": {
-        "$oid": "6852cc8e9a49f82eced82d7f"
-    }
-},
-{
-    "_id": {
-        "$oid": "6852c92d9a49f82eced82d3d"
-    },
-    "name": "12.2",
-    "grade": "12",
-    "section": "2",
-    "year": 2022,
-    "status": "closed",
-    "schedule": {
-        "startDate": {
-            "$date": "2022-06-01T00:00:00.000Z"
-        },
-        "endDate": {
-            "$date": "2022-08-10T00:00:00.000Z"
-        },
-        "dayOfWeeks": [
-            2,
-            4,
-            0
-        ],
-        "timeSlots": {
-            "startTime": "08:00",
-            "endTime": "10:00"
-        }
-    },
-    "feePerLesson": 200000,
-    "maxStudents": 30,
-    "description": "abc xyz",
-    "room": "E505",
-    "deleted": false,
-    "createdAt": {
-        "$date": "2025-06-18T14:11:57.871Z"
-    },
-    "updatedAt": {
-        "$date": "2025-07-03T03:25:05.597Z"
-    },
-    "__v": 0,
-    "teacherId": {
-        "$oid": "6852ccb99a49f82eced82d94"
-    }
-},
-{
-    "_id": {
-        "$oid": "6852c68b9a49f82eced82ca2"
-    },
-    "name": "1.1",
-    "grade": "1",
-    "section": "1",
-    "year": 2024,
-    "status": "closed",
-    "schedule": {
-        "startDate": {
-            "$date": "2024-06-04T00:00:00.000Z"
-        },
-        "endDate": {
-            "$date": "2024-08-14T00:00:00.000Z"
-        },
-        "dayOfWeeks": [
-            1,
-            3,
-            4,
-            5
-        ],
-        "timeSlots": {
-            "startTime": "18:00",
-            "endTime": "22:00"
-        }
-    },
-    "feePerLesson": 200000,
-    "maxStudents": 20,
-    "description": "something",
-    "room": "403",
-    "deleted": false,
-    "createdAt": {
-        "$date": "2025-06-18T14:00:43.959Z"
-    },
-    "updatedAt": {
-        "$date": "2025-07-05T13:08:46.442Z"
-    },
-    "__v": 0,
-    "teacherId": {
-        "$oid": "6852cc7d9a49f82eced82d78"
-    }
-},
-{
-    "_id": {
-        "$oid": "6852c7b69a49f82eced82cc1"
-    },
-    "name": "2.1",
-    "grade": "2",
-    "section": "1",
-    "year": 2025,
-    "status": "closed",
-    "schedule": {
-        "startDate": {
-            "$date": "2025-05-31T00:00:00.000Z"
-        },
-        "endDate": {
-            "$date": "2025-07-01T00:00:00.000Z"
-        },
-        "dayOfWeeks": [
-            2,
-            4,
-            5,
-            6,
-            0
-        ],
-        "timeSlots": {
-            "startTime": "10:15",
-            "endTime": "12:15"
-        }
-    },
-    "feePerLesson": 200000,
-    "maxStudents": 30,
-    "description": "abc xyz",
-    "room": "H808",
-    "deleted": false,
-    "createdAt": {
-        "$date": "2025-06-18T14:05:42.623Z"
-    },
-    "updatedAt": {
-        "$date": "2025-07-03T03:25:05.597Z"
-    },
-    "__v": 0,
-    "teacherId": {
-        "$oid": "6852cce49a49f82eced82da9"
-    }
-},
-{
-    "_id": {
-        "$oid": "6852c8b19a49f82eced82d11"
-    },
-    "name": "8.3",
-    "grade": "8",
-    "section": "3",
-    "year": 2022,
-    "status": "closed",
-    "schedule": {
-        "startDate": {
-            "$date": "2022-04-01T00:00:00.000Z"
-        },
-        "endDate": {
-            "$date": "2022-06-10T00:00:00.000Z"
-        },
-        "dayOfWeeks": [
-            2,
-            4,
-            0
-        ],
-        "timeSlots": {
-            "startTime": "17:30",
-            "endTime": "19:30"
-        }
-    },
-    "feePerLesson": 200000,
-    "maxStudents": 30,
-    "description": "abc xyz",
-    "room": "I909",
-    "deleted": false,
-    "createdAt": {
-        "$date": "2025-06-18T14:09:53.951Z"
-    },
-    "updatedAt": {
-        "$date": "2025-07-03T03:25:05.597Z"
-    },
-    "__v": 0,
-    "teacherId": {
-        "$oid": "6852cce49a49f82eced82da9"
-    }
-},
-{
-    "_id": {
-        "$oid": "6852c8bf9a49f82eced82d15"
-    },
-    "name": "9.1",
-    "grade": "9",
-    "section": "1",
-    "year": 2025,
-    "status": "active",
-    "schedule": {
-        "startDate": {
-            "$date": "2025-10-10T00:00:00.000Z"
-        },
-        "endDate": {
-            "$date": "2025-12-20T00:00:00.000Z"
-        },
-        "dayOfWeeks": [
-            2,
-            3,
-            5
-        ],
-        "timeSlots": {
-            "startTime": "15:15",
-            "endTime": "17:15"
-        }
-    },
-    "feePerLesson": 200000,
-    "maxStudents": 30,
-    "description": "abc xyz",
-    "room": "D404",
-    "deleted": false,
-    "createdAt": {
-        "$date": "2025-06-18T14:10:07.677Z"
-    },
-    "updatedAt": {
-        "$date": "2025-07-03T17:00:00.317Z"
-    },
-    "__v": 0,
-    "teacherId": {
-        "$oid": "6852ccc89a49f82eced82d9b"
-    }
-},
-{
-    "_id": {
-        "$oid": "6852c8dd9a49f82eced82d1d"
-    },
-    "name": "9.3",
-    "grade": "9",
-    "section": "3",
-    "year": 2025,
-    "status": "closed",
-    "schedule": {
-        "startDate": {
-            "$date": "2025-05-15T00:00:00.000Z"
-        },
-        "endDate": {
-            "$date": "2025-07-25T00:00:00.000Z"
-        },
-        "dayOfWeeks": [
-            1,
-            4,
-            6
-        ],
-        "timeSlots": {
-            "startTime": "17:30",
-            "endTime": "19:30"
-        }
-    },
-    "feePerLesson": 200000,
-    "maxStudents": 30,
-    "description": "abc xyz",
-    "room": "J010",
-    "deleted": false,
-    "createdAt": {
-        "$date": "2025-06-18T14:10:37.891Z"
-    },
-    "updatedAt": {
-        "$date": "2025-07-26T17:00:00.136Z"
-    },
-    "__v": 0,
-    "teacherId": {
-        "$oid": "6852cd509a49f82eced82de8"
-    }
-},
-{
-    "_id": {
-        "$oid": "6852c8e89a49f82eced82d21"
-    },
-    "name": "10.1",
-    "grade": "10",
-    "section": "1",
-    "year": 2025,
-    "status": "active",
-    "schedule": {
-        "startDate": {
-            "$date": "2025-07-15T00:00:00.000Z"
-        },
-        "endDate": {
-            "$date": "2025-09-25T00:00:00.000Z"
-        },
-        "dayOfWeeks": [
-            2,
-            4,
-            0
-        ],
-        "timeSlots": {
-            "startTime": "15:15",
-            "endTime": "17:15"
-        }
-    },
-    "feePerLesson": 200000,
-    "maxStudents": 30,
-    "description": "abc xyz",
-    "room": "A101",
-    "deleted": false,
-    "createdAt": {
-        "$date": "2025-06-18T14:10:48.656Z"
-    },
-    "updatedAt": {
-        "$date": "2025-07-03T17:00:00.361Z"
-    },
-    "__v": 0,
-    "teacherId": {
-        "$oid": "6852cd479a49f82eced82de1"
-    }
-},
-{
-    "_id": {
-        "$oid": "6852c9079a49f82eced82d2d"
-    },
-    "name": "11.1",
-    "grade": "11",
-    "section": "1",
-    "year": 2023,
-    "status": "closed",
-    "schedule": {
-        "startDate": {
-            "$date": "2023-06-15T00:00:00.000Z"
-        },
-        "endDate": {
-            "$date": "2023-08-25T00:00:00.000Z"
-        },
-        "dayOfWeeks": [
-            2,
-            4,
-            6
-        ],
-        "timeSlots": {
-            "startTime": "08:00",
-            "endTime": "10:00"
-        }
-    },
-    "feePerLesson": 190000,
-    "maxStudents": 30,
-    "description": "abc xyz",
-    "room": "I909",
-    "deleted": false,
-    "createdAt": {
-        "$date": "2025-06-18T14:11:19.675Z"
-    },
-    "updatedAt": {
-        "$date": "2025-07-03T03:25:05.597Z"
-    },
-    "__v": 0,
-    "teacherId": {
-        "$oid": "6852cd509a49f82eced82de8"
-    }
-},
-{
-    "_id": {
-        "$oid": "6852c9119a49f82eced82d31"
-    },
-    "name": "11.2",
-    "grade": "11",
-    "section": "2",
-    "year": 2025,
-    "status": "active",
-    "schedule": {
-        "startDate": {
-            "$date": "2025-09-01T00:00:00.000Z"
-        },
-        "endDate": {
-            "$date": "2025-11-10T00:00:00.000Z"
-        },
-        "dayOfWeeks": [
-            2,
-            5,
-            0
-        ],
-        "timeSlots": {
-            "startTime": "15:15",
-            "endTime": "17:15"
-        }
-    },
-    "feePerLesson": 200000,
-    "maxStudents": 30,
-    "description": "abc xyz",
-    "room": "H808",
-    "deleted": false,
-    "createdAt": {
-        "$date": "2025-06-18T14:11:29.906Z"
-    },
-    "updatedAt": {
-        "$date": "2025-07-03T17:00:00.410Z"
-    },
-    "__v": 0,
-    "teacherId": {
-        "$oid": "6852cd3a9a49f82eced82dda"
-    }
-},
-{
-    "_id": {
-        "$oid": "6852c9379a49f82eced82d41"
-    },
-    "name": "12.3",
-    "grade": "12",
-    "section": "3",
-    "year": 2025,
-    "status": "closed",
-    "schedule": {
-        "startDate": {
-            "$date": "2025-05-15T00:00:00.000Z"
-        },
-        "endDate": {
-            "$date": "2025-07-25T00:00:00.000Z"
-        },
-        "dayOfWeeks": [
-            3,
-            6,
-            0
-        ],
-        "timeSlots": {
-            "startTime": "13:00",
-            "endTime": "15:00"
-        }
-    },
-    "feePerLesson": 200000,
-    "maxStudents": 30,
-    "description": "abc xyz",
-    "room": "G707",
-    "deleted": false,
-    "createdAt": {
-        "$date": "2025-06-18T14:12:07.501Z"
-    },
-    "updatedAt": {
-        "$date": "2025-07-26T17:00:00.841Z"
-    },
-    "__v": 0,
-    "teacherId": {
-        "$oid": "68595d36e737b53f8198cd7f"
-    }
-},
-{
-    "_id": {
-        "$oid": "6852c7999a49f82eced82cbd"
-    },
-    "name": "1.3",
-    "grade": "1",
-    "section": "3",
-    "year": 2025,
-    "status": "closed",
-    "schedule": {
-        "startDate": {
-            "$date": "2025-03-15T00:00:00.000Z"
-        },
-        "endDate": {
-            "$date": "2025-05-25T00:00:00.000Z"
-        },
-        "dayOfWeeks": [
-            3,
-            6,
-            0
-        ],
-        "timeSlots": {
-            "startTime": "15:15",
-            "endTime": "17:15"
-        }
-    },
-    "feePerLesson": 200000,
-    "maxStudents": 30,
-    "description": "abc xyz",
-    "room": "F606",
-    "deleted": false,
-    "createdAt": {
-        "$date": "2025-06-18T14:05:13.699Z"
-    },
-    "updatedAt": {
-        "$date": "2025-07-03T03:25:05.597Z"
-    },
-    "__v": 0,
-    "teacherId": {
-        "$oid": "6852ccc89a49f82eced82d9b"
-    }
-},
-{
-    "_id": {
-        "$oid": "6852c8269a49f82eced82ce1"
-    },
-    "name": "4.3",
-    "grade": "4",
-    "section": "3",
-    "year": 2025,
-    "status": "active",
-    "schedule": {
-        "startDate": {
-            "$date": "2025-05-31T00:00:00.000Z"
-        },
-        "endDate": {
-            "$date": "2025-08-24T00:00:00.000Z"
-        },
-        "dayOfWeeks": [
-            1,
-            3,
-            5
-        ],
-        "timeSlots": {
-            "startTime": "17:30",
-            "endTime": "19:30"
-        }
-    },
-    "feePerLesson": 200000,
-    "maxStudents": 30,
-    "description": "abc xyz",
-    "room": "D404",
-    "deleted": false,
-    "createdAt": {
-        "$date": "2025-06-18T14:07:34.127Z"
-    },
-    "updatedAt": {
-        "$date": "2025-07-04T06:17:41.596Z"
-    },
-    "__v": 0,
-    "teacherId": {
-        "$oid": "6852cc7d9a49f82eced82d78"
-    }
-},
-{
-    "_id": {
-        "$oid": "6852c8349a49f82eced82ce5"
-    },
-    "name": "5.1",
-    "grade": "5",
-    "section": "1",
-    "year": 2021,
-    "status": "closed",
-    "schedule": {
-        "startDate": {
-            "$date": "2021-02-01T00:00:00.000Z"
-        },
-        "endDate": {
-            "$date": "2021-04-10T00:00:00.000Z"
-        },
-        "dayOfWeeks": [
-            2,
-            5,
-            0
-        ],
-        "timeSlots": {
-            "startTime": "10:15",
-            "endTime": "12:15"
-        }
-    },
-    "feePerLesson": 210000,
-    "maxStudents": 30,
-    "description": "abc xyz",
-    "room": "E505",
-    "deleted": false,
-    "createdAt": {
-        "$date": "2025-06-18T14:07:48.155Z"
-    },
-    "updatedAt": {
-        "$date": "2025-07-03T03:25:05.597Z"
-    },
-    "__v": 0,
-    "teacherId": {
-        "$oid": "6852cd509a49f82eced82de8"
-    }
-},
-{
-    "_id": {
-        "$oid": "6852c84b9a49f82eced82ced"
-    },
-    "name": "5.3",
-    "grade": "5",
-    "section": "3",
-    "year": 2025,
-    "status": "closed",
-    "schedule": {
-        "startDate": {
-            "$date": "2025-06-01T00:00:00.000Z"
-        },
-        "endDate": {
-            "$date": "2025-08-10T00:00:00.000Z"
-        },
-        "dayOfWeeks": [
-            2,
-            5,
-            0
-        ],
-        "timeSlots": {
-            "startTime": "13:00",
-            "endTime": "15:00"
-        }
-    },
-    "feePerLesson": 180000,
-    "maxStudents": 30,
-    "description": "abc xyz",
-    "room": "D404",
-    "deleted": false,
-    "createdAt": {
-        "$date": "2025-06-18T14:08:11.097Z"
-    },
-    "updatedAt": {
-        "$date": "2025-08-12T17:00:00.407Z"
-    },
-    "__v": 0,
-    "teacherId": {
-        "$oid": "6852cca89a49f82eced82d8d"
-    }
-},
-{
-    "_id": {
-        "$oid": "6852c86d9a49f82eced82cf9"
-    },
-    "name": "6.3",
-    "grade": "6",
-    "section": "3",
-    "year": 2025,
-    "status": "active",
-    "schedule": {
-        "startDate": {
-            "$date": "2025-06-10T00:00:00.000Z"
-        },
-        "endDate": {
-            "$date": "2025-08-30T00:00:00.000Z"
-        },
-        "dayOfWeeks": [
-            1,
-            4,
-            6
-        ],
-        "timeSlots": {
-            "startTime": "19:45",
-            "endTime": "21:45"
-        }
-    },
-    "feePerLesson": 180000,
-    "maxStudents": 30,
-    "description": "abc xyz",
-    "room": "F606",
-    "deleted": false,
-    "createdAt": {
-        "$date": "2025-06-18T14:08:45.176Z"
-    },
-    "updatedAt": {
-        "$date": "2025-07-03T03:25:05.597Z"
-    },
-    "__v": 0,
-    "teacherId": {
-        "$oid": "6852cc8e9a49f82eced82d7f"
-    }
-},
-{
-    "_id": {
-        "$oid": "6852c8d39a49f82eced82d19"
-    },
-    "name": "9.2",
-    "grade": "9",
-    "section": "2",
-    "year": 2021,
-    "status": "closed",
-    "schedule": {
-        "startDate": {
-            "$date": "2021-06-15T00:00:00.000Z"
-        },
-        "endDate": {
-            "$date": "2021-08-25T00:00:00.000Z"
-        },
-        "dayOfWeeks": [
-            1,
-            2,
-            6
-        ],
-        "timeSlots": {
-            "startTime": "19:45",
-            "endTime": "21:45"
-        }
-    },
-    "feePerLesson": 180000,
-    "maxStudents": 30,
-    "description": "abc xyz",
-    "room": "F606",
-    "deleted": false,
-    "createdAt": {
-        "$date": "2025-06-18T14:10:27.324Z"
-    },
-    "updatedAt": {
-        "$date": "2025-07-03T03:25:05.597Z"
-    },
-    "__v": 0,
-    "teacherId": {
-        "$oid": "6852ccf99a49f82eced82db7"
-    }
-},
-{
-    "_id": {
-        "$oid": "6852c8f49a49f82eced82d25"
-    },
-    "name": "10.2",
-    "grade": "10",
-    "section": "2",
-    "year": 2024,
-    "status": "closed",
-    "schedule": {
-        "startDate": {
-            "$date": "2024-03-01T00:00:00.000Z"
-        },
-        "endDate": {
-            "$date": "2024-05-10T00:00:00.000Z"
-        },
-        "dayOfWeeks": [
-            1,
-            2,
-            6
-        ],
-        "timeSlots": {
-            "startTime": "10:15",
-            "endTime": "12:15"
-        }
-    },
-    "feePerLesson": 200000,
-    "maxStudents": 30,
-    "description": "abc xyz",
-    "room": "D404",
-    "deleted": false,
-    "createdAt": {
-        "$date": "2025-06-18T14:11:00.079Z"
-    },
-    "updatedAt": {
-        "$date": "2025-07-03T03:25:05.597Z"
-    },
-    "__v": 0,
-    "teacherId": {
-        "$oid": "6859480aba4ed683efebdd99"
-    }
-},
-{
-    "_id": {
-        "$oid": "6852c7c49a49f82eced82cc5"
-    },
-    "name": "2.2",
-    "grade": "2",
-    "section": "2",
-    "year": 2025,
-    "status": "active",
-    "schedule": {
-        "startDate": {
-            "$date": "2025-06-10T00:00:00.000Z"
-        },
-        "endDate": {
-            "$date": "2025-08-20T00:00:00.000Z"
-        },
-        "dayOfWeeks": [
-            1,
-            2,
-            6
-        ],
-        "timeSlots": {
-            "startTime": "17:30",
-            "endTime": "19:30"
-        }
-    },
-    "feePerLesson": 200000,
-    "maxStudents": 30,
-    "description": "abc xyz",
-    "room": "I001",
-    "deleted": false,
-    "createdAt": {
-        "$date": "2025-06-18T14:05:56.821Z"
-    },
-    "updatedAt": {
-        "$date": "2025-07-03T03:25:05.597Z"
-    },
-    "__v": 0,
-    "teacherId": {
-        "$oid": "6852ccef9a49f82eced82db0"
-    }
-},
-{
-    "_id": {
-        "$oid": "6852c7d89a49f82eced82cc9"
-    },
-    "name": "2.3",
-    "grade": "2",
-    "section": "3",
-    "year": 2025,
-    "status": "active",
-    "schedule": {
-        "startDate": {
-            "$date": "2025-08-15T00:00:00.000Z"
-        },
-        "endDate": {
-            "$date": "2025-10-25T00:00:00.000Z"
-        },
-        "dayOfWeeks": [
-            1,
-            4,
-            6
-        ],
-        "timeSlots": {
-            "startTime": "13:00",
-            "endTime": "15:00"
-        }
-    },
-    "feePerLesson": 200000,
-    "maxStudents": 30,
-    "description": "abc xyz",
-    "room": "B202",
-    "deleted": false,
-    "createdAt": {
-        "$date": "2025-06-18T14:06:16.878Z"
-    },
-    "updatedAt": {
-        "$date": "2025-07-03T17:00:00.054Z"
-    },
-    "__v": 0,
-    "teacherId": {
-        "$oid": "6852cd069a49f82eced82dbe"
-    }
-},
-{
-    "_id": {
-        "$oid": "6852c7e79a49f82eced82ccd"
-    },
-    "name": "3.1",
-    "grade": "3",
-    "section": "1",
-    "year": 2022,
-    "status": "closed",
-    "schedule": {
-        "startDate": {
-            "$date": "2022-06-20T00:00:00.000Z"
-        },
-        "endDate": {
-            "$date": "2022-08-30T00:00:00.000Z"
-        },
-        "dayOfWeeks": [
-            2,
-            4,
-            0
-        ],
-        "timeSlots": {
-            "startTime": "13:00",
-            "endTime": "15:00"
-        }
-    },
-    "feePerLesson": 200000,
-    "maxStudents": 20,
-    "description": "abc xyz",
-    "room": "I909",
-    "deleted": false,
-    "createdAt": {
-        "$date": "2025-06-18T14:06:31.913Z"
-    },
-    "updatedAt": {
-        "$date": "2025-07-03T03:25:05.597Z"
-    },
-    "__v": 0,
-    "teacherId": {
-        "$oid": "6852cd3a9a49f82eced82dda"
-    }
-},
-{
-    "_id": {
-        "$oid": "6852c7f49a49f82eced82cd1"
-    },
-    "name": "3.2",
-    "grade": "3",
-    "section": "2",
-    "year": 2023,
-    "status": "closed",
-    "schedule": {
-        "startDate": {
-            "$date": "2023-06-20T00:00:00.000Z"
-        },
-        "endDate": {
-            "$date": "2023-08-30T00:00:00.000Z"
-        },
-        "dayOfWeeks": [
-            2,
-            4,
-            6
-        ],
-        "timeSlots": {
-            "startTime": "15:15",
-            "endTime": "17:15"
-        }
-    },
-    "feePerLesson": 180000,
-    "maxStudents": 30,
-    "description": "abc xyz",
-    "room": "C303",
-    "deleted": false,
-    "createdAt": {
-        "$date": "2025-06-18T14:06:44.519Z"
-    },
-    "updatedAt": {
-        "$date": "2025-07-03T03:25:05.597Z"
-    },
-    "__v": 0,
-    "teacherId": {
-        "$oid": "6859480aba4ed683efebdd99"
-    }
-},
-{
-    "_id": {
-        "$oid": "6852c8009a49f82eced82cd5"
-    },
-    "name": "3.3",
-    "grade": "3",
-    "section": "3",
-    "year": 2025,
-    "status": "closed",
-    "schedule": {
-        "startDate": {
-            "$date": "2025-06-10T00:00:00.000Z"
-        },
-        "endDate": {
-            "$date": "2025-08-20T00:00:00.000Z"
-        },
-        "dayOfWeeks": [
-            1,
-            4,
-            6
-        ],
-        "timeSlots": {
-            "startTime": "15:15",
-            "endTime": "17:15"
-        }
-    },
-    "feePerLesson": 160000,
-    "maxStudents": 30,
-    "description": "abc xyz",
-    "room": "G707",
-    "deleted": false,
-    "createdAt": {
-        "$date": "2025-06-18T14:06:56.245Z"
-    },
-    "updatedAt": {
-        "$date": "2025-07-04T12:13:20.464Z"
-    },
-    "__v": 0,
-    "teacherId": {
-        "$oid": "6852ccd69a49f82eced82da2"
-    }
-},
-{
-    "_id": {
-        "$oid": "6852c80e9a49f82eced82cd9"
-    },
-    "name": "4.1",
-    "grade": "4",
-    "section": "1",
-    "year": 2025,
-    "status": "active",
-    "schedule": {
-        "startDate": {
-            "$date": "2025-07-15T00:00:00.000Z"
-        },
-        "endDate": {
-            "$date": "2025-09-25T00:00:00.000Z"
-        },
-        "dayOfWeeks": [
-            2,
-            4,
-            0
-        ],
-        "timeSlots": {
-            "startTime": "19:45",
-            "endTime": "21:45"
-        }
-    },
-    "feePerLesson": 220000,
-    "maxStudents": 30,
-    "description": "abc xyz",
-    "room": "C303",
-    "deleted": false,
-    "createdAt": {
-        "$date": "2025-06-18T14:07:10.114Z"
-    },
-    "updatedAt": {
-        "$date": "2025-07-03T17:00:00.101Z"
-    },
-    "__v": 0,
-    "teacherId": {
-        "$oid": "6852ccef9a49f82eced82db0"
-    }
-},
-{
-    "_id": {
-        "$oid": "6852c83e9a49f82eced82ce9"
-    },
-    "name": "5.2",
-    "grade": "5",
-    "section": "2",
-    "year": 2025,
-    "status": "active",
-    "schedule": {
-        "startDate": {
-            "$date": "2025-09-10T00:00:00.000Z"
-        },
-        "endDate": {
-            "$date": "2025-11-20T00:00:00.000Z"
-        },
-        "dayOfWeeks": [
-            2,
-            3,
-            5
-        ],
-        "timeSlots": {
-            "startTime": "10:15",
-            "endTime": "12:15"
-        }
-    },
-    "feePerLesson": 200000,
-    "maxStudents": 30,
-    "description": "abc xyz",
-    "room": "H808",
-    "deleted": false,
-    "createdAt": {
-        "$date": "2025-06-18T14:07:58.870Z"
-    },
-    "updatedAt": {
-        "$date": "2025-07-03T17:00:00.144Z"
-    },
-    "__v": 0,
-    "teacherId": {
-        "$oid": "6852cca89a49f82eced82d8d"
-    }
-},
-{
-    "_id": {
-        "$oid": "6852c8839a49f82eced82d01"
-    },
-    "name": "7.2",
-    "grade": "7",
-    "section": "2",
-    "year": 2021,
-    "status": "closed",
-    "schedule": {
-        "startDate": {
-            "$date": "2021-01-20T00:00:00.000Z"
-        },
-        "endDate": {
-            "$date": "2021-03-30T00:00:00.000Z"
-        },
-        "dayOfWeeks": [
-            2,
-            4,
-            0
-        ],
-        "timeSlots": {
-            "startTime": "10:15",
-            "endTime": "12:15"
-        }
-    },
-    "feePerLesson": 180000,
-    "maxStudents": 30,
-    "description": "abc xyz",
-    "room": "J010",
-    "deleted": false,
-    "createdAt": {
-        "$date": "2025-06-18T14:09:07.225Z"
-    },
-    "updatedAt": {
-        "$date": "2025-07-03T03:25:05.597Z"
-    },
-    "__v": 0,
-    "teacherId": {
-        "$oid": "6852cca89a49f82eced82d8d"
-    }
-},
-{
-    "_id": {
-        "$oid": "6852c88e9a49f82eced82d05"
-    },
-    "name": "7.3",
-    "grade": "7",
-    "section": "3",
-    "year": 2025,
-    "status": "active",
-    "schedule": {
-        "startDate": {
-            "$date": "2025-08-01T00:00:00.000Z"
-        },
-        "endDate": {
-            "$date": "2025-10-10T00:00:00.000Z"
-        },
-        "dayOfWeeks": [
-            2,
-            5,
-            0
-        ],
-        "timeSlots": {
-            "startTime": "17:30",
-            "endTime": "19:30"
-        }
-    },
-    "feePerLesson": 200000,
-    "maxStudents": 30,
-    "description": "abc xyz",
-    "room": "B202",
-    "deleted": false,
-    "createdAt": {
-        "$date": "2025-06-18T14:09:18.905Z"
-    },
-    "updatedAt": {
-        "$date": "2025-07-03T17:00:00.231Z"
-    },
-    "__v": 0,
-    "teacherId": {
-        "$oid": "6852ccc89a49f82eced82d9b"
-    }
-},
-{
-    "_id": {
-        "$oid": "6852c8a59a49f82eced82d0d"
-    },
-    "name": "8.2",
-    "grade": "8",
-    "section": "2",
-    "year": 2025,
-    "status": "active",
-    "schedule": {
-        "startDate": {
-            "$date": "2025-07-01T00:00:00.000Z"
-        },
-        "endDate": {
-            "$date": "2025-10-10T00:00:00.000Z"
-        },
-        "dayOfWeeks": [
-            2,
-            4,
-            6
-        ],
-        "timeSlots": {
-            "startTime": "08:00",
-            "endTime": "10:00"
-        }
-    },
-    "feePerLesson": 160000,
-    "maxStudents": 30,
-    "description": "abc xyz",
-    "room": "G707",
-    "deleted": false,
-    "createdAt": {
-        "$date": "2025-06-18T14:09:41.475Z"
-    },
-    "updatedAt": {
-        "$date": "2025-07-04T06:21:23.304Z"
-    },
-    "__v": 0,
-    "teacherId": {
-        "$oid": "6852cc7d9a49f82eced82d78"
-    }
-},
-{
-    "_id": {
-        "$oid": "6852c91b9a49f82eced82d35"
-    },
-    "name": "11.3",
-    "grade": "11",
-    "section": "3",
-    "year": 2025,
-    "status": "closed",
-    "schedule": {
-        "startDate": {
-            "$date": "2025-06-01T00:00:00.000Z"
-        },
-        "endDate": {
-            "$date": "2025-08-10T00:00:00.000Z"
-        },
-        "dayOfWeeks": [
-            1,
-            4,
-            6
-        ],
-        "timeSlots": {
-            "startTime": "10:15",
-            "endTime": "12:15"
-        }
-    },
-    "feePerLesson": 150000,
-    "maxStudents": 30,
-    "description": "abc xyz",
-    "room": "I909",
-    "deleted": false,
-    "createdAt": {
-        "$date": "2025-06-18T14:11:39.528Z"
-    },
-    "updatedAt": {
-        "$date": "2025-08-12T17:00:01.374Z"
-    },
-    "__v": 0,
-    "teacherId": {
-        "$oid": "6852cd509a49f82eced82de8"
-    }
-},
-{
-    "_id": {
-        "$oid": "6852c9249a49f82eced82d39"
-    },
-    "name": "12.1",
-    "grade": "12",
-    "section": "1",
-    "year": 2025,
-    "status": "active",
-    "schedule": {
-        "startDate": {
-            "$date": "2025-07-15T00:00:00.000Z"
-        },
-        "endDate": {
-            "$date": "2025-09-25T00:00:00.000Z"
-        },
-        "dayOfWeeks": [
-            3,
-            6,
-            0
-        ],
-        "timeSlots": {
-            "startTime": "10:15",
-            "endTime": "12:15"
-        }
-    },
-    "feePerLesson": 180000,
-    "maxStudents": 30,
-    "description": "abc xyz",
-    "room": "B202",
-    "deleted": false,
-    "createdAt": {
-        "$date": "2025-06-18T14:11:48.160Z"
-    },
-    "updatedAt": {
-        "$date": "2025-07-03T17:00:00.458Z"
-    },
-    "__v": 0,
-    "teacherId": {
-        "$oid": "6852cce49a49f82eced82da9"
-    }
-},
-{
-    "_id": {
-        "$oid": "6864dee670f71082b3727535"
-    },
-    "name": "5.4",
-    "grade": "5",
-    "section": "4",
-    "year": 2025,
-    "status": "active",
-    "schedule": {
-        "startDate": {
-            "$date": "2025-07-10T00:00:00.000Z"
-        },
-        "endDate": {
-            "$date": "2025-08-16T00:00:00.000Z"
-        },
-        "dayOfWeeks": [
-            2,
-            3,
-            4,
-            6
-        ],
-        "timeSlots": {
-            "startTime": "18:00",
-            "endTime": "20:00"
-        }
-    },
-    "feePerLesson": 2000000,
-    "maxStudents": 20,
-    "description": "abc xyz",
-    "room": "TA1-102",
-    "deleted": false,
-    "createdAt": {
-        "$date": "2025-07-02T07:25:26.020Z"
-    },
-    "updatedAt": {
-        "$date": "2025-07-03T17:00:00.501Z"
-    },
-    "__v": 0,
-    "teacherId": {
-        "$oid": "6852ccc89a49f82eced82d9b"
-    }
-},
-{
-    "_id": {
-        "$oid": "6866004bc5a976c378e36650"
-    },
-    "name": "1.5",
-    "grade": "1",
-    "section": "5",
-    "year": 2025,
-    "status": "closed",
-    "schedule": {
-        "startDate": {
-            "$date": "2025-07-24T00:00:00.000Z"
-        },
-        "endDate": {
-            "$date": "2025-07-01T00:00:00.000Z"
-        },
-        "dayOfWeeks": [
-            2,
-            3,
-            4
-        ],
-        "timeSlots": {
-            "startTime": "16:00",
-            "endTime": "18:00"
-        }
-    },
-    "feePerLesson": 200000,
-    "maxStudents": 30,
-    "description": "1fege",
-    "room": "404",
-    "deleted": false,
-    "createdAt": {
-        "$date": "2025-07-03T04:00:11.841Z"
-    },
-    "updatedAt": {
-        "$date": "2025-07-03T15:12:22.733Z"
-    },
-    "__v": 0,
-    "teacherId": {
-        "$oid": "6852ccf99a49f82eced82db7"
-    }
-},
-{
-    "_id": {
-        "$oid": "6867c0859b3642d8b14a850c"
-    },
-    "name": "12.5",
-    "grade": "12",
-    "section": "5",
-    "year": 2025,
-    "status": "active",
-    "schedule": {
-        "startDate": {
-            "$date": "2025-07-24T00:00:00.000Z"
-        },
-        "endDate": {
-            "$date": "2025-08-21T00:00:00.000Z"
-        },
-        "dayOfWeeks": [
-            2,
-            4,
-            6
-        ],
-        "timeSlots": {
-            "startTime": "16:00",
-            "endTime": "18:00"
-        }
-    },
-    "feePerLesson": 200000,
-    "maxStudents": 30,
-    "description": "some thing",
-    "room": "401",
-    "deleted": false,
-    "createdAt": {
-        "$date": "2025-07-04T11:52:37.534Z"
-    },
-    "updatedAt": {
-        "$date": "2025-07-04T17:00:00.049Z"
-    },
-    "__v": 0
-},
-{
-    "_id": {
-        "$oid": "6867c10b9b3642d8b14a852d"
-    },
-    "name": "3.5 itelts",
-    "grade": "3",
-    "section": "5",
-    "year": 2025,
-    "status": "closed",
-    "schedule": {
-        "startDate": {
-            "$date": "2025-06-13T00:00:00.000Z"
-        },
-        "endDate": {
-            "$date": "2025-07-25T00:00:00.000Z"
-        },
-        "dayOfWeeks": [
-            1,
-            3,
-            5
-        ],
-        "timeSlots": {
-            "startTime": "09:00",
-            "endTime": "11:00"
-        }
-    },
-    "feePerLesson": 200000,
-    "maxStudents": 20,
-    "description": "ádasd",
-    "room": "12312",
-    "deleted": false,
-    "createdAt": {
-        "$date": "2025-07-04T11:54:51.699Z"
-    },
-    "updatedAt": {
-        "$date": "2025-07-26T17:00:01.383Z"
-    },
-    "__v": 0
-},
-{
-    "_id": {
-        "$oid": "6867c1489b3642d8b14a8588"
-    },
-    "name": "12.4",
-    "grade": "12",
-    "section": "4",
-    "year": 2025,
-    "status": "closed",
-    "schedule": {
-        "startDate": {
-            "$date": "2025-07-18T00:00:00.000Z"
-        },
-        "endDate": {
-            "$date": "2025-08-04T00:00:00.000Z"
-        },
-        "dayOfWeeks": [
-            1,
-            3,
-            5
-        ],
-        "timeSlots": {
-            "startTime": "09:00",
-            "endTime": "11:00"
-        }
-    },
-    "feePerLesson": 200000,
-    "maxStudents": 30,
-    "description": "some thing",
-    "room": "D111",
-    "deleted": false,
-    "createdAt": {
-        "$date": "2025-07-04T11:55:52.957Z"
-    },
-    "updatedAt": {
-        "$date": "2025-08-06T17:00:00.190Z"
-    },
-    "__v": 0
-},
-{
-    "_id": {
-        "$oid": "6867c534bfd6fca74a577bdb"
-    },
-    "name": "3.4 ielts",
-    "grade": "3",
-    "section": "4",
-    "year": 2025,
-    "status": "closed",
-    "schedule": {
-        "startDate": {
-            "$date": "2025-06-26T00:00:00.000Z"
-        },
-        "endDate": {
-            "$date": "2025-07-17T00:00:00.000Z"
-        },
-        "dayOfWeeks": [
-            1,
-            3,
-            5
-        ],
-        "timeSlots": {
-            "startTime": "14:00",
-            "endTime": "16:00"
-        }
-    },
-    "feePerLesson": 200000,
-    "maxStudents": 20,
-    "description": "adasdasd",
-    "room": "404",
-    "deleted": false,
-    "createdAt": {
-        "$date": "2025-07-04T12:12:36.095Z"
-    },
-    "updatedAt": {
-        "$date": "2025-07-17T17:00:00.141Z"
-    },
-    "__v": 0
-},
-{
-    "_id": {
-        "$oid": "6867c851bfd6fca74a577ee2"
-    },
-    "name": "4.5 itelts",
-    "grade": "4",
-    "section": "5",
-    "year": 2025,
-    "status": "closed",
-    "schedule": {
-        "startDate": {
-            "$date": "2025-06-19T00:00:00.000Z"
-        },
-        "endDate": {
-            "$date": "2025-07-23T00:00:00.000Z"
-        },
-        "dayOfWeeks": [
-            1,
-            3,
-            5
-        ],
-        "timeSlots": {
-            "startTime": "14:00",
-            "endTime": "16:00"
-        }
-    },
-    "feePerLesson": 200000,
-    "maxStudents": 20,
-    "description": "abc xyz",
-    "room": "404",
-    "deleted": false,
-    "createdAt": {
-        "$date": "2025-07-04T12:25:53.342Z"
-    },
-    "updatedAt": {
-        "$date": "2025-07-23T17:00:00.173Z"
-    },
-    "__v": 0,
-    "teacherId": {
-        "$oid": "6852cc7d9a49f82eced82d78"
-    }
-},
-{
-    "_id": {
-        "$oid": "686934740796640ea3c6d82b"
-    },
-    "name": "4.5",
-    "grade": "4",
-    "section": "6",
-    "year": 2025,
-    "status": "closed",
-    "schedule": {
-        "startDate": {
-            "$date": "2025-06-27T00:00:00.000Z"
-        },
-        "endDate": {
-            "$date": "2025-08-08T00:00:00.000Z"
-        },
-        "dayOfWeeks": [
-            1,
-            3,
-            5
-        ],
-        "timeSlots": {
-            "startTime": "14:00",
-            "endTime": "16:00"
-        }
-    },
-    "feePerLesson": 200000,
-    "maxStudents": 20,
-    "description": "ádasd",
-    "room": "404",
-    "deleted": false,
-    "createdAt": {
-        "$date": "2025-07-05T14:19:32.947Z"
-    },
-    "updatedAt": {
-        "$date": "2025-08-09T17:00:00.297Z"
-    },
-    "__v": 0
-},
-{
-    "_id": {
-        "$oid": "686935420796640ea3c6d8cc"
-    },
-    "name": "4.5",
-    "grade": "4",
-    "section": "5",
-    "year": 2026,
-    "status": "active",
-    "schedule": {
-        "startDate": {
-            "$date": "2026-02-05T00:00:00.000Z"
-        },
-        "endDate": {
-            "$date": "2026-07-14T00:00:00.000Z"
-        },
-        "dayOfWeeks": [
-            2,
-            3,
-            4
-        ],
-        "timeSlots": {
-            "startTime": "09:00",
-            "endTime": "11:00"
-        }
-    },
-    "feePerLesson": 22222,
-    "maxStudents": 22,
-    "description": "aaaa",
-    "room": "404",
-    "deleted": false,
-    "createdAt": {
-        "$date": "2025-07-05T14:22:58.357Z"
-    },
-    "updatedAt": {
-        "$date": "2025-07-11T17:00:00.293Z"
-    },
-    "__v": 0
-}]
+]

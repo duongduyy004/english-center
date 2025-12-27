@@ -1,11 +1,14 @@
-import { Controller, Get, Post, Req, Res, UseGuards, BadRequestException } from '@nestjs/common';
+import { Controller, Get, Post, Req, Res, UseGuards, BadRequestException, Patch, Query, Body } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { Request, Response } from 'express';
-import { Public } from '@/decorator/customize.decorator';
+import { Public, UserInfo } from '@/decorator/customize.decorator';
 import { LocalAuthGuard } from './guard/local-auth.guard';
 import { I18nService } from 'nestjs-i18n';
 import { I18nTranslations } from '@/generated/i18n.generated';
 import { RoleEnum } from '../roles/roles.enum';
+import { User } from 'modules/users/user.domain';
+import { ForgotPasswordDto } from './dto/forgot-password.dto';
+import { ChangePasswordDto } from './dto/change-password.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -52,4 +55,41 @@ export class AuthController {
     const { refresh_token } = req.cookies
     return this.authService.processNewToken(refresh_token, response)
   }
+
+  @Post('send-verify-email')
+  sendVerifyEmail(@UserInfo() user: User) {
+    return this.authService.sendVerifyEmail(user);
+  }
+
+  @Patch('verify-email')
+  verifyEmail(
+    @Query('code') code: string,
+    @UserInfo() user: User
+  ) {
+    return this.authService.verifyEmail(code, user.id);
+  }
+
+  @Public()
+  @Post('send-request-password')
+  sendRequestPassword(@Body('email') email: string) {
+    return this.authService.sendRequestPassword(email);
+  }
+
+  @Public()
+  @Patch('reset-password')
+  resetPassword(
+    @Query('code') code: string,
+    @Body() forgotPasswordDto: ForgotPasswordDto
+  ) {
+    return this.authService.resetPassword(code, forgotPasswordDto);
+  }
+
+  @Patch('change-password')
+  changePassword(
+    @Body() changePasswordDto: ChangePasswordDto,
+    @UserInfo() user: User
+  ) {
+    return this.authService.changePassword(user.id, changePasswordDto);
+  }
+
 }
