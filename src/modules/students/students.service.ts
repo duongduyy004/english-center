@@ -68,7 +68,7 @@ export class StudentsService {
   async getSchedule(id: Student['id']) {
     return this.studentRepository.getSchedule(id);
   }
-  async getStatistics() {
-    return this.studentRepository.getStatistics();
+  async getStatistics(year?: number) {
+    return this.studentRepository.getStatistics(year);
   }
 }

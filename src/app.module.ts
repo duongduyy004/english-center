@@ -57,6 +57,7 @@ import paymentConfig from 'config/configs/payment.config';
 import mailerConfig from 'config/configs/mailer.config';
 import otpConfig from 'config/configs/otp.config';
 import { OtpModule } from 'modules/otp/otp.module';
+import { FooterSettingsModule } from './modules/footer-settings/footer-settings.module';
 // import { NotificationsModule } from './modules/notifications/notifications.module';
 
 @Module({
@@ -142,6 +143,7 @@ import { OtpModule } from 'modules/otp/otp.module';
     ArticlesModule,
     CronModule,
     OtpModule,
+    FooterSettingsModule,
     // NotificationsModule
   ],
   controllers: [AppController],
