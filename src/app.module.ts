@@ -58,7 +58,7 @@ import mailerConfig from 'config/configs/mailer.config';
 import otpConfig from 'config/configs/otp.config';
 import { OtpModule } from 'modules/otp/otp.module';
 import { FooterSettingsModule } from './modules/footer-settings/footer-settings.module';
-// import { NotificationsModule } from './modules/notifications/notifications.module';
+import { NotificationsModule } from 'modules/notifications/notifications.module';
 
 @Module({
   imports: [
@@ -144,7 +144,7 @@ import { FooterSettingsModule } from './modules/footer-settings/footer-settings.
     CronModule,
     OtpModule,
     FooterSettingsModule,
-    // NotificationsModule
+    NotificationsModule
   ],
   controllers: [AppController],
   providers: [

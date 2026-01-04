@@ -6,13 +6,15 @@ import { UserEntity } from 'modules/users/entities/user.entity';
 import { ParentEntity } from 'modules/parents/entities/parent.entity';
 import { StudentEntity } from 'modules/students/entities/student.entity';
 import { TeacherEntity } from 'modules/teachers/entities/teacher.entity';
-import { DataSource, Repository } from 'typeorm';
+import { DataSource, In, Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { CreateUserDto } from './dto/create-user.dto';
 import { RoleEnum } from 'modules/roles/roles.enum';
 import { UserMapper } from './user.mapper';
 import { User } from './user.domain';
 import { FilesService } from 'modules/files/files.service';
+import { UserDevicesEntity } from './entities/user-devices.entity';
+import { PushTokenDto } from './dto/push-token.dto';
 
 @Injectable()
 export class UsersService {
@@ -23,6 +25,7 @@ export class UsersService {
     @InjectRepository(ParentEntity) private parentRepository: Repository<ParentEntity>,
     @InjectRepository(StudentEntity) private studentRepository: Repository<StudentEntity>,
     @InjectRepository(TeacherEntity) private teacherRepository: Repository<TeacherEntity>,
+    @InjectRepository(UserDevicesEntity) private userDeviceRepository: Repository<UserDevicesEntity>,
     private readonly filesService: FilesService
   ) { }
 
@@ -200,5 +203,19 @@ export class UsersService {
     const repository = repositoryMap[currentRoleId] || this.userRepository;
 
     return await repository.update({ id: user.id }, { isEmailVerified: true })
+  }
+
+  async getExpoPushTokensByUserIds(userIds: string[]) {
+    return await this.userDeviceRepository.find({ where: { userId: In(userIds), isActive: true }, select: { expoPushToken: true } })
+  }
+
+  async pushExpoToken(userId: User['id'], dto: PushTokenDto) {
+    return await this.userDeviceRepository.save(
+      this.userDeviceRepository.create({
+        userId,
+        expoPushToken: dto.token,
+        platform: dto.platform
+      })
+    )
   }
 }
