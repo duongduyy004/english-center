@@ -51,7 +51,7 @@ export class StudentRepository {
   async findById(id: Student['id']): Promise<NullableType<Student>> {
     const entity = await this.studentRepository.findOne({
       where: { id },
-      relations: ['parent', 'classes.class'],
+      relations: ['parent', 'classes.class', 'classes.class.teacher'],
     });
     return entity ? StudentMapper.toDomain(entity) : null;
   }

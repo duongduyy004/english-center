@@ -31,6 +31,7 @@ export class StudentMapper {
                     section: item.class.section,
                     room: item.class.room,
                     schedule: item.class.schedule,
+                    teacherName: item.class.teacher?.name || null,
                 },
                 isActive: item.isActive
             }))
