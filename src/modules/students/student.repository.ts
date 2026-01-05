@@ -156,10 +156,10 @@ export class StudentRepository {
     const now = new Date();
     const selectedYear = year || now.getUTCFullYear();
     const currentYear = now.getUTCFullYear();
-    const currentMonth = now.getUTCMonth() + 1; 
+    const currentMonth = now.getUTCMonth() + 1;
 
     const monthlyStats = [];
-    
+
     for (let month = 1; month <= 12; month++) {
       const startOfMonth = new Date(
         Date.UTC(selectedYear, month - 1, 1, 0, 0, 0),
@@ -196,7 +196,7 @@ export class StudentRepository {
       where: {
         createdAt: LessThanOrEqual(endOfYear),
       },
-      withDeleted: false, 
+      withDeleted: false,
     });
 
     const totalIncrease = monthlyStats.reduce((sum, stat) => sum + stat.increaseStudents, 0);

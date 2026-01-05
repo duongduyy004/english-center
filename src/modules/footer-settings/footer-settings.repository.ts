@@ -21,7 +21,6 @@ export class FooterSettingsRepository {
     }
 
     async create(data: Omit<FooterSettings, 'id' | 'createdAt' | 'updatedAt'>): Promise<FooterSettings> {
-        // Check if already exists
         const existing = await this.findOne();
         if (existing) {
             throw new Error('Footer settings already exist. Use update instead.');
