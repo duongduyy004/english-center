@@ -13,11 +13,8 @@ export class FooterSettingsService {
         private i18nService: I18nService<I18nTranslations>
     ) { }
 
-    async findOne(): Promise<FooterSettings> {
+    async findOne(): Promise<FooterSettings | null> {
         const settings = await this.footerSettingsRepository.findOne();
-        if (!settings) {
-            throw new NotFoundException(this.i18nService.t('common.NOT_FOUND'));
-        }
         return settings;
     }
 

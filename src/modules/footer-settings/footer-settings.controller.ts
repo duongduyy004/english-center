@@ -10,8 +10,9 @@ export class FooterSettingsController {
 
     @Get()
     @Public()
-    findOne() {
-        return this.footerSettingsService.findOne();
+    async findOne() {
+        const settings = await this.footerSettingsService.findOne();
+        return settings;
     }
 
     @Post()
