@@ -6,4 +6,5 @@ export interface PaginationResponseDto<T> {
         totalItems: number
     }
     result: T[];
+    statistics?: any;
 }
