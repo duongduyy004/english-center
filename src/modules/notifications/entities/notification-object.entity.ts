@@ -1,5 +1,6 @@
 import {
     Column,
+    CreateDateColumn,
     Entity,
     OneToMany,
     PrimaryGeneratedColumn,
@@ -20,4 +21,7 @@ export class NotificationObjectEntity {
 
     @Column({ nullable: true })
     actorId: string;
+
+    @CreateDateColumn()
+    createdAt: Date;
 }

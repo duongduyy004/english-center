@@ -10,46 +10,85 @@ import { NotificationType } from './types/notification.type'
 import { formatDate, formatDateTime } from 'utils/date-utils'
 import { NOTIFICATION_CONFIG } from './configs/notification-type.config'
 import { NOTIFICATION_ENUM } from './types/notification-type.enum'
+import { User } from 'modules/users/user.domain'
+import { NotificationObjectEntity } from './entities/notification-object.entity'
+import { NotificationRepository } from './notification.repository'
+import { FilterNotificationDto, SortNotificationDto } from './dto/query-notification.dto'
+import { IPaginationOptions } from 'utils/types/pagination-options'
+import { PaginationResponseDto } from 'utils/types/pagination-response.dto'
+import { Notification } from './notification.domain'
 
 @Injectable()
 export class NotificationsService {
     constructor(
         @InjectRepository(NotificationEntity)
         private readonly notificationsRepository: Repository<NotificationEntity>,
+        @InjectRepository(NotificationObjectEntity)
+        private readonly notificationsObjectRepository: Repository<NotificationObjectEntity>,
         private readonly gateway: NotificationGateway,
-        private readonly usersService: UsersService
+        private readonly usersService: UsersService,
+        private readonly notificationRepository: NotificationRepository
     ) { }
+
+
+    async getNotificationByUserId(userId: User['id']) {
+        const noti = await this.notificationsRepository.find({
+            where: { recipientId: userId },
+            relations: { object: true }
+        })
+
+        return noti
+    }
+
+    findAll({
+        filterOptions,
+        sortOptions,
+        paginationOptions,
+    }: {
+        filterOptions?: FilterNotificationDto | null;
+        sortOptions?: SortNotificationDto[] | null;
+        paginationOptions: IPaginationOptions;
+    }): Promise<PaginationResponseDto<Notification>> {
+        return this.notificationRepository.findManyWithPagination({
+            filterOptions,
+            sortOptions,
+            paginationOptions,
+        });
+    }
+
+    async markAsRead(id: Notification['id'], userId: User['id']) {
+        return this.notificationRepository.markAsRead(id, userId);
+    }
 
     async send(dto: SendNotificationDto, options: {
         isOnline: boolean
     }) {
         const { isOnline } = options
 
-        const notifications = dto.notifierIds.map(item => (this.notificationsRepository.create({
-            notifierId: item,
+        const notifications = dto.recipientIds.map(item => (this.notificationsRepository.create({
+            recipientId: item,
             object: {
                 actorId: dto.actorId,
                 data: dto.data
             }
         })))
 
-        // await this.notificationsRepository.save(notifications);
+        await this.notificationsRepository.save(notifications);
 
 
         if (isOnline) {
             notifications.map(noti => {
-                this.gateway.sendToUser(noti.notifierId, noti.object)
+                this.gateway.sendToUser(noti.recipientId, noti.object)
             })
             return notifications;
         }
         else {
-            console.log('check send expo', isOnline)
             return await this.sendExpoPush(dto, NOTIFICATION_ENUM.PAYMENT_REMINDER);
         }
     }
 
     async sendExpoPush(dto: SendNotificationDto, notificationType: NOTIFICATION_ENUM) {
-        const pushTokens = (await this.usersService.getExpoPushTokensByUserIds(dto.notifierIds)).map(item => item.expoPushToken);
+        const pushTokens = (await this.usersService.getExpoPushTokensByUserIds(dto.recipientIds)).map(item => item.expoPushToken);
 
         const expo = new Expo();
         const messages: ExpoPushMessage[] = [];
@@ -71,7 +110,6 @@ export class NotificationsService {
                 priority: 'high',
             })
         }
-        console.log('check message', messages[0])
 
         const chunks = expo.chunkPushNotifications(messages)
         const tickets = []

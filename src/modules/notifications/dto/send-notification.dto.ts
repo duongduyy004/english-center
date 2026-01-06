@@ -8,7 +8,7 @@ export class SendNotificationDto {
 
     @IsArray()
     @IsNotEmpty()
-    notifierIds: string[]
+    recipientIds: string[]
 
     @IsNotEmpty()
     data: NotificationType

@@ -7,7 +7,7 @@ export class NotificationEntity {
     id: string;
 
     @Column()
-    notifierId: string;
+    recipientId: string;
 
     @ManyToOne(() => NotificationObjectEntity, (obj) => obj.notification, {
         cascade: true,

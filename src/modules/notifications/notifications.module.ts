@@ -6,6 +6,8 @@ import { NotificationEntity } from './entities/notification.entity';
 import { NotificationObjectEntity } from './entities/notification-object.entity';
 import { NotificationGateway } from './notification.gateway';
 import { UsersModule } from 'modules/users/users.module';
+import { NotificationRepository } from './notification.repository';
+import { NotificationMapper } from './notification.mapper';
 
 @Module({
   imports: [TypeOrmModule.forFeature([
@@ -15,7 +17,7 @@ import { UsersModule } from 'modules/users/users.module';
     UsersModule
   ],
   controllers: [NotificationsController],
-  providers: [NotificationsService, NotificationGateway],
+  providers: [NotificationsService, NotificationGateway, NotificationRepository, NotificationMapper],
   exports: [NotificationsService]
 })
 export class NotificationsModule { }
