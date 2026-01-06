@@ -6,6 +6,7 @@ import { UserInfo } from "@/decorator/customize.decorator";
 import { User } from "./user.domain";
 import { UploadAvatarDto } from "./dto/upload-avatar.dto";
 import { AssignRoleDto } from "./dto/assign-role.dto";
+import { PushTokenDto } from "./dto/push-token.dto";
 
 @Controller('user')
 export class UsersController {
@@ -15,6 +16,11 @@ export class UsersController {
     @Public()
     createAdmin(@Body() createUserDto: CreateUserDto) {
         return this.usersService.createAdmin(createUserDto)
+    }
+
+    @Post('push-token')
+    pushToken(@UserInfo() user: User, @Body() dto: PushTokenDto) {
+        return this.usersService.pushExpoToken(user.id, dto)
     }
 
     @Patch('avatar')

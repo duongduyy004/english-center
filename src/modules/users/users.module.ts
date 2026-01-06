@@ -7,11 +7,13 @@ import { ParentEntity } from 'modules/parents/entities/parent.entity';
 import { TeacherEntity } from 'modules/teachers/entities/teacher.entity';
 import { UsersController } from './user.controller';
 import { FilesService } from 'modules/files/files.service';
+import { UserDevicesEntity } from './entities/user-devices.entity';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([
       UserEntity,
+      UserDevicesEntity,
       StudentEntity,
       ParentEntity,
       TeacherEntity

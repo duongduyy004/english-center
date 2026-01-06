@@ -41,8 +41,8 @@ export class StudentsController {
   }
 
   @Get('statistics')
-  getStatistics() {
-    return this.studentsService.getStatistics();
+  getStatistics(@Query('year') year?: number) {
+    return this.studentsService.getStatistics(year);
   }
 
   @Get('schedule/:id')

@@ -178,6 +178,18 @@ export class TeacherPaymentRepository {
           : { year: 'DESC', month: 'DESC' },
     });
 
+    // Calculate statistics from all records matching filters (not paginated)
+    const allEntities = await this.teacherPaymentRepository.find({
+      where: { ...where, totalAmount: MoreThan(0) },
+      relations: ['teacher', 'classes'],
+    });
+
+    const statistics = {
+      totalAmount: allEntities.reduce((sum, e) => sum + (e.totalAmount || 0), 0),
+      paidAmount: allEntities.reduce((sum, e) => sum + (e.paidAmount || 0), 0),
+      remainingAmount: allEntities.reduce((sum, e) => sum + ((e.totalAmount || 0) - (e.paidAmount || 0)), 0),
+    };
+
     const totalItems = total;
     const totalPages = Math.ceil(totalItems / paginationOptions.limit) || 1;
     return {
@@ -187,7 +199,8 @@ export class TeacherPaymentRepository {
         totalPages,
         totalItems,
       },
-      result: entities ? entities.map(item => TeacherPaymentMapper.toDomain(item)) : []
+      result: entities ? entities.map(item => TeacherPaymentMapper.toDomain(item)) : [],
+      statistics
     };
   }
   async createPayment(createPaymentDto: CreateTeacherPaymentDto) {

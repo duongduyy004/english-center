@@ -30,6 +30,21 @@ export class TeachersController {
     });
   }
 
+  @Get('public')
+  @Public()
+  getPublicTeachers(@Query() query: QueryDto<FilterTeacherDto, SortTeacherDto>) {
+    const page = query?.page;
+    const limit = query?.limit;
+    return this.teachersService.findAll({
+      filterOptions: query.filters,
+      sortOptions: query.sort,
+      paginationOptions: {
+        page,
+        limit
+      }
+    });
+  }
+
   @Get('typical')
   @Public()
   getTypicalTeachers() {

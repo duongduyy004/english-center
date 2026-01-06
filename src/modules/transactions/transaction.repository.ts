@@ -66,6 +66,23 @@ export class TransactionRepository {
             ),
         })
 
+        const allEntities = await this.transactionRepository.find({
+            where,
+            relations: ['category'],
+        });
+
+        const statistics = {
+            totalRevenue: allEntities
+                .filter(e => e.category?.type === 'revenue')
+                .reduce((sum, e) => sum + (e.amount || 0), 0),
+            totalExpense: allEntities
+                .filter(e => e.category?.type === 'expense')
+                .reduce((sum, e) => sum + (e.amount || 0), 0),
+            netProfit: 0,
+            totalTransactions: allEntities.length,
+        };
+        statistics.netProfit = statistics.totalRevenue - statistics.totalExpense;
+
         const totalItems = total;
         const totalPages = Math.ceil(totalItems / paginationOptions.limit) || 1;
 
@@ -76,7 +93,8 @@ export class TransactionRepository {
                 totalPages,
                 totalItems
             },
-            result: entities ? entities.map((item) => TransactionMapper.toDomain(item)) : null
+            result: entities ? entities.map((item) => TransactionMapper.toDomain(item)) : null,
+            statistics
         }
     }
 

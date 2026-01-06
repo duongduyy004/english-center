@@ -113,6 +113,26 @@ export class PaymentRepository {
                 : { year: 'DESC', month: 'DESC' },
         })
 
+        const allEntities = await this.paymentsRepository.find({
+            where: { ...where, totalAmount: MoreThan(0) },
+            relations: ['class', 'student'],
+        });
+
+        const statistics = {
+            totalStudentFees: allEntities.reduce((sum, e) => {
+                const totalAmount = e.totalAmount || 0;
+                const discountAmount = totalAmount * (e.discountPercent || 0) / 100;
+                return sum + (totalAmount - discountAmount); 
+            }, 0),
+            totalPaidAmount: allEntities.reduce((sum, e) => sum + (e.paidAmount || 0), 0),
+            totalRemainingAmount: allEntities.reduce((sum, e) => {
+                const totalAmount = e.totalAmount || 0;
+                const discountAmount = totalAmount * (e.discountPercent || 0) / 100;
+                const paidAmount = e.paidAmount || 0;
+                return sum + (totalAmount - discountAmount - paidAmount);
+            }, 0),
+        };
+
         const totalItems = total;
         const totalPages = Math.ceil(totalItems / paginationOptions.limit) || 1
 
@@ -123,7 +143,8 @@ export class PaymentRepository {
                 totalPages,
                 totalItems
             },
-            result: entities ? entities.map(item => PaymentMapper.toDomain(item)) : null
+            result: entities ? entities.map(item => PaymentMapper.toDomain(item)) : null,
+            statistics
         }
     }
 

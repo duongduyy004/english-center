@@ -1,4 +1,4 @@
-import { Between, FindOptionsWhere, ILike, In, Repository } from 'typeorm';
+import { Between, FindOptionsWhere, ILike, In, LessThanOrEqual, Repository } from 'typeorm';
 import { StudentEntity } from './entities/student.entity';
 import {
   HttpStatus,
@@ -51,7 +51,7 @@ export class StudentRepository {
   async findById(id: Student['id']): Promise<NullableType<Student>> {
     const entity = await this.studentRepository.findOne({
       where: { id },
-      relations: ['parent', 'classes.class'],
+      relations: ['parent', 'classes.class.teacher'],
     });
     return entity ? StudentMapper.toDomain(entity) : null;
   }
@@ -147,43 +147,77 @@ export class StudentRepository {
   async getSchedule(id: Student['id']) {
     const entity = await this.studentRepository.findOne({
       where: { id },
-      relations: ['classes.class'],
+      relations: ['classes.class.teacher'],
     });
     return StudentMapper.toDomain(entity).classes;
   }
 
-  async getStatistics() {
-    const totalStudents = await this.studentRepository.count();
+  async getStatistics(year?: number) {
     const now = new Date();
-    const currentMonth = now.getUTCMonth();
+    const selectedYear = year || now.getUTCFullYear();
     const currentYear = now.getUTCFullYear();
-    // Use UTC boundaries to avoid timezone shifts when comparing timestamps
-    const startOfMonth = new Date(
-      Date.UTC(currentYear, currentMonth, 1, 0, 0, 0),
-    );
-    const endOfMonth = new Date(
-      Date.UTC(currentYear, currentMonth + 1, 1, 0, 0, 0),
-    );
-    const increaseStudentsInMonth = await this.studentRepository.count({
+    const currentMonth = now.getUTCMonth() + 1;
+
+    const monthlyStats = [];
+
+    for (let month = 1; month <= 12; month++) {
+      const startOfMonth = new Date(
+        Date.UTC(selectedYear, month - 1, 1, 0, 0, 0),
+      );
+      const endOfMonth = new Date(
+        Date.UTC(selectedYear, month, 1, 0, 0, 0),
+      );
+
+      const increaseStudents = await this.studentRepository.count({
+        where: {
+          createdAt: Between(startOfMonth, endOfMonth),
+        },
+        withDeleted: true,
+      });
+
+      const decreaseStudents = await this.studentRepository.count({
+        where: {
+          deletedAt: Between(startOfMonth, endOfMonth),
+        },
+        withDeleted: true,
+      });
+
+      monthlyStats.push({
+        month,
+        year: selectedYear,
+        increaseStudents,
+        decreaseStudents,
+        netChange: increaseStudents - decreaseStudents,
+      });
+    }
+
+    const endOfYear = new Date(Date.UTC(selectedYear, 11, 31, 23, 59, 59, 999));
+    const totalStudentsAtEndOfYear = await this.studentRepository.count({
       where: {
-        createdAt: Between(startOfMonth, endOfMonth),
+        createdAt: LessThanOrEqual(endOfYear),
       },
-      withDeleted: true,
+      withDeleted: false,
     });
-    const decreaseStudentsInMonth = await this.studentRepository.count({
-      where: {
-        deletedAt: Between(startOfMonth, endOfMonth),
-      },
-      withDeleted: true,
-    });
+
+    const totalIncrease = monthlyStats.reduce((sum, stat) => sum + stat.increaseStudents, 0);
+    const totalDecrease = monthlyStats.reduce((sum, stat) => sum + stat.decreaseStudents, 0);
+    const netChange = totalIncrease - totalDecrease;
+
     return {
-      totalStudents,
-      currentMonth,
+      year: selectedYear,
       currentYear,
-      startOfMonth,
-      endOfMonth,
-      increaseStudentsInMonth,
-      decreaseStudentsInMonth,
+      currentMonth,
+      totalStudentsAtEndOfYear,
+      monthlyStats,
+      summary: {
+        totalIncrease,
+        totalDecrease,
+        netChange,
+        period: {
+          startDate: new Date(Date.UTC(selectedYear, 0, 1)).toISOString(),
+          endDate: new Date(Date.UTC(selectedYear, 11, 31, 23, 59, 59, 999)).toISOString(),
+        },
+      },
     };
   }
 }

@@ -21,7 +21,7 @@ export class Class {
     year: number;
     description?: string;
     feePerLesson: number;
-    status: 'active' | 'upcoming' | 'closed';
+    status: 'active' | 'upcoming' | 'closed' | string;
     max_student: number;
     room: string;
     schedule: Schedule;

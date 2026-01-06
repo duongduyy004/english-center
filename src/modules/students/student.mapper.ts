@@ -30,7 +30,14 @@ export class StudentMapper {
                     grade: item.class.grade,
                     section: item.class.section,
                     room: item.class.room,
+                    status: item.class.status,
                     schedule: item.class.schedule,
+                    year: item.class.year,
+                    teacher: {
+                        name: item.class.teacher ? item.class.teacher.name : '',
+                        phone: item.class.teacher ? item.class.teacher.phone : '',
+                        email: item.class.teacher ? item.class.teacher.email : ''
+                    }
                 },
                 isActive: item.isActive
             }))
