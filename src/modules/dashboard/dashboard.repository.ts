@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { MoreThan, Repository } from 'typeorm';
 import { StudentEntity } from '../students/entities/student.entity';
 import { TeacherEntity } from '../teachers/entities/teacher.entity';
 import { ParentEntity } from '../parents/entities/parent.entity';
@@ -66,6 +66,7 @@ export class DashboardRepository {
 
     // Recent payments (top 5)
     const recentPayments = await this.paymentRepository.find({
+      where: { paidAmount: MoreThan(0) },
       relations: ['student'],
       order: { year: 'DESC', month: 'DESC' },
       take: 5,
@@ -79,6 +80,7 @@ export class DashboardRepository {
 
     // Recent teacher payments (top 5)
     const recentTeacherPayments = await this.teacherPaymentRepository.find({
+      where: { paidAmount: MoreThan(0) },
       relations: ['teacher'],
       order: { year: 'DESC', month: 'DESC' },
       take: 5,
