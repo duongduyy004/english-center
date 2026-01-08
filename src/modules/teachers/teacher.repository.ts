@@ -60,6 +60,7 @@ export class TeacherRepository {
     const entity = await this.teacherRepository.findOne({
       where: { id },
       relations: ['classes'],
+      order: { classes: { year: 'DESC' } }
     });
     return entity ? TeacherMapper.toDomain(entity) : null;
   }
