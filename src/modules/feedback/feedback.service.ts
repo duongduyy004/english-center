@@ -17,7 +17,14 @@ export class FeedbackService {
   ) { }
 
   async create(createFeedbackDto: CreateFeedbackDto): Promise<Feedback> {
-    return this.feedbackRepository.create(createFeedbackDto);
+    const feedbackData: Omit<Feedback, 'id' | 'createdAt' | 'updatedAt' | 'deletedAt'> = {
+      name: createFeedbackDto.name,
+      description: createFeedbackDto.description,
+      imageUrl: createFeedbackDto.imageUrl,
+      publicId: createFeedbackDto.publicId,
+      socialUrl: createFeedbackDto.socialUrl || null,
+    };
+    return this.feedbackRepository.create(feedbackData);
   }
 
   findAll({

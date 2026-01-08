@@ -14,8 +14,8 @@ export class FeedbackEntity {
     @Column()
     description: string;
 
-    @Column()
-    socialUrl: string;
+    @Column({ nullable: true })
+    socialUrl: string | null;
 
     @Column()
     name: string;

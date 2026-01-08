@@ -31,7 +31,7 @@ export class FeedbackMapper {
         persistenceEntity.imageUrl = domainEntity.imageUrl;
         persistenceEntity.publicId = domainEntity.publicId;
         persistenceEntity.description = domainEntity.description;
-        persistenceEntity.socialUrl = domainEntity.socialUrl;
+        persistenceEntity.socialUrl = domainEntity.socialUrl || null;
         persistenceEntity.name = domainEntity.name;
 
         return persistenceEntity;

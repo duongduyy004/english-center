@@ -74,4 +74,19 @@ export class TeacherMapper {
     persistenceEntity.typical = domainEntity.typical;
     return persistenceEntity;
   }
+
+  static toPublicResponse(domainEntity: Teacher) {
+    return {
+      id: domainEntity.id,
+      name: domainEntity.name,
+      email: domainEntity.email,
+      avatar: domainEntity.avatar || null,
+      publicId: domainEntity.publicId || null,
+      introduction: domainEntity.introduction || null,
+      workExperience: domainEntity.workExperience || null,
+      description: domainEntity.description,
+      qualifications: domainEntity.qualifications || [],
+      specializations: domainEntity.specializations || [],
+    };
+  }
 }

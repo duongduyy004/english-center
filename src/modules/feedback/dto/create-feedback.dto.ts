@@ -1,4 +1,4 @@
-import { IsString, IsUrl, IsNotEmpty, MaxLength, MinLength } from 'class-validator';
+import { IsString, IsUrl, IsNotEmpty, IsOptional, MaxLength, MinLength } from 'class-validator';
 
 export class CreateFeedbackDto {
     @IsString()
@@ -21,7 +21,7 @@ export class CreateFeedbackDto {
     @IsNotEmpty()
     publicId: string;
 
+    @IsOptional()
     @IsUrl()
-    @IsNotEmpty()
-    socialUrl: string;
+    socialUrl?: string;
 }

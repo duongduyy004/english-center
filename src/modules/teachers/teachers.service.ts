@@ -8,6 +8,7 @@ import { PaginationResponseDto } from 'utils/types/pagination-response.dto';
 import { Teacher } from './teacher.domain';
 import { I18nService } from 'nestjs-i18n';
 import { I18nTranslations } from '@/generated/i18n.generated';
+import { TeacherMapper } from './teacher.mapper';
 
 @Injectable()
 export class TeachersService {
@@ -64,5 +65,40 @@ export class TeachersService {
 
   getTypicalTeacherDetail(id: Teacher['id']) {
     return this.teacherRepository.getTypicalTeacherDetail(id);
+  }
+
+  findPublicTeachers({
+    filterOptions,
+    sortOptions,
+    paginationOptions,
+  }: {
+    filterOptions?: FilterTeacherDto | null;
+    sortOptions?: SortTeacherDto[] | null;
+    paginationOptions: IPaginationOptions;
+  }): Promise<PaginationResponseDto<any>> {
+    const publicFilterOptions = {
+      ...filterOptions,
+      isActive: true,
+    };
+    
+    return this.teacherRepository.findManyWithPagination({
+      filterOptions: publicFilterOptions,
+      sortOptions,
+      paginationOptions,
+    }).then((response) => ({
+      ...response,
+      result: response.result.map((teacher) => TeacherMapper.toPublicResponse(teacher)),
+    }));
+  }
+
+  async findPublicTeacherById(id: Teacher['id']) {
+    const teacher = await this.teacherRepository.findById(id);
+    if (!teacher) {
+      throw new NotFoundException(this.i18nService.t('user.FAIL.NOT_FOUND'));
+    }
+    if (!teacher.isActive) {
+      throw new NotFoundException(this.i18nService.t('user.FAIL.NOT_FOUND'));
+    }
+    return TeacherMapper.toPublicResponse(teacher);
   }
 }

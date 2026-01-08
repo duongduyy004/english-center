@@ -358,7 +358,9 @@ export class ClassRepository {
     sortOptions?: SortClassDto[] | null;
     paginationOptions: IPaginationOptions;
   }): Promise<PaginationResponseDto<Class>> {
-    const where: FindOptionsWhere<ClassEntity> = {};
+    const where: FindOptionsWhere<ClassEntity> = {
+      status: 'upcoming', // Chỉ lấy lớp có trạng thái upcoming
+    };
 
     if (filterOptions?.name) {
       where.name = ILike(`%${filterOptions.name}%`);
@@ -384,10 +386,6 @@ export class ClassRepository {
 
     if (filterOptions?.year) {
       where.year = filterOptions.year;
-    }
-
-    if (filterOptions?.status) {
-      where.status = filterOptions.status;
     }
 
     if (filterOptions?.room) {

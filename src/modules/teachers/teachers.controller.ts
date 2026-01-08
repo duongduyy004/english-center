@@ -35,7 +35,7 @@ export class TeachersController {
   getPublicTeachers(@Query() query: QueryDto<FilterTeacherDto, SortTeacherDto>) {
     const page = query?.page;
     const limit = query?.limit;
-    return this.teachersService.findAll({
+    return this.teachersService.findPublicTeachers({
       filterOptions: query.filters,
       sortOptions: query.sort,
       paginationOptions: {
@@ -43,6 +43,12 @@ export class TeachersController {
         limit
       }
     });
+  }
+
+  @Get('public/:id')
+  @Public()
+  getPublicTeacherById(@Param('id') id: string) {
+    return this.teachersService.findPublicTeacherById(id);
   }
 
   @Get('typical')
