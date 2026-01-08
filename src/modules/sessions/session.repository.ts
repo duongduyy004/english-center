@@ -53,6 +53,8 @@ export class SessionRepository {
       studentId: item,
       sessionId: sessionEntity.id,
       status: 'absent',
+      createdAt: dayjs().toDate(),
+      updatedAt: dayjs().toDate(),
     }));
 
     await this.attendanceSessionRepository.insert(attendances);
@@ -108,6 +110,7 @@ export class SessionRepository {
       relations: ['class', 'attendances.student'],
       skip: (paginationOptions.page - 1) * paginationOptions.limit,
       take: paginationOptions.limit,
+      order: { date: 'DESC' }
     });
 
     const totalItems = total;
