@@ -24,6 +24,8 @@ import { ClsService } from 'nestjs-cls';
 import { StudentsService } from 'modules/students/students.service';
 import { AuditLogAction } from 'subscribers/audit-log.constants';
 import { filter } from 'lodash';
+import { CreateClassDto } from './dto/create-class.dto';
+import { UpdateClassDto } from './dto/update-class.dto';
 
 @Injectable()
 export class ClassRepository {
@@ -39,10 +41,7 @@ export class ClassRepository {
   ) { }
 
   async create(
-    data: Omit<
-      Class,
-      'id' | 'createdAt' | 'updatedAt' | 'deletedAt' | 'teacher'
-    >,
+    data: CreateClassDto,
   ): Promise<Class> {
     const persistenceModel = ClassMapper.toPersistence(data as Class);
     const newEntity = await this.classRepository.save(
@@ -76,9 +75,7 @@ export class ClassRepository {
 
   async update(
     id: Class['id'],
-    data: Partial<
-      Omit<Class, 'id' | 'createdAt' | 'updatedAt' | 'teacher' | 'students'>
-    >,
+    data: UpdateClassDto,
   ): Promise<Class> {
     const entity = await this.classRepository.findOne({
       where: { id },

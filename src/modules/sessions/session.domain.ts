@@ -18,6 +18,8 @@ export class Session {
         isModified?: boolean,
         status: string,
         student: Partial<Student>,
-        note?: string
+        note?: string,
+        createdAt?: Date,
+        updatedAt?: Date
     }[]
 }
