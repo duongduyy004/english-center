@@ -110,7 +110,7 @@ export class SessionRepository {
       relations: ['class', 'attendances.student'],
       skip: (paginationOptions.page - 1) * paginationOptions.limit,
       take: paginationOptions.limit,
-      order: { date: 'DESC' }
+      order: { date: 'DESC', attendances: { student: { name: 'ASC' } } }
     });
 
     const totalItems = total;
@@ -153,10 +153,7 @@ export class SessionRepository {
 
     if (!entity) return;
 
-    const classInfo = await this.classesService.findOne(entity.classId)
-    const studentIds = classInfo.students.map(item => {
-      if (item.isActive) return item.student.id;
-    });
+    const payloadStudentIds = payload.map(item => item.studentId);
     const statusCases = payload.map(item => `WHEN '${item.studentId}' THEN '${item.status}'`).join(' ')
     const noteCases = payload.map(item => `WHEN '${item.studentId}' THEN '${item.note || ''}'`).join(' ')
 
@@ -165,7 +162,7 @@ export class SessionRepository {
         status: () => `CASE studentId ${statusCases} ELSE status END`,
         note: () => `CASE studentId ${noteCases} ELSE note END`
       })
-      .where('studentId IN (:...studentIds)', { studentIds })
+      .where('studentId IN (:...payloadStudentIds)', { payloadStudentIds })
       .andWhere('sessionId = :sessionId', { sessionId })
       .callListeners(false)
       .execute()
