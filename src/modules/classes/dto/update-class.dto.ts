@@ -1,9 +1,9 @@
 import { PartialType } from '@nestjs/mapped-types';
 import { CreateClassDto } from './create-class.dto';
-import { IsEnum, IsNotEmpty } from 'class-validator';
+import { IsEnum, IsOptional } from 'class-validator';
 
 export class UpdateClassDto extends PartialType(CreateClassDto) {
-    @IsNotEmpty()
+    @IsOptional()
     @IsEnum(['active', 'upcoming', 'closed'])
     status?: 'active' | 'upcoming' | 'closed' | string;
 }
