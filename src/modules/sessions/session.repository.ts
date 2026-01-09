@@ -112,7 +112,7 @@ export class SessionRepository {
       relations: ['class', 'attendances.student'],
       skip: (paginationOptions.page - 1) * paginationOptions.limit,
       take: paginationOptions.limit,
-      order: { date: 'DESC', attendances: { student: { name: 'ASC' } } }
+      order: { date: 'DESC' }
     });
 
     const totalItems = total;
