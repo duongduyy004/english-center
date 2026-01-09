@@ -162,6 +162,7 @@ export class DashboardRepository {
       teacher.classes
         ?.filter((cls) => cls.status === 'active')
         .map((cls) => ({
+          id: cls.id,
           name: cls.name,
           schedule: cls.schedule,
           room: cls.room,
