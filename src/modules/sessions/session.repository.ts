@@ -173,14 +173,13 @@ export class SessionRepository {
     for (const item of entity.attendances) {
       for (const payloadItem of payload) {
         if (item.student.id.toString() === payloadItem.studentId.toString()) {
-          item.isModified = payloadItem.isModified;
           item.status = payloadItem.status
         }
       }
     }
 
     // Audit logging after update
-    await this.auditAttendanceChanges(sessionId, oldAttendances, entity.attendances, payload);
+    await this.auditAttendanceChanges(sessionId, oldAttendances, entity.attendances);
 
     await this.paymentsService.autoUpdatePaymentRecord(entity)
     await this.teacherPaymentsService.autoUpdatePayment(entity);
@@ -190,8 +189,7 @@ export class SessionRepository {
   private async auditAttendanceChanges(
     sessionId: Session['id'],
     oldAttendances: AttendanceSessionEntity[],
-    newAttendances: AttendanceSessionEntity[],
-    payload: UpdateAttendanceSessionDto[]
+    newAttendances: AttendanceSessionEntity[]
   ) {
     try {
       // Get current user from CLS context for audit logging
