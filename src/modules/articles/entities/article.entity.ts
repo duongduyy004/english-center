@@ -31,9 +31,9 @@ export class ArticleEnity {
     @JoinColumn({ name: 'menuId' })
     menu: MenuEntity;
 
-    @CreateDateColumn()
+    @CreateDateColumn({ type: "timestamptz" })
     createdAt: Date;
 
-    @UpdateDateColumn()
+    @UpdateDateColumn({ type: "timestamptz" })
     updatedAt: Date;
 }

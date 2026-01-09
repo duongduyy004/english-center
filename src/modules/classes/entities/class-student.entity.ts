@@ -27,12 +27,12 @@ export class ClassStudentEntity {
     @JoinTable({ name: 'studentId' })
     class?: ClassEntity
 
-    @CreateDateColumn({ type: "timestamp" })
+    @CreateDateColumn({ type: "timestamptz" })
     createdAt: Date;
 
-    @UpdateDateColumn({ type: "timestamp" })
+    @UpdateDateColumn({ type: "timestamptz" })
     updatedAt: Date;
 
-    @DeleteDateColumn()
+    @DeleteDateColumn({ type: "timestamptz" })
     deletedAt?: Date;
 }

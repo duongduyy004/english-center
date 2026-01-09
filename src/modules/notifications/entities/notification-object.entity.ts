@@ -22,6 +22,6 @@ export class NotificationObjectEntity {
     @Column({ nullable: true })
     actorId: string;
 
-    @CreateDateColumn()
+    @CreateDateColumn({ type: "timestamptz" })
     createdAt: Date;
 }

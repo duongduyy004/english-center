@@ -22,10 +22,10 @@ export class AttendanceSessionEntity {
     @ManyToOne(() => SessionEntity, session => session.attendances, { eager: true })
     session?: SessionEntity
 
-    @CreateDateColumn({ type: 'timestamp' })
+    @CreateDateColumn({ type: 'timestamptz' })
     createdAt: Date;
 
-    @UpdateDateColumn({ type: 'timestamp' })
+    @UpdateDateColumn({ type: 'timestamptz' })
     updatedAt: Date;
 
     isModified?: boolean;
