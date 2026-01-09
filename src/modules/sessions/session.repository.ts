@@ -39,7 +39,9 @@ export class SessionRepository {
 
   async create(id: Class['id']) {
     const classEntity = await this.classesService.findOne(id);
-    const studentIds = classEntity.students.map((item) =>
+    const studentIds = classEntity.students.filter((item) =>
+      item.isActive
+    ).map((item) =>
       item.student.id.toString(),
     );
 

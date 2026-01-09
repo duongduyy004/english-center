@@ -27,6 +27,4 @@ export class AttendanceSessionEntity {
 
     @UpdateDateColumn({ type: 'timestamptz' })
     updatedAt: Date;
-
-    isModified?: boolean;
 }

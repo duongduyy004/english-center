@@ -67,7 +67,7 @@ export class PaymentRepository {
         else if (paymentEntities.length > 0) {
             for (const student of session.attendances) {
                 paymentEntities.map(item => {
-                    if (item.studentId === student.student.id && student.isModified === true) {
+                    if (item.studentId === student.student.id) {
                         item.totalLessons =
                             student.status === 'present' || student.status === 'late' ? item.totalLessons + 1 : item.totalLessons;
                         item.totalLessons =
@@ -122,7 +122,7 @@ export class PaymentRepository {
             totalStudentFees: allEntities.reduce((sum, e) => {
                 const totalAmount = e.totalAmount || 0;
                 const discountAmount = totalAmount * (e.discountPercent || 0) / 100;
-                return sum + (totalAmount - discountAmount); 
+                return sum + (totalAmount - discountAmount);
             }, 0),
             totalPaidAmount: allEntities.reduce((sum, e) => sum + (e.paidAmount || 0), 0),
             totalRemainingAmount: allEntities.reduce((sum, e) => {
