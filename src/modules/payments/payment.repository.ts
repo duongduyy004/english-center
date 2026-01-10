@@ -1,6 +1,8 @@
 import { BadRequestException, Inject, Injectable, UnauthorizedException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { PaymentEntity } from "./entities/payment.entity";
+import { NotificationsService } from "modules/notifications/notifications.service";
+import { NOTIFICATION_ENUM } from "modules/notifications/types/notification-type.enum";
 import { Between, FindOptionsWhere, In, MoreThan, Repository } from "typeorm";
 import dayjs from "@/utils/dayjs.config";
 import { FilterPaymentDto, SortPaymentDto } from "./dto/query-payment.dto";
@@ -27,6 +29,7 @@ export class PaymentRepository {
         private i18nService: I18nService<I18nTranslations>,
         private readonly httpService: HttpService,
         private readonly configService: ConfigService<AllConfigType>,
+        private readonly notificationsService: NotificationsService,
     ) { }
 
     async autoUpdatePaymentRecord(session: SessionEntity) {
@@ -164,10 +167,31 @@ export class PaymentRepository {
 
     async payStudent(paymentId: Payment['id'], payStudentDto: PayStudentDto) {
         const entity = await this.paymentsRepository.findOne({
-            where: { id: paymentId }
+            where: { id: paymentId },
+            relations: ['student', 'student.parent']
         })
         this.handleProcessPayment(entity, payStudentDto);
         await this.paymentsRepository.save(entity)
+
+        // Send PAYMENT_SUCCESS notification
+        if (entity.student?.parent?.id) {
+            await this.notificationsService.send({
+                actorId: null,
+                recipientIds: [entity.student.parent.id],
+                data: {
+                    id: NOTIFICATION_ENUM.PAYMENT_SUCCESS,
+                    title: 'Thanh toán thành công',
+                    entityName: 'payments',
+                    body: {
+                        amount: entity.totalAmount,
+                        paidAmount: entity.paidAmount,
+                        studentName: entity.student.name
+                    },
+                    metadata: { entityId: entity.id }
+                }
+            }, NOTIFICATION_ENUM.PAYMENT_SUCCESS, { isOnline: false })
+        }
+
         return PaymentMapper.toDomain(entity)
     }
 
@@ -224,6 +248,30 @@ export class PaymentRepository {
             })
 
             await this.paymentsRepository.save(payment);
+
+            // Send PAYMENT_SUCCESS notification
+            const paymentWithRelation = await this.paymentsRepository.findOne({
+                where: { id: payment.id },
+                relations: ['student', 'student.parent']
+            })
+
+            if (paymentWithRelation?.student?.parent?.id) {
+                await this.notificationsService.send({
+                    actorId: null,
+                    recipientIds: [paymentWithRelation.student.parent.id],
+                    data: {
+                        id: NOTIFICATION_ENUM.PAYMENT_SUCCESS,
+                        title: 'Thanh toán thành công',
+                        entityName: 'payments',
+                        body: {
+                            amount: paymentWithRelation.totalAmount,
+                            paidAmount: paymentWithRelation.paidAmount,
+                            studentName: paymentWithRelation.student.name
+                        },
+                        metadata: { entityId: paymentWithRelation.id }
+                    }
+                }, NOTIFICATION_ENUM.PAYMENT_SUCCESS, { isOnline: false })
+            }
         }
         return { success: true }
     }

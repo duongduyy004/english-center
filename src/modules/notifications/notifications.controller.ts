@@ -34,7 +34,7 @@ export class NotificationsController {
       expoPushToken: 'ExponentPushToken[WjzrsjMvEmgM_CWDbWNe9s]',
     }
 
-    return this.notificationsService.send(dto, userState)
+    // return this.notificationsService.send(dto, userState)
   }
 
   @Get()

@@ -23,8 +23,6 @@ export class NotificationsService {
     constructor(
         @InjectRepository(NotificationEntity)
         private readonly notificationsRepository: Repository<NotificationEntity>,
-        @InjectRepository(NotificationObjectEntity)
-        private readonly notificationsObjectRepository: Repository<NotificationObjectEntity>,
         private readonly gateway: NotificationGateway,
         private readonly usersService: UsersService,
         private readonly notificationRepository: NotificationRepository
@@ -60,7 +58,7 @@ export class NotificationsService {
         return this.notificationRepository.markAsRead(id, userId);
     }
 
-    async send(dto: SendNotificationDto, options: {
+    async send(dto: SendNotificationDto, notificationType: NOTIFICATION_ENUM, options: {
         isOnline: boolean
     }) {
         const { isOnline } = options
@@ -83,7 +81,7 @@ export class NotificationsService {
             return notifications;
         }
         else {
-            return await this.sendExpoPush(dto, NOTIFICATION_ENUM.PAYMENT_REMINDER);
+            return await this.sendExpoPush(dto, notificationType);
         }
     }
 

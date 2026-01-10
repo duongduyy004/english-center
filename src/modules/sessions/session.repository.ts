@@ -18,6 +18,8 @@ import { AuditLogService } from "../audit-log/audit-log.service";
 import { ClsService } from "nestjs-cls";
 import { TeacherPaymentsService } from "../teacher-payments/teacher-payments.service";
 import { AuditLogAction } from "subscribers/audit-log.constants";
+import { NotificationsService } from "modules/notifications/notifications.service";
+import { NOTIFICATION_ENUM } from "modules/notifications/types/notification-type.enum";
 
 const ATTENDANCE_STATUS = Object.freeze({
   absent: 'vắng',
@@ -34,7 +36,8 @@ export class SessionRepository {
     private paymentsService: PaymentsService,
     private auditLogService: AuditLogService,
     private clsService: ClsService,
-    private teacherPaymentsService: TeacherPaymentsService
+    private teacherPaymentsService: TeacherPaymentsService,
+    private notificationsService: NotificationsService
   ) { }
 
   async create(id: Class['id']) {
@@ -179,6 +182,77 @@ export class SessionRepository {
 
     // Audit logging after update
     await this.auditAttendanceChanges(sessionId, oldAttendances, entity.attendances);
+
+    // Send notifications for absent/late students
+    const attendancesWithParent = await this.attendanceSessionRepository.find({
+      where: {
+        sessionId,
+        studentId: In(payload.map(item => item.studentId))
+      },
+      relations: ['student', 'student.parent']
+    });
+
+    const absentNotifications: { parentId: string; studentName: string }[] = [];
+    const lateNotifications: { parentId: string; studentName: string }[] = [];
+
+    for (const item of payload) {
+      if (item.status === 'absent' || item.status === 'late') {
+        const attendance = attendancesWithParent.find(a => a.studentId === item.studentId);
+        if (attendance?.student?.parent?.id) {
+          const data = {
+            parentId: attendance.student.parent.id,
+            studentName: attendance.student.name
+          };
+          if (item.status === 'absent') {
+            absentNotifications.push(data);
+          } else {
+            lateNotifications.push(data);
+          }
+        }
+      }
+    }
+
+    // Send STUDENT_ABSENT notifications
+    if (absentNotifications.length > 0) {
+      for (const notification of absentNotifications) {
+        await this.notificationsService.send({
+          actorId: null,
+          recipientIds: [notification.parentId],
+          data: {
+            id: NOTIFICATION_ENUM.STUDENT_ABSENT,
+            title: 'Học viên vắng mặt',
+            entityName: 'sessions',
+            body: {
+              className: entity.class.name,
+              studentName: notification.studentName,
+              date: entity.date.toISOString()
+            },
+            metadata: { entityId: entity.id }
+          }
+        }, NOTIFICATION_ENUM.STUDENT_ABSENT, { isOnline: false });
+      }
+    }
+
+    // Send STUDENT_LATE notifications
+    if (lateNotifications.length > 0) {
+      for (const notification of lateNotifications) {
+        await this.notificationsService.send({
+          actorId: null,
+          recipientIds: [notification.parentId],
+          data: {
+            id: NOTIFICATION_ENUM.STUDENT_LATE,
+            title: 'Học viên đi muộn',
+            entityName: 'sessions',
+            body: {
+              className: entity.class.name,
+              studentName: notification.studentName,
+              date: entity.date.toISOString()
+            },
+            metadata: { entityId: entity.id }
+          }
+        }, NOTIFICATION_ENUM.STUDENT_LATE, { isOnline: false });
+      }
+    }
 
     await this.paymentsService.autoUpdatePaymentRecord(entity)
     await this.teacherPaymentsService.autoUpdatePayment(entity);
