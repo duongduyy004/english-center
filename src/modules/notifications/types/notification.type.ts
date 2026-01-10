@@ -48,7 +48,9 @@ export type STUDENT_ABSENT = NotificationBase<
         date: string
     },
     {
-        entityId: string
+        entityId: string,
+        classId: string,
+        studentId: string
     }
 >
 
@@ -60,7 +62,9 @@ export type STUDENT_LATE = NotificationBase<
         date: string
     },
     {
-        entityId: string
+        entityId: string,
+        classId: string,
+        studentId: string
     }
 >
 

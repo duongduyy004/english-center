@@ -226,7 +226,7 @@ export class SessionRepository {
             studentName: notification.studentName,
             date: entity.date.toISOString()
           },
-          metadata: { entityId: entity.id, studentId: notification.studentId }
+          metadata: { entityId: entity.id, studentId: notification.studentId, classId: entity.classId }
         }
       }));
       await this.notificationsService.send(absentDtos as any, { isOnline: false });
@@ -247,7 +247,7 @@ export class SessionRepository {
             studentName: notification.studentName,
             date: entity.date.toISOString()
           },
-          metadata: { entityId: entity.id, studentId: notification.studentId }
+          metadata: { entityId: entity.id, studentId: notification.studentId, classId: entity.classId }
         }
       }));
       await this.notificationsService.send(lateDtos as any, { isOnline: false });
