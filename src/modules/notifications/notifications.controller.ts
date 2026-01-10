@@ -48,7 +48,7 @@ export class NotificationsController {
     // Tự động filter theo userId của người dùng hiện tại
     const filters = {
       ...query.filters,
-      recipientId: '4c74a6cb-fb1d-4ac4-a399-ec2f8d029410',
+      recipientId: user.id,
     };
 
     return this.notificationsService.findAll({

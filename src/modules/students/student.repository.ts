@@ -59,7 +59,7 @@ export class StudentRepository {
   async findStudents(ids: Student['id'][]) {
     const entities = await this.studentRepository.find({
       where: { id: In([...ids]) },
-      relations: ['classes.class'],
+      relations: ['classes.class', 'parent'],
     });
     return entities
       ? entities.map((item) => StudentMapper.toDomain(item))

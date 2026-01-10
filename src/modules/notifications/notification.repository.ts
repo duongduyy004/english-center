@@ -58,7 +58,7 @@ export class NotificationRepository {
                     ...accumulator,
                     [sort.orderBy]: sort.order,
                 }),
-                {},
+                { createdAt: 'DESC' },
             ),
         });
 
