@@ -188,8 +188,8 @@ export class SessionRepository {
     const studentIds = payload.map(item => item.studentId);
     const studentsWithParent = studentIds.length > 0 ? (await this.studentsService.findStudents(studentIds) || []) : [];
 
-    const absentNotifications: { parentId: string; className: string; studentName: string; date: string }[] = [];
-    const lateNotifications: { parentId: string; className: string; studentName: string; date: string }[] = [];
+    const absentNotifications: { parentId: string; className: string; studentName: string; date: string, studentId: string }[] = [];
+    const lateNotifications: { parentId: string; className: string; studentName: string; date: string, studentId: string }[] = [];
 
     for (const item of payload) {
       if (item.status === 'absent' || item.status === 'late') {
@@ -199,7 +199,8 @@ export class SessionRepository {
             parentId: student.parent.id,
             className: entity.class.name,
             studentName: student.name,
-            date: entity.date.toISOString()
+            date: entity.date.toISOString(),
+            studentId: item.studentId
           };
           if (item.status === 'absent') {
             absentNotifications.push(data);
@@ -225,7 +226,7 @@ export class SessionRepository {
             studentName: notification.studentName,
             date: entity.date.toISOString()
           },
-          metadata: { entityId: entity.id }
+          metadata: { entityId: entity.id, studentId: notification.studentId }
         }
       }));
       await this.notificationsService.send(absentDtos as any, { isOnline: false });
@@ -246,7 +247,7 @@ export class SessionRepository {
             studentName: notification.studentName,
             date: entity.date.toISOString()
           },
-          metadata: { entityId: entity.id }
+          metadata: { entityId: entity.id, studentId: notification.studentId }
         }
       }));
       await this.notificationsService.send(lateDtos as any, { isOnline: false });
