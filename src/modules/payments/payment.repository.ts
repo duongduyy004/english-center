@@ -175,9 +175,10 @@ export class PaymentRepository {
 
         // Send PAYMENT_SUCCESS notification
         if (entity.student?.parent?.id) {
-            await this.notificationsService.send({
+            await this.notificationsService.send([{
                 actorId: null,
                 recipientIds: [entity.student.parent.id],
+                notificationType: NOTIFICATION_ENUM.PAYMENT_SUCCESS,
                 data: {
                     id: NOTIFICATION_ENUM.PAYMENT_SUCCESS,
                     title: 'Thanh toán thành công',
@@ -189,7 +190,7 @@ export class PaymentRepository {
                     },
                     metadata: { entityId: entity.id }
                 }
-            }, NOTIFICATION_ENUM.PAYMENT_SUCCESS, { isOnline: false })
+            }], { isOnline: false })
         }
 
         return PaymentMapper.toDomain(entity)
@@ -256,9 +257,10 @@ export class PaymentRepository {
             })
 
             if (paymentWithRelation?.student?.parent?.id) {
-                await this.notificationsService.send({
+                await this.notificationsService.send([{
                     actorId: null,
                     recipientIds: [paymentWithRelation.student.parent.id],
+                    notificationType: NOTIFICATION_ENUM.PAYMENT_SUCCESS,
                     data: {
                         id: NOTIFICATION_ENUM.PAYMENT_SUCCESS,
                         title: 'Thanh toán thành công',
@@ -270,7 +272,7 @@ export class PaymentRepository {
                         },
                         metadata: { entityId: paymentWithRelation.id }
                     }
-                }, NOTIFICATION_ENUM.PAYMENT_SUCCESS, { isOnline: false })
+                }], { isOnline: false })
             }
         }
         return { success: true }

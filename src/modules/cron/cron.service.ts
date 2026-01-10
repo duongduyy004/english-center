@@ -64,9 +64,10 @@ export class CronService {
       // Send notification to all parents
       if (recipientIds.length > 0) {
         const uniqueRecipientIds = Array.from(new Set(recipientIds));
-        await this.notificationsService.send({
+        await this.notificationsService.send([{
           actorId: null,
           recipientIds: uniqueRecipientIds,
+          notificationType: NOTIFICATION_ENUM.CLASS_REMINDER,
           data: {
             id: NOTIFICATION_ENUM.CLASS_REMINDER,
             title: 'Sắp đến giờ học',
@@ -78,7 +79,7 @@ export class CronService {
             },
             metadata: { entityId: session.id }
           }
-        }, NOTIFICATION_ENUM.CLASS_REMINDER, { isOnline: false });
+        }] as any, { isOnline: false });
 
         this.logger.log(`Sent CLASS_REMINDER for session ${session.id} to ${uniqueRecipientIds.length} parents`);
       }
@@ -102,27 +103,30 @@ export class CronService {
       relations: ['student', 'student.parent', 'class']
     });
 
-    for (const payment of unpaidPayments) {
-      if (payment.student?.parent?.id) {
-        await this.notificationsService.send({
-          actorId: null,
-          recipientIds: [payment.student.parent.id],
-          data: {
-            id: NOTIFICATION_ENUM.PAYMENT_REMINDER,
-            title: 'Nhắc nhở thanh toán học phí',
-            entityName: 'payments',
-            body: {
-              amount: payment.totalAmount - payment.paidAmount,
-              studentName: payment.student.name,
-              month: payment.month,
-              year: payment.year
-            },
-            metadata: { entityId: payment.id }
-          }
-        }, NOTIFICATION_ENUM.PAYMENT_REMINDER, { isOnline: false });
+    // Batch all payment reminder notifications
+    const paymentReminderDtos = unpaidPayments
+      .filter(payment => payment.student?.parent?.id)
+      .map(payment => ({
+        actorId: null,
+        recipientIds: [payment.student.parent.id],
+        notificationType: NOTIFICATION_ENUM.PAYMENT_REMINDER,
+        data: {
+          id: NOTIFICATION_ENUM.PAYMENT_REMINDER,
+          title: 'Nhắc nhở thanh toán học phí',
+          entityName: 'payments',
+          body: {
+            amount: payment.totalAmount - payment.paidAmount,
+            studentName: payment.student.name,
+            month: payment.month,
+            year: payment.year
+          },
+          metadata: { entityId: payment.id }
+        }
+      }));
 
-        this.logger.log(`Sent PAYMENT_REMINDER for student ${payment.student.name}`);
-      }
+    if (paymentReminderDtos.length > 0) {
+      await this.notificationsService.send(paymentReminderDtos as any, { isOnline: false });
+      this.logger.log(`Sent PAYMENT_REMINDER to ${paymentReminderDtos.length} parents`);
     }
   }
 }

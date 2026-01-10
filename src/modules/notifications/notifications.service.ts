@@ -6,12 +6,9 @@ import { NotificationEntity } from './entities/notification.entity'
 import { SendNotificationDto } from './dto/send-notification.dto'
 import { Expo, ExpoPushMessage } from 'expo-server-sdk'
 import { UsersService } from 'modules/users/users.service'
-import { NotificationType } from './types/notification.type'
 import { formatDate, formatDateTime } from 'utils/date-utils'
 import { NOTIFICATION_CONFIG } from './configs/notification-type.config'
-import { NOTIFICATION_ENUM } from './types/notification-type.enum'
 import { User } from 'modules/users/user.domain'
-import { NotificationObjectEntity } from './entities/notification-object.entity'
 import { NotificationRepository } from './notification.repository'
 import { FilterNotificationDto, SortNotificationDto } from './dto/query-notification.dto'
 import { IPaginationOptions } from 'utils/types/pagination-options'
@@ -58,18 +55,21 @@ export class NotificationsService {
         return this.notificationRepository.markAsRead(id, userId);
     }
 
-    async send(dto: SendNotificationDto, notificationType: NOTIFICATION_ENUM, options: {
+    async send(dtos: SendNotificationDto[], options: {
         isOnline: boolean
     }) {
         const { isOnline } = options
 
-        const notifications = dto.recipientIds.map(item => (this.notificationsRepository.create({
-            recipientId: item,
-            object: {
-                actorId: dto.actorId,
-                data: dto.data
-            }
-        })))
+        const notifications = dtos.flatMap(dto =>
+            dto.recipientIds.map(item => (this.notificationsRepository.create({
+                recipientId: item,
+                object: {
+                    actorId: dto.actorId,
+                    data: dto.data,
+                    type: dto.notificationType
+                }
+            })))
+        );
 
         await this.notificationsRepository.save(notifications);
 
@@ -81,47 +81,72 @@ export class NotificationsService {
             return notifications;
         }
         else {
-            return await this.sendExpoPush(dto, notificationType);
+            return await this.sendExpoPush(dtos);
         }
     }
 
-    async sendExpoPush(dto: SendNotificationDto, notificationType: NOTIFICATION_ENUM) {
-        const pushTokens = (await this.usersService.getExpoPushTokensByUserIds(dto.recipientIds)).map(item => item.expoPushToken);
+    async sendExpoPush(dtos: SendNotificationDto[]) {
+        // Collect all recipient IDs from all DTOs
+        const allRecipientIds = dtos.flatMap(dto => dto.recipientIds);
+        const uniqueRecipientIds = Array.from(new Set(allRecipientIds));
+
+        // Get push tokens for all recipients
+        const userTokens = await this.usersService.getExpoPushTokensByUserIds(uniqueRecipientIds);
+        const tokenMap = new Map<string, string>();
+        userTokens.forEach(item => {
+            if (item.expoPushToken) {
+                tokenMap.set(item.userId, item.expoPushToken);
+            }
+        });
 
         const expo = new Expo();
         const messages: ExpoPushMessage[] = [];
 
-        const config = NOTIFICATION_CONFIG[notificationType];
-        for (const token of pushTokens) {
-            // 1️⃣ Validate token
-            if (!Expo.isExpoPushToken(token)) {
-                console.warn('Invalid Expo token:', token)
-                continue
-            }
+        // Process each DTO and create messages for each recipient
+        for (const dto of dtos) {
+            const config = NOTIFICATION_CONFIG[dto.notificationType];
 
-            messages.push({
-                to: token,
-                sound: 'default',
-                title: config.title,
-                body: this.processNotificationBody(dto.data, notificationType),
-                data: dto.data.metadata ?? {},
-                priority: 'high',
-            })
+            for (const recipientId of dto.recipientIds) {
+                const token = tokenMap.get(recipientId);
+
+                if (!token) {
+                    console.warn('No push token for user:', recipientId);
+                    continue;
+                }
+
+                if (!Expo.isExpoPushToken(token)) {
+                    console.warn('Invalid Expo token:', token);
+                    continue;
+                }
+
+                messages.push({
+                    to: token,
+                    sound: 'default',
+                    title: config.title,
+                    body: this.processNotificationBody(dto.data, dto.notificationType),
+                    data: dto.data.metadata ?? {},
+                    priority: 'high',
+                });
+            }
         }
 
-        const chunks = expo.chunkPushNotifications(messages)
-        const tickets = []
+        if (messages.length === 0) {
+            return [];
+        }
+
+        const chunks = expo.chunkPushNotifications(messages);
+        const tickets = [];
 
         for (const chunk of chunks) {
             try {
                 const ticketChunk = await expo.sendPushNotificationsAsync(chunk);
-                tickets.push(...ticketChunk)
+                tickets.push(...ticketChunk);
             } catch (error) {
-                console.error('Push send error:', error)
+                console.error('Push send error:', error);
             }
         }
 
-        return tickets
+        return tickets;
     }
 
     private processNotificationBody(notification: any, notificationType: number): string {

@@ -34,7 +34,7 @@ export class NotificationsController {
       expoPushToken: 'ExponentPushToken[WjzrsjMvEmgM_CWDbWNe9s]',
     }
 
-    // return this.notificationsService.send(dto, userState)
+    //return this.notificationsService.send(dto, userState)
   }
 
   @Get()
@@ -48,7 +48,7 @@ export class NotificationsController {
     // Tự động filter theo userId của người dùng hiện tại
     const filters = {
       ...query.filters,
-      recipientId: user.id,
+      recipientId: '4c74a6cb-fb1d-4ac4-a399-ec2f8d029410',
     };
 
     return this.notificationsService.findAll({

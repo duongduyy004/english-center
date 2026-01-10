@@ -206,7 +206,7 @@ export class UsersService {
   }
 
   async getExpoPushTokensByUserIds(userIds: string[]) {
-    return await this.userDeviceRepository.find({ where: { userId: In(userIds), isActive: true }, select: { expoPushToken: true } })
+    return await this.userDeviceRepository.find({ where: { userId: In(userIds), isActive: true }, select: { expoPushToken: true, userId: true } })
   }
 
   async pushExpoToken(userId: User['id'], dto: PushTokenDto) {

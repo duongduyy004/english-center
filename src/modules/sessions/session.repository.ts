@@ -184,24 +184,22 @@ export class SessionRepository {
     await this.auditAttendanceChanges(sessionId, oldAttendances, entity.attendances);
 
     // Send notifications for absent/late students
-    const attendancesWithParent = await this.attendanceSessionRepository.find({
-      where: {
-        sessionId,
-        studentId: In(payload.map(item => item.studentId))
-      },
-      relations: ['student', 'student.parent']
-    });
+    // Fetch students with parent info via StudentsService to avoid join issues
+    const studentIds = payload.map(item => item.studentId);
+    const studentsWithParent = studentIds.length > 0 ? (await this.studentsService.findStudents(studentIds) || []) : [];
 
-    const absentNotifications: { parentId: string; studentName: string }[] = [];
-    const lateNotifications: { parentId: string; studentName: string }[] = [];
+    const absentNotifications: { parentId: string; className: string; studentName: string; date: string }[] = [];
+    const lateNotifications: { parentId: string; className: string; studentName: string; date: string }[] = [];
 
     for (const item of payload) {
       if (item.status === 'absent' || item.status === 'late') {
-        const attendance = attendancesWithParent.find(a => a.studentId === item.studentId);
-        if (attendance?.student?.parent?.id) {
+        const student = studentsWithParent.find(s => s.id === item.studentId);
+        if (student?.parent?.id) {
           const data = {
-            parentId: attendance.student.parent.id,
-            studentName: attendance.student.name
+            parentId: student.parent.id,
+            className: entity.class.name,
+            studentName: student.name,
+            date: entity.date.toISOString()
           };
           if (item.status === 'absent') {
             absentNotifications.push(data);
@@ -212,46 +210,46 @@ export class SessionRepository {
       }
     }
 
-    // Send STUDENT_ABSENT notifications
+    // Send STUDENT_ABSENT notifications (batched)
     if (absentNotifications.length > 0) {
-      for (const notification of absentNotifications) {
-        await this.notificationsService.send({
-          actorId: null,
-          recipientIds: [notification.parentId],
-          data: {
-            id: NOTIFICATION_ENUM.STUDENT_ABSENT,
-            title: 'Học viên vắng mặt',
-            entityName: 'sessions',
-            body: {
-              className: entity.class.name,
-              studentName: notification.studentName,
-              date: entity.date.toISOString()
-            },
-            metadata: { entityId: entity.id }
-          }
-        }, NOTIFICATION_ENUM.STUDENT_ABSENT, { isOnline: false });
-      }
+      const absentDtos = absentNotifications.map(notification => ({
+        actorId: null,
+        recipientIds: [notification.parentId],
+        notificationType: NOTIFICATION_ENUM.STUDENT_ABSENT,
+        data: {
+          id: NOTIFICATION_ENUM.STUDENT_ABSENT,
+          title: 'Học viên vắng mặt',
+          entityName: 'sessions',
+          body: {
+            className: entity.class.name,
+            studentName: notification.studentName,
+            date: entity.date.toISOString()
+          },
+          metadata: { entityId: entity.id }
+        }
+      }));
+      await this.notificationsService.send(absentDtos as any, { isOnline: false });
     }
 
-    // Send STUDENT_LATE notifications
+    // Send STUDENT_LATE notifications (batched)
     if (lateNotifications.length > 0) {
-      for (const notification of lateNotifications) {
-        await this.notificationsService.send({
-          actorId: null,
-          recipientIds: [notification.parentId],
-          data: {
-            id: NOTIFICATION_ENUM.STUDENT_LATE,
-            title: 'Học viên đi muộn',
-            entityName: 'sessions',
-            body: {
-              className: entity.class.name,
-              studentName: notification.studentName,
-              date: entity.date.toISOString()
-            },
-            metadata: { entityId: entity.id }
-          }
-        }, NOTIFICATION_ENUM.STUDENT_LATE, { isOnline: false });
-      }
+      const lateDtos = lateNotifications.map(notification => ({
+        actorId: null,
+        recipientIds: [notification.parentId],
+        notificationType: NOTIFICATION_ENUM.STUDENT_LATE,
+        data: {
+          id: NOTIFICATION_ENUM.STUDENT_LATE,
+          title: 'Học viên đi muộn',
+          entityName: 'sessions',
+          body: {
+            className: entity.class.name,
+            studentName: notification.studentName,
+            date: entity.date.toISOString()
+          },
+          metadata: { entityId: entity.id }
+        }
+      }));
+      await this.notificationsService.send(lateDtos as any, { isOnline: false });
     }
 
     await this.paymentsService.autoUpdatePaymentRecord(entity)
