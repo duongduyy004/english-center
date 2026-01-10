@@ -282,7 +282,10 @@ export class SessionRepository {
         'attendances.studentId AS "studentId"',
         'sessions.date AS "date"',
         'attendances.sessionId AS "sessionId"',
-        'attendances.status AS "status"'
+        'attendances.status AS "status"',
+        'attendances.note AS "note"',
+        'attendances.createdAt AS "createdAt"',
+        'attendances.updatedAt AS "updatedAt"'
       ])
       .leftJoin('sessions.attendances', 'attendances')
       .leftJoin('sessions.class', 'class')
@@ -296,6 +299,10 @@ export class SessionRepository {
       .addGroupBy('class.section')
       .addGroupBy('class.year')
       .addGroupBy('class.status')
+      .addGroupBy('attendances.status')
+      .addGroupBy('attendances.note')
+      .addGroupBy('attendances.createdAt')
+      .addGroupBy('attendances.updatedAt')
       .getRawMany();
 
     const student = await this.studentsService.findOne(studentId)
@@ -343,7 +350,9 @@ export class SessionRepository {
           status: item.classStatus
         },
         status: item.status,
-        note: item?.note
+        note: item?.note,
+        createdAt: item.createdAt,
+        updatedAt: item.updatedAt
       }
     })
 
