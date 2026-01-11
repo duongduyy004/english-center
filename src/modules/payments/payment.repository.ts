@@ -186,7 +186,10 @@ export class PaymentRepository {
                     body: {
                         amount: entity.totalAmount,
                         paidAmount: entity.paidAmount,
-                        studentName: entity.student.name
+                        studentName: entity.student.name,
+                        className: entity.class.name,
+                        month: entity.month,
+                        year: entity.year
                     },
                     metadata: { entityId: entity.id }
                 }
@@ -268,7 +271,10 @@ export class PaymentRepository {
                         body: {
                             amount: paymentWithRelation.totalAmount,
                             paidAmount: paymentWithRelation.paidAmount,
-                            studentName: paymentWithRelation.student.name
+                            studentName: paymentWithRelation.student.name,
+                            className: paymentWithRelation.class.name,
+                            month: paymentWithRelation.month,
+                            year: paymentWithRelation.year
                         },
                         metadata: { entityId: paymentWithRelation.id }
                     }

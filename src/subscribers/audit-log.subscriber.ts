@@ -15,7 +15,7 @@ export class AuditSubscriber implements EntitySubscriberInterface {
     }
 
     async afterInsert(event: InsertEvent<any>) {
-                if (AuditSubscriber.skipAuditLog) return;
+        if (AuditSubscriber.skipAuditLog) return;
         if (event.metadata.name === 'AttendanceSessionEntity') return;
         if (event.entity) {
             const user = ClsServiceManager.getClsService().get('user');
@@ -84,7 +84,7 @@ export class AuditSubscriber implements EntitySubscriberInterface {
     }
 
     async beforeSoftRemove(event: SoftRemoveEvent<any>) {
-                if (AuditSubscriber.skipAuditLog) return;
+        if (AuditSubscriber.skipAuditLog) return;
         if (event.databaseEntity) {
             const user = ClsServiceManager.getClsService().get('user');
             const method = ClsServiceManager.getClsService().get('method');

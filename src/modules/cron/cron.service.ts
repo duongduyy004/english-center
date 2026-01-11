@@ -36,57 +36,58 @@ export class CronService {
     return 'Class status updated successfully.';
   }
 
-  @Cron(CronExpression.EVERY_30_MINUTES)
-  async sendClassReminders() {
-    this.logger.log('Checking for upcoming classes...');
+  // @Cron(CronExpression.EVERY_30_MINUTES)
+  // async sendClassReminders() {
+  //   this.logger.log('Checking for upcoming classes...');
 
-    const now = dayjs();
-    const oneHourLater = now.add(1, 'hour');
+  //   const now = dayjs();
+  //   const oneHourLater = now.add(1, 'hour');
 
-    // Find sessions starting in the next hour
-    const upcomingSessions = await this.sessionRepository.find({
-      where: {
-        date: Between(now.toDate(), oneHourLater.toDate())
-      },
-      relations: ['class', 'class.students', 'class.students.student', 'class.students.student.parent', 'class.teacher']
-    });
+  //   // Find sessions starting in the next hour
+  //   const upcomingSessions = await this.sessionRepository.find({
+  //     where: {
+  //       date: Between(now.toDate(), oneHourLater.toDate())
 
-    for (const session of upcomingSessions) {
-      const recipientIds: string[] = [];
+  //     },
+  //     relations: ['class', 'class.students', 'class.students.student', 'class.students.student.parent', 'class.teacher']
+  //   });
 
-      // Collect parent IDs for students in this class
-      for (const classStudent of session.class?.students || []) {
-        if (classStudent.student?.parent?.id) {
-          recipientIds.push(classStudent.student.parent.id);
-        }
-      }
+  //   for (const session of upcomingSessions) {
+  //     const recipientIds: string[] = [];
 
-      // Send notification to all parents
-      if (recipientIds.length > 0) {
-        const uniqueRecipientIds = Array.from(new Set(recipientIds));
-        await this.notificationsService.send([{
-          actorId: null,
-          recipientIds: uniqueRecipientIds,
-          notificationType: NOTIFICATION_ENUM.CLASS_REMINDER,
-          data: {
-            id: NOTIFICATION_ENUM.CLASS_REMINDER,
-            title: 'Sắp đến giờ học',
-            entityName: 'class',
-            body: {
-              className: session.class.name,
-              date: session.date,
-              duration: '90 phút'
-            },
-            metadata: { entityId: session.id }
-          }
-        }] as any, { isOnline: false });
+  //     // Collect parent IDs for students in this class
+  //     for (const classStudent of session.class?.students || []) {
+  //       if (classStudent.student?.parent?.id) {
+  //         recipientIds.push(classStudent.student.parent.id);
+  //       }
+  //     }
 
-        this.logger.log(`Sent CLASS_REMINDER for session ${session.id} to ${uniqueRecipientIds.length} parents`);
-      }
-    }
-  }
+  //     // Send notification to all parents
+  //     if (recipientIds.length > 0) {
+  //       const uniqueRecipientIds = Array.from(new Set(recipientIds));
+  //       await this.notificationsService.send([{
+  //         actorId: null,
+  //         recipientIds: uniqueRecipientIds,
+  //         notificationType: NOTIFICATION_ENUM.CLASS_REMINDER,
+  //         data: {
+  //           id: NOTIFICATION_ENUM.CLASS_REMINDER,
+  //           title: 'Sắp đến giờ học',
+  //           entityName: 'class',
+  //           body: {
+  //             className: session.class.name,
+  //             date: session.date,
+  //             duration: '90 phút'
+  //           },
+  //           metadata: { entityId: session.id }
+  //         }
+  //       }] as any, { isOnline: false });
 
-  @Cron('0 9 * * *') // Every day at 9:00 AM
+  //       this.logger.log(`Sent CLASS_REMINDER for session ${session.id} to ${uniqueRecipientIds.length} parents`);
+  //     }
+  //   }
+  // }
+
+  @Cron('0 9 1 * *') // Every day 1 of month at 9:00 AM
   async sendPaymentReminders() {
     this.logger.log('Sending payment reminders...');
 
@@ -117,6 +118,7 @@ export class CronService {
           body: {
             amount: payment.totalAmount - payment.paidAmount,
             studentName: payment.student.name,
+            className: payment.class.name,
             month: payment.month,
             year: payment.year
           },
