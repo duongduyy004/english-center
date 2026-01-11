@@ -11,6 +11,6 @@ export class TransactionCategoryEntity {
     @Column()
     name: string;
 
-    @DeleteDateColumn()
+    @DeleteDateColumn({ type: "timestamptz" })
     deletedAt?: Date;
 }

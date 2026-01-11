@@ -27,7 +27,7 @@ export class ClassesService {
     private teachersService: TeachersService,
     private studentsService: StudentsService,
     private i18nService: I18nService<I18nTranslations>,
-  ) {}
+  ) { }
   create(createClassDto: CreateClassDto) {
     return this.classRepository.create(createClassDto);
   }
@@ -163,14 +163,14 @@ export class ClassesService {
 
   async updateClassStatus() {
     const classes = await this.classRepository.findAll();
-    for(const aclass of classes) {
+    for (const aclass of classes) {
       const now = Date.now();
       const startDate = new Date(aclass.schedule.start_date).getTime();
       const endDate = new Date(aclass.schedule.end_date).getTime();
       let newStatus = aclass.status;
-      if(now < startDate) {
+      if (now < startDate) {
         newStatus = 'upcoming';
-      } else if(now > endDate) {
+      } else if (now > endDate) {
         newStatus = 'closed';
       } else {
         newStatus = 'active';

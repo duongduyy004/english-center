@@ -1,6 +1,8 @@
 import { BadRequestException, Inject, Injectable, UnauthorizedException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { PaymentEntity } from "./entities/payment.entity";
+import { NotificationsService } from "modules/notifications/notifications.service";
+import { NOTIFICATION_ENUM } from "modules/notifications/types/notification-type.enum";
 import { Between, FindOptionsWhere, In, MoreThan, Repository } from "typeorm";
 import dayjs from "@/utils/dayjs.config";
 import { FilterPaymentDto, SortPaymentDto } from "./dto/query-payment.dto";
@@ -27,6 +29,7 @@ export class PaymentRepository {
         private i18nService: I18nService<I18nTranslations>,
         private readonly httpService: HttpService,
         private readonly configService: ConfigService<AllConfigType>,
+        private readonly notificationsService: NotificationsService,
     ) { }
 
     async autoUpdatePaymentRecord(session: SessionEntity) {
@@ -67,7 +70,7 @@ export class PaymentRepository {
         else if (paymentEntities.length > 0) {
             for (const student of session.attendances) {
                 paymentEntities.map(item => {
-                    if (item.studentId === student.student.id && student.isModified === true) {
+                    if (item.studentId === student.student.id) {
                         item.totalLessons =
                             student.status === 'present' || student.status === 'late' ? item.totalLessons + 1 : item.totalLessons;
                         item.totalLessons =
@@ -122,7 +125,7 @@ export class PaymentRepository {
             totalStudentFees: allEntities.reduce((sum, e) => {
                 const totalAmount = e.totalAmount || 0;
                 const discountAmount = totalAmount * (e.discountPercent || 0) / 100;
-                return sum + (totalAmount - discountAmount); 
+                return sum + (totalAmount - discountAmount);
             }, 0),
             totalPaidAmount: allEntities.reduce((sum, e) => sum + (e.paidAmount || 0), 0),
             totalRemainingAmount: allEntities.reduce((sum, e) => {
@@ -164,10 +167,32 @@ export class PaymentRepository {
 
     async payStudent(paymentId: Payment['id'], payStudentDto: PayStudentDto) {
         const entity = await this.paymentsRepository.findOne({
-            where: { id: paymentId }
+            where: { id: paymentId },
+            relations: ['student', 'student.parent']
         })
         this.handleProcessPayment(entity, payStudentDto);
         await this.paymentsRepository.save(entity)
+
+        // Send PAYMENT_SUCCESS notification
+        if (entity.student?.parent?.id) {
+            await this.notificationsService.send([{
+                actorId: null,
+                recipientIds: [entity.student.parent.id],
+                notificationType: NOTIFICATION_ENUM.PAYMENT_SUCCESS,
+                data: {
+                    id: NOTIFICATION_ENUM.PAYMENT_SUCCESS,
+                    title: 'Thanh toán thành công',
+                    entityName: 'payments',
+                    body: {
+                        amount: entity.totalAmount,
+                        paidAmount: entity.paidAmount,
+                        studentName: entity.student.name
+                    },
+                    metadata: { entityId: entity.id }
+                }
+            }], { isOnline: false })
+        }
+
         return PaymentMapper.toDomain(entity)
     }
 
@@ -224,6 +249,31 @@ export class PaymentRepository {
             })
 
             await this.paymentsRepository.save(payment);
+
+            // Send PAYMENT_SUCCESS notification
+            const paymentWithRelation = await this.paymentsRepository.findOne({
+                where: { id: payment.id },
+                relations: ['student', 'student.parent']
+            })
+
+            if (paymentWithRelation?.student?.parent?.id) {
+                await this.notificationsService.send([{
+                    actorId: null,
+                    recipientIds: [paymentWithRelation.student.parent.id],
+                    notificationType: NOTIFICATION_ENUM.PAYMENT_SUCCESS,
+                    data: {
+                        id: NOTIFICATION_ENUM.PAYMENT_SUCCESS,
+                        title: 'Thanh toán thành công',
+                        entityName: 'payments',
+                        body: {
+                            amount: paymentWithRelation.totalAmount,
+                            paidAmount: paymentWithRelation.paidAmount,
+                            studentName: paymentWithRelation.student.name
+                        },
+                        metadata: { entityId: paymentWithRelation.id }
+                    }
+                }], { isOnline: false })
+            }
         }
         return { success: true }
     }

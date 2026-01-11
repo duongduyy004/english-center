@@ -18,6 +18,8 @@ import { AuditLogService } from "../audit-log/audit-log.service";
 import { ClsService } from "nestjs-cls";
 import { TeacherPaymentsService } from "../teacher-payments/teacher-payments.service";
 import { AuditLogAction } from "subscribers/audit-log.constants";
+import { NotificationsService } from "modules/notifications/notifications.service";
+import { NOTIFICATION_ENUM } from "modules/notifications/types/notification-type.enum";
 
 const ATTENDANCE_STATUS = Object.freeze({
   absent: 'vắng',
@@ -34,12 +36,15 @@ export class SessionRepository {
     private paymentsService: PaymentsService,
     private auditLogService: AuditLogService,
     private clsService: ClsService,
-    private teacherPaymentsService: TeacherPaymentsService
+    private teacherPaymentsService: TeacherPaymentsService,
+    private notificationsService: NotificationsService
   ) { }
 
   async create(id: Class['id']) {
     const classEntity = await this.classesService.findOne(id);
-    const studentIds = classEntity.students.map((item) =>
+    const studentIds = classEntity.students.filter((item) =>
+      item.isActive
+    ).map((item) =>
       item.student.id.toString(),
     );
 
@@ -53,6 +58,8 @@ export class SessionRepository {
       studentId: item,
       sessionId: sessionEntity.id,
       status: 'absent',
+      createdAt: dayjs().toDate(),
+      updatedAt: dayjs().toDate(),
     }));
 
     await this.attendanceSessionRepository.insert(attendances);
@@ -108,6 +115,7 @@ export class SessionRepository {
       relations: ['class', 'attendances.student'],
       skip: (paginationOptions.page - 1) * paginationOptions.limit,
       take: paginationOptions.limit,
+      order: { date: 'DESC' }
     });
 
     const totalItems = total;
@@ -150,10 +158,7 @@ export class SessionRepository {
 
     if (!entity) return;
 
-    const classInfo = await this.classesService.findOne(entity.classId)
-    const studentIds = classInfo.students.map(item => {
-      if (item.isActive) return item.student.id;
-    });
+    const payloadStudentIds = payload.map(item => item.studentId);
     const statusCases = payload.map(item => `WHEN '${item.studentId}' THEN '${item.status}'`).join(' ')
     const noteCases = payload.map(item => `WHEN '${item.studentId}' THEN '${item.note || ''}'`).join(' ')
 
@@ -162,7 +167,7 @@ export class SessionRepository {
         status: () => `CASE studentId ${statusCases} ELSE status END`,
         note: () => `CASE studentId ${noteCases} ELSE note END`
       })
-      .where('studentId IN (:...studentIds)', { studentIds })
+      .where('studentId IN (:...payloadStudentIds)', { payloadStudentIds })
       .andWhere('sessionId = :sessionId', { sessionId })
       .callListeners(false)
       .execute()
@@ -170,14 +175,83 @@ export class SessionRepository {
     for (const item of entity.attendances) {
       for (const payloadItem of payload) {
         if (item.student.id.toString() === payloadItem.studentId.toString()) {
-          item.isModified = payloadItem.isModified;
           item.status = payloadItem.status
         }
       }
     }
 
     // Audit logging after update
-    await this.auditAttendanceChanges(sessionId, oldAttendances, entity.attendances, payload);
+    await this.auditAttendanceChanges(sessionId, oldAttendances, entity.attendances);
+
+    // Send notifications for absent/late students
+    // Fetch students with parent info via StudentsService to avoid join issues
+    const studentIds = payload.map(item => item.studentId);
+    const studentsWithParent = studentIds.length > 0 ? (await this.studentsService.findStudents(studentIds) || []) : [];
+
+    const absentNotifications: { parentId: string; className: string; studentName: string; date: string, studentId: string }[] = [];
+    const lateNotifications: { parentId: string; className: string; studentName: string; date: string, studentId: string }[] = [];
+
+    for (const item of payload) {
+      if (item.status === 'absent' || item.status === 'late') {
+        const student = studentsWithParent.find(s => s.id === item.studentId);
+        if (student?.parent?.id) {
+          const data = {
+            parentId: student.parent.id,
+            className: entity.class.name,
+            studentName: student.name,
+            date: entity.date.toISOString(),
+            studentId: item.studentId
+          };
+          if (item.status === 'absent') {
+            absentNotifications.push(data);
+          } else {
+            lateNotifications.push(data);
+          }
+        }
+      }
+    }
+
+    // Send STUDENT_ABSENT notifications (batched)
+    if (absentNotifications.length > 0) {
+      const absentDtos = absentNotifications.map(notification => ({
+        actorId: null,
+        recipientIds: [notification.parentId],
+        notificationType: NOTIFICATION_ENUM.STUDENT_ABSENT,
+        data: {
+          id: NOTIFICATION_ENUM.STUDENT_ABSENT,
+          title: 'Học viên vắng mặt',
+          entityName: 'sessions',
+          body: {
+            className: entity.class.name,
+            studentName: notification.studentName,
+            date: entity.date.toISOString()
+          },
+          metadata: { entityId: entity.id, studentId: notification.studentId, classId: entity.classId }
+        }
+      }));
+      await this.notificationsService.send(absentDtos as any, { isOnline: false });
+    }
+
+    // Send STUDENT_LATE notifications (batched)
+    if (lateNotifications.length > 0) {
+      const lateDtos = lateNotifications.map(notification => ({
+        actorId: null,
+        recipientIds: [notification.parentId],
+        notificationType: NOTIFICATION_ENUM.STUDENT_LATE,
+        data: {
+          id: NOTIFICATION_ENUM.STUDENT_LATE,
+          title: 'Học viên đi muộn',
+          entityName: 'sessions',
+          body: {
+            className: entity.class.name,
+            studentName: notification.studentName,
+            date: entity.date.toISOString()
+          },
+          metadata: { entityId: entity.id, studentId: notification.studentId, classId: entity.classId }
+        }
+      }));
+      await this.notificationsService.send(lateDtos as any, { isOnline: false });
+    }
 
     await this.paymentsService.autoUpdatePaymentRecord(entity)
     await this.teacherPaymentsService.autoUpdatePayment(entity);
@@ -187,8 +261,7 @@ export class SessionRepository {
   private async auditAttendanceChanges(
     sessionId: Session['id'],
     oldAttendances: AttendanceSessionEntity[],
-    newAttendances: AttendanceSessionEntity[],
-    payload: UpdateAttendanceSessionDto[]
+    newAttendances: AttendanceSessionEntity[]
   ) {
     try {
       // Get current user from CLS context for audit logging
@@ -282,7 +355,10 @@ export class SessionRepository {
         'attendances.studentId AS "studentId"',
         'sessions.date AS "date"',
         'attendances.sessionId AS "sessionId"',
-        'attendances.status AS "status"'
+        'attendances.status AS "status"',
+        'attendances.note AS "note"',
+        'attendances.createdAt AS "createdAt"',
+        'attendances.updatedAt AS "updatedAt"'
       ])
       .leftJoin('sessions.attendances', 'attendances')
       .leftJoin('sessions.class', 'class')
@@ -296,6 +372,10 @@ export class SessionRepository {
       .addGroupBy('class.section')
       .addGroupBy('class.year')
       .addGroupBy('class.status')
+      .addGroupBy('attendances.status')
+      .addGroupBy('attendances.note')
+      .addGroupBy('attendances.createdAt')
+      .addGroupBy('attendances.updatedAt')
       .getRawMany();
 
     const student = await this.studentsService.findOne(studentId)
@@ -343,7 +423,9 @@ export class SessionRepository {
           status: item.classStatus
         },
         status: item.status,
-        note: item?.note
+        note: item?.note,
+        createdAt: item.createdAt,
+        updatedAt: item.updatedAt
       }
     })
 

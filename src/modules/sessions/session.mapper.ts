@@ -16,8 +16,9 @@ export class SessionMapper {
                     email: item.student.email,
                     phone: item.student.phone
                 },
-                isModified: item?.isModified,
-                note: item?.note
+                note: item?.note,
+                createdAt: item.createdAt,
+                updatedAt: item.updatedAt
             }))
         }
         if (raw.class) {

@@ -31,18 +31,18 @@ export class RegistrationEntity {
   @Column()
   processed: boolean;
   @CreateDateColumn({
-    type: 'timestamp',
+    type: 'timestamptz',
     default: () => 'CURRENT_TIMESTAMP(0)',
   })
   createdAt: Date;
   @UpdateDateColumn({
-    type: 'timestamp',
+    type: 'timestamptz',
     default: () => 'CURRENT_TIMESTAMP(0)',
     onUpdate: 'CURRENT_TIMESTAMP(0)',
   })
   updatedAt: Date;
   @DeleteDateColumn({
-    type: 'timestamp',
+    type: 'timestamptz',
     nullable: true,
   })
   deletedAt?: Date;

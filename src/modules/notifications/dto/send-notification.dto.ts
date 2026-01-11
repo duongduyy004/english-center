@@ -1,6 +1,6 @@
 import { IsArray, IsEnum, IsNotEmpty, IsOptional } from 'class-validator'
-import { RoleEnum } from 'modules/roles/roles.enum';
 import { NotificationType } from '../types/notification.type';
+import { NOTIFICATION_ENUM } from '../types/notification-type.enum';
 
 export class SendNotificationDto {
     @IsOptional()
@@ -12,4 +12,8 @@ export class SendNotificationDto {
 
     @IsNotEmpty()
     data: NotificationType
+
+    @IsEnum(NOTIFICATION_ENUM)
+    @IsNotEmpty()
+    notificationType: NOTIFICATION_ENUM
 }

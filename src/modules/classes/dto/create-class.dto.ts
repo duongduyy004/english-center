@@ -72,10 +72,6 @@ export class CreateClassDto {
     feePerLesson: number;
 
     @IsNotEmpty()
-    @IsEnum(['active', 'upcoming', 'closed'])
-    status: 'active' | 'upcoming' | 'closed';
-
-    @IsNotEmpty()
     @IsInt()
     @Min(1)
     @Max(50)

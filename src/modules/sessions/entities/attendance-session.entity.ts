@@ -1,5 +1,5 @@
 import { StudentEntity } from "modules/students/entities/student.entity";
-import { Column, Entity, ManyToOne, PrimaryColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryColumn, UpdateDateColumn } from "typeorm";
 import { SessionEntity } from "./session.entity";
 
 @Entity('attendance_session')
@@ -22,5 +22,9 @@ export class AttendanceSessionEntity {
     @ManyToOne(() => SessionEntity, session => session.attendances, { eager: true })
     session?: SessionEntity
 
-    isModified?: boolean;
+    @CreateDateColumn({ type: 'timestamptz' })
+    createdAt: Date;
+
+    @UpdateDateColumn({ type: 'timestamptz' })
+    updatedAt: Date;
 }

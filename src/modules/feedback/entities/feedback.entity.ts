@@ -14,18 +14,18 @@ export class FeedbackEntity {
     @Column()
     description: string;
 
-    @Column()
-    socialUrl: string;
+    @Column({ nullable: true })
+    socialUrl: string | null;
 
     @Column()
     name: string;
 
-    @CreateDateColumn()
+    @CreateDateColumn({ type: "timestamptz" })
     createdAt: Date;
 
-    @UpdateDateColumn()
+    @UpdateDateColumn({ type: "timestamptz" })
     updatedAt: Date;
 
-    @DeleteDateColumn()
+    @DeleteDateColumn({ type: "timestamptz" })
     deletedAt: Date;
 }

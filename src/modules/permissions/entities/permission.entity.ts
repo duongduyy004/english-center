@@ -24,9 +24,9 @@ export class PermissionEntity {
     @ManyToMany(() => RoleEntity, role => role.permissions)
     roles: RoleEntity[];
 
-    @CreateDateColumn()
+    @CreateDateColumn({ type: "timestamptz" })
     createdAt: Date;
 
-    @UpdateDateColumn()
+    @UpdateDateColumn({ type: "timestamptz" })
     updatedAt: Date;
 }

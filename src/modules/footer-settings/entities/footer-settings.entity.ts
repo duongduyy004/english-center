@@ -35,10 +35,10 @@ export class FooterSettingsEntity {
     @Column({ type: 'text', nullable: true })
     mapEmbedUrl: string;
 
-    @CreateDateColumn()
+    @CreateDateColumn({ type: "timestamptz" })
     createdAt: Date;
 
-    @UpdateDateColumn()
+    @UpdateDateColumn({ type: "timestamptz" })
     updatedAt: Date;
 }
 

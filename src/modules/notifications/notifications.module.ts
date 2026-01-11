@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Global, Module } from '@nestjs/common';
 import { NotificationsController } from './notifications.controller';
 import { NotificationsService } from './notifications.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -9,6 +9,7 @@ import { UsersModule } from 'modules/users/users.module';
 import { NotificationRepository } from './notification.repository';
 import { NotificationMapper } from './notification.mapper';
 
+@Global()
 @Module({
   imports: [TypeOrmModule.forFeature([
     NotificationEntity,

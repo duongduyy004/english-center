@@ -180,8 +180,7 @@ export class TeacherPaymentRepository {
 
     // Calculate statistics from all records matching filters (not paginated)
     const allEntities = await this.teacherPaymentRepository.find({
-      where: { ...where, totalAmount: MoreThan(0) },
-      relations: ['teacher', 'classes'],
+      where: { ...where, totalAmount: MoreThan(0) }
     });
 
     const statistics = {
@@ -203,6 +202,7 @@ export class TeacherPaymentRepository {
       statistics
     };
   }
+
   async createPayment(createPaymentDto: CreateTeacherPaymentDto) {
     const payment = this.teacherPaymentRepository.create(createPaymentDto);
     return this.teacherPaymentRepository.save(payment);

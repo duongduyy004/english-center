@@ -3,7 +3,7 @@ export class Feedback {
     imageUrl: string;
     publicId: string;
     description: string;
-    socialUrl: string;
+    socialUrl: string | null;
     name: string;
     createdAt?: Date;
     updatedAt?: Date;

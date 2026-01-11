@@ -19,6 +19,6 @@ export class TransactionEntity {
     @JoinColumn({ name: 'categoryId' })
     category: TransactionCategoryEntity;
 
-    @DeleteDateColumn()
+    @DeleteDateColumn({ type: "timestamptz" })
     deletedAt: Date;
 }

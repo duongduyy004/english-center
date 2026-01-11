@@ -7,6 +7,7 @@ import {
 } from 'typeorm';
 import { NotificationEntity } from './notification.entity';
 import { NotificationType } from '../types/notification.type';
+import { NOTIFICATION_ENUM } from '../types/notification-type.enum';
 
 @Entity('notification_object')
 export class NotificationObjectEntity {
@@ -16,12 +17,15 @@ export class NotificationObjectEntity {
     @Column({ type: 'jsonb' })
     data: NotificationType
 
+    @Column({ default: NOTIFICATION_ENUM.STUDENT_LATE })
+    type: NOTIFICATION_ENUM
+
     @OneToMany(() => NotificationEntity, (noti) => noti.object)
     notification: NotificationEntity[];
 
     @Column({ nullable: true })
     actorId: string;
 
-    @CreateDateColumn()
+    @CreateDateColumn({ type: "timestamptz" })
     createdAt: Date;
 }

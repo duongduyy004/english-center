@@ -17,6 +17,7 @@ export class NotificationMapper {
                 id: raw.object.id,
                 actorId: raw.object.actorId,
                 data: raw.object.data,
+                type: raw.object.type,
                 createdAt: raw.object.createdAt,
             };
         }
