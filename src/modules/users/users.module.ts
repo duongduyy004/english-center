@@ -8,6 +8,7 @@ import { TeacherEntity } from 'modules/teachers/entities/teacher.entity';
 import { UsersController } from './user.controller';
 import { FilesService } from 'modules/files/files.service';
 import { UserDevicesEntity } from './entities/user-devices.entity';
+import { UserRepository } from './user.repository';
 
 @Module({
   imports: [
@@ -20,7 +21,7 @@ import { UserDevicesEntity } from './entities/user-devices.entity';
     ])
   ],
   controllers: [UsersController],
-  providers: [UsersService, FilesService],
+  providers: [UsersService, FilesService, UserRepository],
   exports: [UsersService]
 })
 export class UsersModule { }

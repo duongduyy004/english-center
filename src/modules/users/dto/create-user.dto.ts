@@ -6,6 +6,7 @@ import {
   IsEmail,
   IsEnum,
   IsNotEmpty,
+  IsOptional,
   IsString,
   Matches,
 } from 'class-validator';
@@ -98,5 +99,6 @@ export class CreateUserDto {
   @IsString()
   phone: string;
 
+  @IsOptional()
   role: Role;
 }

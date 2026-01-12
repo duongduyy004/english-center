@@ -16,7 +16,8 @@ export class UserMapper {
             id: raw.role.id,
             name: RoleEnum[raw.role.id],
             isActive: raw.role.isActive,
-            description: raw.role.description
+            description: raw.role.description,
+            isStaff: raw.role.isStaff
         }
 
         return domainEntity

@@ -12,6 +12,9 @@ export class RoleEntity {
     @Column({ default: true })
     isActive: boolean
 
+    @Column({ default: false })
+    isStaff?: boolean
+
     @Column({ default: 'test' })
     description: string;
 

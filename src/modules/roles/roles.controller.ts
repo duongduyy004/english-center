@@ -1,9 +1,7 @@
 import { Body, Controller, Get, Patch, Query, Post, Param, Delete } from '@nestjs/common';
 import { RolesService } from './roles.service';
-import { AssignPermissionsDto } from './dto/assign-permissions.dto';
 import { Roles } from '@/decorator/customize.decorator';
 import { RoleEnum } from './roles.enum';
-import { RemovePermissionsDto } from './dto/remove-permissions.dto';
 import { QueryDto } from '@/utils/types/query.dto';
 import { FilterRoleDto, SortRoleDto } from './dto/query-role.dto';
 import { CreateRoleDto } from './dto/create-role.dto';

@@ -6,28 +6,81 @@ import { UserEntity } from 'modules/users/entities/user.entity';
 import { ParentEntity } from 'modules/parents/entities/parent.entity';
 import { StudentEntity } from 'modules/students/entities/student.entity';
 import { TeacherEntity } from 'modules/teachers/entities/teacher.entity';
-import { DataSource, In, Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
-import { CreateUserDto } from './dto/create-user.dto';
+import { CreateStaffDto } from './dto/create-staff.dto';
 import { RoleEnum } from 'modules/roles/roles.enum';
 import { UserMapper } from './user.mapper';
 import { User } from './user.domain';
 import { FilesService } from 'modules/files/files.service';
 import { UserDevicesEntity } from './entities/user-devices.entity';
 import { PushTokenDto } from './dto/push-token.dto';
+import { UserRepository } from './user.repository';
+import { IPaginationOptions } from 'utils/types/pagination-options';
+import { PaginationResponseDto } from 'utils/types/pagination-response.dto';
+import { FilterUserDto, SortUserDto } from './dto/query-user.dto';
+import { UpdateStaffDto } from './dto/update-staff.dto';
+import { AssignRoleDto } from './dto/assign-role.dto';
 
 @Injectable()
 export class UsersService {
   constructor(
     private readonly i18nService: I18nService<I18nTranslations>,
-    private readonly dataSource: DataSource,
     @InjectRepository(UserEntity) private userRepository: Repository<UserEntity>,
     @InjectRepository(ParentEntity) private parentRepository: Repository<ParentEntity>,
     @InjectRepository(StudentEntity) private studentRepository: Repository<StudentEntity>,
     @InjectRepository(TeacherEntity) private teacherRepository: Repository<TeacherEntity>,
     @InjectRepository(UserDevicesEntity) private userDeviceRepository: Repository<UserDevicesEntity>,
-    private readonly filesService: FilesService
+    private readonly filesService: FilesService,
+    private readonly userRepo: UserRepository,
   ) { }
+
+  async create(createStaffDto: CreateStaffDto): Promise<User> {
+    const emailExists = await this.isEmailExist(createStaffDto.email);
+    if (emailExists) {
+      throw new BadRequestException(this.i18nService.t('user.FAIL.EMAIL_EXIST'));
+    }
+    return this.userRepo.create(createStaffDto as any);
+  }
+
+  findAll({
+    filterOptions,
+    sortOptions,
+    paginationOptions,
+  }: {
+    filterOptions?: FilterUserDto | null;
+    sortOptions?: SortUserDto[] | null;
+    paginationOptions: IPaginationOptions;
+  }): Promise<PaginationResponseDto<User>> {
+    return this.userRepo.findManyWithPagination({
+      filterOptions,
+      sortOptions,
+      paginationOptions,
+    });
+  }
+
+  async findOne(id: User['id']): Promise<User> {
+    const user = await this.userRepo.findById(id);
+    if (!user) {
+      throw new NotFoundException(this.i18nService.t('user.FAIL.NOT_FOUND'));
+    }
+    return user;
+  }
+
+  async update(id: User['id'], updateStaffDto: UpdateStaffDto): Promise<User> {
+    if (updateStaffDto.email) {
+      const emailExists = await this.isEmailExist(updateStaffDto.email);
+      if (emailExists) {
+        throw new BadRequestException(this.i18nService.t('user.FAIL.EMAIL_EXIST'));
+      }
+    }
+    return this.userRepo.update(id, updateStaffDto as any);
+  }
+
+  async delete(id: User['id']): Promise<void> {
+    return this.userRepo.delete(id);
+  }
+
 
   async isEmailExist(email: string): Promise<boolean> {
     const [user, teacher, parent, student] = await Promise.all([
@@ -61,14 +114,6 @@ export class UsersService {
 
   isValidPassword(password: string, hash: string): Promise<boolean> {
     return bcrypt.compare(password, hash);
-  }
-
-  async createAdmin(createUserDto: CreateUserDto): Promise<User> {
-    await this.isEmailExist(createUserDto.email);
-    const newEntity = await this.userRepository.save(
-      this.userRepository.create({ ...createUserDto, role: { id: RoleEnum.admin } } as UserEntity)
-    );
-    return UserMapper.toDomain(newEntity);
   }
 
   async updateUserToken(user: any, refreshToken: string): Promise<void> {
@@ -145,8 +190,9 @@ export class UsersService {
     return user || parent || student || teacher || null;
   }
 
-  async assignRole(userId: string, roleId: RoleEnum): Promise<UserEntity | ParentEntity | StudentEntity | TeacherEntity> {
-    // Find the user in all possible tables
+  async assignRole(dto: AssignRoleDto): Promise<UserEntity | ParentEntity | StudentEntity | TeacherEntity> {
+    const { roleId, userId } = dto
+
     const user = await this.findUserById(userId);
 
     if (!user) {
@@ -169,13 +215,11 @@ export class UsersService {
       throw new BadRequestException('Invalid current role');
     }
 
-    // Update the role
     await repository.update(
       { id: userId },
       { role: { id: roleId } }
     );
 
-    // Fetch and return the updated user
     const updatedUser = await repository.findOne({
       where: { id: userId },
       relations: ['role']
@@ -218,4 +262,6 @@ export class UsersService {
       })
     )
   }
+
+
 }

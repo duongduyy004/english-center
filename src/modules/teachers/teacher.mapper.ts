@@ -27,7 +27,8 @@ export class TeacherMapper {
       id: raw.role?.id,
       name: RoleEnum[raw.role?.id],
       isActive: raw.role.isActive,
-      description: raw.role.description
+      description: raw.role.description,
+      isStaff: raw.role.isStaff
     };
     domainEntity.typical = raw.typical;
     if (raw.classes) {
@@ -70,7 +71,7 @@ export class TeacherMapper {
       id: domainEntity.role.id,
       name: domainEntity.role.name,
       isActive: domainEntity.role.isActive,
-      description: domainEntity.role.description
+      description: domainEntity.role.description,
     };
     persistenceEntity.typical = domainEntity.typical;
     return persistenceEntity;
