@@ -1,19 +1,19 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { AllConfigType } from 'config/config.type';
-import nodemailer from 'nodemailer'
+import nodemailer from 'nodemailer';
 import Handlebars from 'handlebars';
 import fs from 'fs/promises';
 
 @Injectable()
 export class MailerService {
-  private transporter: nodemailer.Transporter
+  private transporter: nodemailer.Transporter;
 
   constructor(private configService: ConfigService<AllConfigType>) {
     this.transporter = nodemailer.createTransport({
       auth: {
         user: this.configService.get('mailer.username', { infer: true }),
-        pass: this.configService.get('mailer.password', { infer: true })
+        pass: this.configService.get('mailer.password', { infer: true }),
       },
       host: this.configService.get('mailer.host', { infer: true }),
       port: this.configService.get('mailer.port', { infer: true }),
@@ -21,9 +21,9 @@ export class MailerService {
       secure: this.configService.get('mailer.secure', { infer: true }),
       requireTLS: this.configService.get('mailer.requireTls', { infer: true }),
       tls: {
-        rejectUnauthorized: false
-      }
-    })
+        rejectUnauthorized: false,
+      },
+    });
   }
 
   async sendMail({
@@ -47,12 +47,11 @@ export class MailerService {
       from: mailOptions.from
         ? mailOptions.from
         : `"${this.configService.get('mailer.defaultName', {
-          infer: true,
-        })}" <${this.configService.get('mailer.defaultEmail', {
-          infer: true,
-        })}>`,
+            infer: true,
+          })}" <${this.configService.get('mailer.defaultEmail', {
+            infer: true,
+          })}>`,
       html: mailOptions.html ? mailOptions.html : html,
     });
   }
-
 }
