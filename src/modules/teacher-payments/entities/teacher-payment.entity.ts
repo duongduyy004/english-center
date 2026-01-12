@@ -1,9 +1,11 @@
 import { Class } from 'modules/classes/class.domain';
 import { Histories } from 'modules/payments/entities/payment.entity';
 import {
+  BeforeInsert,
   BeforeUpdate,
   Column,
   Entity,
+  Index,
   JoinColumn,
   ManyToOne,
   OneToOne,
@@ -58,6 +60,7 @@ export class TeacherPaymentEntity {
   @JoinColumn({ name: 'teacherId' })
   teacher: TeacherEntity;
 
+  @BeforeInsert()
   @BeforeUpdate()
   processPaymentLogic() {
     // Filter valid histories and recalculate paidAmount before update

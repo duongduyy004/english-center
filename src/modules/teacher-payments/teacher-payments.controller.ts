@@ -19,12 +19,13 @@ import { CreateTeacherPaymentDto } from './dto/create-teacher-payment.dto';
 import { UpdateTeacherPaymentDto } from './dto/update-teacher-payment.dto';
 import { SessionEntity } from 'modules/sessions/entities/session.entity';
 import { ResponseMessage } from '@/decorator/customize.decorator';
+import { PayDto } from './dto/pay-dto.dto';
 
 @Controller('teacher-payments')
 export class TeacherPaymentsController {
   constructor(
     private readonly teacherPaymentsService: TeacherPaymentsService,
-  ) { }
+  ) {}
 
   @Get()
   @ResponseMessage('teacherPayment.SUCCESS.GET_ALL_TEACHER_PAYMENTS')
@@ -48,16 +49,19 @@ export class TeacherPaymentsController {
   }
 
   @Get('report')
-  exportReport(@Query() query: QueryDto<FilterTeacherPaymentDto, SortTeacherPaymentDto>) {
+  exportReport(
+    @Query() query: QueryDto<FilterTeacherPaymentDto, SortTeacherPaymentDto>,
+  ) {
     const limit = query?.limit;
     const page = query?.page;
     return this.teacherPaymentsService.getAllPayments({
       filterOptions: query.filters,
       sortOptions: query.sort || [],
       paginationOptions: {
-        limit, page
-      }
-    })
+        limit,
+        page,
+      },
+    });
   }
 
   @Patch(':id')
@@ -86,5 +90,10 @@ export class TeacherPaymentsController {
   @ResponseMessage('teacherPayment.SUCCESS.GET_TEACHER_PAYMENT_BY_ID')
   getPaymentById(@Param('id') id: string) {
     return this.teacherPaymentsService.getPaymentById(id);
+  }
+
+  @Patch(':id/pay')
+  payForTeacher(@Param('id') id: string, @Body() payDto: PayDto) {
+    return this.teacherPaymentsService.payForTeacher(id, payDto);
   }
 }

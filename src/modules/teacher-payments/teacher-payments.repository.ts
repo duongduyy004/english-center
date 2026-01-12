@@ -20,6 +20,7 @@ import { BadRequestException } from '@nestjs/common';
 import { I18nService } from 'nestjs-i18n';
 import { I18nTranslations } from '@/generated/i18n.generated';
 import { method } from 'lodash';
+import { PayDto } from './dto/pay-dto.dto';
 
 export class TeacherPaymentRepository {
   constructor(
@@ -29,7 +30,7 @@ export class TeacherPaymentRepository {
     private sessionRepository: Repository<SessionEntity>,
     private classesService: ClassesService,
     private i18nService: I18nService<I18nTranslations>,
-  ) { }
+  ) {}
 
   async autoUpdateTeacherPaymentRecord(session: SessionEntity) {
     const classInfo = await this.classesService.findById(session.classId);
@@ -127,13 +128,62 @@ export class TeacherPaymentRepository {
           grade: classInfo.grade,
           year: classInfo.year,
           section: classInfo.section,
-          feePerLesson: classInfo.feePerLesson
+          feePerLesson: classInfo.feePerLesson,
         },
         totalLessons: classSessionCount,
       });
     }
 
-    return await this.teacherPaymentRepository.save(teacherPayment);
+    try {
+      return await this.teacherPaymentRepository.save(teacherPayment);
+    } catch (error: any) {
+      // In case of concurrent creation, unique index may be hit. Refetch and update instead.
+      const message = String(error?.message || '');
+      if (
+        message.toLowerCase().includes('duplicate') ||
+        message.toLowerCase().includes('unique')
+      ) {
+        const existing = await this.teacherPaymentRepository.findOne({
+          where: {
+            teacherId: classInfo.teacher.id,
+            month,
+            year,
+          },
+        });
+        if (existing) {
+          existing.totalAmount = totalAmount;
+          existing.classes = teacherPayment.classes;
+          return await this.teacherPaymentRepository.save(existing);
+        }
+      }
+      throw error;
+    }
+  }
+
+  private async computeTeacherTotalAmountAndLessons(
+    teacherId: string,
+    month: number,
+    year: number,
+  ) {
+    const teacherClasses = await this.classesService.findClassesByTeacherId(
+      teacherId,
+    );
+    const classIds = teacherClasses.map((cls) => cls.id);
+
+    const startDate = new Date(year, month - 1, 1);
+    const endDate = new Date(year, month, 0, 23, 59, 59, 999);
+
+    let totalSessions = 0;
+    if (classIds.length > 0) {
+      totalSessions = await this.sessionRepository.count({
+        where: {
+          classId: In(classIds),
+          date: Between(startDate, endDate),
+        },
+      });
+    }
+
+    return { teacherClasses, classIds, startDate, endDate, totalSessions };
   }
   async getAllPayments({
     filterOptions,
@@ -172,21 +222,27 @@ export class TeacherPaymentRepository {
       order:
         sortOptions.length > 0
           ? sortOptions.reduce((acc, sort) => {
-            acc[sort.orderBy] = sort.order;
-            return acc;
-          }, {})
+              acc[sort.orderBy] = sort.order;
+              return acc;
+            }, {})
           : { year: 'DESC', month: 'DESC' },
     });
 
     // Calculate statistics from all records matching filters (not paginated)
     const allEntities = await this.teacherPaymentRepository.find({
-      where: { ...where, totalAmount: MoreThan(0) }
+      where: { ...where, totalAmount: MoreThan(0) },
     });
 
     const statistics = {
-      totalAmount: allEntities.reduce((sum, e) => sum + (e.totalAmount || 0), 0),
+      totalAmount: allEntities.reduce(
+        (sum, e) => sum + (e.totalAmount || 0),
+        0,
+      ),
       paidAmount: allEntities.reduce((sum, e) => sum + (e.paidAmount || 0), 0),
-      remainingAmount: allEntities.reduce((sum, e) => sum + ((e.totalAmount || 0) - (e.paidAmount || 0)), 0),
+      remainingAmount: allEntities.reduce(
+        (sum, e) => sum + ((e.totalAmount || 0) - (e.paidAmount || 0)),
+        0,
+      ),
     };
 
     const totalItems = total;
@@ -198,8 +254,10 @@ export class TeacherPaymentRepository {
         totalPages,
         totalItems,
       },
-      result: entities ? entities.map(item => TeacherPaymentMapper.toDomain(item)) : [],
-      statistics
+      result: entities
+        ? entities.map((item) => TeacherPaymentMapper.toDomain(item))
+        : [],
+      statistics,
     };
   }
 
@@ -267,7 +325,59 @@ export class TeacherPaymentRepository {
       await this.teacherPaymentRepository.findOne({
         where: { id },
         relations: ['teacher'],
-      })
+      }),
     );
+  }
+
+  async payForTeacher(id: TeacherPaymentEntity['id'], payDto: PayDto) {
+    const payment = await this.teacherPaymentRepository.findOne({
+      where: { id },
+      relations: ['teacher'],
+    });
+
+    if (!payment) {
+      throw new BadRequestException(
+        this.i18nService.t('teacherPayment.FAIL.PAYMENT_NOT_FOUND'),
+      );
+    }
+
+    if (!payment.teacher) {
+      throw new BadRequestException(
+        this.i18nService.t('teacherPayment.FAIL.CLASS_TEACHER_NOT_FOUND'),
+      );
+    }
+
+    if (!payDto || typeof payDto.amount !== 'number' || payDto.amount <= 0) {
+      throw new BadRequestException('Invalid amount');
+    }
+
+    if (payDto.amount > payment.totalAmount - payment.paidAmount) {
+      throw new BadRequestException(
+        this.i18nService.t('teacherPayment.FAIL.EXCEED_AMOUNT'),
+      );
+    }
+
+    if (
+      payment.status === 'paid' ||
+      payment.totalAmount - payment.paidAmount <= 0
+    ) {
+      throw new BadRequestException(
+        this.i18nService.t('teacherPayment.FAIL.PAYMENT_ALREADY_COMPLETED'),
+      );
+    }
+
+    const newHistory = {
+      method: payDto.method || 'bank_transfer',
+      amount: payDto.amount,
+      note: payDto.note || '',
+      date: new Date(),
+    };
+
+    payment.histories = Array.isArray(payment.histories)
+      ? [...payment.histories, newHistory]
+      : [newHistory];
+
+    const saved = await this.teacherPaymentRepository.save(payment);
+    return TeacherPaymentMapper.toDomain(saved);
   }
 }

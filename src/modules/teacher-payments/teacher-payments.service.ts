@@ -12,6 +12,7 @@ import { SessionEntity } from 'modules/sessions/entities/session.entity';
 import { PaginationResponseDto } from 'utils/types/pagination-response.dto';
 import { TeacherPayment } from './teacher-payments.domain';
 import { ClassesService } from '../classes/classes.service';
+import { PayDto } from './dto/pay-dto.dto';
 
 @Injectable()
 export class TeacherPaymentsService {
@@ -56,5 +57,9 @@ export class TeacherPaymentsService {
   }
   getPaymentById(id: TeacherPaymentEntity['id']) {
     return this.teacherPaymentsRepository.getPaymentById(id);
+  }
+
+  payForTeacher(id: TeacherPaymentEntity['id'], payDto: PayDto) {
+    return this.teacherPaymentsRepository.payForTeacher(id, payDto);
   }
 }
