@@ -66,11 +66,4 @@ export class UsersController {
     uploadAvatar(@Body() uploadavatarDto: UploadAvatarDto, @UserInfo() user: User) {
         return this.usersService.uploadAvatar(uploadavatarDto.imageUrl, uploadavatarDto.publicId, user);
     }
-
-    @Patch('role')
-    assignRole(
-        @Body() assignRoleDto: AssignRoleDto
-    ) {
-        return this.usersService.assignRole(assignRoleDto);
-    }
 }

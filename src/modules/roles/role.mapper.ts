@@ -14,8 +14,7 @@ export class RoleMapper {
                 path: item.path,
                 method: item.method,
                 module: item.module,
-                description: item.description,
-                version: item.version
+                description: item.description
             }))
         }
         return domainEntity;

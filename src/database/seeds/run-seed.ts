@@ -8,6 +8,7 @@ import { TeacherSeedService } from './teacher/teacher-seed.service';
 import { ParentSeedService } from './parent/parent-seed.service';
 import { MenuSeedService } from './menu/menu-seed.service';
 import { PermissionSeedService } from './permission/permission-seed.service';
+import { RegistrationSeedService } from './registration/registration-seed.service';
 import { AuditSubscriber } from 'subscribers/audit-log.subscriber';
 
 const runSeed = async () => {
@@ -37,6 +38,9 @@ const runSeed = async () => {
 
     console.log('Seeding permission...')
     await app.get(PermissionSeedService).run();
+
+    console.log('Seeding registrations...')
+    await app.get(RegistrationSeedService).run();
 
     console.log('Seeding completed successfully!');
     await app.close();

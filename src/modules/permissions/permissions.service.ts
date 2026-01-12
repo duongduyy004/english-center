@@ -46,12 +46,10 @@ export class PermissionsService {
     id: Permission['id'],
     updatePermissionDto: UpdatePermissionDto,
   ): Promise<Permission> {
-    await this.findOne(id);
     return this.permissionRepository.update(id, updatePermissionDto);
   }
 
   async remove(id: Permission['id']): Promise<void> {
-    await this.findOne(id);
     return this.permissionRepository.remove(id);
   }
 }

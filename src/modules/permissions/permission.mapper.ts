@@ -9,7 +9,6 @@ export class PermissionMapper {
         domainEntity.method = raw.method;
         domainEntity.description = raw.description;
         domainEntity.module = raw.module;
-        domainEntity.version = raw.version;
         domainEntity.createdAt = raw.createdAt;
         domainEntity.updatedAt = raw.updatedAt;
 

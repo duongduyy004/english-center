@@ -12,7 +12,6 @@ export class ArticlesController {
   constructor(private readonly articlesService: ArticlesService) { }
 
   @Post()
-  @Roles(RoleEnum.admin)
   create(@Body() createArticleDto: CreateArticleDto) {
     return this.articlesService.create(createArticleDto);
   }
@@ -30,13 +29,11 @@ export class ArticlesController {
   }
 
   @Patch(':id')
-  @Roles(RoleEnum.admin)
   update(@Param('id') id: string, @Body() updateArticleDto: UpdateArticleDto) {
     return this.articlesService.update(id, updateArticleDto);
   }
 
   @Delete(':id')
-  @Roles(RoleEnum.admin)
   remove(@Param('id') id: string) {
     return this.articlesService.remove(id);
   }
