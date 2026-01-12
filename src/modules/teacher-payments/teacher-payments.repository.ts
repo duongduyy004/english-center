@@ -237,7 +237,7 @@ export class TeacherPaymentRepository {
       }
 
       const newHistory = {
-        method: updatePaymentDto.histories?.[0]?.method || 'banking',
+        method: updatePaymentDto.histories?.[0]?.method || 'bank_transfer',
         amount: updatePaymentDto.paidAmount,
         note: updatePaymentDto.histories?.[0]?.note || '',
         date: new Date(),
