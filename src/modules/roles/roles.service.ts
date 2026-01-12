@@ -1,11 +1,10 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { RolesRepository } from './roles.repository';
 import { QueryDto } from '@/utils/types/query.dto';
 import { FilterRoleDto, SortRoleDto } from './dto/query-role.dto';
-import { AssignPermissionsDto } from './dto/assign-permissions.dto';
-import { RemovePermissionsDto } from './dto/remove-permissions.dto';
 import { CreateRoleDto } from './dto/create-role.dto';
 import { UpdateRoleDto } from './dto/update-role.dto';
+import { RoleEnum } from './roles.enum';
 
 @Injectable()
 export class RolesService {
@@ -40,6 +39,9 @@ export class RolesService {
     }
 
     async remove(id: number) {
+        if (Object.values(RoleEnum).includes(id)) {
+            throw new BadRequestException('Cannot delete system role');
+        }
         await this.rolesRepository.remove(id);
         return { message: 'Role deleted successfully' };
     }

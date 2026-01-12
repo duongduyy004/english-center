@@ -37,6 +37,15 @@ export class RolesRepository {
         if (filterOptions?.name) {
             where.name = ILike(`%${filterOptions.name}%`);
         }
+        if (filterOptions?.isStaff) {
+            where.isStaff = filterOptions.isStaff;
+        }
+        if (filterOptions?.isSystem) {
+            where.isSystem = filterOptions.isSystem;
+        }
+        if (filterOptions?.isActive) {
+            where.isActive = filterOptions.isActive;
+        }
 
         const [entities, total] = await this.repo.findAndCount({
             skip: (paginationOptions.page - 1) * paginationOptions.limit,
@@ -94,7 +103,9 @@ export class RolesRepository {
                 ...entity,
                 name: payload.name !== undefined ? payload.name : entity.name,
                 description: payload.description !== undefined ? payload.description : entity.description,
-                isActive: payload.isActive !== undefined ? payload.isActive : entity.isActive
+                isActive: payload.isActive !== undefined ? payload.isActive : entity.isActive,
+                isStaff: payload.isStaff !== undefined ? payload.isStaff : entity.isStaff,
+                isSystem: payload.isSystem !== undefined ? payload.isSystem : entity.isSystem,
             }),
         );
 

@@ -14,4 +14,12 @@ export class CreateRoleDto {
     @IsOptional()
     @IsBoolean()
     isActive: boolean;
+
+    @IsOptional()
+    @IsBoolean()
+    isStaff: boolean;
+
+    @IsOptional()
+    @IsBoolean()
+    isSystem: boolean;
 }
