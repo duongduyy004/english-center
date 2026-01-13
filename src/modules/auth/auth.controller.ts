@@ -40,8 +40,8 @@ export class AuthController {
     if (
       req.user &&
       req.user.role &&
-      req?.user?.role?.id == RoleEnum.parent &&
-      req?.user?.role?.id == RoleEnum.student
+      req?.user?.role?.id === RoleEnum.parent ||
+      req?.user?.role?.id === RoleEnum.student
     ) {
       throw new BadRequestException(this.i18nService.t('auth.INCORRECT'));
     }
