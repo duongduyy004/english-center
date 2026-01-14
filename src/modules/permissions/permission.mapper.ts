@@ -1,3 +1,4 @@
+import { getModuleNameVi } from "utils/module-name.constant";
 import { PermissionEntity } from "./entities/permission.entity";
 import { Permission } from "./permission.domain";
 
@@ -8,8 +9,7 @@ export class PermissionMapper {
         domainEntity.path = raw.path;
         domainEntity.method = raw.method;
         domainEntity.description = raw.description;
-        domainEntity.module = raw.module;
-        domainEntity.version = raw.version;
+        domainEntity.module = getModuleNameVi(raw.module);
         domainEntity.createdAt = raw.createdAt;
         domainEntity.updatedAt = raw.updatedAt;
 

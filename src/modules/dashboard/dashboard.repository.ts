@@ -45,10 +45,10 @@ export class DashboardRepository {
     // Payment info aggregation
     const paymentStats = await this.paymentRepository
       .createQueryBuilder('payment')
-      .select('SUM(payment.totalAmount)', 'totalRevenue')
+      .select('SUM(payment.totalAmount - (payment.totalAmount * payment.discountPercent / 100))', 'totalRevenue')
       .addSelect('SUM(payment.paidAmount)', 'totalPaidAmount')
       .addSelect(
-        'SUM(payment.totalAmount - payment.paidAmount)',
+        'SUM(payment.totalAmount - (payment.totalAmount * payment.discountPercent / 100) - payment.paidAmount)',
         'totalUnPaidAmount',
       )
       .getRawOne();
@@ -282,10 +282,10 @@ export class DashboardRepository {
     // Payment info for all children
     const paymentStats = await this.paymentRepository
       .createQueryBuilder('payment')
-      .select('SUM(payment.totalAmount)', 'totalRevenue')
+      .select('SUM(payment.totalAmount - (payment.totalAmount * payment.discountPercent / 100))', 'totalRevenue')
       .addSelect('SUM(payment.paidAmount)', 'totalPaidAmount')
       .addSelect(
-        'SUM(payment.totalAmount - payment.paidAmount)',
+        'SUM(payment.totalAmount - (payment.totalAmount * payment.discountPercent / 100) - payment.paidAmount)',
         'totalUnPaidAmount',
       )
       .where('payment.studentId IN (:...studentIds)', { studentIds })
@@ -300,7 +300,7 @@ export class DashboardRepository {
       .addSelect('SUM(payment.totalAmount)', 'totalAmount')
       .addSelect('SUM(payment.paidAmount)', 'totalPaidAmount')
       .addSelect(
-        'SUM(payment.totalAmount - payment.paidAmount)',
+        'SUM(payment.totalAmount - (payment.totalAmount * payment.discountPercent / 100) - payment.paidAmount)',
         'totalUnPaidAmount',
       )
       .innerJoin('payment.student', 'student')

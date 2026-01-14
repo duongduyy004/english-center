@@ -56,7 +56,7 @@ export class RolesGuard implements CanActivate {
   private matchPermission(method: string, path: string, permissions: PermissionEntity[]): boolean {
     return permissions.some(p => {
       if (p.method.toUpperCase() !== method) return false;
-      const originPath = `/api/v${p.version.toString()}${p.path}`
+      const originPath = p.path
       return path === originPath;
     });
   }

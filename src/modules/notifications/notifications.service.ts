@@ -14,6 +14,7 @@ import { FilterNotificationDto, SortNotificationDto } from './dto/query-notifica
 import { IPaginationOptions } from 'utils/types/pagination-options'
 import { PaginationResponseDto } from 'utils/types/pagination-response.dto'
 import { Notification } from './notification.domain'
+import { AuditSubscriber } from 'subscribers/audit-log.subscriber'
 
 @Injectable()
 export class NotificationsService {
@@ -70,9 +71,9 @@ export class NotificationsService {
                 }
             })))
         );
-
+        AuditSubscriber.skipAuditLog = true;
         await this.notificationsRepository.save(notifications);
-
+        AuditSubscriber.skipAuditLog = false;
 
         if (isOnline) {
             notifications.map(noti => {
@@ -81,7 +82,7 @@ export class NotificationsService {
             return notifications;
         }
         else {
-            return await this.sendExpoPush(dtos);
+            //return await this.sendExpoPush(dtos);
         }
     }
 

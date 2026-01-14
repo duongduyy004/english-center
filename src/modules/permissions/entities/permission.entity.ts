@@ -18,9 +18,6 @@ export class PermissionEntity {
     @Column()
     module: string;
 
-    @Column()
-    version: number
-
     @ManyToMany(() => RoleEntity, role => role.permissions)
     roles: RoleEntity[];
 

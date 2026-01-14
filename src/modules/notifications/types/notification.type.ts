@@ -21,7 +21,8 @@ export type PAYMENT_REMINDER = NotificationBase<
         amount: number,
         studentName: string,
         month: number,
-        year: number
+        year: number,
+        className: string
     },
     {
         entityId: string;
@@ -34,6 +35,9 @@ export type PAYMENT_SUCCESS = NotificationBase<
         amount: number
         paidAmount: number
         studentName: string
+        className: string
+        month: number
+        year: number
     },
     {
         entityId: string;

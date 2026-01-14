@@ -70,8 +70,10 @@ export class RegistrationRepository {
     if (filterOptions?.name) {
       where.name = ILike(`%${filterOptions.name}%`);
     }
-    if (filterOptions?.processed) {
-      where.processed = filterOptions.processed;
+    if (filterOptions?.processed === true) {
+      where.processed = true
+    } else {
+      where.processed = false;
     }
     if (filterOptions?.class) {
       where.class = filterOptions.class;

@@ -13,6 +13,7 @@ import { TeacherSeedModule } from './teacher/teacher-seed.module';
 import { ParentSeedModule } from './parent/parent-seed.module';
 import { MenuSeedModule } from './menu/menu-seed.module';
 import { PermissionSeedModule } from './permission/permission-seed.module';
+import { RegistrationSeedModule } from './registration/registration-seed.module';
 
 @Module({
     imports: [
@@ -24,6 +25,7 @@ import { PermissionSeedModule } from './permission/permission-seed.module';
         ParentSeedModule,
         MenuSeedModule,
         PermissionSeedModule,
+        RegistrationSeedModule,
         ConfigModule.forRoot({
             isGlobal: true,
             load: [databaseConfig, appConfig],

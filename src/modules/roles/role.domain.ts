@@ -10,6 +10,10 @@ export class Role {
 
     isActive: boolean;
 
+    isStaff: boolean;
+
+    isSystem: boolean;
+
     description: string;
 
     permissions?: Partial<Permission>[]

@@ -18,7 +18,9 @@ export class ParentMapper {
             id: raw.role.id,
             name: RoleEnum[raw.role.id],
             isActive: raw.role.isActive,
-            description: raw.role.description
+            description: raw.role.description,
+            isStaff: raw.role.isStaff,
+            isSystem: raw.role.isSystem
         }
         if (raw.students) {
             domainEntity.students = raw.students.map(item => ({

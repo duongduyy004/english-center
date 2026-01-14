@@ -152,11 +152,6 @@ export class AuthService {
     if (!user)
       throw new BadRequestException('Email does not exist');
 
-    if (!user.isEmailVerified)
-      throw new UnprocessableEntityException(
-        this.i18nService.t('forgot-password.EMAIL_NOT_VERIFIED'),
-      );
-
     const otp = await this.otpService.generateOtp(user.id);
 
     return this.mailService.forgotPassword({
