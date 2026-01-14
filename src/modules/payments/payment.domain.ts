@@ -1,35 +1,36 @@
-import { Student } from "modules/students/student.domain";
+import { Student } from 'modules/students/student.domain';
 
 export class Payment {
+  id: string;
+
+  referenceCode: string;
+
+  month: number;
+
+  year: number;
+
+  totalLessons: number;
+
+  paidAmount: number;
+
+  totalAmount: number;
+
+  discountAmount: number;
+
+  status: string;
+
+  student: Partial<Student>;
+
+  class: {
     id: string;
+    name: string;
+    lessons?: number;
+  };
 
-    month: number;
-
-    year: number;
-
-    totalLessons: number
-
-    paidAmount: number
-
-    totalAmount: number;
-
-    discountAmount: number;
-
-    status: string
-
-    student: Partial<Student>
-
-    class: {
-        id: string,
-        name: string,
-        lessons?: number
-    }
-
-    histories: {
-        method: string,
-        amount: number,
-        note: string,
-        date: Date
-    }[];
-
+  histories: {
+    method: string;
+    amount: number;
+    note: string;
+    date: Date;
+  }[];
 }

@@ -5,11 +5,12 @@ import { PaymentEntity } from './entities/payment.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PaymentRepository } from './payment.repository';
 import { HttpModule, HttpService } from '@nestjs/axios';
+import { PaymentGateway } from './payment.gateway';
 
 @Module({
   imports: [TypeOrmModule.forFeature([PaymentEntity]), HttpModule],
   controllers: [PaymentsController],
-  providers: [PaymentsService, PaymentRepository],
-  exports: [PaymentsService]
+  providers: [PaymentsService, PaymentRepository, PaymentGateway],
+  exports: [PaymentsService],
 })
-export class PaymentsModule { }
+export class PaymentsModule {}
