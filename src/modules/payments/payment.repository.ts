@@ -33,12 +33,11 @@ export class PaymentRepository {
   constructor(
     @InjectRepository(PaymentEntity)
     private paymentsRepository: Repository<PaymentEntity>,
-    private i18nService: I18nService<I18nTranslations>,
     private readonly httpService: HttpService,
     private readonly configService: ConfigService<AllConfigType>,
     private readonly notificationsService: NotificationsService,
     private readonly paymentGateway: PaymentGateway,
-  ) {}
+  ) { }
 
   async autoUpdatePaymentRecord(session: SessionEntity) {
     const month = dayjs(session.date).month() + 1;
@@ -130,9 +129,9 @@ export class PaymentRepository {
       order:
         sortOptions.length > 0
           ? sortOptions.reduce((acc, sort) => {
-              acc[sort.orderBy] = sort.order;
-              return acc;
-            }, {})
+            acc[sort.orderBy] = sort.order;
+            return acc;
+          }, {})
           : { year: 'DESC', month: 'DESC' },
     });
 
@@ -213,28 +212,28 @@ export class PaymentRepository {
       });
     }
 
-        // Send PAYMENT_SUCCESS notification
-        if (entity.student?.parent?.id) {
-            await this.notificationsService.send([{
-                actorId: null,
-                recipientIds: [entity.student.parent.id],
-                notificationType: NOTIFICATION_ENUM.PAYMENT_SUCCESS,
-                data: {
-                    id: NOTIFICATION_ENUM.PAYMENT_SUCCESS,
-                    title: 'Thanh toán thành công',
-                    entityName: 'payments',
-                    body: {
-                        amount: entity.totalAmount,
-                        paidAmount: entity.paidAmount,
-                        studentName: entity.student.name,
-                        className: entity.class.name,
-                        month: entity.month,
-                        year: entity.year
-                    },
-                    metadata: { entityId: entity.id }
-                }
-            }], { isOnline: false })
+    // Send PAYMENT_SUCCESS notification
+    if (entity.student?.parent?.id) {
+      await this.notificationsService.send([{
+        actorId: null,
+        recipientIds: [entity.student.parent.id],
+        notificationType: NOTIFICATION_ENUM.PAYMENT_SUCCESS,
+        data: {
+          id: NOTIFICATION_ENUM.PAYMENT_SUCCESS,
+          title: 'Thanh toán thành công',
+          entityName: 'payments',
+          body: {
+            amount: entity.totalAmount,
+            paidAmount: entity.paidAmount,
+            studentName: entity.student.name,
+            className: entity.class.name,
+            month: entity.month,
+            year: entity.year
+          },
+          metadata: { entityId: entity.id }
         }
+      }], { isOnline: false })
+    }
 
     return PaymentMapper.toDomain(entity);
   }
@@ -318,28 +317,28 @@ export class PaymentRepository {
         relations: ['student', 'student.parent'],
       });
 
-            if (paymentWithRelation?.student?.parent?.id) {
-                await this.notificationsService.send([{
-                    actorId: null,
-                    recipientIds: [paymentWithRelation.student.parent.id],
-                    notificationType: NOTIFICATION_ENUM.PAYMENT_SUCCESS,
-                    data: {
-                        id: NOTIFICATION_ENUM.PAYMENT_SUCCESS,
-                        title: 'Thanh toán thành công',
-                        entityName: 'payments',
-                        body: {
-                            amount: paymentWithRelation.totalAmount,
-                            paidAmount: paymentWithRelation.paidAmount,
-                            studentName: paymentWithRelation.student.name,
-                            className: paymentWithRelation.class.name,
-                            month: paymentWithRelation.month,
-                            year: paymentWithRelation.year
-                        },
-                        metadata: { entityId: paymentWithRelation.id }
-                    }
-                }], { isOnline: false })
-            }
-        }
-        return { success: true }
+      if (paymentWithRelation?.student?.parent?.id) {
+        await this.notificationsService.send([{
+          actorId: null,
+          recipientIds: [paymentWithRelation.student.parent.id],
+          notificationType: NOTIFICATION_ENUM.PAYMENT_SUCCESS,
+          data: {
+            id: NOTIFICATION_ENUM.PAYMENT_SUCCESS,
+            title: 'Thanh toán thành công',
+            entityName: 'payments',
+            body: {
+              amount: paymentWithRelation.totalAmount,
+              paidAmount: paymentWithRelation.paidAmount,
+              studentName: paymentWithRelation.student.name,
+              className: paymentWithRelation.class.name,
+              month: paymentWithRelation.month,
+              year: paymentWithRelation.year
+            },
+            metadata: { entityId: paymentWithRelation.id }
+          }
+        }], { isOnline: false })
+      }
     }
+    return { success: true }
+  }
 }

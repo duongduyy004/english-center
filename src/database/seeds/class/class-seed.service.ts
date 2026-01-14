@@ -39,7 +39,7 @@ export class ClassSeedService {
                         end_date: new Date(item.schedule.endDate),
                         time_slots: {
                             start_time: item.schedule.time_slots.start_time,
-                            end_time: item.schedule.time_slots.start_time
+                            end_time: item.schedule.time_slots.end_time
                         }
                     },
                     feePerLesson: item.feePerLesson,

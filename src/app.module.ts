@@ -59,6 +59,7 @@ import otpConfig from 'config/configs/otp.config';
 import { OtpModule } from 'modules/otp/otp.module';
 import { FooterSettingsModule } from './modules/footer-settings/footer-settings.module';
 import { NotificationsModule } from 'modules/notifications/notifications.module';
+import { SeedModule } from 'database/seeds/seed.module';
 
 @Module({
   imports: [

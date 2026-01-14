@@ -1,5 +1,7 @@
 import { I18nTranslations } from '@/generated/i18n.generated';
 import { createParamDecorator, ExecutionContext, SetMetadata } from '@nestjs/common';
+import { Path } from '@nestjs/config';
+
 
 export const IS_PUBLIC_KEY = 'isPublic';
 export const Public = () => SetMetadata(IS_PUBLIC_KEY, true);

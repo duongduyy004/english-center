@@ -32,7 +32,7 @@ export class StudentSeedService {
                     phone: item.phone,
                     address: item.address,
                     isEmailVerified: false,
-                    role: RoleEnum[item.role]
+                    role: { id: RoleEnum.student },
                 })
             )
         }

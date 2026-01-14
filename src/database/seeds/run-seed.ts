@@ -10,6 +10,7 @@ import { MenuSeedService } from './menu/menu-seed.service';
 import { PermissionSeedService } from './permission/permission-seed.service';
 import { RegistrationSeedService } from './registration/registration-seed.service';
 import { AuditSubscriber } from 'subscribers/audit-log.subscriber';
+import { SessionSeedService } from './session/session-seed.service';
 
 const runSeed = async () => {
     const app = await NestFactory.create(SeedModule);
@@ -39,8 +40,11 @@ const runSeed = async () => {
     console.log('Seeding permission...')
     await app.get(PermissionSeedService).run();
 
-    console.log('Seeding registrations...')
-    await app.get(RegistrationSeedService).run();
+    // console.log('Seeding registrations...')
+    // await app.get(RegistrationSeedService).run();
+
+    console.log('Seeding sessions...')
+    await app.get(SessionSeedService).run();
 
     console.log('Seeding completed successfully!');
     await app.close();

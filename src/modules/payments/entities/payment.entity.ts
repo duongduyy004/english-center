@@ -81,6 +81,9 @@ export class PaymentEntity {
         if (this.histories) {
             this.paidAmount = this.histories.reduce((sum, history) => sum + +history.amount, 0);
         }
+        if (this.totalLessons && this.class) {
+            this.totalAmount = this.totalLessons * this.class.feePerLesson;
+        }
     }
 
     @BeforeUpdate()

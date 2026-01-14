@@ -35,7 +35,7 @@ export class ParentSeedService {
                     phone: item.phone,
                     address: item.address,
                     isEmailVerified: false,
-                    role: RoleEnum[item.role],
+                    role: { id: RoleEnum.parent },
                     students
                 })
             )
