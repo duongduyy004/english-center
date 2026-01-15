@@ -26,7 +26,7 @@ export class DashboardRepository {
     private readonly teacherPaymentRepository: Repository<TeacherPaymentEntity>,
     @InjectRepository(RegistrationEntity)
     private readonly registrationRepository: Repository<RegistrationEntity>,
-  ) { }
+  ) {}
 
   async getAdminDashboard() {
     // Đếm tổng số
@@ -45,7 +45,10 @@ export class DashboardRepository {
     // Payment info aggregation
     const paymentStats = await this.paymentRepository
       .createQueryBuilder('payment')
-      .select('SUM(payment.totalAmount - (payment.totalAmount * payment.discountPercent / 100))', 'totalRevenue')
+      .select(
+        'SUM(payment.totalAmount - (payment.totalAmount * payment.discountPercent / 100))',
+        'totalRevenue',
+      )
       .addSelect('SUM(payment.paidAmount)', 'totalPaidAmount')
       .addSelect(
         'SUM(payment.totalAmount - (payment.totalAmount * payment.discountPercent / 100) - payment.paidAmount)',
@@ -282,7 +285,10 @@ export class DashboardRepository {
     // Payment info for all children
     const paymentStats = await this.paymentRepository
       .createQueryBuilder('payment')
-      .select('SUM(payment.totalAmount - (payment.totalAmount * payment.discountPercent / 100))', 'totalRevenue')
+      .select(
+        'SUM(payment.totalAmount - (payment.totalAmount * payment.discountPercent / 100))',
+        'totalRevenue',
+      )
       .addSelect('SUM(payment.paidAmount)', 'totalPaidAmount')
       .addSelect(
         'SUM(payment.totalAmount - (payment.totalAmount * payment.discountPercent / 100) - payment.paidAmount)',
@@ -297,7 +303,10 @@ export class DashboardRepository {
       .select('payment.studentId', 'studentId')
       .addSelect('student.name', 'studentName')
       .addSelect('student.email', 'studentEmail')
-      .addSelect('SUM(payment.totalAmount)', 'totalAmount')
+      .addSelect(
+        'SUM(payment.totalAmount - (payment.totalAmount * payment.discountPercent / 100))',
+        'totalAmount',
+      )
       .addSelect('SUM(payment.paidAmount)', 'totalPaidAmount')
       .addSelect(
         'SUM(payment.totalAmount - (payment.totalAmount * payment.discountPercent / 100) - payment.paidAmount)',

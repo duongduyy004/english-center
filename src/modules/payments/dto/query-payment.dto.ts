@@ -1,24 +1,26 @@
-import { Class } from "modules/classes/class.domain";
-import { Payment } from "modules/payments/payment.domain";
-import { Student } from "modules/students/student.domain";
+import { Class } from 'modules/classes/class.domain';
+import { Payment } from 'modules/payments/payment.domain';
+import { Student } from 'modules/students/student.domain';
 
 export class FilterPaymentDto {
-    studentId: Student['id'];
+  studentId: Student['id'];
 
-    classId: Class['id'];
+  studentName: Student['name'];
 
-    month: number;
+  classId: Class['id'];
 
-    year: number;
+  month: number;
 
-    status: string;
+  year: number;
 
-    startMonth: number;
+  status: string;
 
-    endMonth: number;
+  startMonth: number;
+
+  endMonth: number;
 }
 
 export class SortPaymentDto {
-    orderBy: keyof Payment;
-    order: 'ASC' | 'DESC'
+  orderBy: keyof Payment;
+  order: 'ASC' | 'DESC';
 }

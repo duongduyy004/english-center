@@ -16,6 +16,10 @@ export class FilterTeacherPaymentDto {
   teacherId?: Teacher['id'];
 
   @IsOptional()
+  @IsString()
+  teacherName?: Teacher['name'];
+
+  @IsOptional()
   @IsNumber()
   @Min(1)
   @Max(12)

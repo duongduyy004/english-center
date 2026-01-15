@@ -1,6 +1,13 @@
 import { InjectRepository } from '@nestjs/typeorm';
 import { TeacherPaymentEntity } from './entities/teacher-payment.entity';
-import { Between, FindOptionsWhere, Repository, In, MoreThan } from 'typeorm';
+import {
+  Between,
+  FindOptionsWhere,
+  Repository,
+  In,
+  MoreThan,
+  Raw,
+} from 'typeorm';
 import {
   FilterTeacherPaymentDto,
   SortTeacherPaymentDto,
@@ -203,6 +210,26 @@ export class TeacherPaymentRepository {
 
     if (filters?.teacherId) where.teacherId = filters.teacherId;
 
+    if (filters?.teacherName) {
+      {
+        const rawName = String(filters.teacherName)
+          .trim()
+          .replace(/^"+|"+$/g, '')
+          .replace(/\s+/g, ' ');
+
+        const escaped = rawName
+          .replace(/\\/g, '\\\\')
+          .replace(/%/g, '\\%')
+          .replace(/_/g, '\\_');
+
+        where.teacher = {
+          name: Raw((alias) => `${alias} ILIKE :teacherName ESCAPE '\\'`, {
+            teacherName: `%${escaped}%`,
+          }),
+        };
+      }
+    }
+
     if (filters?.status) where.status = filters.status;
 
     if (filters?.month) where.month = filters.month;
@@ -231,6 +258,7 @@ export class TeacherPaymentRepository {
     // Calculate statistics from all records matching filters (not paginated)
     const allEntities = await this.teacherPaymentRepository.find({
       where: { ...where, totalAmount: MoreThan(0) },
+      relations: ['teacher'],
     });
 
     const statistics = {

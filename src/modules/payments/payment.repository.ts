@@ -9,7 +9,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { PaymentEntity } from './entities/payment.entity';
 import { NotificationsService } from 'modules/notifications/notifications.service';
 import { NOTIFICATION_ENUM } from 'modules/notifications/types/notification-type.enum';
-import { Between, FindOptionsWhere, In, MoreThan, Repository } from 'typeorm';
+import { Between, FindOptionsWhere, MoreThan, Raw, Repository } from 'typeorm';
 import dayjs from '@/utils/dayjs.config';
 import { FilterPaymentDto, SortPaymentDto } from './dto/query-payment.dto';
 import { IPaginationOptions } from 'utils/types/pagination-options';
@@ -109,6 +109,24 @@ export class PaymentRepository {
 
     if (filterOptions?.studentId) where.studentId = filterOptions.studentId;
 
+    if (filterOptions?.studentName) {
+      const rawName = String(filterOptions.studentName)
+        .trim()
+        .replace(/^"+|"+$/g, '')
+        .replace(/\s+/g, ' ');
+
+      const escaped = rawName
+        .replace(/\\/g, '\\\\')
+        .replace(/%/g, '\\%')
+        .replace(/_/g, '\\_');
+
+      where.student = {
+        name: Raw((alias) => `${alias} ILIKE :studentName ESCAPE '\\'`, {
+          studentName: `%${escaped}%`,
+        }),
+      };
+    }
+
     if (filterOptions?.classId) where.classId = filterOptions.classId;
 
     if (filterOptions?.status) where.status = filterOptions.status;
@@ -124,7 +142,7 @@ export class PaymentRepository {
 
     const [entities, total] = await this.paymentsRepository.findAndCount({
       where: { ...where, totalAmount: MoreThan(0) },
-      relations: ['class', 'student.classes'],
+      relations: ['class', 'student'],
       skip: (paginationOptions.page - 1) * paginationOptions.limit || 0,
       take: paginationOptions.limit,
       order:
@@ -281,8 +299,6 @@ export class PaymentRepository {
     const referenceCode =
       confirmDto?.referenceCode?.trim() ||
       confirmDto?.content?.trim()?.split(/\s+/).at(-1);
-
-    console.log('referenceCode', referenceCode);
     const systemApiKey = this.configService.get('payment.apiKey', {
       infer: true,
     });
