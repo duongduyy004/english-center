@@ -290,7 +290,7 @@ export class PaymentRepository {
         section: paymentEntity.class.section,
         year: paymentEntity.class.year,
       },
-      referenceCode: paymentEntity.referenceCode,
+      referenceCode: paymentEntity.referenceCode.trim(),
     };
   }
 
@@ -329,7 +329,7 @@ export class PaymentRepository {
       await this.paymentsRepository.save(payment);
 
       if (referenceCode) {
-        this.paymentGateway.notifyPaymentSuccess(referenceCode, {
+        this.paymentGateway.notifyPaymentSuccess(referenceCode.trim(), {
           paymentId: payment.id,
           status: payment.status,
           paidAmount: payment.paidAmount,

@@ -14,8 +14,7 @@ import { Server, Socket } from 'socket.io';
   namespace: 'payments',
 })
 export class PaymentGateway
-  implements OnGatewayConnection, OnGatewayDisconnect
-{
+  implements OnGatewayConnection, OnGatewayDisconnect {
   private readonly logger = new Logger(PaymentGateway.name);
 
   @WebSocketServer()
@@ -30,7 +29,6 @@ export class PaymentGateway
         referenceCode.trim().length === 0
       )
         return;
-
       const room = referenceCode.trim();
       this.logger.log(`Client ${client.id} subscribed to ${room}`);
       client.join(room);
