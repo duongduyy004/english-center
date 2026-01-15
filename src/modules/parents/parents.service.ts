@@ -1,7 +1,15 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateParentDto } from './dto/create-parent.dto';
 import { UpdateParentDto } from './dto/update-parent.dto';
-import { FilterParentDto, ParentRepository, SortParentDto } from './parent.repository';
+import {
+  FilterParentDto,
+  ParentRepository,
+  SortParentDto,
+} from './parent.repository';
 import { I18nService } from 'nestjs-i18n';
 import { I18nTranslations } from '@/generated/i18n.generated';
 import { UsersService } from 'modules/users/users.service';
@@ -17,11 +25,18 @@ export class ParentsService {
     private parentRepository: ParentRepository,
     private usersService: UsersService,
     private i18nSerivce: I18nService<I18nTranslations>,
-    private studentService: StudentsService
-  ) { }
+    private studentService: StudentsService,
+  ) {}
 
   async create(createParentDto: CreateParentDto) {
-    const res = await this.usersService.isEmailExist(createParentDto?.email)
+    const emailExists = await this.usersService.isEmailExist(
+      createParentDto?.email,
+    );
+    if (emailExists) {
+      throw new BadRequestException(
+        this.i18nSerivce.t('parent.FAIL.EMAIL_EXIST'),
+      );
+    }
     return this.parentRepository.create(createParentDto);
   }
 
@@ -34,38 +49,79 @@ export class ParentsService {
     sortOptions?: SortParentDto[] | null;
     paginationOptions: IPaginationOptions;
   }): Promise<PaginationResponseDto<Parent>> {
-    return this.parentRepository.findManyWithPagination({ filterOptions, sortOptions, paginationOptions })
+    return this.parentRepository.findManyWithPagination({
+      filterOptions,
+      sortOptions,
+      paginationOptions,
+    });
   }
 
   async findOne(id: Parent['id']) {
-    const parent = await this.parentRepository.findById(id)
-    if (!parent) throw new BadRequestException(this.i18nSerivce.t('user.FAIL.NOT_FOUND'))
+    const parent = await this.parentRepository.findById(id);
+    if (!parent)
+      throw new NotFoundException(this.i18nSerivce.t('parent.FAIL.NOT_FOUND'));
     return parent;
   }
 
   async update(id: Parent['id'], updateParentDto: UpdateParentDto) {
+    const existing = await this.parentRepository.findById(id);
+    if (!existing)
+      throw new NotFoundException(this.i18nSerivce.t('parent.FAIL.NOT_FOUND'));
+
     if (updateParentDto && updateParentDto.email) {
-      await this.usersService.isEmailExist(updateParentDto.email)
+      const emailExists = await this.usersService.isEmailExist(
+        updateParentDto.email,
+      );
+      if (emailExists) {
+        throw new BadRequestException(
+          this.i18nSerivce.t('parent.FAIL.EMAIL_EXIST'),
+        );
+      }
     }
     return this.parentRepository.update(id, updateParentDto);
   }
 
-  delete(id: Parent['id']) {
+  async delete(id: Parent['id']) {
+    const existing = await this.parentRepository.findById(id);
+    if (!existing)
+      throw new NotFoundException(this.i18nSerivce.t('parent.FAIL.NOT_FOUND'));
     return this.parentRepository.delete(id);
   }
 
   async addChild(studentId: Student['id'], parentId: Parent['id']) {
-    const student = await this.studentService.findOne(studentId)
+    const parent = await this.parentRepository.findById(parentId);
+    if (!parent)
+      throw new NotFoundException(this.i18nSerivce.t('parent.FAIL.NOT_FOUND'));
+
+    const student = await this.studentService.findOne(studentId);
     if (student.parent) {
-      return 'This student has parents'
+      throw new BadRequestException(
+        this.i18nSerivce.t('parent.FAIL.STUDENT_ALREADY_HAS_PARENT'),
+      );
     }
 
     const result = await this.parentRepository.addChild(student, parentId);
-    if (!result) throw new BadRequestException('Child already exist')
-    return result
+    if (!result)
+      throw new BadRequestException(
+        this.i18nSerivce.t('parent.FAIL.CHILD_ALREADY_EXISTS'),
+      );
+    return result;
   }
 
   async removeChild(studentId: Student['id'], parentId: Parent['id']) {
-    return this.parentRepository.removeChild(studentId, parentId)
+    const parent = await this.parentRepository.findById(parentId);
+    if (!parent)
+      throw new NotFoundException(this.i18nSerivce.t('parent.FAIL.NOT_FOUND'));
+
+    const exists = Array.isArray(parent.students)
+      ? parent.students.some((s) => String(s.id) === String(studentId))
+      : false;
+    if (!exists) {
+      throw new BadRequestException(
+        this.i18nSerivce.t('parent.FAIL.CHILD_NOT_FOUND'),
+      );
+    }
+
+    return this.parentRepository.removeChild(studentId, parentId);
   }
 }

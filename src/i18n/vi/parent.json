@@ -1,0 +1,18 @@
+{
+  "SUCCESS": {
+    "CREATE_A_PARENT": "Tạo phụ huynh thành công",
+    "GET_A_PARENT": "Lấy thông tin phụ huynh thành công",
+    "GET_PARENT_PAGINATION": "Lấy danh sách phụ huynh với phân trang",
+    "UPDATE_A_PARENT": "Cập nhật phụ huynh thành công",
+    "DELETE_A_PARENT": "Xóa phụ huynh thành công",
+    "ADD_CHILD": "Thêm con thành công",
+    "REMOVE_CHILD": "Xóa con thành công"
+  },
+  "FAIL": {
+    "NOT_FOUND": "Không tìm thấy phụ huynh",
+    "EMAIL_EXIST": "Email đã tồn tại",
+    "STUDENT_ALREADY_HAS_PARENT": "Học sinh đã có phụ huynh",
+    "CHILD_ALREADY_EXISTS": "Học sinh đã tồn tại trong phụ huynh",
+    "CHILD_NOT_FOUND": "Không tìm thấy học sinh trong phụ huynh này"
+  }
+}

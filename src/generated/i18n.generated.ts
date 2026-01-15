@@ -68,6 +68,24 @@ export type I18nTranslations = {
         "ACTION_TITLE": string;
         "EMAIL_NOT_VERIFIED": string;
     };
+    "parent": {
+        "SUCCESS": {
+            "CREATE_A_PARENT": string;
+            "GET_A_PARENT": string;
+            "GET_PARENT_PAGINATION": string;
+            "UPDATE_A_PARENT": string;
+            "DELETE_A_PARENT": string;
+            "ADD_CHILD": string;
+            "REMOVE_CHILD": string;
+        };
+        "FAIL": {
+            "NOT_FOUND": string;
+            "EMAIL_EXIST": string;
+            "STUDENT_ALREADY_HAS_PARENT": string;
+            "CHILD_ALREADY_EXISTS": string;
+            "CHILD_NOT_FOUND": string;
+        };
+    };
     "registration": {
         "SUCCESS": {
             "CREATE_A_REGISTRATION": string;

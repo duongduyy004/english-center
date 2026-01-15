@@ -1,0 +1,18 @@
+{
+  "SUCCESS": {
+    "CREATE_A_PARENT": "Create parent successfully",
+    "GET_A_PARENT": "Get parent successfully",
+    "GET_PARENT_PAGINATION": "Get parents with pagination",
+    "UPDATE_A_PARENT": "Update parent successfully",
+    "DELETE_A_PARENT": "Delete parent successfully",
+    "ADD_CHILD": "Add child successfully",
+    "REMOVE_CHILD": "Remove child successfully"
+  },
+  "FAIL": {
+    "NOT_FOUND": "Parent not found",
+    "EMAIL_EXIST": "Email already exists",
+    "STUDENT_ALREADY_HAS_PARENT": "Student already has a parent",
+    "CHILD_ALREADY_EXISTS": "Child already exists",
+    "CHILD_NOT_FOUND": "Child not found in this parent"
+  }
+}
