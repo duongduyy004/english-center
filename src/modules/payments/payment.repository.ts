@@ -38,7 +38,7 @@ export class PaymentRepository {
     private readonly configService: ConfigService<AllConfigType>,
     private readonly notificationsService: NotificationsService,
     private readonly paymentGateway: PaymentGateway,
-  ) {}
+  ) { }
 
   async autoUpdatePaymentRecord(session: SessionEntity) {
     const month = dayjs(session.date).month() + 1;
@@ -148,9 +148,9 @@ export class PaymentRepository {
       order:
         sortOptions.length > 0
           ? sortOptions.reduce((acc, sort) => {
-              acc[sort.orderBy] = sort.order;
-              return acc;
-            }, {})
+            acc[sort.orderBy] = sort.order;
+            return acc;
+          }, {})
           : { year: 'DESC', month: 'DESC' },
     });
 
@@ -295,9 +295,10 @@ export class PaymentRepository {
   }
 
   async confirmPayment(confirmDto: ConfirmDto, apiKey: string) {
-    const referenceCode =
-      confirmDto?.referenceCode?.trim() ||
-      confirmDto?.content?.trim()?.split(/\s+/).at(-1);
+    const splitedContent = confirmDto.content.split(' ');
+
+    const referenceCode = splitedContent.at(splitedContent.length - 1);
+
     const systemApiKey = this.configService.get('payment.apiKey', {
       infer: true,
     });

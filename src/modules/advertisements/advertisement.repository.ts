@@ -112,9 +112,10 @@ export class AdvertisementRepository {
     async getHighestPriorityPopup() {
         const entity = await this.advertisementRepository.findOne({
             where: { type: 'popup' },
-            order: { 'priority': "ASC" }
+            order: { 'priority': "ASC" },
+            relations: ['class']
         })
 
-        return AdvertisementMapper.toDomain(entity)
+        return entity ? AdvertisementMapper.toDomain(entity) : null;
     }
 }
