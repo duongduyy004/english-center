@@ -12,6 +12,9 @@ class EnvironmentVariablesValidator {
 
     @IsString()
     PAYMENT_API_KEY: string;
+
+    @IsString()
+    PAYEMNT_ACC_NAME: string;
 }
 
 export default registerAs<PaymentConfig>('payment', () => {
@@ -19,6 +22,7 @@ export default registerAs<PaymentConfig>('payment', () => {
     return {
         bank: process.env.PAYMENT_BANK,
         acc: process.env.PAYMENT_ACC,
+        acc_name: process.env.PAYEMNT_ACC_NAME,
         apiKey: process.env.PAYMENT_API_KEY
     };
 });

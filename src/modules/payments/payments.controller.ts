@@ -25,6 +25,11 @@ export class PaymentsController {
     })
   }
 
+  @Get(':id')
+  getPaymentById(@Param('id') id: string) {
+    return this.paymentsService.getPaymentById(id);
+  }
+
   @Get('students/:studentId')
   getPaymentBytStudentId(@Param('studentId') studentId: string, @Query() query: QueryDto<FilterPaymentDto, SortPaymentDto>, @UserInfo() user: any) {
     const limit = query.limit || 10;

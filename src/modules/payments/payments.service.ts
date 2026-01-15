@@ -19,6 +19,10 @@ export class PaymentsService {
     return this.paymentRepository.autoUpdatePaymentRecord(session)
   }
 
+  getPaymentById(paymentId: Payment['id']) {
+    return this.paymentRepository.getPaymentById(paymentId)
+  }
+
   getAllPayments(
     { filterOptions, sortOptions, paginationOptions }
       : { filterOptions: FilterPaymentDto, sortOptions: SortPaymentDto[], paginationOptions: IPaginationOptions })

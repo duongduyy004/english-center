@@ -2,6 +2,7 @@ import {
   BadRequestException,
   Inject,
   Injectable,
+  InternalServerErrorException,
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
@@ -24,7 +25,7 @@ import { GetQRDto } from './dto/get-QR.dto';
 import { HttpService } from '@nestjs/axios';
 import { ConfigService } from '@nestjs/config';
 import { AllConfigType } from 'config/config.type';
-import { catchError, firstValueFrom, Observable } from 'rxjs';
+import { catchError, firstValueFrom, map, Observable } from 'rxjs';
 import { ConfirmDto } from './dto/confirm.dto';
 import { PAYMENT_METHOD } from 'utils/payments/constant';
 import { PaymentGateway } from './payment.gateway';
@@ -94,6 +95,15 @@ export class PaymentRepository {
       }
       return await this.paymentsRepository.save(paymentEntities);
     }
+  }
+
+  async getPaymentById(paymentId: Payment['id']): Promise<Payment | null> {
+    const entity = await this.paymentsRepository.findOne({
+      where: { id: paymentId },
+      relations: { student: true, class: true },
+    });
+    if (!entity) return null;
+    return PaymentMapper.toDomain(entity);
   }
 
   async getAllPayments({
@@ -267,6 +277,7 @@ export class PaymentRepository {
   async getQR(getQrDto: GetQRDto): Promise<any> {
     const bank = this.configService.get('payment.bank', { infer: true });
     const acc = this.configService.get('payment.acc', { infer: true });
+    const acc_name = this.configService.get('payment.acc_name', { infer: true });
     const paymentEntity = await this.paymentsRepository.findOne({
       where: { id: getQrDto.paymentId },
       relations: { student: true, class: true },
@@ -279,8 +290,14 @@ export class PaymentRepository {
     }
 
     const qrUrl = `https://qr.sepay.vn/img?acc=${acc}&bank=${bank}&amount=${getQrDto.amount}&des=${content}&template=TEMPLATE&download=${getQrDto.download}`;
+    const bankInforUrl = `https://api.vietqr.io/v2/banks`;
 
-    await firstValueFrom(this.httpService.get(qrUrl));
+    const bank_list = await firstValueFrom(this.httpService.get(bankInforUrl).pipe(map((res) => res.data)));
+
+    if (!bank_list) throw new InternalServerErrorException('Lỗi khi lấy thông tin ngân hàng');
+
+    const bank_infor = bank_list.data.find((item: any) => item.bin === bank);
+
     return {
       qrUrl,
       studentName: paymentEntity.student.name,
@@ -290,6 +307,7 @@ export class PaymentRepository {
         section: paymentEntity.class.section,
         year: paymentEntity.class.year,
       },
+      bankInfor: { ...bank_infor, acc_name, acc_number: acc, content, amount: getQrDto.amount },
       referenceCode: paymentEntity.referenceCode.trim(),
     };
   }
