@@ -18,9 +18,9 @@
     "TEACHER_ALREADY_ASSIGNED": "Giáo viên này đã được phân công vào lớp này",
     "TEACHER_NOT_ASSIGNED": "Giáo viên này chưa được phân công vào lớp này",
     "TEACHER_INACTIVE_CANNOT_ASSIGN": "Không thể phân công giáo viên không hoạt động vào lớp",
-    "TEACHER_SCHEDULE_CONFLICT": "Giáo viên {{teacherName}} có lớp {{conflictClassName}} bị trùng lịch với lớp {{className}}",
+    "TEACHER_SCHEDULE_CONFLICT": "Giáo viên {teacherName} có lớp {conflictClassName} bị trùng lịch với lớp {className}",
     "STUDENT_ALREADY_IN_CLASS": "Học sinh đã được thêm vào lớp này",
-    "SCHEDULE_CONFLICT": "Học sinh {{studentName}} có lớp {{conflictClassName}} bị trùng lịch với lớp {{className}}",
+    "SCHEDULE_CONFLICT": "Học sinh {studentName} có lớp {conflictClassName} bị trùng lịch với lớp {className}",
     "CAN_NOT_GET_CLASS_BANNER_INFO": "Không thể lấy thông tin banner lớp học",
     "CAN_NOT_GET_PUBLIC_CLASSES": "Không thể lấy danh sách lớp học công khai"
   }
