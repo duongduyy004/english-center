@@ -13,6 +13,7 @@ import { RemovePermissionsDto } from './dto/remove-permissions.dto';
 import { CreateRoleDto } from './dto/create-role.dto';
 import { UpdateRoleDto } from './dto/update-role.dto';
 import { NullableType } from '@/utils/types/nullable.type';
+import { PermissionCacheService } from './permission-cache.service';
 
 @Injectable()
 export class RolesRepository {
@@ -21,6 +22,7 @@ export class RolesRepository {
         private readonly repo: Repository<RoleEntity>,
         @InjectRepository(PermissionEntity)
         private readonly permRepo: Repository<PermissionEntity>,
+        private readonly permissionCacheService: PermissionCacheService,
     ) { }
 
     async findManyWithPagination({
@@ -120,6 +122,9 @@ export class RolesRepository {
             await this.repo.save(updatedEntity);
         }
 
+        // Invalidate cache for this role
+        await this.permissionCacheService.invalidateRole(id);
+
         // Return updated entity with permissions
         const finalEntity = await this.repo.findOne({
             where: { id },
@@ -137,6 +142,9 @@ export class RolesRepository {
         if (!entity) {
             throw new NotFoundException('Role not found');
         }
+
+        // Invalidate cache for this role
+        await this.permissionCacheService.invalidateRole(id);
 
         await this.repo.delete(id);
     }

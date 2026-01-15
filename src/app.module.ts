@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AppController } from '@/app.controller';
 import { AppService } from '@/app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -52,14 +52,13 @@ import { DataSource } from 'typeorm';
 import { ScheduleModule } from '@nestjs/schedule';
 import { CronModule } from 'modules/cron/cron.module';
 import { HttpModule } from '@nestjs/axios';
-import { CacheConfigService } from 'cache/cache-config.service';
 import paymentConfig from 'config/configs/payment.config';
 import mailerConfig from 'config/configs/mailer.config';
 import otpConfig from 'config/configs/otp.config';
 import { OtpModule } from 'modules/otp/otp.module';
 import { FooterSettingsModule } from './modules/footer-settings/footer-settings.module';
 import { NotificationsModule } from 'modules/notifications/notifications.module';
-import { SeedModule } from 'database/seeds/seed.module';
+import { CacheConfigService } from 'cache/cache-config.service';
 
 @Module({
   imports: [
@@ -117,10 +116,10 @@ import { SeedModule } from 'database/seeds/seed.module';
         maxRedirects: 5
       })
     }),
-    // CacheModule.registerAsync({
-    //   isGlobal: true,
-    //   useClass: CacheConfigService
-    // }),
+    CacheModule.registerAsync({
+      isGlobal: true,
+      useClass: CacheConfigService
+    }),
     UsersModule,
     StudentsModule,
     ParentsModule,

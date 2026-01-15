@@ -3,14 +3,13 @@ import { Injectable, CanActivate, ExecutionContext, ForbiddenException } from '@
 import { Reflector } from '@nestjs/core';
 import { RoleEnum } from './roles.enum';
 import { PermissionEntity } from 'modules/permissions/entities/permission.entity';
-import { DataSource } from 'typeorm';
-import { RoleEntity } from './entities/role.entity';
+import { PermissionCacheService } from './permission-cache.service';
 
 @Injectable()
 export class RolesGuard implements CanActivate {
   constructor(
     private reflector: Reflector,
-    private dataSource: DataSource,
+    private permissionCacheService: PermissionCacheService,
   ) { }
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
@@ -25,27 +24,22 @@ export class RolesGuard implements CanActivate {
     const user = request.user;
     if (!user) throw new ForbiddenException('Unauthenticated');
     // Admin bypass
-    if (user.role?.id === RoleEnum.admin) {
-      return true;
-    }
+    // if (user.role?.id === RoleEnum.admin) {
+    //   return true;
+    // }
 
     // Permission check
     const method = request.method.toUpperCase();
     const path = request.route.path
 
-    let role: RoleEntity & { permissions?: PermissionEntity[] } = user.role;
-    if (!role?.permissions) {
-      role = await this.dataSource.getRepository(RoleEntity).findOne({
-        where: { id: user.role.id },
-        relations: ['permissions'],
-      }) as any;
-    }
+    // Get permissions from cache (or query DB if not cached)
+    const permissions = await this.permissionCacheService.getPermissions(user.role.id);
 
-    if (!role?.permissions?.length) {
+    if (!permissions?.length) {
       throw new ForbiddenException('No permissions assigned');
     }
 
-    const allowed = this.matchPermission(method, path, role.permissions);
+    const allowed = this.matchPermission(method, path, permissions);
     if (!allowed) {
       throw new ForbiddenException(`Permission denied: ${method} ${path}`);
     }
