@@ -280,19 +280,18 @@ export class PaymentRepository {
 
     const qrUrl = `https://qr.sepay.vn/img?acc=${acc}&bank=${bank}&amount=${getQrDto.amount}&des=${content}&template=TEMPLATE&download=${getQrDto.download}`;
 
-    const { data } = await firstValueFrom(this.httpService.get(qrUrl));
-    return (
-      data && {
-        qrUrl,
-        studentName: paymentEntity.student.name,
-        class: {
-          name: paymentEntity.class.name,
-          grade: paymentEntity.class.grade,
-          section: paymentEntity.class.section,
-          year: paymentEntity.class.year,
-        },
-      }
-    );
+    await firstValueFrom(this.httpService.get(qrUrl));
+    return {
+      qrUrl,
+      studentName: paymentEntity.student.name,
+      class: {
+        name: paymentEntity.class.name,
+        grade: paymentEntity.class.grade,
+        section: paymentEntity.class.section,
+        year: paymentEntity.class.year,
+      },
+      referenceCode: paymentEntity.referenceCode,
+    };
   }
 
   async confirmPayment(confirmDto: ConfirmDto, apiKey: string) {
