@@ -72,7 +72,7 @@ export class RegistrationRepository {
     }
     if (filterOptions?.processed === true) {
       where.processed = true
-    } else {
+    } else if (filterOptions?.processed === false) {
       where.processed = false;
     }
     if (filterOptions?.class) {
