@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FindOptionsWhere, Repository, ILike, In, Between } from 'typeorm';
 import { ClassEntity } from './entities/class.entity';
@@ -23,7 +23,6 @@ import { AuditLogService } from 'modules/audit-log/audit-log.service';
 import { ClsService } from 'nestjs-cls';
 import { StudentsService } from 'modules/students/students.service';
 import { AuditLogAction } from 'subscribers/audit-log.constants';
-import { filter } from 'lodash';
 import { CreateClassDto } from './dto/create-class.dto';
 import { UpdateClassDto } from './dto/update-class.dto';
 
@@ -38,11 +37,9 @@ export class ClassRepository {
     private auditLogService: AuditLogService,
     private clsService: ClsService,
     private studentsService: StudentsService,
-  ) { }
+  ) {}
 
-  async create(
-    data: CreateClassDto,
-  ): Promise<Class> {
+  async create(data: CreateClassDto): Promise<Class> {
     const persistenceModel = ClassMapper.toPersistence(data as Class);
     const newEntity = await this.classRepository.save(
       this.classRepository.create(persistenceModel),
@@ -73,10 +70,7 @@ export class ClassRepository {
     return entity;
   }
 
-  async update(
-    id: Class['id'],
-    data: UpdateClassDto,
-  ): Promise<Class> {
+  async update(id: Class['id'], data: UpdateClassDto): Promise<Class> {
     const entity = await this.classRepository.findOne({
       where: { id },
     });
@@ -157,9 +151,8 @@ export class ClassRepository {
       relations: ['teacher'],
     });
 
-    //check if teacher was assgined to this class
-    if (entity && entity.teacher && entity.teacher.id === teacher.id) {
-      return null;
+    if (!entity) {
+      throw new BadRequestException(this.i18nService.t('class.FAIL.NOT_FOUND'));
     }
 
     entity.teacher = TeacherMapper.toPersistence(teacher);
@@ -201,6 +194,25 @@ export class ClassRepository {
       where: { id },
       relations: ['students'],
     });
+
+    if (!classInfo) {
+      throw new BadRequestException(this.i18nService.t('class.FAIL.NOT_FOUND'));
+    }
+
+    // Prevent duplicate student entries
+    for (const student of students) {
+      const exists = Array.isArray(classInfo.students)
+        ? classInfo.students.some(
+            (s) => String(s.studentId) === String(student.studentId),
+          )
+        : false;
+      if (exists) {
+        throw new BadRequestException(
+          this.i18nService.t('class.FAIL.STUDENT_ALREADY_IN_CLASS'),
+        );
+      }
+    }
+
     classInfo.students = [...classInfo.students, ...studentsArray];
     await this.classRepository.save(classInfo, { listeners: false });
     this.auditAddStudents(students, id);
@@ -343,7 +355,10 @@ export class ClassRepository {
       },
     });
 
-    await this.classStudentRepository.save({ ...entity, isActive }, { listeners: false });
+    await this.classStudentRepository.save(
+      { ...entity, isActive },
+      { listeners: false },
+    );
   }
 
   async getPublicClasses({

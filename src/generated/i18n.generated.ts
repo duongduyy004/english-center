@@ -28,6 +28,8 @@ export type I18nTranslations = {
             "NOT_FOUND": string;
             "TEACHER_ALREADY_ASSIGNED": string;
             "TEACHER_NOT_ASSIGNED": string;
+            "TEACHER_INACTIVE_CANNOT_ASSIGN": string;
+            "TEACHER_SCHEDULE_CONFLICT": string;
             "STUDENT_ALREADY_IN_CLASS": string;
             "SCHEDULE_CONFLICT": string;
             "CAN_NOT_GET_CLASS_BANNER_INFO": string;

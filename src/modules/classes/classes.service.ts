@@ -10,8 +10,6 @@ import { Teacher } from 'modules/teachers/teacher.domain';
 import { TeachersService } from 'modules/teachers/teachers.service';
 import { StudentsService } from 'modules/students/students.service';
 import { AddStudentsDto } from './dto/add-students.dto';
-import dayjs from '@/utils/dayjs.config';
-import customParseFormat from 'dayjs/plugin/customParseFormat';
 import { Student } from 'modules/students/student.domain';
 import {
   FilterStudentDto,
@@ -19,6 +17,7 @@ import {
 } from 'modules/students/dto/query-student.dto';
 import { I18nService } from 'nestjs-i18n';
 import { I18nTranslations } from '@/generated/i18n.generated';
+import { hasScheduleConflict } from './utils/schedule-conflict';
 
 @Injectable()
 export class ClassesService {
@@ -27,7 +26,7 @@ export class ClassesService {
     private teachersService: TeachersService,
     private studentsService: StudentsService,
     private i18nService: I18nService<I18nTranslations>,
-  ) { }
+  ) {}
   create(createClassDto: CreateClassDto) {
     return this.classRepository.create(createClassDto);
   }
@@ -67,13 +66,41 @@ export class ClassesService {
   }
 
   async assignTeacherToClass(id: Class['id'], teacherId: Teacher['id']) {
-    const teacher = await this.teachersService.findOne(teacherId);
-    const result = await this.classRepository.assignTeacherToClass(id, teacher);
-    if (!result) {
+    const aclass = await this.classRepository.findById(id);
+    if (aclass && aclass.teacher && aclass.teacher.id === teacherId) {
       throw new BadRequestException(
         this.i18nService.t('class.FAIL.TEACHER_ALREADY_ASSIGNED'),
       );
     }
+    const teacher = await this.teachersService.findOne(teacherId);
+    if (!teacher) {
+      throw new BadRequestException(this.i18nService.t('user.FAIL.NOT_FOUND'));
+    }
+    if (!teacher.isActive) {
+      throw new BadRequestException(
+        this.i18nService.t('class.FAIL.TEACHER_INACTIVE_CANNOT_ASSIGN'),
+      );
+    }
+
+    const teacherClasses = await this.classRepository.findClassesByTeacherId(
+      teacherId,
+    );
+    for (const eachClass of teacherClasses) {
+      if (eachClass.id === id) continue;
+      if (hasScheduleConflict(eachClass.schedule, aclass.schedule)) {
+        throw new BadRequestException(
+          this.i18nService.t('class.FAIL.TEACHER_SCHEDULE_CONFLICT', {
+            args: {
+              teacherName: teacher.name,
+              conflictClassName: eachClass.name,
+              className: aclass.name,
+            },
+          }),
+        );
+      }
+    }
+
+    const result = await this.classRepository.assignTeacherToClass(id, teacher);
     return result;
   }
 
@@ -130,28 +157,17 @@ export class ClassesService {
             this.i18nService.t('class.FAIL.STUDENT_ALREADY_IN_CLASS'),
           );
 
-        //check date overlap. If no conflict, break
-        if (!this.isDateOverlap(eachClass.class.schedule, aclass.schedule))
-          break;
-
-        //check day of week overlap. If no conflict, break
-        if (!this.isDayOverlap(eachClass.class.schedule, aclass.schedule))
-          break;
-
-        //check time slots overlap. If no conflict, break
-        if (!this.isTimeSlotOverlap(eachClass.class.schedule, aclass.schedule))
-          break;
-
-        //if conflict found, return error
-        throw new BadRequestException(
-          this.i18nService.t('class.FAIL.SCHEDULE_CONFLICT', {
-            args: {
-              studentName: student.name,
-              conflictClassName: eachClass.class.name,
-              className: aclass.name,
-            },
-          }),
-        );
+        if (hasScheduleConflict(eachClass.class.schedule, aclass.schedule)) {
+          throw new BadRequestException(
+            this.i18nService.t('class.FAIL.SCHEDULE_CONFLICT', {
+              args: {
+                studentName: student.name,
+                conflictClassName: eachClass.class.name,
+                className: aclass.name,
+              },
+            }),
+          );
+        }
       }
     }
     return await this.classRepository.addStudentsToClass(id, students);
@@ -177,34 +193,6 @@ export class ClassesService {
       }
       await this.classRepository.update(aclass.id, { status: newStatus });
     }
-  }
-
-  private isDateOverlap(schedule1: Schedule, schedule2: Schedule) {
-    return (
-      schedule1.start_date <= schedule2.end_date &&
-      schedule2.start_date <= schedule1.end_date
-    );
-  }
-
-  private isDayOverlap(schedule1: Schedule, schedule2: Schedule) {
-    for (const dayOfSchedule1 of schedule1.days_of_week) {
-      const overlap = schedule2.days_of_week.find(
-        (item) => dayOfSchedule1 === item,
-      );
-      if (overlap) return true;
-    }
-    return false;
-  }
-
-  private isTimeSlotOverlap(schedule1: Schedule, schedule2: Schedule) {
-    dayjs.extend(customParseFormat);
-    const startTime1 = dayjs(schedule1.time_slots.start_time, 'HH:mm');
-    const endTime1 = dayjs(schedule1.time_slots.end_time, 'HH:mm');
-
-    const startTime2 = dayjs(schedule2.time_slots.start_time, 'HH:mm');
-    const endTime2 = dayjs(schedule2.time_slots.end_time, 'HH:mm');
-
-    return startTime1 <= endTime2 && startTime2 <= endTime1;
   }
 
   async findClassesByTeacherId(teacherId: Teacher['id']) {
@@ -238,7 +226,6 @@ export class ClassesService {
       paginationOptions,
     });
   }
-
 
   async getInfoForBanner(id: Class['id']) {
     return this.classRepository.getInfoForBanner(id);
