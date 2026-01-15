@@ -2,6 +2,7 @@ import {
   BadRequestException,
   Inject,
   Injectable,
+  NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -177,10 +178,12 @@ export class PaymentRepository {
   }
 
   handleProcessPayment(entity: PaymentEntity, payStudentDto: PayStudentDto) {
-    if (entity.totalLessons === 0) throw new BadRequestException('No lessons');
+    if (!entity) throw new NotFoundException('Payment not found');
+    if (!entity.totalLessons || entity.totalLessons <= 0)
+      throw new BadRequestException('No lessons');
     if (entity.status === 'paid') throw new BadRequestException('Fully paid');
     if (entity.paidAmount + +payStudentDto.amount > entity.totalAmount)
-      throw new BadRequestException('Exceeds remaning balance');
+      throw new BadRequestException('Exceeds remaining balance');
     if (Array.isArray(entity.histories)) {
       entity.histories.push({
         amount: payStudentDto.amount,
@@ -194,7 +197,7 @@ export class PaymentRepository {
   async payStudent(paymentId: Payment['id'], payStudentDto: PayStudentDto) {
     const entity = await this.paymentsRepository.findOne({
       where: { id: paymentId },
-      relations: ['student', 'student.parent'],
+      relations: ['student', 'student.parent', 'class'],
     });
     this.handleProcessPayment(entity, payStudentDto);
     await this.paymentsRepository.save(entity);
@@ -213,28 +216,33 @@ export class PaymentRepository {
       });
     }
 
-        // Send PAYMENT_SUCCESS notification
-        if (entity.student?.parent?.id) {
-            await this.notificationsService.send([{
-                actorId: null,
-                recipientIds: [entity.student.parent.id],
-                notificationType: NOTIFICATION_ENUM.PAYMENT_SUCCESS,
-                data: {
-                    id: NOTIFICATION_ENUM.PAYMENT_SUCCESS,
-                    title: 'Thanh toán thành công',
-                    entityName: 'payments',
-                    body: {
-                        amount: entity.totalAmount,
-                        paidAmount: entity.paidAmount,
-                        studentName: entity.student.name,
-                        className: entity.class.name,
-                        month: entity.month,
-                        year: entity.year
-                    },
-                    metadata: { entityId: entity.id }
-                }
-            }], { isOnline: false })
-        }
+    // Send PAYMENT_SUCCESS notification
+    if (entity.student?.parent?.id) {
+      await this.notificationsService.send(
+        [
+          {
+            actorId: null,
+            recipientIds: [entity.student.parent.id],
+            notificationType: NOTIFICATION_ENUM.PAYMENT_SUCCESS,
+            data: {
+              id: NOTIFICATION_ENUM.PAYMENT_SUCCESS,
+              title: 'Thanh toán thành công',
+              entityName: 'payments',
+              body: {
+                amount: entity.totalAmount,
+                paidAmount: entity.paidAmount,
+                studentName: entity.student.name,
+                className: entity.class.name,
+                month: entity.month,
+                year: entity.year,
+              },
+              metadata: { entityId: entity.id },
+            },
+          },
+        ],
+        { isOnline: false },
+      );
+    }
 
     return PaymentMapper.toDomain(entity);
   }
@@ -271,10 +279,11 @@ export class PaymentRepository {
   }
 
   async confirmPayment(confirmDto: ConfirmDto, apiKey: string) {
-    const splitedContent = confirmDto.content.split(' ');
+    const referenceCode =
+      confirmDto?.referenceCode?.trim() ||
+      confirmDto?.content?.trim()?.split(/\s+/).at(-1);
 
-    const referenceCode = splitedContent.at(splitedContent.length - 1);
-
+    console.log('referenceCode', referenceCode);
     const systemApiKey = this.configService.get('payment.apiKey', {
       infer: true,
     });
@@ -282,9 +291,14 @@ export class PaymentRepository {
     if (apiKey !== `Apikey ${systemApiKey}`)
       throw new UnauthorizedException('Please authenticate');
 
+    if (!referenceCode)
+      throw new BadRequestException('Missing payment referenceCode');
+
     const payment = await this.paymentsRepository.findOne({
       where: { referenceCode },
     });
+
+    if (!payment) throw new NotFoundException('Payment not found');
 
     if (
       confirmDto &&
@@ -315,31 +329,36 @@ export class PaymentRepository {
       // Send PAYMENT_SUCCESS notification
       const paymentWithRelation = await this.paymentsRepository.findOne({
         where: { id: payment.id },
-        relations: ['student', 'student.parent'],
+        relations: ['student', 'student.parent', 'class'],
       });
 
-            if (paymentWithRelation?.student?.parent?.id) {
-                await this.notificationsService.send([{
-                    actorId: null,
-                    recipientIds: [paymentWithRelation.student.parent.id],
-                    notificationType: NOTIFICATION_ENUM.PAYMENT_SUCCESS,
-                    data: {
-                        id: NOTIFICATION_ENUM.PAYMENT_SUCCESS,
-                        title: 'Thanh toán thành công',
-                        entityName: 'payments',
-                        body: {
-                            amount: paymentWithRelation.totalAmount,
-                            paidAmount: paymentWithRelation.paidAmount,
-                            studentName: paymentWithRelation.student.name,
-                            className: paymentWithRelation.class.name,
-                            month: paymentWithRelation.month,
-                            year: paymentWithRelation.year
-                        },
-                        metadata: { entityId: paymentWithRelation.id }
-                    }
-                }], { isOnline: false })
-            }
-        }
-        return { success: true }
+      if (paymentWithRelation?.student?.parent?.id) {
+        await this.notificationsService.send(
+          [
+            {
+              actorId: null,
+              recipientIds: [paymentWithRelation.student.parent.id],
+              notificationType: NOTIFICATION_ENUM.PAYMENT_SUCCESS,
+              data: {
+                id: NOTIFICATION_ENUM.PAYMENT_SUCCESS,
+                title: 'Thanh toán thành công',
+                entityName: 'payments',
+                body: {
+                  amount: paymentWithRelation.totalAmount,
+                  paidAmount: paymentWithRelation.paidAmount,
+                  studentName: paymentWithRelation.student.name,
+                  className: paymentWithRelation.class.name,
+                  month: paymentWithRelation.month,
+                  year: paymentWithRelation.year,
+                },
+                metadata: { entityId: paymentWithRelation.id },
+              },
+            },
+          ],
+          { isOnline: false },
+        );
+      }
     }
+    return { success: true };
+  }
 }
