@@ -256,8 +256,7 @@ export class PaymentRepository {
               title: 'Thanh toán thành công',
               entityName: 'payments',
               body: {
-                amount: entity.totalAmount,
-                paidAmount: entity.paidAmount,
+                transferAmount: payStudentDto.amount,
                 studentName: entity.student.name,
                 className: entity.class.name,
                 month: entity.month,
@@ -377,8 +376,7 @@ export class PaymentRepository {
                 title: 'Thanh toán thành công',
                 entityName: 'payments',
                 body: {
-                  amount: paymentWithRelation.totalAmount,
-                  paidAmount: paymentWithRelation.paidAmount,
+                  transferAmount: confirmDto.transferAmount,
                   studentName: paymentWithRelation.student.name,
                   className: paymentWithRelation.class.name,
                   month: paymentWithRelation.month,

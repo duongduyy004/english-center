@@ -18,7 +18,7 @@ interface NotificationBase<T, Body, Metadata> {
 export type PAYMENT_REMINDER = NotificationBase<
     NOTIFICATION_ENUM.PAYMENT_REMINDER,
     {
-        amount: number,
+        remainingAmount: number,
         studentName: string,
         month: number,
         year: number,
@@ -32,8 +32,7 @@ export type PAYMENT_REMINDER = NotificationBase<
 export type PAYMENT_SUCCESS = NotificationBase<
     NOTIFICATION_ENUM.PAYMENT_SUCCESS,
     {
-        amount: number
-        paidAmount: number
+        transferAmount: number
         studentName: string
         className: string
         month: number

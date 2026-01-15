@@ -116,7 +116,7 @@ export class CronService {
           title: 'Nhắc nhở thanh toán học phí',
           entityName: 'payments',
           body: {
-            amount: payment.totalAmount - payment.paidAmount,
+            remainingAmount: payment.totalAmount - payment.paidAmount - payment.discountPercent * payment.totalAmount / 100,
             studentName: payment.student.name,
             className: payment.class.name,
             month: payment.month,

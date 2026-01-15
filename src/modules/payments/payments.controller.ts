@@ -24,11 +24,11 @@ export class PaymentsController {
       }
     })
   }
-
-  @Get(':id')
-  getPaymentById(@Param('id') id: string) {
-    return this.paymentsService.getPaymentById(id);
+  @Get('qrcode')
+  getQRCode(@Query() getQrDto: GetQRDto) {
+    return this.paymentsService.getQR(getQrDto);
   }
+
 
   @Get('students/:studentId')
   getPaymentBytStudentId(@Param('studentId') studentId: string, @Query() query: QueryDto<FilterPaymentDto, SortPaymentDto>, @UserInfo() user: any) {
@@ -64,11 +64,6 @@ export class PaymentsController {
     return this.paymentsService.payStudent(paymentId, payStudentDto)
   }
 
-  @Get('qrcode')
-  getQRCode(@Query() getQrDto: GetQRDto) {
-    return this.paymentsService.getQR(getQrDto);
-  }
-
   @Public()
   @Post('confirm-payment')
   confirmPayment(
@@ -76,5 +71,10 @@ export class PaymentsController {
     @Headers('Authorization') apiKey: string
   ) {
     return this.paymentsService.confirmPayment(confirmDto, apiKey)
+  }
+
+  @Get(':id')
+  getPaymentById(@Param('id') id: string) {
+    return this.paymentsService.getPaymentById(id);
   }
 }
