@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Req, Res, UseGuards, BadRequestException, Patch, Query, Body } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { Request, Response } from 'express';
-import { Public, UserInfo } from '@/decorator/customize.decorator';
+import { Auth, Public, UserInfo } from '@/decorator/customize.decorator';
 import { LocalAuthGuard } from './guard/local-auth.guard';
 import { I18nService } from 'nestjs-i18n';
 import { I18nTranslations } from '@/generated/i18n.generated';
@@ -56,12 +56,14 @@ export class AuthController {
     return this.authService.processNewToken(refresh_token, response)
   }
 
+  @Auth()
   @Post('send-verify-email')
   sendVerifyEmail(@UserInfo() user: User) {
     return this.authService.sendVerifyEmail(user);
   }
 
   @Patch('verify-email')
+  @Auth()
   verifyEmail(
     @Query('code') code: string,
     @UserInfo() user: User
@@ -85,6 +87,7 @@ export class AuthController {
   }
 
   @Patch('change-password')
+  @Auth()
   changePassword(
     @Body() changePasswordDto: ChangePasswordDto,
     @UserInfo() user: User

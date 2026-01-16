@@ -18,3 +18,6 @@ export const UserInfo = createParamDecorator(
 
 export const ROLES_KEY = 'roles'
 export const Roles = (...roles: number[]) => SetMetadata(ROLES_KEY, roles);
+
+export const IS_AUTH_KEY = 'isAuth';
+export const Auth = () => SetMetadata(IS_AUTH_KEY, true);

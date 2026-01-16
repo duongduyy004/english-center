@@ -25,11 +25,6 @@ export const permission_data = {
             "method": "DELETE",
             "description": "Xóa nhân viên"
         },
-        {
-            "path": "/api/v1/user/avatar",
-            "method": "PATCH",
-            "description": "Cập nhật avatar"
-        }
     ],
     "students": [
         {

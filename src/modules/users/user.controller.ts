@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from "@nestjs/common";
 import { UsersService } from "./users.service";
 import { CreateStaffDto } from "./dto/create-staff.dto";
-import { UserInfo } from "@/decorator/customize.decorator";
+import { Auth, UserInfo } from "@/decorator/customize.decorator";
 import { User } from "./user.domain";
 import { UploadAvatarDto } from "./dto/upload-avatar.dto";
 import { AssignRoleDto } from "./dto/assign-role.dto";
@@ -36,11 +36,13 @@ export class UsersController {
         });
     }
 
+    @Auth()
     @Post('push-token')
     pushToken(@UserInfo() user: User, @Body() dto: PushTokenDto) {
         return this.usersService.pushExpoToken(user.id, dto)
     }
 
+    @Auth()
     @Patch('avatar')
     uploadAvatar(@Body() uploadavatarDto: UploadAvatarDto, @UserInfo() user: User) {
         return this.usersService.uploadAvatar(uploadavatarDto.imageUrl, uploadavatarDto.publicId, user);
