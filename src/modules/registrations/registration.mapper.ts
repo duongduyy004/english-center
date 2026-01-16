@@ -15,19 +15,21 @@ export class RegistrationMapper {
     domainEntity.address = raw.address;
     domainEntity.note = raw.note;
     domainEntity.processed = raw.processed;
-    domainEntity.class = {
-      id: raw.class.id,
-      name: raw.class.name,
-      grade: raw.class.grade,
-      section: raw.class.section,
-      year: raw.class.year,
-      description: raw.class.description,
-      feePerLesson: raw.class.feePerLesson,
-      status: raw.class.status as 'active' | 'upcoming' | 'closed',
-      max_student: raw.class.max_student,
-      room: raw.class.room,
-      schedule: raw.class.schedule,
-    };
+    if (raw.class) {
+      domainEntity.class = {
+        id: raw.class.id,
+        name: raw.class.name,
+        grade: raw.class.grade,
+        section: raw.class.section,
+        year: raw.class.year,
+        description: raw.class.description,
+        feePerLesson: raw.class.feePerLesson,
+        status: raw.class.status as 'active' | 'upcoming' | 'closed',
+        max_student: raw.class.max_student,
+        room: raw.class.room,
+        schedule: raw.class.schedule
+      };
+    }
     domainEntity.createdAt = raw.createdAt;
     domainEntity.updatedAt = raw.updatedAt;
     domainEntity.deletedAt = raw.deletedAt;
