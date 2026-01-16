@@ -26,7 +26,7 @@ export class DashboardRepository {
     private readonly teacherPaymentRepository: Repository<TeacherPaymentEntity>,
     @InjectRepository(RegistrationEntity)
     private readonly registrationRepository: Repository<RegistrationEntity>,
-  ) {}
+  ) { }
 
   async getAdminDashboard() {
     // Đếm tổng số
@@ -229,6 +229,10 @@ export class DashboardRepository {
       student.classes?.filter(
         (classStudent) => classStudent.class?.status === 'closed',
       ).length || 0;
+    const upcomingClasses =
+      student.classes?.filter(
+        (classStudent) => classStudent.class?.status === 'upcoming',
+      ).length || 0;
 
     // Class list with details
     const classList =
@@ -251,6 +255,7 @@ export class DashboardRepository {
       totalClasses: student.classes?.length || 0,
       activeClasses,
       completedClasses,
+      upcomingClasses,
       attendance,
       classList,
     };
