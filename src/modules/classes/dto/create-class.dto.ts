@@ -36,7 +36,6 @@ export class CreateScheduleDto {
     @IsEnum(['0', '1', '2', '3', '4', '5', '6'], { each: true })
     days_of_week: string[];
 
-    @ValidateNested()
     @Type(() => CreateTimeSlotsDto)
     time_slots: CreateTimeSlotsDto;
 }
@@ -81,7 +80,6 @@ export class CreateClassDto {
     @IsString()
     room: string;
 
-    @ValidateNested()
     @Type(() => CreateScheduleDto)
     schedule: CreateScheduleDto;
 }
