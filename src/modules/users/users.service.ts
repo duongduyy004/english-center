@@ -126,7 +126,7 @@ export class UsersService {
       [RoleEnum.student]: this.studentRepository,
     };
 
-    const repository = updateMap[roleId];
+    const repository = updateMap[roleId] || this.userRepository;
     if (repository) {
       await repository.update({ id: user.id }, { refreshToken });
     }
@@ -142,7 +142,7 @@ export class UsersService {
       [RoleEnum.student]: this.studentRepository,
     };
 
-    const repository = repositoryMap[roleId];
+    const repository = repositoryMap[roleId] || this.userRepository;
     return repository ? await repository.findOne({ where: { refreshToken }, relations: ['role'] }) : null;
   }
 
@@ -156,8 +156,7 @@ export class UsersService {
       [RoleEnum.student]: { repo: this.studentRepository },
     };
 
-    const config = repositoryMap[roleId];
-    if (!config) return;
+    const config = repositoryMap[roleId] || { repo: this.userRepository };
 
     const entity = await config.repo.findOne({ where: { id: user.id } });
     if (!entity) {
