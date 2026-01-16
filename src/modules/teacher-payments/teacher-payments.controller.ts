@@ -25,7 +25,7 @@ import { PayDto } from './dto/pay-dto.dto';
 export class TeacherPaymentsController {
   constructor(
     private readonly teacherPaymentsService: TeacherPaymentsService,
-  ) {}
+  ) { }
 
   @Get()
   @ResponseMessage('teacherPayment.SUCCESS.GET_ALL_TEACHER_PAYMENTS')
@@ -49,19 +49,8 @@ export class TeacherPaymentsController {
   }
 
   @Get('report')
-  exportReport(
-    @Query() query: QueryDto<FilterTeacherPaymentDto, SortTeacherPaymentDto>,
-  ) {
-    const limit = query?.limit;
-    const page = query?.page;
-    return this.teacherPaymentsService.getAllPayments({
-      filterOptions: query.filters,
-      sortOptions: query.sort || [],
-      paginationOptions: {
-        limit,
-        page,
-      },
-    });
+  exportReport() {
+    return this.teacherPaymentsService.getAllPaymentsReport()
   }
 
   @Patch(':id')

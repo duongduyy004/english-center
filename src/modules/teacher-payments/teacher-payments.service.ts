@@ -19,7 +19,7 @@ export class TeacherPaymentsService {
   constructor(
     private teacherPaymentsRepository: TeacherPaymentRepository,
     private classesService: ClassesService,
-  ) {}
+  ) { }
 
   getAllPayments({
     filterOptions,
@@ -36,6 +36,9 @@ export class TeacherPaymentsService {
       paginationOptions,
       classesService: this.classesService,
     });
+  }
+  getAllPaymentsReport() {
+    return this.teacherPaymentsRepository.getAllPaymentsReport()
   }
   createPayment(createPaymentDto: CreateTeacherPaymentDto) {
     return this.teacherPaymentsRepository.createPayment(createPaymentDto);

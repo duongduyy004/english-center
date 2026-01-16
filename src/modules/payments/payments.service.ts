@@ -30,6 +30,10 @@ export class PaymentsService {
     return this.paymentRepository.getAllPayments({ filterOptions, sortOptions, paginationOptions })
   }
 
+  getAllPaymentsReport(): Promise<Payment[]> {
+    return this.paymentRepository.getAllPaymentsReport()
+  }
+
   payStudent(paymentId: Payment['id'], payStudentDto: PayStudentDto) {
     return this.paymentRepository.payStudent(paymentId, payStudentDto)
   }

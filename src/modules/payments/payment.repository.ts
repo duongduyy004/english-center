@@ -204,6 +204,14 @@ export class PaymentRepository {
     };
   }
 
+  async getAllPaymentsReport() {
+    const entities = await this.paymentsRepository.find({
+      where: { totalAmount: MoreThan(0) },
+      relations: ['class', 'student'],
+    });
+    return entities.map((item) => PaymentMapper.toDomain(item));
+  }
+
   handleProcessPayment(entity: PaymentEntity, payStudentDto: PayStudentDto) {
     if (!entity) throw new NotFoundException('Payment not found');
     if (!entity.totalLessons || entity.totalLessons <= 0)

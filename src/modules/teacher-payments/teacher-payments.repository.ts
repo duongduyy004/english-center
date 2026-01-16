@@ -37,7 +37,7 @@ export class TeacherPaymentRepository {
     private sessionRepository: Repository<SessionEntity>,
     private classesService: ClassesService,
     private i18nService: I18nService<I18nTranslations>,
-  ) {}
+  ) { }
 
   async autoUpdateTeacherPaymentRecord(session: SessionEntity) {
     const classInfo = await this.classesService.findById(session.classId);
@@ -249,9 +249,9 @@ export class TeacherPaymentRepository {
       order:
         sortOptions.length > 0
           ? sortOptions.reduce((acc, sort) => {
-              acc[sort.orderBy] = sort.order;
-              return acc;
-            }, {})
+            acc[sort.orderBy] = sort.order;
+            return acc;
+          }, {})
           : { year: 'DESC', month: 'DESC' },
     });
 
@@ -355,6 +355,14 @@ export class TeacherPaymentRepository {
         relations: ['teacher'],
       }),
     );
+  }
+
+  async getAllPaymentsReport() {
+    const entities = await this.teacherPaymentRepository.find({
+      where: { totalAmount: MoreThan(0) },
+      relations: ['teacher'],
+    });
+    return entities.map((item) => TeacherPaymentMapper.toDomain(item));
   }
 
   async payForTeacher(id: TeacherPaymentEntity['id'], payDto: PayDto) {
