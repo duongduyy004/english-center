@@ -30,8 +30,11 @@ export class PaymentsService {
     return this.paymentRepository.getAllPayments({ filterOptions, sortOptions, paginationOptions })
   }
 
-  getAllPaymentsReport(): Promise<Payment[]> {
-    return this.paymentRepository.getAllPaymentsReport()
+  getAllPaymentsReport(
+    { filterOptions, sortOptions, paginationOptions }
+      : { filterOptions: FilterPaymentDto, sortOptions: SortPaymentDto[], paginationOptions: IPaginationOptions })
+    : Promise<Payment[]> {
+    return this.paymentRepository.getAllPaymentsReport({ filterOptions, sortOptions, paginationOptions })
   }
 
   payStudent(paymentId: Payment['id'], payStudentDto: PayStudentDto) {

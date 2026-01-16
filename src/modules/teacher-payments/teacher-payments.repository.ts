@@ -357,10 +357,60 @@ export class TeacherPaymentRepository {
     );
   }
 
-  async getAllPaymentsReport() {
+  async getAllPaymentsReport({
+    filterOptions,
+    sortOptions,
+    paginationOptions,
+  }: {
+    filterOptions: FilterTeacherPaymentDto | {};
+    sortOptions: SortTeacherPaymentDto[];
+    paginationOptions: IPaginationOptions;
+  }) {
+    const where: FindOptionsWhere<TeacherPaymentEntity> = {};
+    const filters = filterOptions as FilterTeacherPaymentDto;
+
+    if (filters?.teacherId) where.teacherId = filters.teacherId;
+
+    if (filters?.teacherName) {
+      {
+        const rawName = String(filters.teacherName)
+          .trim()
+          .replace(/^"+|"+$/g, '')
+          .replace(/\s+/g, ' ');
+
+        const escaped = rawName
+          .replace(/\\/g, '\\\\')
+          .replace(/%/g, '\\%')
+          .replace(/_/g, '\\_');
+
+        where.teacher = {
+          name: Raw((alias) => `${alias} ILIKE :teacherName ESCAPE '\\'`, {
+            teacherName: `%${escaped}%`,
+          }),
+        };
+      }
+    }
+
+    if (filters?.status) where.status = filters.status;
+
+    if (filters?.month) where.month = filters.month;
+
+    if (filters?.year) where.year = filters.year;
+
+    if (filters?.startMonth && filters?.endMonth && filters?.year) {
+      where.month = Between(filters.startMonth, filters.endMonth);
+      where.year = filters.year;
+    }
     const entities = await this.teacherPaymentRepository.find({
-      where: { totalAmount: MoreThan(0) },
+      where: { ...where, totalAmount: MoreThan(0) },
       relations: ['teacher'],
+      order:
+        sortOptions.length > 0
+          ? sortOptions.reduce((acc, sort) => {
+            acc[sort.orderBy] = sort.order;
+            return acc;
+          }, {})
+          : { year: 'DESC', month: 'DESC' },
     });
     return entities.map((item) => TeacherPaymentMapper.toDomain(item));
   }

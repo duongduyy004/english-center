@@ -37,8 +37,20 @@ export class TeacherPaymentsService {
       classesService: this.classesService,
     });
   }
-  getAllPaymentsReport() {
-    return this.teacherPaymentsRepository.getAllPaymentsReport()
+  getAllPaymentsReport({
+    filterOptions,
+    sortOptions,
+    paginationOptions,
+  }: {
+    filterOptions: FilterTeacherPaymentDto | {};
+    sortOptions: SortTeacherPaymentDto[];
+    paginationOptions: IPaginationOptions;
+  }) {
+    return this.teacherPaymentsRepository.getAllPaymentsReport({
+      filterOptions,
+      sortOptions,
+      paginationOptions,
+    })
   }
   createPayment(createPaymentDto: CreateTeacherPaymentDto) {
     return this.teacherPaymentsRepository.createPayment(createPaymentDto);

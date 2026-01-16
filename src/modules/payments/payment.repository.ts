@@ -204,10 +204,60 @@ export class PaymentRepository {
     };
   }
 
-  async getAllPaymentsReport() {
+  async getAllPaymentsReport({
+    filterOptions,
+    sortOptions,
+    paginationOptions,
+  }: {
+    filterOptions: FilterPaymentDto;
+    sortOptions: SortPaymentDto[];
+    paginationOptions: IPaginationOptions;
+  }) {
+    const where: FindOptionsWhere<PaymentEntity> = {};
+
+    if (filterOptions?.studentId) where.studentId = filterOptions.studentId;
+
+    if (filterOptions?.studentName) {
+      const rawName = String(filterOptions.studentName)
+        .trim()
+        .replace(/^"+|"+$/g, '')
+        .replace(/\s+/g, ' ');
+
+      const escaped = rawName
+        .replace(/\\/g, '\\\\')
+        .replace(/%/g, '\\%')
+        .replace(/_/g, '\\_');
+
+      where.student = {
+        name: Raw((alias) => `${alias} ILIKE :studentName ESCAPE '\\'`, {
+          studentName: `%${escaped}%`,
+        }),
+      };
+    }
+
+    if (filterOptions?.classId) where.classId = filterOptions.classId;
+
+    if (filterOptions?.status) where.status = filterOptions.status;
+
+    if (filterOptions?.month) where.month = filterOptions.month;
+
+    if (filterOptions?.year) where.year = filterOptions.year;
+
+    if (filterOptions?.startMonth && filterOptions?.endMonth) {
+      where.month = Between(filterOptions.startMonth, filterOptions.endMonth);
+      where.year = filterOptions.year;
+    }
+
     const entities = await this.paymentsRepository.find({
-      where: { totalAmount: MoreThan(0) },
+      where: { ...where, totalAmount: MoreThan(0) },
       relations: ['class', 'student'],
+      order:
+        sortOptions.length > 0
+          ? sortOptions.reduce((acc, sort) => {
+            acc[sort.orderBy] = sort.order;
+            return acc;
+          }, {})
+          : { year: 'DESC', month: 'DESC' },
     });
     return entities.map((item) => PaymentMapper.toDomain(item));
   }

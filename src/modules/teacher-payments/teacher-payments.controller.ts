@@ -49,8 +49,15 @@ export class TeacherPaymentsController {
   }
 
   @Get('report')
-  exportReport() {
-    return this.teacherPaymentsService.getAllPaymentsReport()
+  exportReport(@Query() query: QueryDto<FilterTeacherPaymentDto, SortTeacherPaymentDto>) {
+    return this.teacherPaymentsService.getAllPaymentsReport({
+      filterOptions: query.filters,
+      sortOptions: query.sort || [],
+      paginationOptions: {
+        limit: query.limit,
+        page: query.page,
+      },
+    })
   }
 
   @Patch(':id')

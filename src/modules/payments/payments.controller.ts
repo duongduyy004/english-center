@@ -44,8 +44,15 @@ export class PaymentsController {
   }
 
   @Get('report')
-  exportReport() {
-    return this.paymentsService.getAllPaymentsReport()
+  exportReport(@Query() query: QueryDto<FilterPaymentDto, SortPaymentDto>) {
+    return this.paymentsService.getAllPaymentsReport({
+      filterOptions: query.filters,
+      sortOptions: query.sort || [],
+      paginationOptions: {
+        limit: query.limit,
+        page: query.page
+      }
+    })
   }
 
   @Patch('pay-student/:paymentId')
