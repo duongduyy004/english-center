@@ -30,10 +30,10 @@ export class RegistrationEntity {
   @Column()
   address: string;
 
-  @Column()
+  @Column({ nullable: true })
   note: string;
 
-  @Column()
+  @Column({ default: false })
   processed: boolean;
 
   @CreateDateColumn({
