@@ -98,6 +98,41 @@ export class TransactionRepository {
         }
     }
 
+    async getAllTransactionsReport({
+        filterOptions,
+        sortOptions,
+        paginationOptions,
+    }: {
+        filterOptions?: FilterTransactionDto | null;
+        sortOptions?: SortTransactionDto[] | null;
+        paginationOptions: IPaginationOptions;
+    }): Promise<Transaction[]> {
+        const where: FindOptionsWhere<TransactionEntity> = {};
+        if (filterOptions?.type) {
+            const category = await this.transactionCategoryRepository.findOne({
+                where: { type: filterOptions.type }
+            })
+
+            where.category = category
+        }
+        if (filterOptions?.startDate && filterOptions?.endDate) {
+            where.transactionAt = Between(filterOptions.startDate, filterOptions.endDate)
+        }
+        const [entities, total] = await this.transactionRepository.findAndCount({
+            where,
+            relations: ['category'],
+            order: sortOptions?.reduce(
+                (accumulator, sort) => ({
+                    ...accumulator,
+                    [sort.orderBy]: sort.order,
+                }),
+                {},
+            ),
+        })
+
+        return entities ? entities.map((item) => TransactionMapper.toDomain(item)) : null
+    }
+
     async findById(id: Transaction['id']) {
         const entity = await this.transactionRepository.findOne({
             where: { id },

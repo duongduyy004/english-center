@@ -32,7 +32,7 @@ export class TransactionsController {
   exportReport(@Query() query: QueryDto<FilterTransactionDto, SortTransactionDto>) {
     const limit = query?.limit;
     const page = query?.page;
-    return this.transactionsService.findAll({
+    return this.transactionsService.getAllTransactionsReport({
       filterOptions: query.filters,
       sortOptions: query.sort || [],
       paginationOptions: {

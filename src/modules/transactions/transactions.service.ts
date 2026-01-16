@@ -31,6 +31,18 @@ export class TransactionsService {
     return this.transactionRepository.getAllTransactions({ filterOptions, sortOptions, paginationOptions });
   }
 
+  getAllTransactionsReport({
+    filterOptions,
+    sortOptions,
+    paginationOptions,
+  }: {
+    filterOptions?: FilterTransactionDto | null;
+    sortOptions?: SortTransactionDto[] | null;
+    paginationOptions: IPaginationOptions;
+  }): Promise<Transaction[]> {
+    return this.transactionRepository.getAllTransactionsReport({ filterOptions, sortOptions, paginationOptions });
+  }
+
   async findOne(id: Transaction['id']) {
     const transaction = await this.transactionRepository.findById(id);
     if (!transaction) throw new BadRequestException(this.i18nService.t('common.NOT_FOUND', {
