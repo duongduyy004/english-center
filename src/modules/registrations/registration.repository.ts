@@ -9,6 +9,7 @@ import { FindOptionsWhere, ILike, Repository } from 'typeorm';
 import { RegistrationMapper } from './registration.mapper';
 import { ClassEntity } from '../classes/entities/class.entity';
 import { NullableType } from '@/utils/types/nullable.type';
+import { UpdateRegistrationDto } from './dto/update-registration.dto';
 @Injectable()
 export class RegistrationRepository {
   constructor(
@@ -18,38 +19,25 @@ export class RegistrationRepository {
     private classRepository: Repository<ClassEntity>,
   ) { }
   async create(
-    data: Omit<Registration, 'id' | 'createdAt' | 'updatedAt' | 'deletedAt'>,
+    data: CreateRegistrationDto,
   ): Promise<Registration> {
-    // Tìm class từ classId
     const classEntity = await this.classRepository.findOne({
-      where: { id: data.class?.id },
+      where: { id: data.classId },
     });
 
     if (!classEntity) {
       throw new Error('Class not found');
     }
-
-    // Tạo domain với full class info
-    const domainWithClass: Registration = {
-      ...data,
-      class: {
-        id: classEntity.id,
-        name: classEntity.name,
-        grade: classEntity.grade,
-        section: classEntity.section,
-        year: classEntity.year,
-        description: classEntity.description,
-        feePerLesson: classEntity.feePerLesson,
-        status: classEntity.status as 'active' | 'upcoming' | 'closed',
-        max_student: classEntity.max_student,
-        room: classEntity.room,
-        schedule: classEntity.schedule,
-      },
-    } as Registration;
-
-    const persistenceModel = RegistrationMapper.toPersistence(domainWithClass);
     const newEntity = await this.registrationRepository.save(
-      this.registrationRepository.create(persistenceModel),
+      this.registrationRepository.create({
+        name: data.name,
+        email: data.email,
+        phone: data.phone,
+        gender: data.gender,
+        address: data.address,
+        note: data.note,
+        classId: classEntity.id,
+      }),
     );
     return RegistrationMapper.toDomain(newEntity);
   }
@@ -123,9 +111,7 @@ export class RegistrationRepository {
 
   async update(
     id: Registration['id'],
-    data: Partial<
-      Omit<Registration, 'id' | 'createdAt' | 'updatedAt' | 'deletedAt'>
-    >,
+    data: UpdateRegistrationDto,
   ) {
     const existingEntity = await this.registrationRepository.findOne({
       where: { id },
@@ -135,21 +121,13 @@ export class RegistrationRepository {
     // Convert domain data to persistence format if needed
     const updateData = {
       ...existingEntity,
-      ...data,
-      // Handle class relationship properly if classId is provided
-      ...(data.class?.id && { classId: data.class.id }),
+      processed: data.processed
     };
 
     // Save the updated entity
-    await this.registrationRepository.save(updateData);
+    const entity = await this.registrationRepository.save(updateData);
 
-    // Fetch the updated entity with relations to ensure we have fresh data
-    const updatedEntity = await this.registrationRepository.findOne({
-      where: { id },
-      relations: ['class'],
-    });
-
-    return RegistrationMapper.toDomain(updatedEntity);
+    return RegistrationMapper.toDomain(entity);
   }
 
   async remove(id: Registration['id']): Promise<void> {
