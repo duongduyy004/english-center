@@ -15,32 +15,40 @@ export class RegistrationEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ nullable: false, unique: true })
+  @Column({ nullable: false })
   email: string;
 
   @Column({ nullable: false })
   name: string;
+
   @Column()
   phone: string;
+
   @Column({ enum: ['male', 'female'] })
   gender: string;
+
   @Column()
   address: string;
+
   @Column()
   note: string;
+
   @Column()
   processed: boolean;
+
   @CreateDateColumn({
     type: 'timestamptz',
     default: () => 'CURRENT_TIMESTAMP(0)',
   })
   createdAt: Date;
+
   @UpdateDateColumn({
     type: 'timestamptz',
     default: () => 'CURRENT_TIMESTAMP(0)',
     onUpdate: 'CURRENT_TIMESTAMP(0)',
   })
   updatedAt: Date;
+
   @DeleteDateColumn({
     type: 'timestamptz',
     nullable: true,
