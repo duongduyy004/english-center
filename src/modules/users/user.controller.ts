@@ -36,6 +36,16 @@ export class UsersController {
         });
     }
 
+    @Post('push-token')
+    pushToken(@UserInfo() user: User, @Body() dto: PushTokenDto) {
+        return this.usersService.pushExpoToken(user.id, dto)
+    }
+
+    @Patch('avatar')
+    uploadAvatar(@Body() uploadavatarDto: UploadAvatarDto, @UserInfo() user: User) {
+        return this.usersService.uploadAvatar(uploadavatarDto.imageUrl, uploadavatarDto.publicId, user);
+    }
+
     @Get(':id')
     @ResponseMessage('user.SUCCESS.GET_A_USER')
     findOne(@Param('id') id: User['id']) {
@@ -55,15 +65,5 @@ export class UsersController {
     @ResponseMessage('user.SUCCESS.DELETE_A_USER')
     delete(@Param('id') id: User['id']) {
         return this.usersService.delete(id);
-    }
-
-    @Post('push-token')
-    pushToken(@UserInfo() user: User, @Body() dto: PushTokenDto) {
-        return this.usersService.pushExpoToken(user.id, dto)
-    }
-
-    @Patch('avatar')
-    uploadAvatar(@Body() uploadavatarDto: UploadAvatarDto, @UserInfo() user: User) {
-        return this.usersService.uploadAvatar(uploadavatarDto.imageUrl, uploadavatarDto.publicId, user);
     }
 }
