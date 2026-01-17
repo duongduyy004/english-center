@@ -85,7 +85,19 @@ export class SessionRepository {
 
     const todayStart = dayjs().startOf('day').toDate();
     const todayEnd = dayjs().endOf('day').toDate();
+    // Check if current time is within class schedule time
+    const now = dayjs();
+    const startTime = dayjs(classEntity.schedule.time_slots.start_time, 'HH:mm');
+    const endTime = dayjs(classEntity.schedule.time_slots.end_time, 'HH:mm');
+    const currentTime = dayjs().set('hour', now.hour()).set('minute', now.minute());
 
+    if (currentTime.isBefore(startTime)) {
+      throw new BadRequestException('Chưa đến giờ học, không thể điểm danh');
+    }
+
+    if (currentTime.isAfter(endTime)) {
+      throw new BadRequestException('Đã hết giờ học, không thể điểm danh');
+    }
     if (!(today >= startDate && today <= endDate && checkDay))
       throw new BadRequestException('no scheduled today');
 
@@ -157,6 +169,20 @@ export class SessionRepository {
     })
 
     if (!entity) return;
+
+    // Check if current time is within class schedule time
+    const now = dayjs();
+    const startTime = dayjs(entity.class.schedule.time_slots.start_time, 'HH:mm');
+    const endTime = dayjs(entity.class.schedule.time_slots.end_time, 'HH:mm');
+    const currentTime = dayjs().set('hour', now.hour()).set('minute', now.minute());
+
+    if (currentTime.isBefore(startTime)) {
+      throw new BadRequestException('Chưa đến giờ học, không thể điểm danh');
+    }
+
+    if (currentTime.isAfter(endTime)) {
+      throw new BadRequestException('Đã hết giờ học, không thể điểm danh');
+    }
 
     const payloadStudentIds = payload.map(item => item.studentId);
     const statusCases = payload.map(item => `WHEN '${item.studentId}' THEN '${item.status}'`).join(' ')
